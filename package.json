@@ -1,0 +1,23 @@
+{
+		"name": "CourseShark"
+	, "description": "A simple and clean way to make your schedule"
+	, "version": "1.1.0"
+	, "private": true
+	, "author": "James Rundquist (http://github.com/jrundquist)"
+	, "engines": {
+			"node": ">= 0.6.14"
+		}
+	, "dependencies": {
+			"express": ">=2.5.4"
+		, "ejs": ">=0.7.0"
+		, "connect-less": ">=0.2.2"
+		, "ezcrypto" : ">=0.0.3"
+		, "mongoose": ">=2.4.9"
+		, "ezcrypto": ">=0.0.3"
+		, "gzippo" : ">=0.1.4"
+		, "yaml-config" : "0.1.0"
+		, "connect-mongodb" : "1.1.2"
+		, "everyauth" : ">=0.2.32"
+		, "express-messages-bootstrap" : "0.0.6"
+	}
+}

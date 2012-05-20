@@ -1,0 +1,173 @@
+<div class="container">
+	<div class="hero-unit masthead">
+	  <h1>Introducing Course<strong>Shark</strong></h1>
+	  <p>The quick and easy way to create your class schedule.</p>
+	  <p>
+	    <a class="btn btn-primary btn-large scroll" href="#features-top">
+	      Learn more
+	    </a>
+	    <a class="btn btn-secondary btn-large" href="/schedule">
+	      Get Started
+	    </a>
+	  </p>
+	<img src='/images/billboard.png' alt="Screenshot of the friends feature and schedule creator"/>
+	</div>
+	
+	<div class="page-header">
+	</div>
+			
+	<div class="section-head">
+		<h1>Schools we support.</h1>
+		<p>If you don&rsquo;t see your school, contact us and we&rsquo;ll work to support it.</p>
+	</div>
+ 	<div class="row">
+		<div class="span6">
+			<div class="row">
+				<ul class="thumbnails" id="schools">
+				  <li class="span2">
+				    <div class="thumbnail">
+							<img src="/images/schools/gt_logo.png" alt="Georgia Institute of Technology">
+						      <p>Georgia Institute of Technology</p>
+						</div>
+				  </li>
+				  <li class="span2">
+				    <div class="thumbnail">
+							<img src="/images/schools/gsu_logo.png" alt="Georgia State University">
+						      <p>Georgia State University</p>
+						</div>
+				  </li>
+				  <li class="span2">
+				    <div class="thumbnail">
+							<img src="/images/schools/scad_logo.png" alt="Savannah College of Art and Design">
+						      <p>Savannah College of Art and Design</p>
+						</div>
+				  </li>
+				</ul>
+			</div>
+		</div>
+		<div class="span6">
+			<form class="well" action="why" method="post">
+				<h1>Request your school</h1>
+				<label>School Name</label>
+			  <input type="text" class="span4" name="school-name" id="school-name" placeholder="Full name of school" />
+				<label>Your Name</label>
+			  <input type="text" class="span4" name="name" id="submitter-name" placeholder="Who are you?" />
+				<label>Your Email</label>
+			  <input type="email" class="span4" name="email" id="submitter-email" placeholder="So we can contact you" />
+				<label></label>
+			  <button type="button" class="btn btn-large btn-success" id="submit-school" onClick="submitSchool()">Submit</button>
+			</form>
+		</div>
+	</div>
+	
+	
+	<div class="section-head" id="features-top">
+		<h1>The tools you need.</h1>
+		<p>We have what you need to get your schedule right.</p>
+	</div>
+	<div class="row listing">
+		<div class="span4">
+			<h2>Accurate Data<span class="arrow"></span></h2>
+			<p>During registration periods, seat information changes fast. One minute a class is virtually empty, and the next there is only one seat left! 
+				CourseShark automatically scans college catalogs as often as every <strong>15 minutes,</strong> so you always have the most up-to-date information.</p>
+		</div>			
+		<div class="span4">
+			<h2>Friends<span class="arrow"></span></h2>
+			<p><strong>New:</strong> CourseShark's friends feature allows you to see what sections your friends are in, invite friends to take a class with 
+				you, and compare schedules to find out when you are both free for lunch.</p>
+		</div>
+		<div class="span4">
+			<h2>Seat Watcher<span class="arrow"></span></h2>
+			<p>
+				Get ahead of the game with <a href="/watcher" title="Seat Watcher Page">Seat Watcher</a>, a revolutionary new tool for college schedule creation. Seat Watcher
+				sends you an email and/or text message when a seat opens in a class you need.</p>
+		</div>
+	</div>
+	<div class="row listing">
+		<div class="span4">
+			<h2>Quick Sharing<span class="arrow"></span></h2>
+			<p>Sharing your schedule has never been easier! With CourseShark, you can generate short links directly to your schedule or post your
+				schedule on your Facebook timeline. </p>
+		</div>
+		<div class="span4">
+			<h2>AutoAdd<span class="arrow"></span></h2>
+			<p>Know what classes you want to take, but can&rsquo;t get them to fit together? AutoAdd will create your schedule for you in seconds.</p>
+		</div>
+		<div class="span4">
+			<h2>Online Storage<span class="arrow"></span></h2>
+			<p>CourseShark lets you easily save and load your schedules from any computer. A simple feature, but incredibly useful.</p>
+		</div>
+	</div>
+	<div class="row listing">
+		<div class="span4">
+			<h2>Printability<span class="arrow"></span></h2>
+			<p>Want a nice printout of your schedule? We&rsquo;ve got you covered. Simply print your schedule, and CourseShark will generate a beautiful and printer-friendly
+				render of your schedule.</p>
+		</div>
+		<div class="span4">
+			<h2>Ease of Use<span class="arrow"></span></h2>
+			<p>We are always working to make CourseShark the easiest and most powerful scheduling tool on the market.</p>
+		</div>
+		<div class="span4">
+			<h2>Export<span class="arrow"></span></h2>
+			<!-- <img src="/images/features/ical.png" alt="Export your schedule to iCal for example"/>  -->
+			<p>Like to have a copy of your class schedule on your Google Calendar, iCal, or Outlook? CourseShark can export your schedule 
+				in a format accepted by most calendar programs.</p>
+		</div>
+	</div>
+</div>
+
+<script>
+	$().ready(function(){
+		if ( window.location.hash == "#!/register") {
+			show_register_dialog();
+		}
+		else if ( window.location.hash == "#!/login") {
+			show_login_dialog();
+		}
+	});
+	
+	function submitSchool(){
+		data = {
+						'school':$('input#school-name').val(),
+						'name':$('input#submitter-name').val(),
+						'email':$('input#submitter-email').val()
+						};
+		
+		
+		if ( data.school === '' ){
+			console.log('s');
+			return;
+		}
+		if ( data.email === '' || !validateEmail(data.email) ){
+			console.log('e');
+			return;
+		}
+		if ( data.name === '' ){
+			console.log('n');
+			return;
+		}
+		
+		
+		$('#submit-school').attr('disabled', true);
+		$.ajax({
+			url:'/about/schools',
+			async: true,
+			data: data,
+			type:'POST',
+			dataType:'json',
+			success: function(response){
+				if ( response == null ){
+					errorHandler('Unknown response','','Null response from login_submit()');
+					return;
+				}
+				if ( response.success == true ){
+					messageDialog("Thanks! Your school has been submitted");
+					$('#submit-school').attr('disabled', false);
+					
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown){errorHandler(jqXHR,'',errorThrown);}
+		});
+	}
+</script>

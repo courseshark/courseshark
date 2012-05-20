@@ -1,0 +1,44 @@
+<div class="well footer">
+	<div class="container">
+		<div class="row">
+			<div class="span3">
+				<img src="/images/logo.png" alt="CourseShark Logo"/>
+			</div>
+			<div class="span7">
+				<ul class="nav nav-pills">
+					<li><a href="/">Home</a></li>
+					<li><a href="/about">About</a></li>
+					<li><a href="/about/terms">Terms of Service</a></li>
+					<li><a href="/about/privacy">Privacy</a></li>
+          <li><a href="#" onClick="openDialog('/about/feedback')">Contact</a></li>
+					<li><a href="http://blog.courseshark.com/">Blog</a></li>
+					<li><a href="https://twitter.com/CourseShark">Twitter</a></li>
+				</ul>
+			</div>
+			<div class="span2">
+				<% if ( false ){ %>
+				<!-- Tweet button -->
+				<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://courseshark.com/" data-text="Quick way to make your class schedule" data-via="courseshark" data-size="large">Tweet</a>
+				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+				
+				<!-- Follow button -->
+				<a href="https://twitter.com/courseshark" class="twitter-follow-button" data-show-count="false">Follow @courseshark</a>
+				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+				
+				<!-- Facebook buttons -->
+				<div class="fb-like" data-href="http://courseshark.com/" data-send="true" data-layout="button_count" data-width="150" data-show-faces="true" data-action="like" data-font="arial"></div>
+				<% } %>
+			
+				<!-- HTML5 Banner -->
+				<a href="https://www.w3.org/html/logo/" target="_blank">
+				<img src="/images/html5-badge-h-css3-performance-semantics-storage.png" width="229" height="64" alt="HTML5 Powered with CSS3 / Styling, Performance &amp; Integration, Semantics, and Offline &amp; Storage" title="HTML5 Powered with CSS3 / Styling, Performance &amp; Integration, Semantics, and Offline &amp; Storage">
+				</a>				
+			</div>
+		</div>
+		<div class="row">
+			<div class="span4">
+				&copy; <%= (new Date).getFullYear() %> Rundquist Industries LLC.
+			</div>
+		</div>
+	</div>
+</div>

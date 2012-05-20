@@ -1,0 +1,106 @@
+<div class="modal-header">
+	<a href="#" class="close" data-dismiss="modal">&times;</a>
+	<h3>Register <small>for Course<strong>Shark</strong><small></h3>
+</div>
+
+<div class="modal-body">
+	<form action="/register" method="POST" id="reg" class="form-horizontal">
+		<fieldset>
+			<!-- Email -->
+			<div class="control-group" id="personal-info">
+				<label class="control-label" for="email">Email</label>
+	      <div class="controls">
+					<input type="email" name="email" id="reg-email" placeholder="you@somewhere.com" >
+					<p class="help-inline" for="email"></p>
+				</div>
+			</div>
+			
+			<!-- Password -->
+			<div class="control-group" id="password-info">
+				<label class="control-label" for="password">Password</label>
+	      <div class="controls">
+					<input type="password" name="password" id="reg-password" placeholder="Password" />
+					<p class="help-inline" for="password"></p>
+				</div>
+				
+				<label class="control-label" for="c_password">Confirm Password</label>
+	      <div class="controls">
+					<input type="password" name="c_password" id="reg-c_password" placeholder="Confirm Password" required="true" />
+					<p class="help-inline" for="c_password"></p>
+				</div>
+			</div>
+			
+			<!-- School -->
+			<div class="control-group" id="school-info">
+				<label class="control-label" for="school_id">School</label>
+	      <div class="controls">
+					<select name="school_id" id="reg-school_id">
+						<% for( var _len=schools.length,_i=0; _i<_len; _i++){ %>
+						<option value="<%= schools[_i].id %>"><%= schools[_i].name %></option>
+						<% } %>
+					</select>
+			</div>
+		</fieldset>
+	</form>
+</div>
+
+
+<div class="modal-footer">
+	<a href="#" class="btn btn-primary" onClick="register_submit()">Register</a>
+	<a href="#" class="btn" data-dismiss="modal">Close</a>
+</div>
+
+
+<script>
+	function register_submit(){
+		
+		//Reset diaply 
+		$('form#reg .control-group').removeClass('error')
+		$('.help-inline[for="email"]').html("")
+		$('.help-inline[for="password"]').html("")
+		$('.help-inline[for="c_password"]').html("")
+		
+		data = {password   : $('input#reg-password').val(),
+						c_password : $('input#reg-c_password').val(),
+						email      : $('input#reg-email').val(),
+						school_id  : $('select#reg-school_id').val()};
+		
+		if ( data.email === '' || !validateEmail(data.email) ){
+			$('#personal-info').addClass('error').find('.help-inline[for="email"]').html("Invalid Email");
+			return;
+		}
+		if ( data.password === '' ){
+			$('#password-info').addClass('error').find('.help-inline[for="password"]').html("Invalid Password");
+			return;
+		}
+		if ( data.password !== data.c_password ){
+			$('#password-info').addClass('error').find('.help-inline[for="c_password"]').html("Passwords do not match");
+			return;
+		}
+		
+		$.ajax({
+			url: '/users/register',
+			async: false,
+			data: data,
+			type: 'POST',
+			dataType: 'json',
+			success: function(response){
+				if ( response == null ){
+					errorHandler('Unknown response','','Null response from register_submit()');
+					return;
+				}
+				if ( response.success == true ){
+					window.location = response.message;
+				}else if ( response.message == 'email' ) {
+					$('#personal-info').addClass('error').find('.help-inline[for="email"]').html("Email already taken.");
+				}else{
+					errorHandler('Unknown response',response.message,'Uncaught response');
+					return;
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown){errorHandler(jqXHR,'',errorThrown);}
+		});
+	}
+	
+</script>
+

@@ -1,0 +1,173 @@
+<!-- PreLoad images -->
+<div style="display:none"><img src="/images/seat_loading.gif" /><img src="/images/seat_loading_child.gif" /></div>
+<!-- End Preload -->
+	<% if ( !link ){ %>
+	<div class="container">
+		<div class="subnav">
+      <div class="nav-commands">
+				<ul class="nav nav-pills">
+					<li><a href="#" id="save-button"><i class="icon-tag"></i> Save</a></li>
+					<li><a href="#" id="load-button"><i class="icon-folder-open"></i> Load</a></li>
+					<li><a href="#" id="new-button" ><i class="icon-file"></i> New</a><li>
+					<li><a href="#"	id="print-button"/><i class="icon-print"></i> Print</a></li>
+					<li><a href="#" id="number-button"/><i class="icon-list-alt"></i> List CRNs</a></li>
+					<li><a href="#" id="auto-pilot-button"/><i class="icon-random"></i> AutoAdd Classes</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sharing <b class="caret"></b></a>
+					  	<ul class="dropdown-menu">
+					      <li><a href="#" id="link-button"/><i class="icon-share"></i> Create Link</a></li>
+								<li><a href="#" id="ical-button"/><i class="icon-download-alt"></i> Schedule Export</a></li>
+								<li><a type="#" id="fb-share-button"/><i class="icon-comment"></i> Post To Facebook</a></li>
+					    </ul>
+					 </li>
+	      </ul>
+			</div>
+		</div>
+	</div>	
+	<% } %>
+	<div class="container">
+		<div class="row">
+			<div id="side-bar-wrapper" class="span2">
+				<div id="schedule-summary">
+					<h2 id="name">-Untitled-</h2>
+					<div id="term">Term: <strong id="term-name"></strong></div>
+					<div id="hours">Hours: <strong id="number">0</strong></div>
+				</div>
+				<% if ( !link ){ %>
+				<div id="class-adding-form">
+					<div id="add-course-content">
+						<article>
+							<div id="major">
+								<label for="major_id">Department &raquo;</label>
+								<select name="major_id" id="major_id" autocomplete="off">
+									<option value=""></option>
+									<% for (var department=departments[0],_len=departments.length,_i=0; _i<_len; (department=departments[_i]),i++){ %>
+										<option value="<%= major.id %>" title="<%= major.name %>"><%= major.name %></option>
+									<% } %>
+								</select>
+								<div id="selected-major-name"></div>
+							</div>
+							<div id="course">
+								<label for="course_id">Course &raquo;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+								<select name="course_id" id="course_id">
+									<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+								</select>
+								<span id="courses-loading"><img src="/images/seat_loading.gif"/></span>
+								<div id="selected-course-name"></div>
+							</div>
+						</article>
+						<div id="add-course">
+							<button type="button" class="blue auto-width" value="Add" id="add-course-button" >Add</button>
+						</div>
+					</div>
+				</div>
+				<% } %>
+				<div id="class-list-loader"></div>
+				<div id="class-list" class="">
+				<!-- Containers for the Classes added to the Schedule -->
+				</div>
+			</div>
+			
+			<div id="schedule-container" class="span8">
+				<%- partial('calendars/week') %>
+			</div>
+			
+			
+			<div id="right-bar-wrapper" class="span2">
+				<% if ( !link ){ %>
+				<section id="friends">
+					<header>
+						<h2>Friends</h2>
+						<a href="#" onClick="addFriendsDialog()" class="btn btn-success">Find Friends</a>
+					</header>
+					<div id="friends-list" class="">
+						<ul class="unstyled">
+						<% if ( false ) { %>
+							<!-- 
+							< foreach($friends as $friend) >
+								<li class="friend-available< echo ($friendSchedules[$friend->id]['primary'])?'':' none'?>" data-color="$friend->getColor()?>" data-schedule="$friendSchedules[$friend->id]['primary']"><div class="friend-dot" style="border-color: $friend->getColor()"></div>$friend->name</h2>
+							-->
+						<% } %>
+						</ul>
+					</div>
+				</section>
+				<% } %>
+			</div>
+		</div>
+	</div>
+	
+<script>
+$(document).ready(function() {
+  	$("#major_id").change(function(){
+		$('#selected-major-name').fadeOut('fast',function(){$(this).html($("#major_id option:selected").attr('title')).fadeIn('fast')});
+		if ( $('#major_id option:first-child').val() == "" ){
+			$('#major_id option:first-child').remove();
+		}
+		$("#courses-loading").fadeIn('fast');
+		add_course = function(c){
+			$("#courses-loading").hide();
+				$('select#course_id option').remove();
+				for (var i = 0; i < c.length; i++) {
+					$('<option value="' + c[i]._data.id + '" title="' + c[i]._data.name + '">' + c[i]._data.number + '</option>').data('course', c[i]._data).appendTo("select#course_id");
+				}
+				$("#course_id").change();
+	    };
+		get_courses_from_major($(this).val(), add_course, term.id);
+		
+	});
+	_gaq = _gaq || {};
+	$("#course_id").change(function(){
+		$('#selected-course-name').fadeOut('fast',function(){$(this).html($("#course_id option:selected").attr('title')).fadeIn('fast')});
+	});
+	
+	$('#add-course-button').click(function(){
+		addCourseToList($("select#course_id :selected").data('course'));
+	});
+	
+	$('#save-button').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'Save']);
+		schedule.pushSave();
+		return false;
+	});
+	
+	$('#load-button').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'Load']);	
+		show_load_dialog();
+	});
+	
+	$('#new-button').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'New']);
+		show_new_dialog();
+	});
+	
+	$('#auto-pilot-button').click(function(){
+		_gaq.push(['_trackEvent', 'AutoPilot', 'Start']);
+		show_autopilot_dialog();
+	});
+	
+	$('#print-button').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'Print']);
+		window.print();
+	});
+	
+	$('#ical-button').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'iCal']);
+		window.open('/schedule/ical', 'Download');
+	});
+
+	$('#number-button').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'CRN List']);
+		show_number_dialog(schedule);
+	});
+	
+	$('#link-button').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'Link']);
+		show_link_dialog(schedule);
+	});
+	$('#fb-share-button').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'Facebook']);
+		window.location = "<?php echo $fb_link?>"
+	});
+	init();			
+});
+</script>

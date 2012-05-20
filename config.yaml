@@ -1,0 +1,53 @@
+development:
+  domain: "courseshark.dev"
+  logFile: "./logs/access.log"
+  update:
+    time: "5"
+  db:
+    uri: "mongodb://localhost/courseshark_dev"
+  facebook:
+    appId: "182622275092530"
+    appSecret: "885311f00c458526586a17ede8b3e57b"
+    host_uri: "http://courseshark.dev:3000"
+  google:
+    apiKey: "AIzaSyAAmSeKu1IPJcGm9ec3041WqMO0mrKPHtk"
+    clientId: "1024134353230.apps.googleusercontent.com"
+    clientSecret: "Dia4zMwugrzVzNEQU5LGpue9"
+    iss: "11866213978865467686"
+    sellerSecret: "driJET-bAFB2e-fJEIaJRQ"
+
+staging:
+  domain: "courseshark.tst"
+  logFile: "./logs/access.log"
+  update:
+    time: "15"
+  db:
+    uri: "mongodb://courseshark.com/courseshark_staging"
+  facebook:
+    appId: "182622275092530"
+    appSecret: "885311f00c458526586a17ede8b3e57b"
+    host_uri: "http://courseshark.dev:3000"
+  google:
+    apiKey: "AIzaSyAAmSeKu1IPJcGm9ec3041WqMO0mrKPHtk"
+    clientId: "434297325029.apps.googleusercontent.com"
+    clientSecret: "d1bPhrQutGrZqj7lPrbfNHrQ"
+    iss: "11866213978865467686"
+    sellerSecret: "driJET-bAFB2e-fJEIaJRQ"
+
+production:
+  domain: "courseshark.com"
+  logFile: "./logs/access.log"
+  update:
+    time: "15"
+  db:
+    uri: "mongodb://courseshark.com/courseshark"
+  facebook:
+    appId: "182622275092530"
+    appSecret: "885311f00c458526586a17ede8b3e57b"
+    host_uri: "http://agendaroo.com"
+  google:
+    apiKey: "AIzaSyAAmSeKu1IPJcGm9ec3041WqMO0mrKPHtk"
+    clientId: "434297325029.apps.googleusercontent.com"
+    clientSecret: "d1bPhrQutGrZqj7lPrbfNHrQ"
+    iss: "11866213978865467686"
+    sellerSecret: "3jTkSAUyQ2eC2j_H-L88ZQ"

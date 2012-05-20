@@ -1,0 +1,143 @@
+#add-freinds{
+	article{
+		#friends-add{
+			input{
+				width: 505px;
+				font-size: 20px;
+				height: 35px;
+				padding: 2px 10px;
+			}
+		}
+	}
+}
+#invite-friends{
+	textarea{
+		width: 505px;
+		font-size: 20px;
+		height: 100px;
+		padding: 2px 10px;
+		&.hidden{
+			display: none;
+		}
+	}
+}
+
+#adding-list{
+	margin-bottom: 4px;
+	.friend-holder{
+		background: @lightBlue;
+		padding: 3px 5px;
+		width: auto;
+		margin: 4px 5px 0 0;
+		display: inline-block;
+		border: 1px solid @black;
+		border-radius: 5px;
+		.friend-name{
+			display: inline-block;
+			color: whiteSmoke;
+		}
+		.click-to-remove{
+			display: inline-block;
+			color: @grayDarker;
+			font-weight: lighter;
+			cursor: pointer;
+		}
+	}
+}
+
+#friends-in-class{
+	color: #555;
+	.friend{
+		font-size: 12px;
+		padding: 0 0 0 40px;
+		margin: 5px 0;
+		cursor: pointer;
+		height: 40px;
+		position: relative;
+		.friend-image{
+			position: absolute;
+			top:0;
+			left:0;
+			img{
+				height: 38px;
+				width: 38px;
+				border: 1px solid @black;
+			}
+		}
+		.friend-name{
+			padding: 8px 0px 4px 10px;
+			font-size: 20px;
+			font-weight: bold;
+			.friend-email{
+				color: @grey;
+				display: inline;
+				font-size: 15px;
+			}
+		}
+	}
+}
+
+#search-list{
+	color: #555;
+	.friend{
+		font-size: 12px;
+		padding: 0 0 0 40px;
+		margin: 5px 0;
+		cursor: pointer;
+		height: 40px;
+		position: relative;
+		&:hover, &.selected{
+			background: @darkBlue;
+			.friend-name{
+				color: @white;
+				.friend-email{
+					color: @white;
+				}
+			}
+			.click-to-add{
+				&:after{
+					color: @white;
+				}
+			}
+		}
+		&.selected{
+			.click-to-add{
+				&:after{
+					content: "Click to add to invite list";
+				}
+			}
+		}
+		.friend-image{
+			position: absolute;
+			top:0;
+			left:0;
+			img{
+				height: 38px;
+				width: 38px;
+				border: 1px solid @black;
+			}
+		}
+		.friend-name{
+			padding: 8px 0px 4px 10px;
+			font-size: 20px;
+			font-weight: bold;
+			.friend-email{
+				color: @grey;
+				display: inline;
+				font-size: 15px;
+			}
+		}
+		.click-to-add{
+			float: right;
+			color: @black;
+			position: absolute;
+			top: 15px;
+			right: 15px;
+			&:after{
+				content: "Click to add to invite list";
+			}
+		}
+	}
+}
+
+

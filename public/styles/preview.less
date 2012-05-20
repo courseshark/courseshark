@@ -1,0 +1,70 @@
+@import "vars";
+/** Use for the preview of facebook image sharing **/
+#main-content{
+	border-bottom:1px solid #E2E2E1;
+}
+#preview-box{
+	margin:20px auto;
+	width:800px;
+	background: #eee;
+	background: -moz-linear-gradient(top, #eee 0%, #bbb 100%);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#eee), to(#bbb));
+	border: 1px solid #bbb;
+	border-bottom: 1px solid #aaa;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	h1{
+		margin:15px auto 10px;
+		font-size:46px;
+		text-align: center;
+	  	text-shadow: -2px -2px 0 #F4F4F4;
+	}
+	h2{
+		margin:5px auto;
+		font-size:20px;
+		text-align: center;
+	  	text-shadow: -1px -1px 0 #EEE;
+	}
+	.cell{
+		margin-top:10px;
+		padding:0 35px;
+		&:last-child{
+			margin-bottom:30px;
+		}
+		.right{
+			float:right;
+			margin-top:-40px;
+		}
+		&#image-container{
+			text-align:center;
+		}
+		img{
+			margin:10px auto;
+			border:5px solid #555;
+			.box-shadow(0px, 0px, 10px, #FFF);
+			-moz-border-radius: 3px;
+			-webkit-border-radius: 3px;
+			border-radius: 3px;
+		}
+		label#message-text-label{
+			color:#555;
+			font-weight:bold;
+			text-shadow: -1px -1px 0 #DDD;
+		}
+		input#message-text{
+			display:block;
+			width:480px;
+			font-size:19px;
+			line-height:1;
+			padding:5px;
+			border-radius:6px;
+			border-color:#aaa;
+			.box-shadow-inset(0, 0, 3px, #aaa);
+		}
+		button{
+			font-size:15px;
+			height:40px;
+		}
+	}
+}

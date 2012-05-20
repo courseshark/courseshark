@@ -1,0 +1,50 @@
+<fieldset>
+  <legend>General</legend>
+  <div class="control-group">
+		<label class="control-label" for="group[name]">Group Name</label>
+		<div class="controls">
+			<input type="text" class="input-xlarge" id="group[name]" name="group[name]" value="<%= group.name ? group.name : '' %>">
+			<p class="help-block">This name is unique and searchable</p>
+		</div>
+  </div>
+  <div class="control-group">
+		<label class="control-label" for="group[desciption]">Description</label>
+		<div class="controls">
+			<input type="text" class="input-xlarge" id="group[desciption]" name="group[desciption]" value="<%= group.desciption ? group.desciption : '' %>">
+			<p class="help-block">Give us a few words about your group</p>
+		</div>
+  </div>
+  <div class="control-group">
+		<label class="control-label" for="group[type]">Type</label>
+		<div class="controls">
+			<select class="span2" id="group[type]" name="group[type]">
+				<option value="academia"<%= group.type === 'academia' ? ' selected' : '' %>>Academic Team</option>
+				<option value="work"<%= group.type === 'work' ? ' selected' : '' %>>Work / Corporation</option>
+				<option value="social"<%= group.type === 'social' ? ' selected' : '' %>>Social</option>
+			</select>
+			<p class="help-block">Give us a few words about your group</p>
+		</div>
+  </div>
+  </fieldset>
+
+	<fieldset>
+  <legend>Privacy Information</legend>
+	<div class="control-group">
+  	<label class="control-label" for="group[isPublic]">Public Group</label>
+  	<div class="controls">
+			<label class="checkbox">
+				<input type="checkbox" name="group[isPublic]" value="true" <%= group.isPublic ? 'checked' : '' %>>
+				If checked, anyone can join
+			</label>
+  	</div>
+  </div>
+	<div class="control-group">
+    <label class="control-label" for="group[membersInvite]">Members can Invite</label>
+    <div class="controls">
+			<label class="checkbox">
+				<input type="checkbox" name="group[membersInvite]" value="true" <%= group.membersInvite ? 'checked' : '' %>>
+				Any member can invite more members
+			</label>
+  	</div>
+  </div>
+</fieldset>

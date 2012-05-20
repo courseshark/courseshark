@@ -1,0 +1,47 @@
+<div class="modal-header">
+	<a href="#" class="close" data-dismiss="modal">&times;</a>
+	<h3>Feedback</h3>
+</div>
+
+<div class="modal-body">
+	<h4>We love to hear from users! Let us know what you think</h4>
+	<div id="courses-form-container">
+		<form action="/about/contact-us" method="post">
+			<textarea name="message" placeholder="Tell us what you want. We are listening." id="contact-us-message"></textarea>
+			
+			<div id="contact-us-bottom-row">
+				<input type="email" name="email" placeholder="Your Email" />
+				<input type="text" name="name" placeholder="Your Name" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<a href="#" class="btn btn-primary" data-dismiss="modal" onClick="submitFeedback($('#courses-form-container form'));">Submit</a>
+	<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+</div>	
+
+
+<script>
+function submitFeedback($f) {
+	var a = $f.serializeArray();
+	v = {};
+	$.each(a, function(i, f) {
+	    v[f.name] = f.value;
+	});
+	$.ajax({url: '/about/feedback',
+			data: v,
+			type: 'POST',
+			dataType: 'json',
+			success: function(r){
+				console.log(r);
+				if(r.success){
+					openDialog('/about/feedback-thanks');
+				}else{
+					openDialog('/about/feedback');
+				}
+			}
+		});
+}
+</script>

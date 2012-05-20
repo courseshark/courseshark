@@ -1,0 +1,27 @@
+/* TEAM */
+	Designer/Developer:James Rundquist
+	Contact: jrundquist [at] courseshark.com
+	Twitter: @jamesrundquist
+
+	Marketing/Upcoming Developer:Greg Cobb
+	Contact: greg [at] courseshark.com
+	Twitter: @gregmcobb 
+
+	Design Consultation:Sam Lui
+	Contact: sam [at] courseshark.com
+	Twitter:
+
+/* THANKS */
+	Dr. James D. Foley
+	For: Dr. Foley's teachings helped in the design 
+	and evaluation of the website as it is now.
+	Website:http://www.cc.gatech.edu/fac/Jim.Foley/foley.html
+	
+	Chris Millar, Kevin Robertson, Nina Flaherty, 
+	Kevin Anzalone, and everyone who has helped test / 
+	advise the project along the way. 
+
+/* SITE */
+	Language:English
+	Doctype:HTML5
+	IDE:TextMate, Sublime Text, Illustrator, Photoshop

@@ -1,0 +1,24 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head>
+	<meta charset=utf-8 /> 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale = 1, maximum-scale = 5"/>
+	<meta name="apple-mobile-web-app-capable" content="yes" />  
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />  
+	<link rel="apple-touch-startup-image" href="/images/splash_screen.png" /> 
+	<meta name="description" content="College course schedule creator for Georgia Tech and Georgia State. CourseShark helps you create the perfect class schedule quickly and easily.">
+	<meta name="keywords" content="CourseShark, gatech, course shark, courseshark, georgia tech, shark, caffeine, AutoAdd, College, Schedule, Creator, Generator, Course, Catalog, Sections, Easy, Registration, Register, Quick, Easy, Calendar">
+	<title>CourseShark</title> 
+	
+	<link rel="stylesheet" href="/styles/master.css" type="text/css" media="all" /> 
+		
+</head>
+<body>
+	<%- partial('includes/js.ejs') %>
+	<%- partial('includes/nav.ejs') %>
+	<%- messages() %>
+	<%- body %>
+	<%- partial('includes/foot.ejs') %>
+</body>
+</html>

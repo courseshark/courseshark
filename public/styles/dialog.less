@@ -1,0 +1,165 @@
+@import "login";
+
+
+#message-area{
+	margin:0 auto;
+	background:none;
+	height:30px;
+	width:500px;
+	position:absolute;
+	top:0;
+	left:50%;
+	margin-left:-250px;
+	#timed-message{
+		width:400px;
+		position:fixed;
+		top:0px;
+		right:50%;
+		margin-right:-200px;
+		z-index:4002;
+		padding:6px 15px;
+		text-align:center;
+		font-weight:bold;
+		display:none;
+		background:#008040;
+		color:#EFEFEF;
+		.box-shadow(1px, 1px, 1px, @black);
+		border-bottom-left-radius:10px;
+		border-bottom-right-radius:10px;
+		-moz-border-radius-bottomleft:10px;
+		-moz-border-radius-bottomright:10px;
+		&.warning{
+			background:#808000;
+		}
+		&.error{
+			background:#800000;
+		}
+	}
+}
+
+
+/******************
+ *  Dialog Footer
+ * 
+ *  Where the bottom buttons are
+ ******************/
+
+
+#bottom-message-area{
+	margin:0 auto;
+	background:none;
+	height:50px;
+	width:500px;
+	position:fixed;
+	bottom:0;
+	left:50%;
+	margin-left:-250px;
+	#conflict-message{
+		width:300px;
+		position:fixed;
+		bottom:20px;
+		left:50%;
+		margin-left:-100px;
+		z-index:4002;
+		padding:6px 15px;
+		text-align:center;
+		font-weight:bold;
+		display:none;
+		background:#690000;
+		color:#EFEFEF;
+		.box-shadow(2px, 1px, 1px, @black);
+		border-top-left-radius:10px;
+		border-top-right-radius:10px;
+		-moz-border-radius-topleft:10px;
+		-moz-border-radius-topright:10px;
+		border-bottom-left-radius:10px;
+		border-bottom-right-radius:10px;
+		-moz-border-radius-bottomleft:10px;
+		-moz-border-radius-bottomright:10px;
+		/* IE 8 */
+	  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	  filter: alpha(opacity=75);
+	  -moz-opacity: 0.75;
+	  -khtml-opacity: 0.75;
+	  opacity: 0.75;
+	}
+}
+
+
+/*
+ *  Load dialog styling
+ * 
+ *
+ */
+
+div#loadList{
+	overflow-y: auto;
+	height: 200px;
+}
+
+div.loadNode{
+		font-size: 16px;
+		height: 20px;
+		line-height: 20px;
+		padding: 4px 0;
+		clear: both;
+		&:nth-child(odd){
+			background: #F7F7F9;
+		}
+		.name{
+			float: left;
+			width: 180px;
+			cursor:	pointer;
+			color: @lightBlue;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		.term{
+			float: left;
+			width: 105px;
+		}
+		.hours{
+			float: left;
+			width: 50px;
+		}
+		.modified{
+			float: left;
+			width: 180px;
+		}
+		.delete{
+			float: left;
+			cursor:	pointer;
+			color: @lightBlue;
+			overflow: hidden;
+			width: auto;
+		}
+	}
+div.title{
+	font-weight:bold;
+	font-size: 18px;
+	color: black !important;
+}
+
+
+
+#numbers{
+	font-size:15px; 
+	line-height:150%;
+}
+
+
+
+#courses-form-container{
+	textarea{
+		width: 515px;
+		height: 128px;
+	}
+	#contact-us-bottom-row{
+		input{
+			width: 515px;
+		}
+	}
+}
+
+
+

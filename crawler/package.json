@@ -1,0 +1,11 @@
+{
+    "name": "Crawler"
+  , "description": "A simple and clean way to make your schedule"
+  , "version": "0.0.1"
+  , "private": true
+  , "main": "./index.js"
+  , "author": "James Rundquist (http://github.com/jrundquist)"
+  , "engines": {
+      "node": ">= 0.6.14"
+    }
+}

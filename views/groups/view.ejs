@@ -1,0 +1,43 @@
+<div class="container">
+	<div class="row">
+		<div class="span12">
+			<h1><%= group.name %> <small><%= group.desciption %></small></h1>
+			<% if ( member ){ %>
+				<span class="label">You are a member</span>
+			<% } %>
+			<% if ( creator ){%>
+				<span class="label label-success">You are the creator</span>
+				<a href="/groups/<%= group.id %>/edit">Edit</a>
+			<% } %> 
+		</div>
+	</div>
+	<div class="row">
+		<div class="span8">
+			<% if ( !member ){ %>
+				<a class="btn" href="/groups/<%= group.id %>/join">Join Group</a>
+			<% } else { %>
+				<a class="btn" href="/groups/<%= group.id %>/leave">Leave Group</a>
+			<% } %>
+		</div>
+		<div class="span4">
+			<table class="table table-striped">
+				<thead>
+				  <tr>
+						<th>
+							Members
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+				<% for (var member={},_len=group.members.length,_i=0; _i<_len; _i++){ member=group.members[_i]; %>
+				<tr>
+					<td>
+						<%= member.username %>
+					<td>
+				</tr>
+				<% } %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

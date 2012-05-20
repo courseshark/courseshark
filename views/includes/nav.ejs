@@ -1,0 +1,46 @@
+<div class="navbar navbar-fixed-top" data-spy="scroll">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</a>
+      <a class="brand" href="/#"><!-- <img src="/images/logo-white.png" height="20"> -->Course<strong>Shark</strong> </a>
+			<div class="nav-collapse">
+				<ul class="nav">
+					<li><a href="/">Home</a></li> 
+					<li><a href="/schedule">Schedule</a></li>
+					<li><a href="/watcher">SeatWatcher</a></li>
+					<li><a href="http://books.courseshark.com/" target="_blank" onClick="_gaq = _gaq||{};_gaq.push(['_trackPageview', '/books']);">Books</a></li>
+					<li><a href="/about">About</a></li>
+          <li><a href="#" onClick="openDialog('/about/feedback')">Feedback</a></li>
+				</ul>
+				<ul class="nav pull-right">
+					<% if (loggedIn) { %>
+						<ul class="nav pull-right">
+							<li class="dropdown">
+						    <a href="#"
+						          class="dropdown-toggle"
+						          data-toggle="dropdown">
+				          <i class="icon-user icon-white"></i>&nbsp;<%= '' + user.firstName + ' ' + (user.friends.banner?user.friends.banner:'') %>
+				          <b class="caret"></b>
+						    </a>
+						    <ul class="dropdown-menu">
+									<li><a href="/settings">Settings</a></li>
+									<li><a href="/friends">Friends <%= user.friends.banner %></a></li>
+									<li><a href="/logout">Log Out</a></li>
+								</ul>
+							</li>
+						</ul>
+					<% } else { %>
+					 <li><a href="#" onClick="openDialog('/login')">Sign In</a></li>
+					<% } %>
+				</ul>
+				<div class="social pull-right">
+					<div class="g-plusone" data-size="medium" data-align="right" data-width="200" data-href="http://courseshark.com/"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,46 @@
+<!-- Google Analytics -->
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-20912280-1']);
+	_gaq.push(['_trackPageview']);
+	_gaq.push(['_trackPageLoadTime']);
+
+	(function() {
+		if ( String(window.location).indexOf('.dev') !== -1 ) return;
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+	
+	(function() {
+		if ( String(window.location).indexOf('.dev') !== -1 ) return;
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+
+</script>
+
+<!-- CDN for jquery and jquery ui -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" ></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js" ></script>
+
+<!-- Specific Scripts -->
+<script type="text/javascript" src="/scripts/modernizr.js"></script>
+<script type="text/javascript" src="/scripts/master.js"></script>
+<script type="text/javascript" src="/scripts/dialog.js"></script>
+<script type="text/javascript" src="/scripts/micro-template.js"></script>
+<script type="text/javascript" src="/scripts/schedule.js"></script>
+<script type="text/javascript" src="/scripts/social.js"></script>
+<script type="text/javascript" src="/scripts/caffeine.js"></script>
+<script type="text/javascript" src="/scripts/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="/scripts/friendsSearch.js"></script>
+
+<!-- Bootstrap javascripts -->
+<script src="/scripts/lib/bootstrap-transition.js" async="true"></script>
+<script src="/scripts/lib/bootstrap-modal.js" async="true"></script>
+<script src="/scripts/lib/bootstrap-dropdown.js" async="true"></script>
+<script src="/scripts/lib/bootstrap-collapse.js" async="true"></script>
+<script src="/scripts/lib/bootstrap-tooltip.js" async="true"></script>
+<script src="/scripts/lib/bootstrap-popover.js" async="true"></script>
+<script src="/scripts/lib/bootstrap-alert.js" async="true"></script>
