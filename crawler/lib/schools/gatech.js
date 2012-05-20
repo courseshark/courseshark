@@ -55,14 +55,13 @@ var gatech = module.exports = everySchool.submodule('gatech')
 				p_calling_proc: "bwckschd.p_disp_dyn_sched"
 			,	p_term: String(termUpdating)
 		}
-		options = {host: self.url, path: self.paths.term, method:'POST', data: data}
+		options = {host: self.url, path: self.paths.term, method: 'POST', data: data}
 		self.download(options, function($, html){
 			$('SELECT[name="sel_subj"] OPTION').each(function(){
 				$this = $(this)
 				abbr = $this.val()
 				text = $this.text().replace(/\n.*/g, '')
 				self.addDepartment(abbr, text)
-				console.log(' -',abbr, text)
 			})
 			next(termUpdating)
 		})
@@ -105,9 +104,22 @@ var gatech = module.exports = everySchool.submodule('gatech')
 			,	end_mi: "0"
 			,	end_ap: "a"
 		}
-		options = {host: self.url, path: self.paths.listing, method:'POST', data: data}
-		console.log(options)
+		options = {host: self.url, path: self.paths.listing, method: 'POST', data: data}
 		self.download(options, function($, html){
-			console.log(html)
+			$table = $('table.datadisplaytable[summary="This layout table is used to present the sections found"]')
+			$table.find('.ddtitle').each(function(){
+				$sectionHead = $(this)
+				$sectionDetailsContainer = $sectionHead.parent().next()
+				$sectionDetails = $sectionDetailsContainer.find('table.datadisplaytable')
+				$sectionDetailsList = $sectionDetails.find('.dddefault')
+
+				title = $sectionHead.children('a').text()
+				details = []; $sectionDetailsList.each(function(i,o){details.push($(o).text())})
+
+				c = department.findOrAddCourseBySectionTitle(title)
+				section = c.addSectionFromInfo(title, details)
+				console.log(section);
+			})
+			//console.log(department)
 		})
 	})

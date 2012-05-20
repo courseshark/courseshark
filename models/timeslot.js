@@ -7,9 +7,10 @@ exports = module.exports = function (app){
 
 
 Timeslot = new Schema({
-	  days: [ { type: String } ]
-	, startTime: { type: Date }
-	, endTime: { type: Date }
+	days: [ { type: String } ]
+	,	startTime: { type: Date }
+	,	endTime: { type: Date }
+	,	type: { type: String }
 });
 
 Timeslot.virtual('id')
