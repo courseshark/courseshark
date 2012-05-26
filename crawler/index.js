@@ -1,5 +1,10 @@
-var crawler = module.exports = {};
+var crawler = module.exports = {}
+	, config_file = require('yaml-config')
+	, config = config_file.readConfig(__dirname + '/../config.yaml')
+	, mongoose = require('mongoose')
 
+mongoose.connect(config.db.uri)
+		
 crawler.modules = {};
 crawler.enabled = {};
 
@@ -15,4 +20,7 @@ for (var i=0, l=includeSchools.length; i < l; i++){
 	Object.defineProperty(crawler, school, {
 		value: require('./lib/schools/' + school)
 	});
+	Object.defineProperty(crawler[school], 'mongoose', {
+		value: mongoose
+	})
 }

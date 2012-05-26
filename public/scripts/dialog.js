@@ -1,36 +1,30 @@
-/****************************************** 
+/******************************************
  * Dialog.js
- * 
+ *
  * Contains all the dialog methods to open
  * close, and initiate dialogs on the pages
- * 
+ *
  * (c) James Rundquist 2011
  *****************************************/
 
-/****************************************** 
+/******************************************
  * Open/Close functions
  *****************************************/
  function initElements(){
-	$('<div id="dialog-overlay"></div>\
-		<div id="dialog-wrapper">\
-			<div id="dialog-container">\
-				<div id="dialog-header"><div id="close-button">x</div></div>\
-				<section id="dialog-content"></section>\
-			</div>\
-		</div>').appendTo('body').hide();
+	$('<div id="dialog-overlay"></div><div id="dialog-wrapper"><div id="dialog-container"><div id="dialog-header"><div id="close-button">x</div></div><section id="dialog-content"></section></div></div>').appendTo('body').hide();
 
 }
 function initFooter(){
 	$('#dialog-wrapper #dialog-container').append('<div id="dialog-footer"><button id="dialog-close">close</button></div>');
 }
 
-/*** 
-* Functions to handle default events 
+/***
+* Functions to handle default events
 */
 $(document).delegate("#close-button, #dialog-wrapper, #dialog-close","click",function(event){
 	var options = {'close-button':'', 'dialog-wrapper':'', 'dialog-close':''};
 	// If one of the elements we are looking for has been clicked, close the dialog
-	// This check prevents against children from triggering the close	
+	// This check prevents against children from triggering the close
 	if ( event.target.id in options )
 		closeDialog();
 });
@@ -38,7 +32,7 @@ $(document).delegate("#close-button, #dialog-wrapper, #dialog-close","click",fun
 
 
 /***
-* Callable functions 
+* Callable functions
 */
 function showOverlay(){
 	$('#dialog-wrapper').hide();
@@ -52,18 +46,18 @@ function hideOverlay(){
 
 function openDialog(url, name, specialClass, next){
 	// Load either the template, or the URL passed
-	if ( $('script[type="text/template"]#_'+url).length != 0 ){  // If we were passed an id of a template
+	if ( $('script[type="text/template"]#_'+url).length !== 0 ){	// If we were passed an id of a template
 		content = $('script[type="text/template"]#_'+url).html();
 	}else{
 		content = "[ Error loading content ]";
-		jQuery.ajax({url:url, success:function(html){content=html;_gaq=_gaq||{};_gaq.push(['_trackPageview',url]);}, async:false});
+		$.ajax({url:url, success:function(h){content=h;_gaq=_gaq||{};_gaq.push(['_trackPageview',url]);}, async:false});
 	}
-	
+
 	$existing = $('.modal[data-url="'+url+'"]');
-	if ( $existing.length != 0 ){
-	  $existing.html(content).modal('show');
+	if ( $existing.length !== 0 ){
+		$existing.html(content).modal('show');
 	}else{
-	  $existing = $('<div class="modal fade" data-url="'+url+'">').appendTo('body').html(content).modal('show');
+		$existing = $('<div class="modal fade" data-url="'+url+'">').appendTo('body').html(content).modal('show');
 	}
 	return $existing;
 }
@@ -73,11 +67,11 @@ function closeDialog(){
 
 }
 function dialog_close(){
-	closeDialog();	
+	closeDialog();
 }
 
 
-/****************************************** 
+/******************************************
  * Login and registration dialogs
  *****************************************/
 
@@ -101,36 +95,38 @@ function show_schedule_conflict(messgae){
 function hide_schedule_conflict(){
 	$('#conflict-message').fadeOut(350);
 }
-/****************************************** 
+/******************************************
  * Utility dialogs
  *****************************************/
 
-function errorDialog(html, info){
-  if ( typeof callback === 'undefined' ){
-      callback = '';
-  }
-  info = '<div class="modal-header"><a href="#" class="close" data-dismiss="modal">&times;</a><h3>Message</h3></div>\
-          <div class="modal-body"><h4>'+html+'</h4><div class="well">'+info+'</div></div>\
-          <div class="modal-footer"><a href="#" class="btn btn-primary" onClick="'+callback+'()" data-dismiss="modal">Alright</a></div>';
-  
+function loading_dialog(){
+	dialog_open(true);
+}
+
+function errorDialog(html, info, callback){
+	info = '<div class="modal-header"><a href="#" class="close" data-dismiss="modal">&times;</a><h3>Message</h3></div>\
+					<div class="modal-body"><h4>'+html+'</h4><div class="well">'+info+'</div></div>\
+					<div class="modal-footer"><a href="#" class="btn btn-primary" data-dismiss="modal">Alright</a></div>';
+
 	id = 'error_'+Math.floor(Math.random()*1000);
 	$('body').append('<script type="text/template" id="_'+id+'">'+info+'</script>');
-	return openDialog(id, 'errorDialog');
+	modal = openDialog(id, 'errorDialog');
+	if ( callback ){
+		modal.on('hidden', callback);
+	}
+	return modal;
 }
 
 function messageDialog(html, callback){
-  if ( typeof callback === 'undefined' ){
-      callback = '';
-  }
-  info = '<div class="modal-header"><a href="#" class="close" data-dismiss="modal">&times;</a><h3>Message</h3></div>\
-          <div class="modal-body"><h4>'+html+'</h4></div>\
-          <div class="modal-footer"><a href="#" class="btn btn-primary" data-dismiss="modal">Alright</a></div>';
-  
+	info = '<div class="modal-header"><a href="#" class="close" data-dismiss="modal">&times;</a><h3>Message</h3></div>\
+					<div class="modal-body"><h4>'+html+'</h4></div>\
+					<div class="modal-footer"><a href="#" class="btn btn-primary" data-dismiss="modal">Alright</a></div>';
+
 	id = 'message_'+Math.floor(Math.random()*1000);
 	$('body').append('<script type="text/template" id="_'+id+'">'+info+'</script>');
 	modal = openDialog(id, 'messageDialog')
 	if ( callback ){
-	  modal.on('hidden', callback);
+		modal.on('hidden', callback);
 	}
 	return modal;
 }
@@ -140,28 +136,48 @@ function confirmDialog(text, success, fail, button_cancel, button_ok){
 		button_cancel = "Cancel";
 	if ( !button_ok )
 		button_ok = "Continue";
-		
-  info = '<div class="modal-header"><a href="#" class="close" data-dismiss="modal">&times;</a><h3>Confirm</h3></div>\
-          <div class="modal-body"><h4>'+text+'</h4></div>\
-          <div class="modal-footer">\
-            <a href="#" class="btn btn-primary" onClick="'+success+'" data-dismiss="modal">'+button_ok+'</a>\
-            <a href="#" class="btn" onClick="'+fail+'" data-dismiss="modal">'+button_cancel+'</a>\
-          </div>';
+
+	info = '<div class="modal-header"><a href="#" class="close" data-dismiss="modal">&times;</a><h3>Confirm</h3></div>\
+					<div class="modal-body"><h4>'+text+'</h4></div>\
+					<div class="modal-footer">\
+						<a href="#" class="btn btn-primary" onClick="'+success+'" data-dismiss="modal">'+button_ok+'</a>\
+						<a href="#" class="btn" onClick="'+fail+'" data-dismiss="modal">'+button_cancel+'</a>\
+					</div>';
 
 	id = 'confirm_'+Math.floor(Math.random()*1000);
 	$('body').append('<script type="text/template" id="_'+id+'">'+info+'</script>');
 	openDialog(id, 'confirm_dialog');
 }
-	
-/****************************************** 
+
+/******************************************
+ * Login and registration dialogs
+ *****************************************/
+function show_login_dialog(){
+	openDialog("/users/login/dialog", "login");
+}
+
+function show_register_dialog(){
+	show_login_dialog();
+//	openDialog("/users/login/dialog", "register");
+}
+
+function showScheduleConflict(messgae){
+	$('#conflict-message').fadeIn(350);
+	$('#conflict-message').html(messgae);
+}
+function hideScheduleConflict(){
+	$('#conflict-message').fadeOut(350);
+}
+
+/******************************************
  * Schedule dialogs
  *****************************************/
 
 function show_number_dialog(schedule){
 	openDialog("/schedule/dialog/numbers");
 }
-			
-	
+
+
 function show_load_dialog(){
 	openDialog('/schedule/dialog/load');
 }
@@ -175,7 +191,7 @@ function show_save_dialog(){
 }
 
 function check_for_safe_name_and_save(string, primary){
-	if ( string.length == 0 ){
+	if ( string.length === 0 ){
 		$('#name-input').addClass('error');
 		$('#name-input').css({'background-position':'99% 50%'});
 		$('#name-input-message').html('You must enter a name');
@@ -188,13 +204,13 @@ function check_for_safe_name_and_save(string, primary){
 		save_schedule(string, primary);
 		dialog_close();
 	}
-	
+
 }
 
 function check_for_duplicate_name(string){
-	
+
 	var value = false;
-	
+
 	$('#name-input').removeClass('error');
 
 	$.ajax({
@@ -205,7 +221,7 @@ function check_for_duplicate_name(string){
 		dataType:'json',
 		success: function(return_value){
 			value = return_value;
-			if ( false == value ){
+			if ( false === value ){
 				$('#name-input').css({'background-position':'-9999px -9999px'});
 				$('#name-input').attr('title', 'Schedule Name');
 				$('#name-input-message').html('');
@@ -220,14 +236,9 @@ function check_for_duplicate_name(string){
 		},
 		error: function(q, w, e){alert(e);}
 	});
-	
+
 
 	return value;
-} 
-
-
-function show_link_dialog(){
-	openDialog("/schedule/create-link", undefined, undefined, 'link');
 }
 
 /** caffeine functions **/
@@ -244,13 +255,13 @@ function show_autopilot_dialog(){
 }
 
 function auto_pilot_aditional_course($input_box){
-  var values = '';
+	var values = '';
 	var count = 0;
-	$inputs = $input_box.children('.ap-course'); 
-    $inputs.each(function() {
-        values = ''+values+'&course'+count+'='+$(this).val();
+	$inputs = $input_box.children('.ap-course');
+		$inputs.each(function() {
+				values = ''+values+'&course'+count+'='+$(this).val();
 		count++;
-    });
+		});
 
 	//Make call to create
 	$.ajax({
@@ -260,16 +271,13 @@ function auto_pilot_aditional_course($input_box){
 		type:'GET',
 		dataType:'json',
 		success: function(auto_pilot){
-				if ( auto_pilot.error != '' )
-				{
+				if ( auto_pilot.error !== '' ){
 					errorDialog("There is no possible schedule with the classes you have selected. One or more courses are conflicting. Try picking different courses.");
-				}
-				else
-				{
+				}else{
 					if ( Modernizr.localstorage ){
 						localStorage.clear("courseshark.schedule.current");
 					}
-					
+
 					if ( auto_pilot.has_full_class ) {
 						_gaq = _gaq || {};
 						_gaq.push(['_trackEvent', 'AutoPilot', 'Complete', 'Conflicts']);
@@ -307,7 +315,7 @@ function submit_success_form(id, data)
 		data:data,
 		dataType:'text',
 		success: function(dialog_content){
-		    messageDialog(dialog_content);
+				messageDialog(dialog_content);
 			}
 		});
 }
@@ -315,14 +323,11 @@ function submit_success_form(id, data)
 
 
 
-/****************************************** 
+/******************************************
  * Login and registration dialogs
  *****************************************/
-function addFriendsDialog(){
+function add_friends_dialog(){
 	openDialog("/social/friends/dialog").friendsSearch({next:addUsers});
 }
-add_friends_dialog = addFriendsDialog
-
-
 
 

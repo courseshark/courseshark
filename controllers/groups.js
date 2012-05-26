@@ -2,7 +2,7 @@
  * Pages relating to group creation and management
  */
 exports = module.exports = function(app){
-	
+	/*
 	app.param('id', function(req, res, next, id){
 		app.Group
 			.findById(id)
@@ -113,5 +113,6 @@ exports = module.exports = function(app){
 		!group.isMember(req.user) || ( group.removeMember(req.user), group.save() )
 		res.redirect('/groups/'+group.id)
 	})
+	*/
 	
 }

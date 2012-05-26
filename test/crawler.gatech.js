@@ -10,16 +10,14 @@
 
 	gt = crawler.gatech
 
-	/*
 	console.log('Crawling')
 	crawl = gt.crawl('201208')
-	
 	crawl.on('done', function(d){
 		console.log('GOT DONE EVENT:', d.length)
 	})
-	*/
 
-	console.log('Departments Sections')
-	gt.loadDepartment(201208, new gt.structures.Department({0:'PSYC', 1:'Psychology'}))
+
+	// console.log('Departments Sections')
+	// gt.loadDepartmentSections(201208, new gt.structures.Department({0:'PSYC', 1:'Psychology'}))
 
 })(this)

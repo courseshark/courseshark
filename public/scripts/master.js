@@ -7,7 +7,7 @@ if ( !window['console'] ){
 	window.console.error = function(){};
 }
 
-// Setup ajax 
+// Setup ajax
 $.ajaxSetup({
   timeout: 60000 ///60 second timeout
 });
@@ -15,8 +15,9 @@ $.ajaxSetup({
 
 function errorHandler(err, text, errInfo)
 {
-	if (text == '')
+	if (text === ''){
 		text = '<strong>An unexpected error has occurred</strong>.<br /><br />Please check your information and try again.<br /><br />If the problem persists, please <a href="/about/contact" target="_blank">contact us</a> or file a <a target="_blank" href="http://bugs.courseshark.com/">bug report</a>."';
+	}
 	errorDialog(text, errInfo);
 }
 
@@ -28,9 +29,14 @@ function noscript(){
 	$('noscript').each(function(){$(this).remove();});
 }
 
-function get_courses_from_major(id, callback, term){	
+function logout(){
+	var removed = window.localStorage ? window.localStorage.removeItem ? window.localStorage.removeItem("primary-schedule") : 0 : 0;
+	window.location = '/users/logout';
+}
+
+function get_courses_from_major(id, callback, term){
 	$.ajax({
-			url:"/school/"+school+"/term/"+term+"/major/"+id+"/courses",
+			url:"/term/"+term+"/courses/"+id,
 			success: function(c){callback(c);},
 			dataType:'json',
 			data:{},
@@ -55,7 +61,7 @@ try{
 $(document).mousemove(function(e){
   document.x = e.pageX;
   document.y = e.pageY;
-}); 
+});
 
 
 /*
@@ -81,22 +87,22 @@ $(document).mousemove(function(e){
 	$.fn.placeholder = function() {
 	
 		/** Test for modern HTML5 browsers **/
-	    var dummy = document.createElement('input');
-	    if(dummy.placeholder != undefined){
-	      return $(this);
-	    }
+		var dummy = document.createElement('input');
+		if(dummy.placeholder !== undefined){
+			return $(this)
+		}
 	
 		if($(this).attr("type") == "password") {
 			
 			var original_pass_field = $(this);
 
-			if(original_pass_field.val() == "") {
+			if(original_pass_field.val() === "") {
 				$(this).parent().prepend("<input type=\"text\" style=\"color:#777777;\" value=\""+ $(this).attr("placeholder") +"\" name=\"pass_placeholder\" class=\"form-text\" id=\"pass_placeholder\">");
 				$(this).css("display","none");
 			}
 
 			$("#pass_placeholder").focus(function() {
-				if(original_pass_field.val() == "") {
+				if(original_pass_field.val() === "") {
 					$("#pass_placeholder").css("display","none");
 					original_pass_field.css("display","");
 					original_pass_field.focus();
@@ -104,7 +110,7 @@ $(document).mousemove(function(e){
 			});
 
 			original_pass_field.blur(function() {
-				if(original_pass_field.val() == "") {
+				if(original_pass_field.val() === "") {
 					$("#pass_placeholder").css("display","");
 					original_pass_field.css("display","none");
 				}
@@ -129,12 +135,12 @@ $(document).mousemove(function(e){
 				}
 			});
 		}
-	} 
+	}
 	
 })(jQuery);
 
 
-function validateEmail(email) { 
+function validateEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return email.match(re);
 }

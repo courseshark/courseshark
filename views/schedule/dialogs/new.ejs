@@ -1,0 +1,31 @@
+<div class="modal-header">
+	<a href="#" class="close" data-dismiss="modal">&times;</a>
+	<h3>New Schedule</h3>
+</div>
+
+<div class="modal-body">
+	<div id="new-form">
+		<label for="name" id="name-label">Term:</label>
+		<select id="term-selector">
+			<% for(var i=0,len=terms.length; i<len; i++){ term=terms[i]; season = term.season.replace(/^\w/, function($0) { return $0.toUpperCase(); })%>
+			<option value="<%= term.id %>" data-term="<%= term.id %>" data-season="<%= season %>" data-year="<%= term.year %>"><%=(season + ' ' +term.year)%></option>
+			<% } %>
+		</select>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<a href="#" class="btn btn-primary" id="new-term-submit" data-dismiss="modal" >Create New</button>
+	<a href="#" class="btn" data-dismiss="modal">Close</a>
+</div>
+
+<script>
+$('#new-term-submit').on('click', function(){
+	$this = $('#term-selector :selected');
+	newTerm = { id: $this.data('term'),
+							season: $this.data('season'),
+							year: $this.data('year')};
+	Schedule.create(newTerm);
+	schedule.show();
+});
+</script>

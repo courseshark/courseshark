@@ -1,0 +1,21 @@
+<div class="modal-header">
+	<a href="#" class="close" data-dismiss="modal">&times;</a>
+	<h3>Save Schedule</h3>
+</div>
+
+<div class="modal-body">
+	<div id="save-form">
+		<label for="name" id="name-label">Name</label>
+		<input type="text" name="name" id="name-input" />
+	</div>
+</div>
+
+<div class="modal-footer">
+	<a href="#" class="btn btn-primary" data-dismiss="modal" onClick="schedule.pushSave(true)">Save</button>
+	<a href="#" class="btn" data-dismiss="modal">Close</a>
+</div>
+<script>
+$('#name-input').val(schedule.name).on('keyup', function(){
+	schedule.name = $(this).val();
+});
+</script>

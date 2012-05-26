@@ -1,19 +1,24 @@
 var util = require('../lib/utils')
+	,	mongoose = require('mongoose')
+	, Schema = mongoose.Schema
+	, TermSchema
 
-exports = module.exports = function (app){
-	mongoose.model('Term', Term);
+exports.boot = module.exports.boot = function (app){
+	mongoose.model('Term', TermSchema);
 	app.Term = Term = mongoose.model('Term');
 }
 
+exports.boot.TermSchema = module.exports.TermSchema = TermSchema
 
-Term = new Schema({
+TermSchema = new Schema({
 		name: { type: String }
 	,	season: { type: String }
 	,	year: { type: Number }
 	,	number: { type: Number, index: true }
 	, startDate: { type: Date }
 	, endDate: { type: Date }
+	, school: { type: Schema.ObjectId, index: true }
 });
 
-Term.virtual('id')
+TermSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})

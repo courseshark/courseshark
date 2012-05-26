@@ -1,29 +1,32 @@
 /**************************************************************
  *
  *   Schedule Code
- *  
+ *
  *  All the methods specific to the schedule creator page
- * 
+ *
  **************************************************************/
-var term 			    	= {},
- 	schedule			    ,
- 	seat_workers_cnt 	= 15,
- 	seat_workers_i   	= 0,
- 	seat_workers 	  	= Array(),
-	conflict_worker 	= 0,
-	majors_updating 	= Object();
-	tooltip_data			= Object();
+var term = {}
+		, schedule = {}
+		, seat_workers_cnt = 15
+		, seat_workers_i = 0
+		, seat_workers = []
+		, conflict_worker = 0
+		, majors_updating = {}
+		, tooltip_data = {}
 
 
 function loadSeatData(id, child){
+/*
 	if ( school == 3 ) {
+		sel = '#'+id+'[rel="section-option"]';
+		console.log(sel);
 		if ( child )
 			major = $(sel).parent().parent().parent().children('.course-title').html().split(' ')[0];
 		else
 			major = $(sel).parent().parent().children('.course-title').html().split(' ')[0];
 
 		if ( majors_updating[major] === undefined ){
-			majors_updating[major] = Array();
+			majors_updating[major] = [];
 			dl_seat_info(id, child);
 		}else if ( majors_updating[major] === true ){
 			dl_seat_info(id, child);
@@ -34,6 +37,7 @@ function loadSeatData(id, child){
 	}else{
 		dl_seat_info(id, child);
 	}
+*/
 }
 
 
@@ -43,25 +47,26 @@ function dl_seat_info(id, child){
 	if ( !$(sel+' > .section-seats').hasClass('loading') )
 		return;
 	
-	// if ( child )
-	// 		major = $(sel).parent().parent().parent().children('.course-title').html().split(' ')[0];
-	// 	else
-	// 		major = $(sel).parent().parent().children('.course-title').html().split(' ')[0];
+	/* if ( child )
+	/	major = $(sel).parent().parent().parent().children('.course-title').html().split(' ')[0];
+	/	else
+	/	major = $(sel).parent().parent().children('.course-title').html().split(' ')[0];
+	*/
 	major = $(sel).data('section');
 	major = section.major_abbr;
 	
 	
-	if (Modernizr.webworkers) {	
+	if (Modernizr.webworkers) {
 		if ( !seat_workers[seat_workers_i] ){
 			seat_workers[seat_workers_i] = new Worker('/scripts/workers/seat_load.0.js');
 			
-			seat_workers[seat_workers_i].onmessage = function(event){				
+			seat_workers[seat_workers_i].onmessage = function(event){
 				var s = JSON.parse(event.data);
 				s.sel = '[rel="section-option"]#'+s.id;
 				$(s.sel+' > .section-seats').removeClass('loading');
 				$(s.sel+' > .section-seats span.remaining').html(s.available_seats);
-				$(s.sel+' > .section-seats span.total').html(s.total_seats)
-				if ( parseInt(s.available_seats) <= 0 ){
+				$(s.sel+' > .section-seats span.total').html(s.total_seats);
+				if ( parseInt(s.available_seats, 10) <= 0 ){
 					id = s.id;
 					var caff = window.tmpl($('#template-caffeine-bar').html(),{id:id});
 					$(s.sel).append(caff);
@@ -72,7 +77,7 @@ function dl_seat_info(id, child){
 					queued_section = majors_updating[major].shift();
 					while ( queued_section !== undefined ){
 						dl_seat_info(queued_section[0], queued_section[1]);
-						queued_section = majors_updating[major].shift();
+						queued_section = ((mu = majors_updating[major]) ? mu.shift() : undefined);
 					}
 					majors_updating[major] = true;
 				}
@@ -87,7 +92,7 @@ function dl_seat_info(id, child){
 		msg.child = child;
 		msg.school = school;
 		
-		seat_workers[seat_workers_i].postMessage(JSON.stringify(msg));		
+		seat_workers[seat_workers_i].postMessage(JSON.stringify(msg));
 		seat_workers_i = (seat_workers_i+1)%seat_workers_cnt;
 		
 	}else{
@@ -100,7 +105,7 @@ function dl_seat_info(id, child){
 				$(sel+' > .section-seats').removeClass('loading');
 				$(sel+' > .section-seats span.remaining').html(s.available_seats);
 				$(sel+' > .section-seats span.total').html(s.total_seats)
-				if ( parseInt(s.available_seats) <= 0 ){
+				if ( parseInt(s.available_seats, 10) <= 0 ){
 					var caff = window.tmpl($('#template-caffeine-bar').html(),{id:id});
 					$(sel).append(caff);
 				}
@@ -168,19 +173,24 @@ function dl_seat_info(id, child){
 /***************************************************************************
  *
  * New Schedule  Code, cleaner and with standards
- * 
+ *
 ***************************************************************************/
 Storage = window.Storage || window.localStorage || {};
 Storage.prototype.setObject = function(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
+		localStorage.setItem(key, JSON.stringify(value));
 }
 Storage.prototype.getObject = function(key) {
 		// :TODO: Add experation code
-    return localStorage.getItem(key) && JSON.parse(localStorage.getItem(key));
+		return localStorage.getItem(key) && JSON.parse(localStorage.getItem(key));
 }
 function storeObject(name, obj){
 	if ( Modernizr.localstorage ){
 		localStorage.setObject(name, obj);
+	}
+}
+function removeItem(name){
+	if ( Modernizr.localstorage ){
+		localStorage.removeItem(name);
 	}
 }
 function getObject(name){
@@ -198,17 +208,16 @@ var Schedule = function(term){
 	this.term = (typeof term == 'object')?term:{id:term};
 	this.sections = [];
 	this.start_hour = 6;
+	this.school_id = window.school ? window.school : undefined;
 	this.name = "Schedule";
 }
 Schedule.fromObj = function(obj){
 	return $.extend(true, new Schedule(), obj);
 }
-Schedule.create = function(term){
-	schedule = new Schedule(term);
+Schedule.create = function(_term){
+	schedule = new Schedule(_term);
+	term = schedule.term;
 	return schedule;
-	// schedule.save();
-	// schedule.show();
-	// return schedule;
 }
 Schedule.load = function(id, next){
 	next = (typeof next == 'undefined')?function(){}:next;
@@ -217,7 +226,7 @@ Schedule.load = function(id, next){
 		type:'GET',
 		dataType:'json',
 		success:function(res){
-			if ( res.success ){	
+			if ( res.success ){
 				schedule = Schedule.fromObj(res.message);
 				term = schedule.term;
 				schedule.save(true);
@@ -230,11 +239,12 @@ Schedule.load = function(id, next){
 }
 Schedule.prototype.save = function(skipServer){
 	
+	if ( typeof(this.view) !== 'undefined' && this.view ){
+		return;
+	}
 	storeObject("primary-schedule", schedule);
 	updateScheduleConflicts();
-	
-	/// :TODO: silent ajax call to save on server
-	if ( typeof this.id !== 'undefined' && !skipServer ){		
+	if ( typeof this.id !== 'undefined' && !skipServer ){
 		$.ajax({
 			url:"/schedule/save",
 			data: {'schedule': JSON.stringify(schedule)},
@@ -274,13 +284,15 @@ Schedule.prototype.show = function(){
 	schedule_start_hour = this.start_hour;
 	course_count = this.sections.length;
 	
-	$('#term-name').html(''+(this.term.season==null?'':this.term.season)+' '+(this.term.year==null?'':this.term.year));			
+	document.title = 'Courseshark : '+this.name;
+
+	$('#term-name').html(''+(this.term.season===null?'':this.term.season)+' '+(this.term.year===null?'':this.term.year));
 	$('#schedule-summary #name').html(this.name);
 	$('.course-options-container, [rel="section-timeslot"]').remove();
 	
 	for ( var i=0; i<course_count; i++ ){
 		var section = this.sections[i]
-		section.course = section.course || {id: section.course_id, major_abbr: section.major_abbr, number: section.course_number};
+		section.course = section.course || {id: section.course.id, major_abbr: section.department.abbr, number: section.course.number};
 		times = addSectionToCalendar(section);
 		for ( t=0; t<times.length; $(times[t]).show(),$(times[t]).hasClass('tbd-listing')?$('#tbd-container').show():{}, t++){}
 		addCourseToList(section.course, section.id)
@@ -293,10 +305,10 @@ Schedule.prototype.addSection = function(section){
 	section = (typeof section == 'object')?section:{id:section};
 	this.sections.push(section);
 	hilightSection(section.id);
-	$('[rel="section-option"]#'+section.id).data('selected', true).addClass('selected').children('.children').slideDown();	
+	$('[rel="section-option"]#'+section.id).data('selected', true).addClass('selected').children('.children').slideDown();
 	this.updateHours();
 	return this;
-}	
+}
 Schedule.prototype.removeSection = function(section){
 	section = (typeof section == 'object')?section:{id:section};
 	for( i=0; i<this.sections.length; i++){
@@ -306,10 +318,10 @@ Schedule.prototype.removeSection = function(section){
 			i--;
 		}
 	}
-	$('[rel="section-option"]#'+section.id).data('selected', false).removeClass('selected');	
+	$('[rel="section-option"]#'+section.id).data('selected', false).removeClass('selected');
 	unHilightSection(section.id);
-	// Remove any children 
-	for ( c in section.children ){
+	// Remove any children
+	for ( var c in section.children ){
 		child = section.children[c];
 		$('[rel="section-option"]#'+child.id).removeClass('selected').data('selected', false);
 		schedule.removeSection(child);
@@ -321,9 +333,9 @@ Schedule.prototype.removeSection = function(section){
 Schedule.prototype.removeCourse = function(course){
 	course = (typeof course == 'object')?course:{id:course};
 	for( i=0; i<this.sections.length; i++){
-		if ( this.sections[i].course_id == course.id ){
+		if ( this.sections[i].course.id == course.id ){
 			unHilightSection(this.sections[i].id);
-			$('[rel="section-option"]#'+this.sections[i].id).data('selected', false).removeClass('selected');	
+			$('[rel="section-option"]#'+this.sections[i].id).data('selected', false).removeClass('selected');
 			this.sections.splice(i,1);
 			i--;
 		}
@@ -335,31 +347,26 @@ Schedule.prototype.updateHours = function(){
 	var credit_min = 0, credit_max = 0;
 	addCredits = function(string){
 		split = string.split('-');
-		credit_min = credit_min + parseInt(split[0]);
+		credit_min += parseInt(split[0], 10);
 		if ( split.length == 2 ){
-			credit_max = credit_max + parseInt(split[1]);
+			credit_max += parseInt(split[1], 10);
 		}
 		else{
-			credit_max = credit_max + parseInt(split[0]);
+			credit_max += parseInt(split[0], 10);
 		}
 		refreshCreditDisplay();
 	}
 	refreshCreditDisplay = function(){
-		if( credit_min == credit_max ){
-			var string = credit_min;
-		}
-		else{
-			var string = credit_min+'-'+credit_max;
-		}
+		var string = credit_min==credit_max?credit_min:''+credit_min+'-'+credit_max;
 		$('#schedule-summary #hours #number').html(string);
 	}
-	for( s in this.sections ){
-		addCredits(this.sections[s].credits);
+	for( var i in this.sections ){
+		addCredits(this.sections[i].credits);
 	}
 	refreshCreditDisplay();
 }
 Schedule.prototype.testConflicts = function(section){
-	if (Modernizr.webworkers) {	
+	if (Modernizr.webworkers) {
 		if ( !conflict_worker ){
 			conflict_worker = new Worker('/scripts/workers/schedule_conflict.1.js');
 			conflict_worker.onmessage = function(event){
@@ -377,34 +384,7 @@ Schedule.prototype.testConflicts = function(section){
 		}
 		conflict_worker.postMessage(JSON.stringify({schedule:this, section:section}));
 	}else{
-		function testConflictsSync(schedule, section, ignore_section){
-			if ( !schedule.sections.length )
-				return false;
-			for ( i in schedule.sections ){
-				ss = schedule.sections[i]
-				if ( ss.id == section.id || (ignore_section && ss.id == ignore_section.id))
-					continue;
-				for ( t in ss.timeslots ){
-					ts = ss.timeslots[t];
-					st = parseInt(ts.start_hour*60)+parseInt(ts.start_minute);
-					et = parseInt(ts.end_hour*60)+parseInt(ts.end_minute);
-					for( _t in section.timeslots ){
-						_ts = section.timeslots[_t];
-						_st = parseInt(_ts.start_hour)*60+parseInt(_ts.start_minute);
-						_et = parseInt(_ts.end_hour)*60+parseInt(_ts.end_minute);
-						if ( _ts.day == ts.day ){
-						 	if ( _st <= et && _et >= st )
-								return true;
-							else if ( st <= _et && et >= _st )
-								return true;
-						}
-					}
-				}
-			}
-			return false;
-		}
-		
-		if ( section && section.id && testConflictsSync(this, section) ){
+		if ( section && section.id && this.testConflictsSync(this, section) ){
 			$('.section-option#'+section.id).addClass('conflicts');
 			if ( !window.s_c && $('.section-option#'+section.id).hasClass('selected') ){
 				window.s_c = true;
@@ -416,6 +396,106 @@ Schedule.prototype.testConflicts = function(section){
 	}
 	return this;
 }
+Schedule.prototype.testConflictsSync = function (schedule, section, ignore_section){
+	if ( !schedule.sections.length )
+		return false;
+	for ( var i in schedule.sections ){
+		ss = schedule.sections[i]
+		if ( ss.id == section.id || (ignore_section && ss.id == ignore_section.id))
+			continue;
+		for ( var t in ss.timeslots ){
+			ts = ss.timeslots[t];
+			st = parseInt(ts.start_hour*60, 10)+parseInt(ts.start_minute, 10);
+			et = parseInt(ts.end_hour*60, 10)+parseInt(ts.end_minute, 10);
+			for( var _t in section.timeslots ){
+				_ts = section.timeslots[_t];
+				_st = parseInt(_ts.start_hour, 10)*60+parseInt(_ts.start_minute, 10);
+				_et = parseInt(_ts.end_hour, 10)*60+parseInt(_ts.end_minute, 10);
+				if ( _ts.day == ts.day ){
+					if ( _st <= et && _et >= st )
+						return true;
+					else if ( st <= _et && et >= _st )
+						return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+Schedule.prototype._generateIcs = function(){
+	var events, now, data, days, timeCombine, timeCombineTime, start, end, endParts, startParts, k
+	days = {'monday':'MO','tuesday':'TU','wednesday':'WE','thursday':'TH','friday':'FR','saturday':'SA','sunday':'SU'}
+	events = []
+	endParts = term.endDate.split('-')
+	startParts = term.startDate.split('-')
+
+	for ( var i=0, section; (section=this['sections'][i]) !== undefined; i++ ){
+		evnt = { name: section['major_abbr']+' '+section['course_number'], daysets: [] }
+		timeCombine = {}
+		timeCombineTime = {}
+		for ( var j=0, ts; (ts=section['timeslots'][j]) !== undefined; j++ ){
+			k = ''+ts.start_hour+"-"+ts.start_minute+"-"+ts.end_hour+"-"+ts.end_minute;
+			start = new Date(parseInt(startParts[0],10), parseInt(startParts[1],10)-1, parseInt(startParts[2],10), ts.start_hour, ts.start_minute, 0)
+			end = new Date(parseInt(startParts[0],10), parseInt(startParts[1],10)-1, parseInt(startParts[2],10), ts.end_hour, ts.end_minute, 0)
+			if (!timeCombine[k]){
+				timeCombine[k] = [];
+				timeCombineTime[k] = { end: ''+dateFormat(end, "yyyymmdd")+'T'+dateFormat(end, "HHMMss"), location: ''+ts.location.building+' '+ts.location.room }
+			}
+			timeCombine[k].push(days[ts.day])
+		}
+		for ( var timeStr in timeCombine ){
+			if ( typeof(timeStr) !== 'string'){
+				continue;
+			}
+			weekOffset = 7;
+			for ( j=0, _len = timeCombine[timeStr].length; j<_len; j++){
+				d = timeCombine[timeStr][j];
+				if ( d === 'MO' ){
+					weekOffset = Math.min(weekOffset, 0);
+				}else if ( d === 'TU' ){
+					weekOffset = Math.min(weekOffset, 1);
+				}
+				else if ( d === 'WE' ){
+					weekOffset = Math.min(weekOffset, 2);
+				}
+				else if ( d === 'TH' ){
+					weekOffset = Math.min(weekOffset, 3);
+				}
+				else if ( d === 'FR' ){
+					weekOffset = Math.min(weekOffset, 4);
+				}
+			}
+			partsSplit = timeStr.split('-');
+			ts = {start_hour: parseInt(partsSplit[0],10), start_minute: parseInt(partsSplit[1],10) }
+			start = new Date(parseInt(startParts[0],10), parseInt(startParts[1],10)-1, parseInt(startParts[2],10)+weekOffset, ts.start_hour, ts.start_minute, 0)
+			timeCombineTime[timeStr].start = ''+dateFormat(start, "yyyymmdd")+'T'+dateFormat(start, "HHMMss")
+			evnt['daysets'].push( $.extend(timeCombineTime[timeStr], {days: timeCombine[timeStr].join(',')}) )
+		}
+		events.push(evnt);
+	}
+	now = new Date();
+	termEndMonth = parseInt(endParts[1],10)-1===0?12:parseInt(endParts[1],10)-1;
+	termEnd = new Date(parseInt(endParts[0],10), termEndMonth, parseInt(endParts[2],10), 23, 59, 59, 999);
+	data = { name: this.name
+		, timezone: 'America/New_York'
+		, now: (''+dateFormat(now, "yyyymmdd")+'T'+dateFormat(now, "HHMMss"))
+		, termEnd: (''+dateFormat(termEnd, "yyyymmdd")+'T'+dateFormat(termEnd, "HHMMss"))
+		, events: events
+		, user: 'contact@courseshark.com'
+	};
+	return window.tmpl($('#template-ical').html().replace(/\n/g, '#\n').trim(),data);
+}
+Schedule.prototype.createCal = function(){
+	var resultLink = 'data:text/Calendar;base64,'
+		, icsTxt;
+	icsTxt = this._generateIcs().replace(/#\s*/g, "\r\n").trim();
+	return resultLink+$.base64.encode(icsTxt);
+}
+
+
+
+
+
 
 
 
@@ -439,35 +519,51 @@ function newSchedule(term){
 }
 
 
-function init(){
-	// Load and show the primary schedule
-	if ( schedule=getObject("primary-schedule"), schedule!=null ){
-		schedule = Schedule.fromObj(schedule);
-		term = schedule.term;
-		schedule.show();
-	}else{		
-		$.ajax({
-			url:"/schedule/load",
-			async:true,
-			type:'GET',
-			dataType:'json',
-			success: function(schedule){
-					storeObject("primary-schedule", schedule);
-					schedule = Schedule.fromObj(schedule);
-					term = schedule.term;
-					schedule.show();
-				}
+function init(passed){
+	if ( passed === undefined ){
+			// Load and show the primary schedule
+		schedule=getObject("primary-schedule")
+		if ( schedule ){
+			schedule = Schedule.fromObj(schedule);
+			term = schedule.term;
+			if ( schedule.school_id != window.school ){
+				removeItem("primary-schedule");
+				init();
+			}
+			schedule.show();
+		}else{
+			$.ajax({
+				url:"/schedule/load",
+				async:true,
+				type:'GET',
+				dataType:'json',
+				success: function(sc){
+						schedule = Schedule.fromObj(sc);
+						term = schedule.term;
+						schedule.show();
+						storeObject("primary-schedule", schedule);
+					}
+			});
+		}
+
+		$(document).on('click', '[rel="remove"]', function(event){
+			courseId = $(this).data('course');
+			schedule.removeCourse(courseId);
+			schedule.save();
+			$('.course-options-container#'+courseId).remove();
 		});
+			
+	}else{
+		if ( typeof(passed) === 'string' ){
+			passed = JSON.decode(passed)
+		}
+		schedule = Schedule.fromObj(passed);
+		term = schedule.term;
+		schedule.view = true;
+		schedule.show(false);
 	}
-	
+
 	$("#class-list").sortable({opacity: 0.6, cursor: 'move', axis:'vertically' });
-	
-	$(document).on('click', '[rel="remove"]', function(event){
-		courseId = $(this).data('course');
-		schedule.removeCourse(courseId);
-		schedule.save();
-		$('.course-options-container#'+courseId).remove();
-	});
 	
 	$(document).on('click', '[rel="toggle"]', function(event){
 		$this = $(this);
@@ -477,17 +573,16 @@ function init(){
 			$this.removeClass('collapse').addClass('expand');
 		}else{
 			$bar = $('.course-options-container#'+$this.data('course'));
-			if ($bar.data('skipping-seats') == true){
+			if ($bar.data('skipping-seats') === true){
 				$container.children('.section-option').each(function(){
 					loadSeatData($(this).attr('id'));
-				});	
+				});
 			}
 			$container.slideDown();
 			$this.removeClass('expand').addClass('collapse');
 		}
 	});
-	
-	
+
 	$(document).on('mouseenter', '[rel="section-option"]', function(event){
 		section = $(this).data('section');
 		hilightSection(section.id);
@@ -506,66 +601,79 @@ function init(){
 		}else{
 			schedule.addSection(section);
 			schedule.save();
-			for ( i=0; i<section.children.length; loadSeatData(section.children[i].id), i++){};
+			if ( section.children ){
+				for ( i=0; i<section.children.length; loadSeatData(section.children[i].id), i++){}
+			}
+			
 		}
 		return false;
 	});
 }
 
 
-
-
-
 function addSectionToCalendar(section, scheduleId){
 	var isFriendsSection = ( scheduleId !== undefined );
-	if ( section.timeslots[0] == undefined ){
+	if ( section.timeslots[0] === undefined ){
 		section.timeslots[0] = false;
 	}
-	addedSlots = Array();
+	addedSlots = [];
 	for ( var d = 0; d < section.timeslots.length; d++ ){
-		var slot = section.timeslots[d],
-				addedTimeslot,
-				html,
-				t = ( isFriendsSection )?''+d+scheduleId:d;
+		var slot = section.timeslots[d]
+			,	addedTimeslot
+			,	html
+			,	t = ( isFriendsSection )?''+d+scheduleId:d
+			,	scale = 42.0
+			, offset = 3.0
 
-  	if ( $('.option.'+section.id+(isFriendsSection?'.friend':'')+'#'+section.id+'-'+t).length ){
-  		continue;
-  	}
-		// If we have a TBD timeslot 
-		if ( slot == false || ( parseInt(slot.start_hour) == 0 || slot.start_hour == undefined ) && ( parseInt(slot.end_hour) == 0 || slot.end_hour == undefined ) ){	
-			if ( slot == false || (slot.location.building == 'None' && slot.location.room == 'None' ) ){
-				section_location = 'Location and time TBD';
-			}else{
-				section_location = slot.location.building + ' ' + slot.location.room;
-			}
+
+		slot.startTime = new Date(slot.startTime)
+		slot.endTime = new Date(slot.endTime)
+
+		if ( $('.option.'+section.id+(isFriendsSection?'.friend':'')+'#'+section.id+'-'+t).length ){
+			continue;
+		}
+
+		// If we have a TBD timeslot
+		if ( slot === false || slot.startTime.getHours() === 0 || slot.startTime == slot.endTime ){
+			section.location = slot.location
 			html = window.tmpl($('#template-event-listing-tbd').html(), {section:section, t:t});
 			addedTimeslot = $(html).appendTo('#tbd-container #tbd-list');
 		}else{
-			top_offset = ((parseFloat(slot.start_hour) - schedule_start_hour) + (parseFloat(slot.start_minute)/60.0)) * 42.0 + 3.0;
-			height = Math.floor(Math.max(.5, Math.abs(parseFloat(slot.end_minute) - parseFloat(slot.start_minute))/60.0 + parseFloat(slot.end_hour) - parseFloat(slot.start_hour)) * 41.0 - 2);
-			slot.start_hour_adj = (slot.start_hour%12==0)?12:slot.start_hour%12;
-			slot.end_hour_adj = (slot.end_hour%12==0)?12:slot.end_hour%12;
+			top_offset = (slot.startTime.getHours() - 6 + (slot.startTime.getMinutes()/60.0)) * scale + offset;
+			height = Math.floor(Math.max(1, (Math.abs( slot.endTime.getMinutes() - slot.startTime.getMinutes() )/60.0 + slot.endTime.getHours() - slot.startTime.getHours()) * scale + offset));
+			startHourAdjusted = (slot.startTime.getHours()%12===0)?12:slot.startTime.getHours()%12;
+			endHourAdjusted = (slot.endTime.getHours()%12===0)?12:slot.endTime.getHours()%12;
+			console.log(section);
+			html = window.tmpl($('#template-event-listing').html(), {
+						section:section, slot:slot
+					, t:t
+					, startHourAdjusted: startHourAdjusted
+					, endHourAdjusted: startHourAdjusted
+					, height: height
+					, top_offset: top_offset
+				});
 
-			html = window.tmpl($('#template-event-listing').html(), {section:section, slot:slot, t:t});
-			addedTimeslot = $(html).appendTo('.wk-event-wrapper#'+slot.day);
-		}
+			for (var i=0,len=slot.days.length; i<len; i++){
+				day = slot.days[i];
+				addedTimeslot = $(html).appendTo('.wk-event-wrapper#'+day);
+				for( var j=0,flen=section.friends.length; j<flen; j++ ){
+					addedTimeslot.children(".friends-dots").append("<div class=\"friend-dot\" style=\"border-color: "+section.friends[j].color+"\"></div>");
+				}
+				addedTimeslot.css({'border-top':'3px solid '+section.color});
 
-		for( var i=0; i<section.friends.length; i++ ){
-			addedTimeslot.children(".friends-dots").append("<div class=\"friend-dot\" style=\"border-color: "+section.friends[i].color+"\"></div>");
+				if ( isFriendsSection ){
+					addedTimeslot.css({'background':section.color});
+					addedTimeslot.show().addClass('friend').data('scheduleId', scheduleId);
+				}
+				addedSlots.push(addedTimeslot);
+			}
 		}
-		addedTimeslot.css({'border-top':'3px solid '+section.color});
-
-		if ( isFriendsSection ){
-			addedTimeslot.css({'background':section.color});
-		  addedTimeslot.show().addClass('friend').data('scheduleId', scheduleId);
-		}
-		addedSlots.push(addedTimeslot);
 	}
 	// Tooltop construction
 	//if ( typeof tooltip_data[section.id] === "undefined" ){
 	//	tooltip_data[section.id] = 0;
 		$.ajax({
-				url:'/school/'+school+'/section/'+section.id+'/info',
+				url:'/section/'+section.id+'/info',
 				async: true,
 				dataType: 'text',
 				cache: true,
@@ -600,12 +708,16 @@ function addCourseToList(course, selectedSection){
 	$.ajax({
 		beforeSend:function(jqXHR, settings){if ( !$('#class-list-loader').hasClass('showing') ){$('#class-list-loader').addClass('showing').show();}},
 		complete:function(jqXHR, textStatus){$('#class-list-loader').hide(0,function(){$(this).removeClass('showing');});},
-		url:"/school/"+school+"/course/"+course.id+"/term/"+term.id+"/sections",
+		url:"/sections/"+course.id,
 		dataType: 'json',
 		success: function(sections){
 			if ( sections && sections.length > 0 ){
 				for ( var i = 0; i < sections.length; i++){
 					section = sections[i];
+					section.id = section._id;
+					section.course = course;
+					section.department = section.course.department;
+					console.log(section);
 					if ( section.id ){
 						addSectionToCourseList($container, section, selectedSection);
 						addSectionToCalendar(section);
@@ -629,23 +741,25 @@ function addCourseToList(course, selectedSection){
 
 
 function addSectionToCourseList($container, section, selectedSection){
-	tbd_class = false;
-	if ( section.timeslots[0] == undefined ){
+	var tbd_class = false;
+	if ( section.timeslots[0] === undefined ){
 		tbd_class = true;
 	}
 	else if ( section.timeslots[0].day == 'TBA' ){
-		 tbd_class = true;
-	}
-	else if ( section.timeslots[0].start_minute=='' && section.timeslots[0].start_hour=='' ) {
 		tbd_class = true;
 	}
-	else if ( section.timeslots[0].end_minute=='' && section.timeslots[0].end_hour=='' ) {
-		tbd_class = true;
-	}
+	// else if ( section.timeslots[0].start_minute === '' && section.timeslots[0].start_hour === '' ) {
+	// 	tbd_class = true;
+	// }
+	// else if ( section.timeslots[0].end_minute === '' && section.timeslots[0].end_hour === '' ) {
+	// 	tbd_class = true;
+	// }
 	section.tbd_class = tbd_class;
 	
 	sstemplate = $('#template-section-selector').html();
 
+	section.instructor = section.timeslots[0].instructor.trim().split(' ').splice(-1,1).join('')
+	section.friends = []
 	section_selector = window.tmpl(sstemplate, {section: section, child: false});
 
 	$sectionOption = $(section_selector).appendTo($container).data('section', section);
@@ -659,10 +773,11 @@ function addSectionToCourseList($container, section, selectedSection){
 	if ( !selectedSection ){
 		loadSeatData(section.id);
 	}
-
-	schedule.testConflicts(section);
+	if ( section && window.schedule ){
+		window.schedule.testConflicts(section);
+	}
 	
-	if ( section.has_children && section.children && section.children[0].id && parseInt(section.children[0].id) > 0){
+	if ( section.has_children && section.children && section.children[0].id && parseInt(section.children[0].id, 10) > 0){
 		$sectionOption.data('parent', true);
 		$childContainer = $('<div id="s_'+section.id+'" class="children"></div>').appendTo($sectionOption);
 		for ( var c = 0; c < section.children.length; c++ ){
@@ -671,88 +786,6 @@ function addSectionToCourseList($container, section, selectedSection){
 		}
 	}
 			
-	$sectionOption.click(
-		function(e) {
-			return;
-			/// :TODO: Remove this code !
-			if( $(this).data('selected') == true )
-			{
-				if ( $(this).hasClass('parent') )
-				{
-					var id = $(this).attr('id');
-
-					$(container+' > .children#s_'+id+' > .section-option.selected').each(function(){
-												
-						var child_id = $(this).attr('id');
-						$.ajax({
-							url:"/schedule/section/"+child_id.replace('child_','')+"/remove",
-							dataType:'json',
-							success: function(rschedule){
-									if ( Modernizr.localstorage && store_local ){
-										localStorage.setObject("courseshark.schedule.current", schedule);
-									}
-									schedule = rschedule;
-									update_schedule_conflicts();
-								}
-							});						
-						$(this).removeClass('selected');
-						$(this).data('selected', false);
-						unHilightSection(child_id);
-						$('.seat-notification#'+$(this).attr('id').replace('child_','caffeine_')).slideUp();
-						removeCredits($(this).attr('credits'));
-
-					})
-					
-					$(container+' > .children#s_'+id).slideUp();
-					
-				}
-				
-				// Called when adding a class from a loaded schedule?
-				$.ajax({
-					url:"/schedule/section/"+$(this).attr('id')+"/remove",
-					dataType:'json',
-					success: function(rschedule){
-							if ( Modernizr.localstorage && store_local ){
-								localStorage.setObject("courseshark.schedule.current", rschedule);
-							}
-							schedule = rschedule;
-							update_schedule_conflicts();
-						}
-					});
-				removeCredits($(this).attr('credits'));
-				
-				$('.section-option#'+section.id+' > .seat-notification#caffeine_'+section.id).slideUp();
-				$(this).removeClass('on-schedule');
-				
-				$(this).removeClass('selected');
-				$(this).data('selected', false);
-			}else{
-				
-				if ( $(this).hasClass('parent') ){
-					var id = $(this).attr('id');
-					$('.children').each(function(){
-						if ( 's_'+id == $(this).attr('id') ){
-							$(this).slideDown();
-							$(this).children(".section-option").each(function(){
-								obj = $(this).children(".section-seats");
-								if ( obj.hasClass('loading') ){
-									loadSeatData($(this).attr('id').replace('child_',''),true);
-								}
-							});
-								
-						}
-					})
-				}
-				id = $(this).attr('id');
-				if ( $(this).hasClass('on-schedule') == false ){
-
-				}
-				addCredits($(this).attr('credits'));
-				$(this).addClass('selected');
-				$(this).data('selected',true);
-				$('.section-option#'+section.id+' > .seat-notification#caffeine_'+section.id).slideDown();
-			}
-	});
 }
 
 
@@ -762,8 +795,8 @@ function addSectionToCourseList($container, section, selectedSection){
 function setupTooltip(section, txt){
 	$('.option.'+section.id).each(function(){
 		$(this).popover({
-			content: txt, 
-			delay: 100, 
+			content: txt,
+			delay: 100,
 			trigger:'manual',
 			placement: $(this).hasClass('tbd-listing')?'bottom':'right'
 		})
@@ -825,7 +858,7 @@ function hilightSection(id){
 
 function unHilightSection(id){
 	if ( $('.section-option#'+id).attr('title') != 'selected'){
-		if ( $('.section-option#'+id).hasClass("TBA") ){		
+		if ( $('.section-option#'+id).hasClass("TBA") ){
 			$('.tbd-listing.option.'+id.replace('child_','')).each(function(i){
 				$(this).css({display:'none'});
 			});
@@ -857,4 +890,14 @@ function updateScheduleConflicts(){
 	$('.section-option').each(function(){
 		schedule.testConflicts($(this).data('section'));
 	});
+}
+
+
+
+
+function deleteSchedule(id){
+	$.ajax({
+		url: '/schedule/'+id+'/delete'
+	})
+	return true;
 }

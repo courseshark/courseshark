@@ -4,15 +4,18 @@
 	, https = require('https')
 	, querystring = require('querystring')
 	, jsdom = require('jsdom')
-	, jq = 'http://code.jquery.com/jquery-1.7.min.js'
-	, parser = require('./parser')
+	, fs = require('fs')
+	, jq = fs.readFileSync(__dirname + '/jquery-1.7.min.js').toString()
+	, school = ''
 
 	urls = { termList: "/pls/bprod/bwckschd.p_disp_dyn_sched"
 			, term: "/pls/bprod/bwckgens.p_proc_term_date"
 			, listing: "/pls/bprod/bwckschd.p_get_crse_unsec"
 			, details: "/pls/bprod/bwckschd.p_disp_detail_sched" }
 
-
+	function init(s){
+		school = s
+	}
 	function download(options, callback){
 		var isPostRequest, req
 		options.agent = new https.Agent({
@@ -40,10 +43,12 @@
 				buffer += d;
 			})
 			res.on('end', function(){
-				jsdom.env({ html: buffer, scripts: [jq], done: function(err, window){
-					var $ = window.$;
-					callback($, buffer);
-					window.close();
+				jsdom.env({ html: buffer, src: [jq], done: function(err, window){
+					if ( err ){
+						console.log('Download error', err);
+					}else{
+						callback(window, buffer);
+					}
 				}})
 			})
 		}).on('error', function(e) {
@@ -57,5 +62,53 @@
 		req.end()
 	}
 
+	function downloadDepartments(term, callback){
+		var data, options
+		data = {
+				p_calling_proc: "bwckschd.p_disp_dyn_sched"
+			,	p_term: String(term)
+		}
+		options = {host: school.url, path: school.paths.term, method: 'POST', data: data}
+		download(options, callback)
+	}
+
+	function downloadSections(term, departmentAbbr, callback){
+		var data, options
+		data = {
+				term_in: term
+			,	sel_subj: ["", departmentAbbr]
+			,	sel_day: ""
+			,	sel_schd: ""
+			,	sel_insm: ""
+			,	sel_camp: ["", "%"]
+			,	sel_levl: ""
+			,	sel_sess: ""
+			,	sel_instr: ["", "%"]
+			,	sel_ptrm: ""
+			,	sel_attr: ["", "%"]
+
+			,	sel_crse: ""
+			,	sel_title: ""
+
+			,	sel_from_cred: ""
+			,	sel_to_cred: ""
+
+			,	begin_hh: "0"
+			,	begin_mi: "0"
+			,	begin_ap: "a"
+
+			,	end_hh: "0"
+			,	end_mi: "0"
+			,	end_ap: "a"
+		}
+		options = {host: school.url, path: school.paths.listing, method: 'POST', data: data}
+		download(options, callback)
+	}
+
+
+	ex.init = init
 	ex.download = download
+	ex.downloadDepartments = downloadDepartments
+	ex.downloadSections = downloadSections
+	
 })(exports);

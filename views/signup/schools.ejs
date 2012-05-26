@@ -1,0 +1,20 @@
+<div class="container">
+	<div class="row">
+		<div class="span12">
+			<h1>Before we continue, we need to know what school you go to</h1>
+		</div>
+	</div>
+	<div class="page-header"></div>
+	<div class="row">
+		<ul class="thumbnails" id="schools">
+		<% for(var i=0,len=schools.length; i<len; i++){school=schools[i];%>
+			<a href="//<%= school.abbr %>.courseshark.com/schedule" style="text-align:center">
+				<li class="span3 thumbnail">
+		    	<img src="/images/schools/<%= school.abbr %>_logo.png" alt="<%= school.name %>" style="margin:0 auto">
+				  <p><%= school.name %></p>
+				</li>
+			</a>
+		<%}%>
+		</ul>
+	</div>
+</div>

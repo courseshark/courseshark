@@ -1,3 +1,94 @@
+	<!-- Templates to be used in JS -->
+	<script type="text/plain" id="template-course-options">
+		<div id="<$=course.id$>" class="course-options-container" style="display: none">
+			<div class="course-title"><$=course.major_abbr$> <$=course.number$>
+				<div class="remove-course-options" rel="remove" data-course="<$=course.id$>">X</div>
+				<div class="toggle-course-options collapse" rel="toggle" data-course="<$=course.id$>">-</div>
+			</div>
+			<div class="courses-options-wrapper"></div>
+		</div>
+	</script>
+	<script type="text/plain" id="template-section-selector">
+		<div rel="section-option" id="<$=section.id$>" class="section-option <$= ( (section.has_children)?' parent':'') + ( section.tbd_class?' TBA':'' ) +(section.friends.length?'friends':'')$>" credits="<$=(section.credits)$>"  <$=section.friends.length>0?'title="You have '+section.friends.length+' friends in this section"':''$> >
+			<div class="section-number"><$=section.number$></div>
+			<div class="section-instructor"><$=section.instructor$></div>
+			<div class="section-seats loading">
+				<span class="remaining"><$=section.remaining_seats$></span><span class="seat-divider">/</span><span class="total"><$=section.total_seats$></span>
+			</div>
+		</div>
+	</script>
+	<script type="text/plain" id="template-caffeine-bar">
+		<div id="caffeine_<$=id$>" class="seat-notification">Create an open seat <a href="#" onClick="caffeine_clicked=true;show_caffeine_dialog(<$=id$>);return false;">Notification</a></div>
+	</script>
+	<script type="text/plain" id="template-event-listing">
+		<div rel="section-timeslot" class="wk-event-listing option <$=section.id$> <$=section.friends.length>0?'friends':''$>" id="<$=section.id$>-<$=t$>" data-friends="<$=section.friends.length$>" style="top:<$=top_offset$>px;width:95%;height:<$=height$>px;" data-original-title="<$=section.department.abbr$> <$=section.course.number$> <$=(slot.type!='None'?slot.type+' ':'')$> [<$=section.number$>]"> \
+			<div class="friends-dots"></div>
+			<dl class="wk-event-listing-dl">
+				<dt data-color="<$=section.color$>">
+					<$=section.department.abbr$> <$=section.course.number$> <$=((slot.type!='None'&&slot.type!='Lecture')?slot.type+' ':'')$> <small>[<$=section.number$>]</small>
+				</dt>
+				<dd>
+					<$=slot.instructor$>
+					<br />
+					<$=slot.location$>
+					<br />
+					<span class="timeslot-time"><$=startHourAdjusted$>:<$=slot.startTime.getMinutes()$>-<$=endHourAdjusted$>:<$=slot.endTime.getMinutes()$></span>
+				</dd>
+			</dl> 
+		</div>
+	</script>
+	<script type="text/plain" id="template-event-listing-tbd">
+		<div rel="section-timeslot" class="tbd-listing option <$=section.id$>" id="<$=section.id$>-<$=t$>" style="border-color:<$=section.color_dark$>; background-color:<$=section.color$>;" data-original-title="<$=section.major_abbr$> <$=section.course_number$> <$=(section.type!='None'?section.type+' ':'')$> [<$=section.number$>]">
+			<div class="tbd-listing-head" style="background-color:<$=section.color_dark$>">
+				<$=section.major_abbr$> <$=section.course_number$> <$=(section.type!='None'?section.type+' ':'')$> <small>[<$=section.number$>]</small>
+			</div>
+			<div>
+				<$=(section.instructor?((section.instructor.last_name=='None')?'Staff':section.instructor.last_name):'None')$>
+				<h3><$=section_location$></h3>
+			</div>
+		</div>
+	</script>
+	<script type="text/plain" id="template-ical">
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CourseShark//CourseShark Calendar 1.0//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH<$=name$>
+X-WR-TIMEZONE:<$=timezone$>
+X-WR-CALDESC:Term Schedule by CourseShark.com
+BEGIN:VTIMEZONE
+TZID:"<$=timezone$>"
+LAST-MODIFIED:20050809T050000Z
+BEGIN:DAYLIGHT
+DTSTART:19670430T020000
+RRULE:FREQ=YEARLY;BYMONTH=4;BYDAY=-1SU;UNTIL=19730429T070000Z
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+TZNAME:EDT
+END:DAYLIGHT
+END:VTIMEZONE<$ for (var i=0, evnt; (evnt=events[i])!==undefined; i++){ for (var id=0, dayset; (dayset=evnt['daysets'][id])!==undefined; id++ ){ $>
+BEGIN:VEVENT
+DTSTART;TZID=<$=timezone$>:<$=dayset['start']$>
+DTEND;TZID=<$=timezone$>:<$=dayset['end']$>
+RRULE:FREQ=WEEKLY;UNTIL=<$=termEnd$>;BYDAY=<$=dayset['days']$>
+DTSTAMP:<$=now$>
+UID:<$=''+Math.random()+user$>
+CREATED:<$=now$>
+DESCRIPTION:
+LAST-MODIFIED:<$=now$>
+LOCATION:<$=dayset['location']$>
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:<$=evnt['name']$>
+TRANSP:OPAQUE
+END:VEVENT<$ } } $>
+END:VCALENDAR
+	</script>
+	<!-- End Templates -->
+
+
+
+
 <!-- PreLoad images -->
 <div style="display:none"><img src="/images/seat_loading.gif" /><img src="/images/seat_loading_child.gif" /></div>
 <!-- End Preload -->
@@ -41,8 +132,8 @@
 								<label for="major_id">Department &raquo;</label>
 								<select name="major_id" id="major_id" autocomplete="off">
 									<option value=""></option>
-									<% for (var department=departments[0],_len=departments.length,_i=0; _i<_len; (department=departments[_i]),i++){ %>
-										<option value="<%= major.id %>" title="<%= major.name %>"><%= major.name %></option>
+									<% for (var len=departments.length,i=0; i<len; i++){ department=departments[i] %>
+										<option value="<%= department.id %>" title="<%= department.name %>"><%= department.abbr %></option>
 									<% } %>
 								</select>
 								<div id="selected-major-name"></div>
@@ -99,21 +190,21 @@
 <script>
 $(document).ready(function() {
   	$("#major_id").change(function(){
-		$('#selected-major-name').fadeOut('fast',function(){$(this).html($("#major_id option:selected").attr('title')).fadeIn('fast')});
-		if ( $('#major_id option:first-child').val() == "" ){
-			$('#major_id option:first-child').remove();
-		}
-		$("#courses-loading").fadeIn('fast');
-		add_course = function(c){
-			$("#courses-loading").hide();
+			$('#selected-major-name').fadeOut('fast',function(){$(this).html($("#major_id option:selected").attr('title')).fadeIn('fast')});
+			if ( $('#major_id option:first-child').val() == "" ){
+				$('#major_id option:first-child').remove();
+			}
+			$("#courses-loading").fadeIn('fast');
+			add_course = function(c){
+				$("#courses-loading").hide();
 				$('select#course_id option').remove();
 				for (var i = 0; i < c.length; i++) {
-					$('<option value="' + c[i]._data.id + '" title="' + c[i]._data.name + '">' + c[i]._data.number + '</option>').data('course', c[i]._data).appendTo("select#course_id");
+					c[i].id = c[i]._id;
+					$('<option value="' + c[i].id + '" title="' + c[i].name + '">' + c[i].number + '</option>').data('course', c[i]).appendTo("select#course_id");
 				}
 				$("#course_id").change();
-	    };
+	   	};
 		get_courses_from_major($(this).val(), add_course, term.id);
-		
 	});
 	_gaq = _gaq || {};
 	$("#course_id").change(function(){

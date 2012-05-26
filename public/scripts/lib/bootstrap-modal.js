@@ -1,5 +1,5 @@
 /* =========================================================
- * bootstrap-modal.js v2.0.3
+ * bootstrap-modal.js v2.0.2
  * http://twitter.github.com/bootstrap/javascript.html#modals
  * =========================================================
  * Copyright 2012 Twitter, Inc.
@@ -18,15 +18,14 @@
  * ========================================================= */
 
 
-!function ($) {
+!function( $ ){
 
-  "use strict"; // jshint ;_;
-
+  "use strict"
 
  /* MODAL CLASS DEFINITION
   * ====================== */
 
-  var Modal = function (content, options) {
+  var Modal = function ( content, options ) {
     this.options = options
     this.$element = $(content)
       .delegate('[data-dismiss="modal"]', 'click.dismiss.modal', $.proxy(this.hide, this))
@@ -42,23 +41,19 @@
 
     , show: function () {
         var that = this
-          , e = $.Event('show')
 
-        this.$element.trigger(e)
-
-        if (this.isShown || e.isDefaultPrevented()) return
+        if (this.isShown) return
 
         $('body').addClass('modal-open')
 
         this.isShown = true
+        this.$element.trigger('show')
 
         escape.call(this)
         backdrop.call(this, function () {
           var transition = $.support.transition && that.$element.hasClass('fade')
 
-          if (!that.$element.parent().length) {
-            that.$element.appendTo(document.body) //don't move modals dom position
-          }
+          !that.$element.parent().length && that.$element.appendTo(document.body) //don't move modals dom position
 
           that.$element
             .show()
@@ -76,24 +71,21 @@
         })
       }
 
-    , hide: function (e) {
+    , hide: function ( e ) {
         e && e.preventDefault()
 
+        if (!this.isShown) return
+
         var that = this
-
-        e = $.Event('hide')
-
-        this.$element.trigger(e)
-
-        if (!this.isShown || e.isDefaultPrevented()) return
-
         this.isShown = false
 
         $('body').removeClass('modal-open')
 
         escape.call(this)
 
-        this.$element.removeClass('in')
+        this.$element
+          .trigger('hide')
+          .removeClass('in')
 
         $.support.transition && this.$element.hasClass('fade') ?
           hideWithTransition.call(this) :
@@ -119,7 +111,7 @@
     })
   }
 
-  function hideModal(that) {
+  function hideModal( that ) {
     this.$element
       .hide()
       .trigger('hidden')
@@ -127,7 +119,7 @@
     backdrop.call(this)
   }
 
-  function backdrop(callback) {
+  function backdrop( callback ) {
     var that = this
       , animate = this.$element.hasClass('fade') ? 'fade' : ''
 
@@ -181,7 +173,7 @@
  /* MODAL PLUGIN DEFINITION
   * ======================= */
 
-  $.fn.modal = function (option) {
+  $.fn.modal = function ( option ) {
     return this.each(function () {
       var $this = $(this)
         , data = $this.data('modal')
@@ -215,4 +207,4 @@
     })
   })
 
-}(window.jQuery);
+}( window.jQuery );

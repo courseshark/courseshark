@@ -1,7 +1,7 @@
 var express = require('express')
 	, gzippo = require('gzippo')
 	, mongoStore = require('connect-mongodb')
-	, everyauth =	 require('everyauth')
+	, everyauth =	require('everyauth')
 	, auth = require('./lib/authorization')
 	, fs = require('fs');
 	
@@ -11,7 +11,7 @@ exports.boot = function(app){
 
 function bootApplication(app){
 
-	logFile = fs.createWriteStream(app.config.logFile, {flags: 'a', encoding: null, mode: 0666})
+	logFile = fs.createWriteStream(app.config.logFile, {flags: 'a', encoding: null, mode: 666})
 	auth.everyauthBoot(everyauth, app);
 	
 	app.configure(function(){
@@ -29,15 +29,15 @@ function bootApplication(app){
 				url: app.config.db.uri,
 				collection : 'sessions'
 			}),
-			cookie	 : { domain : '.'+app.config.domain },
-			domain   : '.'+app.config.domain,
-	    httpOnly : true,  
-	    maxAge   : 1000*60*60*24*365
+			cookie : { domain : '.'+app.config.domain },
+			domain : '.'+app.config.domain,
+			httpOnly : true,
+			maxAge : 1000*60*60*24*365
 		}))
 		app.use(everyauth.middleware())
 		app.use(express.logger(':method :url :status'))
 		app.use(express.favicon())
-		app.use(require('./subdomains')())
+		app.use(require('./subdomains'))
 		app.use(app.router)
 		app.use(gzippo.compress())
 		

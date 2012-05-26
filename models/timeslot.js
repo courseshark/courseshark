@@ -1,17 +1,23 @@
 var util = require('../lib/utils')
+	,	mongoose = require('mongoose')
+	, Schema = mongoose.Schema
+	, TimeslotSchema
 
-exports = module.exports = function (app){
-	mongoose.model('Timeslot', Timeslot);
+exports.boot = module.exports.boot = function (app){
+	mongoose.model('Timeslot', TimeslotSchema);
 	app.Timeslot = Timeslot = mongoose.model('Timeslot');
 }
 
+exports.TimeslotSchema = module.exports.TimeslotSchema = TimeslotSchema
 
-Timeslot = new Schema({
-	days: [ { type: String } ]
+TimeslotSchema = new Schema({
+		days: [ { type: String } ]
 	,	startTime: { type: Date }
 	,	endTime: { type: Date }
 	,	type: { type: String }
+	, location: { type: String }
+	, instructor: { type: String }
 });
 
-Timeslot.virtual('id')
+TimeslotSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})

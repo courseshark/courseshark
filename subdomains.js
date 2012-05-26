@@ -1,9 +1,7 @@
-module.exports = function(options) {
-	// return middleware
-  return function(req, res, next) {
+module.exports = function(req, res, next) {
 		// get host & protocol
-		var 	host = req.headers.host
-				, protocol = req.socket.encrypted ? 'https' : 'http'
+		var	host = req.headers.host
+			, protocol = req.socket.encrypted ? 'https' : 'http'
 		// remove 'www' prefix from URL
 		if (/^www/.test(host)){
 			res.redirect(protocol + '://' + host.replace(/^www\./, '') + req.url)
@@ -19,6 +17,5 @@ module.exports = function(options) {
 		if ( parts.length === 3 ){
 			req.subdomain = parts[0]
 		}
-		typeof(next) === 'function' ? next() : 0
+		next();
 	}
-}

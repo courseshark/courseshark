@@ -1,8 +1,25 @@
 var EventEmitter = require("events").EventEmitter
+	,	fs = require('fs')
+
 
 var everyschool = module.exports = {
-	name: "everyschool"
-
+	abbr: 'everyschool'
+	,	name: ''
+	,	fullName: function(n){
+			this.name = String(n).trim()
+			return this
+		}
+	, city: ''
+	, state: ''
+	, zip: ''
+	, location: function(locationString){
+			parts = String(locationString).split('').reverse().join('').split(/\s/,3)
+			parts = parts.map(function(part){return part.split('').reverse().join('')}).reverse()
+			this.city = parts[0]
+			this.state = parts[1]
+			this.zip = parts[2]
+			return this
+	}
 	, _debug: false
 	, debug: function(d){
 			this._debug = !!d
@@ -31,7 +48,7 @@ var everyschool = module.exports = {
 			}
 			return this
 		}
-
+	, mongoose: require('mongoose')
 	, url: 0
 	, paths: {}
 	, rootUrl: function(url){
@@ -90,10 +107,10 @@ var everyschool = module.exports = {
 		}
 
 	, submodules: {}
-	, submodule: function (name) {
+	, submodule: function (abbr) {
 			var self = this
-				, submodule = this.submodules[name] = Object.create(this, {
-						name: { value: name }
+				, submodule = this.submodules[abbr] = Object.create(this, {
+						abbr: { value: abbr }
 					, submodules: { value: {} }
 					});
 				return submodule;
@@ -102,13 +119,15 @@ var everyschool = module.exports = {
 
 	, uses: function(system){
 			sysModule = require('../'+system);
-			Object.defineProperty(this, 'downloader', {value: sysModule.downloader})
+			Object.defineProperty(this, 'dl', {value: sysModule.downloader})
 			Object.defineProperty(this, 'download', {value: sysModule.downloader.download})
-			Object.defineProperty(this, 'parser', {value: sysModule.parser})
 			Object.defineProperty(this, 'structures', {value: sysModule.structures})
 
 			this.configure(sysModule.config)
+			this.dl.init(this)
 
+			this.initStorage()
+			
 			for( var struct in sysModule.structures ){
 				var structStore =  struct.toLowerCase()+'s'
 					,	structAdd = 'add'+struct
@@ -123,6 +142,7 @@ var everyschool = module.exports = {
 						}
 					})(structStore, struct)
 			}
+
 			return this
 		}
 
@@ -130,8 +150,9 @@ var everyschool = module.exports = {
 	, runningEvents: {}
 	, run: function(method, args){
 			if ( this._steps.hasOwnProperty(method) ){
+				this.runningEvents[method] = new EventEmitter()
 				this.callStep.apply(this, [{what: method, step:0}, args])
-				return this.runningEvents[method] = new EventEmitter()
+				return this.runningEvents[method]
 			}else{
 				throw new Error("School "+this.name+" does not know how to '"+method+"'")
 			}
@@ -163,15 +184,32 @@ var everyschool = module.exports = {
 			}
 			if ( this._debug ){
 				console.log("  ++++ Calling next with args list : ",passedArgs)
+				console.log(" -- Running ", step.name)
 			}
 			self[step.name].apply(self, passedArgs)
 	}
 	, complete: function(method){
 			ret = this._returns[method]
-			this.runningEvents[method].emit('done', this[ret])
-			//console.log('Completed', method);
+			if ( ret ){
+				this.runningEvents[method].emit('done', this[ret])
+			}else{
+				this.runningEvents[method].emit('done')
+			}
+			console.log('Completed', method);
 		}
 
+	, store: {}
+	, initStorage: function(){
+			var that = this
+			,	store = {}
+			,	model_loc = __dirname + '/../../../models'
+			,	model_files = fs.readdirSync(model_loc)
 
+			model_files.forEach( function (file) {
+				require(model_loc + '/' + file).boot(store)
+			})
+			this.store = store
+			this.structures.init(this.store)
+		}
 
 }

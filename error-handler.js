@@ -13,12 +13,8 @@ NotFound = (function(_super) {
 	NotFound.name = 'NotFound';
 	function NotFound(path) {
 		this.name = 'NotFound';
-		this.path = path;
-		if (path) {
-			Error.call(this, "Cannot find " + path);
-		} else {
-			Error.call(this, 'Not Found');
-		}
+		this.message = path;
+		Error.call(this, "Cannot find '" + path + "'");
 		Error.captureStackTrace(this, arguments.callee);
 	}
 	return NotFound;

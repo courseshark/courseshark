@@ -5,7 +5,7 @@ var	express = require('express')
 		, auth = require('./lib/authorization')
 		, utils = require('./lib/utils')
 		, app = express.createServer()
-		, port = (typeof process !== "undefined" && process !== null ? (_ref2 = process.env) !== null ? _ref2.PORT : undefined : undefined) || 3000
+		, port = (typeof process !== "undefined" && process !== null ? (_ref2 = process.env) !== null ? _ref2.PORT : undefined : undefined) || 80
 
 app.config = config;
 
@@ -13,11 +13,12 @@ app.config = config;
 mongoose = require('mongoose')
 mongoose.connect(config.db.uri)
 Schema = mongoose.Schema
+ObjectId = mongoose.Types.ObjectId
 // Bootsrap models
 model_loc = __dirname + '/models'
 model_files = fs.readdirSync(model_loc)
 model_files.forEach( function (file) {
-	require(model_loc + '/' + file)(app)
+	require(model_loc + '/' + file).boot(app)
 })
 // Configuration
 require('./settings').boot(app);

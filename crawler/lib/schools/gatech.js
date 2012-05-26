@@ -1,7 +1,8 @@
 var everySchool = require('./everyschool')
 
 var gatech = module.exports = everySchool.submodule('gatech')
-
+	.fullName('Georgia Institute of Technology')
+	.location('Atlanta GA 30332')
 	.uses('banner')
 		.configure({
 				seperateDepartments: true
@@ -24,16 +25,41 @@ var gatech = module.exports = everySchool.submodule('gatech')
 			.accepts('terms')
 		.step('listSections')
 			.accepts('term')
+		.step('storeResults')
+		.step('closeDB')
 	
+
+	.howto('save')
+		.step('storeResults')
+		.step('closeDB')
+
 	.howto('updateSection')
 		.step('sectionDetails')
 			.accepts('term section')
+
+	.configurable('saveSelf')
+	.saveSelf(function(){
+		var fs = require('fs')
+		cacheJSON = {terms: this.terms, departments: this.departments}
+		fs.writeFileSync(__dirname + '/../gatech.cache', JSON.stringify(cacheJSON))
+		next()
+	})
+
+	.configurable('loadSelf')
+	.loadSelf(function(){
+		var fs = require('fs')
+		cacheJSON = JSON.parse(fs.readFileSync(__dirname + '/../gatech.cache').toString())
+		this.terms = cacheJSON.terms
+		this.departments = cacheJSON.departments
+	})
+
 
 
 	.loadTerms(function(termUpdating){
 		var self = this
 		options = {host: self.url, path: self.paths.termList}
-		self.download(options, function($, html){
+		self.download(options, function(window, html){
+			var $ = window.$
 			$('SELECT OPTION').each(function() {
 				$this = $(this)
 				if ( $this.val() ){
@@ -42,84 +68,103 @@ var gatech = module.exports = everySchool.submodule('gatech')
 					termNumber = parseInt($this.val(), 10)
 					if ( termNumber == termUpdating ){
 						self.addTerm(termNumber, termName)
-						console.log(self.terms)
 					}
 				}
 			})
+			window.close()
 			next(termUpdating)
 		})
 	})
 	.loadDepartments(function(termUpdating){
 		var self = this
-		data = {
-				p_calling_proc: "bwckschd.p_disp_dyn_sched"
-			,	p_term: String(termUpdating)
-		}
-		options = {host: self.url, path: self.paths.term, method: 'POST', data: data}
-		self.download(options, function($, html){
+		this.dl.downloadDepartments(termUpdating, function(window, html){
+			var $ = window.$
 			$('SELECT[name="sel_subj"] OPTION').each(function(){
 				$this = $(this)
 				abbr = $this.val()
 				text = $this.text().replace(/\n.*/g, '')
 				self.addDepartment(abbr, text)
 			})
+			window.close()
 			next(termUpdating)
 		})
 	})
 	.listSections(function(termUpdating){
 		var self = this
-		for ( var dep in this.departments ){
-			//self.loadDepartment(termUpdating, dep)
+			, EventEmitter = require("events").EventEmitter
+			,	emitter = new EventEmitter()
+			function sleep(milliSeconds) {
+				var startTime = new Date().getTime();
+				while (new Date().getTime() < startTime + milliSeconds);
+			}
+		self.loadDepartmentSectionsCount++
+		downloadLoop = function(d,deps){
+			if ( d >= deps.length ){
+				self.loadDepartmentSectionsCount--
+				emitter.emit('doneLoadingDept', self.loadDepartmentSectionsCount)
+				return
+			}
+			dep = deps[d]
+			self.loadDepartmentSections(termUpdating, dep, emitter)
+			setTimeout( function(){ downloadLoop(d+1, deps) }, 1000)
 		}
-		next(termUpdating)
+		downloadLoop(0, this.departments)
+
+		emitter.on('doneLoadingDept', function(numLeft){
+			if (numLeft === 0){
+				next(termUpdating);
+			}
+		})
+	})
+	.storeResults(function(termUpdating){
+		this.structures.storeSchool(this, next)
+	})
+	.closeDB(function(){
+		this.mongoose.disconnect()
+		next()
 	})
 
-	.configurable('loadDepartment')
-	.loadDepartment(function(termUpdating, department){
+	.configurable('loadDepartmentSectionsCount')
+	.loadDepartmentSectionsCount(0)
+	.configurable('loadDepartmentSections')
+	.loadDepartmentSections(function(termUpdating, department, emitter){
 		var self = this
-		data = {
-				term_in: termUpdating
-			,	sel_subj: ["", department.abbr]
-			,	sel_day: ""
-			,	sel_schd: ""
-			,	sel_insm: ""
-			,	sel_camp: ["", "%"]
-			,	sel_levl: ""
-			,	sel_sess: ""
-			,	sel_instr: ["", "%"]
-			,	sel_ptrm: ""
-			,	sel_attr: ["", "%"]
-
-			,	sel_crse: ""
-			,	sel_title: ""
-
-			,	sel_from_cred: ""
-			,	sel_to_cred: ""
-
-			,	begin_hh: "0"
-			,	begin_mi: "0"
-			,	begin_ap: "a"
-
-			,	end_hh: "0"
-			,	end_mi: "0"
-			,	end_ap: "a"
-		}
-		options = {host: self.url, path: self.paths.listing, method: 'POST', data: data}
-		self.download(options, function($, html){
+		self.loadDepartmentSectionsCount++
+		self.dl.downloadSections(termUpdating, department.abbr, function(window, html){
+			var $ = window.$, $table, $sectionHead, $sectionDetails, $sectionDetailsContainer, $sectionDetailsList
+			if ( self.debug ){
+				console.log("Recieved "+department.abbr+" listing")
+			}
 			$table = $('table.datadisplaytable[summary="This layout table is used to present the sections found"]')
-			$table.find('.ddtitle').each(function(){
-				$sectionHead = $(this)
-				$sectionDetailsContainer = $sectionHead.parent().next()
-				$sectionDetails = $sectionDetailsContainer.find('table.datadisplaytable')
-				$sectionDetailsList = $sectionDetails.find('.dddefault')
+			$sections = $table.find('.ddtitle')
+			if ( $sections.length ){
+				$sections.each(function(){
+					$sectionHead = $(this)
+					$sectionDetailsContainer = $sectionHead.parent().next()
+					$sectionDetails = $sectionDetailsContainer.find('table.datadisplaytable')
+					$sectionDetailsList = $sectionDetails.find('.dddefault')
 
-				title = $sectionHead.children('a').text()
-				details = []; $sectionDetailsList.each(function(i,o){details.push($(o).text())})
-
-				c = department.findOrAddCourseBySectionTitle(title)
-				section = c.addSectionFromInfo(title, details)
-				console.log(section);
-			})
-			//console.log(department)
+					title = $sectionHead.children('a').text()
+					details = []; $sectionDetailsList.each(function(i,o){details.push($(o).text())})
+					credits = $sectionDetailsContainer.html().match(/([\.\d]+)\s(?:TO\s+([\.\d]+)\s+)?Credits/i)
+					if ( credits ){
+						if ( credits[2] !== undefined ){
+							credits = ''+parseInt(credits[1],10)+'-'+parseInt(credits[2],10)
+						}else{
+							credits = ''+parseInt(credits[1],10)
+						}
+					}else{
+						console.log($sectionDetailsContainer.text(), credits);
+						credits = 3
+					}
+					c = department.findOrAddCourseBySectionTitle(title)
+					section = c.addSectionFromInfo(title, details, credits)
+				})
+			}else{
+				console.log($table.text())
+			}
+			window.close()
+			self.loadDepartmentSectionsCount--
+			emitter.emit('doneLoadingDept', self.loadDepartmentSectionsCount)
 		})
 	})

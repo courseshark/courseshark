@@ -1,5 +1,5 @@
 /* ========================================================
- * bootstrap-tab.js v2.0.3
+ * bootstrap-tab.js v2.0.2
  * http://twitter.github.com/bootstrap/javascript.html#tabs
  * ========================================================
  * Copyright 2012 Twitter, Inc.
@@ -18,10 +18,9 @@
  * ======================================================== */
 
 
-!function ($) {
+!function( $ ){
 
-  "use strict"; // jshint ;_;
-
+  "use strict"
 
  /* TAB CLASS DEFINITION
   * ==================== */
@@ -40,7 +39,6 @@
         , selector = $this.attr('data-target')
         , previous
         , $target
-        , e
 
       if (!selector) {
         selector = $this.attr('href')
@@ -51,13 +49,10 @@
 
       previous = $ul.find('.active a').last()[0]
 
-      e = $.Event('show', {
-        relatedTarget: previous
+      $this.trigger({
+        type: 'show'
+      , relatedTarget: previous
       })
-
-      $this.trigger(e)
-
-      if (e.isDefaultPrevented()) return
 
       $target = $(selector)
 
@@ -132,4 +127,4 @@
     })
   })
 
-}(window.jQuery);
+}( window.jQuery );
