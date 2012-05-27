@@ -13,6 +13,7 @@ module.exports = function(req, res, next) {
 			res.redirect(protocol + '://' + host.replace(/^admin\./, '') + req.url)
 			return
 		}
+		host = host===undefined?'':host
 		parts = host.split('.', 3)
 		if ( parts.length === 3 ){
 			req.subdomain = parts[0]

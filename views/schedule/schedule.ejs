@@ -1,7 +1,7 @@
 	<!-- Templates to be used in JS -->
 	<script type="text/plain" id="template-course-options">
 		<div id="<$=course.id$>" class="course-options-container" style="display: none">
-			<div class="course-title"><$=course.major_abbr$> <$=course.number$>
+			<div class="course-title"><$=course.department.abbr$> <$=course.number$>
 				<div class="remove-course-options" rel="remove" data-course="<$=course.id$>">X</div>
 				<div class="toggle-course-options collapse" rel="toggle" data-course="<$=course.id$>">-</div>
 			</div>
@@ -38,13 +38,13 @@
 		</div>
 	</script>
 	<script type="text/plain" id="template-event-listing-tbd">
-		<div rel="section-timeslot" class="tbd-listing option <$=section.id$>" id="<$=section.id$>-<$=t$>" style="border-color:<$=section.color_dark$>; background-color:<$=section.color$>;" data-original-title="<$=section.major_abbr$> <$=section.course_number$> <$=(section.type!='None'?section.type+' ':'')$> [<$=section.number$>]">
+		<div rel="section-timeslot" class="tbd-listing option <$=section.id$>" id="<$=section.id$>-<$=t$>" style="border-color:<$=section.color_dark$>; background-color:<$=section.color$>;" data-original-title="<$=section.department.abbr$> <$=section.course.number$>  [<$=section.number$>]">
 			<div class="tbd-listing-head" style="background-color:<$=section.color_dark$>">
-				<$=section.major_abbr$> <$=section.course_number$> <$=(section.type!='None'?section.type+' ':'')$> <small>[<$=section.number$>]</small>
+				<$=section.department.abbr$> <$=section.course.number$> <$=(section.type!='None'?section.type+' ':'')$> <small>[<$=section.number$>]</small>
 			</div>
 			<div>
 				<$=(section.instructor?((section.instructor.last_name=='None')?'Staff':section.instructor.last_name):'None')$>
-				<h3><$=section_location$></h3>
+				<h3><$=location$></h3>
 			</div>
 		</div>
 	</script>

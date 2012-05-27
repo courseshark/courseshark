@@ -616,6 +616,14 @@ function addSectionToCalendar(section, scheduleId){
 	if ( section.timeslots[0] === undefined ){
 		section.timeslots[0] = false;
 	}
+	function rnd(seed) {
+		if (!seed)
+			seed = new Date().getTime();
+		seed = (seed*9301+49297) % 233280;
+		console.log(seed/(233280.0))
+		return seed/(233280.0);
+	}
+	section.color = '#'+(function(h){return new Array(7-h.length).join("0")+h})((rnd(section.number)*0x1000000<<0).toString(16))
 	addedSlots = [];
 	for ( var d = 0; d < section.timeslots.length; d++ ){
 		var slot = section.timeslots[d]
@@ -636,7 +644,7 @@ function addSectionToCalendar(section, scheduleId){
 		// If we have a TBD timeslot
 		if ( slot === false || slot.startTime.getHours() === 0 || slot.startTime == slot.endTime ){
 			section.location = slot.location
-			html = window.tmpl($('#template-event-listing-tbd').html(), {section:section, t:t});
+			html = window.tmpl($('#template-event-listing-tbd').html(), {section:section, t:t, location: section.location});
 			addedTimeslot = $(html).appendTo('#tbd-container #tbd-list');
 		}else{
 			top_offset = (slot.startTime.getHours() - 6 + (slot.startTime.getMinutes()/60.0)) * scale + offset;
@@ -757,8 +765,11 @@ function addSectionToCourseList($container, section, selectedSection){
 	section.tbd_class = tbd_class;
 	
 	sstemplate = $('#template-section-selector').html();
-
-	section.instructor = section.timeslots[0].instructor.trim().split(' ').splice(-1,1).join('')
+	if ( section.timeslots.length===0 ){
+		section.instructor = 'TBA'
+	}else{
+		section.instructor = section.timeslots[0].instructor.trim().split(' ').splice(-1,1).join('')
+	}
 	section.friends = []
 	section_selector = window.tmpl(sstemplate, {section: section, child: false});
 

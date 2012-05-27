@@ -1,4 +1,4 @@
-/* 
+/*
  * Schedule pages, anything relating to the schedule interface should be in this file
  */
 exports = module.exports = function(app){
@@ -9,14 +9,12 @@ exports = module.exports = function(app){
 			res.render('schedule/schedule', {departments: departments, link: false});
 		})
 	})
-
 	app.get('/schedule/dialog/new', requireSchool, function(req, res){
 		Term.find({school:req.school._id}, function(err, terms){
 			console.log(terms, err)
 			res.render('schedule/dialogs/new', {terms: terms })
 		})
 	});
-
 	app.get('/term/:tid/courses/:did', function(req, res){
 		termId = new ObjectId(req.params.tid)
 		departmentId = new ObjectId(req.params.did)
@@ -30,4 +28,8 @@ exports = module.exports = function(app){
 			res.json(sections)
 		})
 	})
+	app.get('/schedule/dialog/numbers', function(req, res){
+		res.render('schedule/dialogs/numbers')
+	})
+
 }
