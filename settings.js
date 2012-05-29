@@ -54,4 +54,11 @@ function bootApplication(app){
 	})
 	app.configure('production', function(){
 	})
+
+	try{
+		gitHead = fs.readFileSync(__dirname+'/.git/refs/heads/master', 'utf-8').trim();
+		app.set('revision', gitHead)
+	}catch(e){
+		app.set('revision', 'r'+(new Date()).getTime())
+	}
 }

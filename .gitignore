@@ -2,3 +2,6 @@
 *.cache
 
 logs/access.log
+
+public/scripts/*-courseshark.js
+public/styles/*-courseshark.css

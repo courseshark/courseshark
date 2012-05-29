@@ -10,5 +10,6 @@ exports.boot = module.exports.boot = function(app){
 				return Object.keys(req.session.flash || {}).length }
 		,	messages: require('express-messages-bootstrap')
 		,	base: function (){ return '/' == app.route ? '' : app.route }
+		, revision: function(){return app.settings.revision}
 	});
 }

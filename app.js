@@ -38,6 +38,8 @@ controller_files.forEach( function (file) {
 })
 
 
+require('./build').build(app);
+
 // Start the app by listening on <port>
 app.listen(port)
 console.log('Express app started on port ' + port);
