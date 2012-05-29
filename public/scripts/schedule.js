@@ -6,6 +6,7 @@
  *
  **************************************************************/
 var term = {}
+		, _terms = {length: 0}
 		, schedule = {}
 		, seat_workers_cnt = 15
 		, seat_workers_i = 0
@@ -205,13 +206,18 @@ function getObject(name){
 
 
 var Schedule = function(term){
-	this.term = (typeof term == 'object')?term:{id:term};
-	this.sections = [];
-	this.start_hour = 6;
-	this.school_id = window.school ? window.school : undefined;
-	this.name = "Schedule";
+	this.term = (typeof term == 'object')?term:_terms[term]
+	this.sections=[]
+	this.name = "Schedule"
 }
 Schedule.fromObj = function(obj){
+	obj.id = obj._id
+	obj.term = typeof(obj.term)==="object"?obj.term:_terms[obj.term]
+	if ( typeof(obj.sections) !== 'undefined' && obj.sections.length ){
+		for (var s=0,len=obj.sections.length; s<len; s++){
+			obj.sections[s].id = obj.sections[s]._id
+		}
+	}
 	return $.extend(true, new Schedule(), obj);
 }
 Schedule.create = function(_term){
@@ -222,12 +228,12 @@ Schedule.create = function(_term){
 Schedule.load = function(id, next){
 	next = (typeof next == 'undefined')?function(){}:next;
 	$.ajax({
-		url:"/schedule/"+id+"/load",
+		url:"/schedule/load/"+id,
 		type:'GET',
 		dataType:'json',
 		success:function(res){
-			if ( res.success ){
-				schedule = Schedule.fromObj(res.message);
+			if ( res ){
+				schedule = Schedule.fromObj(res);
 				term = schedule.term;
 				schedule.save(true);
 			}
@@ -244,7 +250,7 @@ Schedule.prototype.save = function(skipServer){
 	}
 	storeObject("primary-schedule", schedule);
 	updateScheduleConflicts();
-	if ( typeof this.id !== 'undefined' && !skipServer ){
+	if ( typeof this.user !== 'undefined' && !skipServer ){
 		$.ajax({
 			url:"/schedule/save",
 			data: {'schedule': JSON.stringify(schedule)},
@@ -258,30 +264,30 @@ Schedule.prototype.save = function(skipServer){
 	return this;
 }
 Schedule.prototype.pushSave = function(getId){
-	if ( typeof this.id !== 'undefined' ){
-		this.save();
+	self = this
+	if ( typeof this.user !== 'undefined' ){
+		self.save();
 		return;
 	}else if ( !getId ){
 		openDialog("/schedule/save");
 	}else{
-		this.show();
+		self.show();
 		$.ajax({
 			url:"/schedule/save",
 			data: {'schedule': JSON.stringify(schedule)},
-			type:'POST',
+			type:'PUT',
 			dataType:'json',
 			success:function(res){
-				if ( res.success ){
-					this.id = res.message;
-					show_timed_message("Schedule Saved");
-				}
+				console.log(res);
+				self.id = this._id = res._id;
+				self.user = res.user;
 			}
 		});
 	}
 }
 	
 Schedule.prototype.show = function(){
-	schedule_start_hour = this.start_hour;
+	schedule_start_hour = this.start_hour?this.start_hour:6;
 	course_count = this.sections.length;
 	
 	document.title = 'Courseshark : '+this.name;
@@ -520,13 +526,33 @@ function newSchedule(term){
 
 
 function init(passed){
+	// Load the terms
+	
+	if ( _terms.length === 0 ){
+		$.ajax({
+			url: "/schedule/terms",
+			type: "GET",
+			async: false,
+			dataType: "json",
+			success: function(t){
+				var i, len, term
+				for( i=0,len=t.length; i<len; i++ ){
+					term = t[i]
+					term.id = term._id
+					_terms[term.id] = term
+				}
+				_terms.length = len
+			}
+		})
+	}
+
 	if ( passed === undefined ){
 			// Load and show the primary schedule
 		schedule=getObject("primary-schedule")
 		if ( schedule ){
 			schedule = Schedule.fromObj(schedule);
 			term = schedule.term;
-			if ( schedule.school_id != window.school ){
+			if ( schedule.school != window.school ){
 				removeItem("primary-schedule");
 				init();
 			}
@@ -539,7 +565,7 @@ function init(passed){
 				dataType:'json',
 				success: function(sc){
 						schedule = Schedule.fromObj(sc);
-						term = schedule.term;
+						term = schedule.term
 						schedule.show();
 						storeObject("primary-schedule", schedule);
 					}
@@ -620,7 +646,6 @@ function addSectionToCalendar(section, scheduleId){
 		if (!seed)
 			seed = new Date().getTime();
 		seed = (seed*9301+49297) % 233280;
-		console.log(seed/(233280.0))
 		return seed/(233280.0);
 	}
 	section.color = '#'+(function(h){return new Array(7-h.length).join("0")+h})((rnd(section.number)*0x1000000<<0).toString(16))
@@ -651,7 +676,6 @@ function addSectionToCalendar(section, scheduleId){
 			height = Math.floor(Math.max(1, (Math.abs( slot.endTime.getMinutes() - slot.startTime.getMinutes() )/60.0 + slot.endTime.getHours() - slot.startTime.getHours()) * scale + offset));
 			startHourAdjusted = (slot.startTime.getHours()%12===0)?12:slot.startTime.getHours()%12;
 			endHourAdjusted = (slot.endTime.getHours()%12===0)?12:slot.endTime.getHours()%12;
-			console.log(section);
 			html = window.tmpl($('#template-event-listing').html(), {
 						section:section, slot:slot
 					, t:t
@@ -677,22 +701,7 @@ function addSectionToCalendar(section, scheduleId){
 			}
 		}
 	}
-	// Tooltop construction
-	//if ( typeof tooltip_data[section.id] === "undefined" ){
-	//	tooltip_data[section.id] = 0;
-		$.ajax({
-				url:'/section/'+section.id+'/info',
-				async: true,
-				dataType: 'text',
-				cache: true,
-				success: function(data){
-					tooltip_data[section.id] = data;
-					setupTooltip(section, data);
-				}
-			});
-	//}else{
-	//	setupTooltip(section, tooltip_data[section.id]);
-	//}
+	setupTooltip(section);
 	return addedSlots;
 }
 
@@ -725,7 +734,6 @@ function addCourseToList(course, selectedSection){
 					section.id = section._id;
 					section.course = course;
 					section.department = section.course.department;
-					console.log(section);
 					if ( section.id ){
 						addSectionToCourseList($container, section, selectedSection);
 						addSectionToCalendar(section);
@@ -803,7 +811,8 @@ function addSectionToCourseList($container, section, selectedSection){
 
 
 
-function setupTooltip(section, txt){
+function setupTooltip(section){
+	var txt = window.tmpl($('#template-section-info').html(),{section:section});
 	$('.option.'+section.id).each(function(){
 		$(this).popover({
 			content: txt,
@@ -908,7 +917,7 @@ function updateScheduleConflicts(){
 
 function deleteSchedule(id){
 	$.ajax({
-		url: '/schedule/'+id+'/delete'
+		url: '/schedule/delete/'+id
 	})
 	return true;
 }

@@ -48,6 +48,59 @@
 			</div>
 		</div>
 	</script>
+	<script type="text/plain" id="template-section-info">
+		<h3>
+			<$=section.course.name$> <$=section.timeslots[0].type$>
+		</h3>
+		<dl>
+			<dt>Section Number</dt>
+			<dd><$=section.number$></dd>
+		</dl>
+		<dl>
+			<dt>Instructor</dt>
+			<dd>
+				<$=section.instructor$>
+			</dd>
+		</dl>
+		<dl>
+			<dt>Location</dt>
+			<dd>
+				<$=section.timeslots[0].location$>
+			</dd>
+		</dl>
+		<dl>
+			<dt>Seats</dt>
+			<dd>
+				<$ if ( !section['seats_available'] && section['seats_total'] ){ $>
+					All <$=section.seats_total$> seats are taken
+				<$ } else if ( section['seats_total'] ) { $>
+					<$=section.seats_available$> available of <$=section.seats_total$>
+				<$ } else { $>
+					Unavailable
+				<$ } $>
+			</dd>
+		</dl>
+		<$ if(section['gpa']){$>
+		<dl>
+			<dt>Average GPA</dt>
+			<dd>
+				<$=section.gpa$>
+			</dd>
+		</dl>
+		<$ } $>
+		<$ function pad(i){return ''+(i<10?'0'+i:i)} $>
+		<$ function toTime(dS){d=new Date(dS);sh=d.getHours()>12?d.getHours()-12:d.getHours();return ''+sh+':'+pad(d.getMinutes())} $>
+		<dl>
+			<dt>Times</dt>
+			<$for(var s=0,leng=section.timeslots.length; s<leng; s++ ){ $>
+			<dd>
+				<$= section.timeslots[s].days.join(', ') $>: <$=toTime(section.timeslots[s].startTime)$> - <$=toTime(section.timeslots[s].endTime)$>
+
+			</dd>
+			<$}$>
+		</dl>
+
+	</script>
 	<script type="text/plain" id="template-ical">
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -102,7 +155,7 @@ END:VCALENDAR
 					<li><a href="#" id="new-button" ><i class="icon-file"></i> New</a><li>
 					<li><a href="#"	id="print-button"/><i class="icon-print"></i> Print</a></li>
 					<li><a href="#" id="number-button"/><i class="icon-list-alt"></i> List CRNs</a></li>
-					<li><a href="#" id="auto-pilot-button"/><i class="icon-random"></i> AutoAdd Classes</a></li>
+<!-- 					<li><a href="#" id="auto-pilot-button"/><i class="icon-random"></i> AutoAdd Classes</a></li> -->
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sharing <b class="caret"></b></a>
 					  	<ul class="dropdown-menu">
@@ -216,9 +269,15 @@ $(document).ready(function() {
 	});
 	
 	$('#save-button').click(function(){
-		_gaq.push(['_trackEvent', 'Schedule', 'Save']);
-		schedule.pushSave();
-		return false;
+		<% if ( loggedIn ){ %>
+			_gaq.push(['_trackEvent', 'Schedule', 'Save']);
+			schedule.pushSave();
+			return false;
+		<% } else { %>
+			_gaq.push(['_trackEvent', 'Schedule', 'Login']);
+			openDialog('/login');
+			return false;
+		<% } %>
 	});
 	
 	$('#load-button').click(function(){
@@ -259,6 +318,7 @@ $(document).ready(function() {
 		_gaq.push(['_trackEvent', 'Schedule', 'Facebook']);
 		window.location = "<?php echo $fb_link?>"
 	});
+	window.school = '<%= school %>';
 	init();			
 });
 </script>

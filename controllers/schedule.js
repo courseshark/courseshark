@@ -4,14 +4,99 @@
 exports = module.exports = function(app){
 	// Main Scheudle Page
 	app.get('/schedule', requireSchool, function(req, res){
-		console.log(req.school)
 		Department.find({school:req.school._id}, {abbr:1, name:1}, function(err, departments){
-			res.render('schedule/schedule', {departments: departments, link: false});
+			res.render('schedule/schedule', {departments: departments, link: false, school: req.school._id});
 		})
 	})
+
+	app.get('/schedule/terms', requireSchool, function(req, res){
+		Term.find({school: req.school}, function(err, terms){
+			res.json(terms)
+		})
+	})
+
+	app.get('/schedule/load/:sid', requireLogin, requireSchool, function(req, res){
+		Schedule.findOne({_id: req.params.sid, user: req.user._id}).run(function(err, schedule){
+			res.json(schedule)
+		})
+	})
+
+	app.get('/schedule/load', requireSchool, function(req, res){
+		function returnNew(){
+			var schedule
+			schedule = new Schedule()
+			schedule.school = req.school._id
+			Term.findOne({_id: req.school.currentTerm._id}, function(err, term){
+				schedule.term = term
+				res.json(schedule)
+			})
+		}
+		if (req.loggedIn && req.user.schedule !== undefined ){
+			Schedule.findById(req.user.schedule, function(err, foundSchedule){
+				if ( err ){
+					returnNew()
+				}
+				res.json(schedule);
+			})
+		}else{
+			returnNew()
+		}
+	})
+
+
+	app.get('/schedule/dialog/load', requireLogin, function(req, res){
+		Schedule.find({user: req.user}).populate('term').run(function(err, schedules){
+			res.render('schedule/dialogs/load', {schedules: schedules})
+		})
+	})
+
+
+	app.get('/schedule/save', requireLogin, function(req, res){
+		res.render('schedule/dialogs/save', {user: req.user})
+	})
+
+	app.put('/schedule/save', requireLogin, requireSchool, function(req, res){
+		passedJSON = JSON.parse(req.body.schedule)
+		passedJSON.term = passedJSON.term.id
+		passedJSON.school = req.school._id
+		// sec = []
+		// for(var s=0,len=passedJSON.sections.length;s<len;s++){
+		//	sec.push(passedJSON.sections[s]._id)
+		// }
+		// passedJSON.sections = sec
+		passedJSON.user = req.user._id
+		Schedule.findOne({_id: passedJSON.id}, function(err, schedule){
+			// Test if this is a new schedule
+			if ( !schedule ){
+				delete passedJSON.id;
+				delete passedJSON._id;
+				newSchedule = new Schedule(passedJSON)
+				newSchedule.save(function(){
+					res.json(newSchedule)
+				})
+			}else{
+				// Update things
+				schedule.name = passedJSON.name
+				schedule.sections = passedJSON.sections
+				schedule.save(function(){
+					res.json(schedule)
+				})
+			}
+		})
+	})
+
+	app.get('/schedule/delete/:sid', requireLogin, function(req, res){
+		Schedule.findOne({_id: req.params.sid, user:req.user._id}, function(err, schedule){
+			if ( schedule ){
+				schedule.remove()
+			}
+			res.json(true)
+		})
+	})
+
+
 	app.get('/schedule/dialog/new', requireSchool, function(req, res){
 		Term.find({school:req.school._id}, function(err, terms){
-			console.log(terms, err)
 			res.render('schedule/dialogs/new', {terms: terms })
 		})
 	});

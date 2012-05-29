@@ -2,10 +2,12 @@ var util = require('../lib/utils')
 	,	mongoose = require('mongoose')
 	, Schema = mongoose.Schema
 	, ScheduleSchema
+	,	TermSchema = require('./term').TermSchema
+	, SectionSchema = require('./section').SectionSchema
 
 exports.boot = module.exports.boot = function (app){
 	mongoose.model('Schedule', ScheduleSchema);
-	app.Course = Course = mongoose.model('Course');
+	app.Schedule = Schedule = mongoose.model('Schedule');
 }
 
 exports.ScheduleSchema = module.exports.ScheduleSchema = ScheduleSchema
@@ -15,7 +17,7 @@ ScheduleSchema = new Schema({
 	,	term: { type: Schema.ObjectId, ref: 'Term' }
 	,	school: { type: Schema.ObjectId, ref: 'School' }
 	,	user: { type: Schema.ObjectId, index: true }
-	, sections: [{ type: Schema.ObjectId, ref: 'Section' }]
+	, sections: [SectionSchema]
 });
 
 ScheduleSchema.virtual('id')
