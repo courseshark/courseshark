@@ -26,21 +26,20 @@
 	<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 </div>
 
-
 <script src="https://facebook.com/connect.php/js/FB.Share" type="text/javascript"></script>
 <script>
 // create the twitter buttons
 $url = $('#link #url');
 $twitterButton = $('#twitter-link');
 showLink = function(res){
-	if ( res.url ){
+	if ( !res.err ){
 		selectText($url.html(res.url).attr('id'))
 		$twitterButton.attr('data-url', res.url)
 		$('a[name="f-2b"]').attr('share_url', res.url).attr('name', 'fb_share')
 		window.twttr ? window.twttr.widgets.load() : 0
 		window.FB ? window.FB.Share ? window.FB.Share.renderAll() : 0 : 0
 	}else{
-		errorDialog(res.error)
+		errorDialog(res.err)
 	}
 }
 sendEmail =  function(){

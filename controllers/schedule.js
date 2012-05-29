@@ -8,6 +8,17 @@ exports = module.exports = function(app){
 			res.render('schedule/schedule', {departments: departments, link: false, school: req.school._id});
 		})
 	})
+	app.get('/sl/:id', function(req, res){
+		ScheduleLink.findById(req.params.id, function(err, scheduleLink){
+			if ( !scheduleLink ){
+				throw new NotFound()
+			}else{
+				schedule = scheduleLink.schedule
+				sJson = JSON.stringify(schedule)
+				res.render('schedule/schedule', {link: true, school: schedule.school._id, schedule: sJson})
+			}
+		})
+	})
 
 	app.get('/schedule/terms', requireSchool, function(req, res){
 		Term.find({school: req.school}, function(err, terms){
@@ -116,5 +127,19 @@ exports = module.exports = function(app){
 	app.get('/schedule/dialog/numbers', function(req, res){
 		res.render('schedule/dialogs/numbers')
 	})
-
+	app.get('/schedule/dialog/link', function(req, res){
+		res.render('schedule/dialogs/link')
+	})
+	app.post('/schedule/link', function(req, res){
+		pSchedule = JSON.parse(req.body.schedule);
+		delete pSchedule._id;
+		delete pSchedule.id;
+		delete pSchedule.user;
+		link = new ScheduleLink()
+		link.schedule = pSchedule;
+		link.save(function(err){
+			url = 'http//' + req.headers.host + '/sl/' + link.id
+			res.json({id: link.id, url: url, err: err})
+		})
+	})
 }

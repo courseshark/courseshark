@@ -123,7 +123,7 @@ END:VTIMEZONE<$ for (var i=0, evnt; (evnt=events[i])!==undefined; i++){ for (var
 BEGIN:VEVENT
 DTSTART;TZID=<$=timezone$>:<$=dayset['start']$>
 DTEND;TZID=<$=timezone$>:<$=dayset['end']$>
-RRULE:FREQ=WEEKLY;UNTIL=<$=termEnd$>;BYDAY=<$=dayset['days']$>
+RRULE:FREQ=WEEKLY;UNTIL=<$=dayset['endDate']$>;BYDAY=<$=dayset['days']$>
 DTSTAMP:<$=now$>
 UID:<$=''+Math.random()+user$>
 CREATED:<$=now$>
@@ -302,7 +302,7 @@ $(document).ready(function() {
 	
 	$('#ical-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'iCal']);
-		window.open('/schedule/ical', 'Download');
+		$('#ical-button').attr('href', schedule.createCal()).attr('download', schedule.name);
 	});
 
 	$('#number-button').click(function(){
@@ -312,13 +312,13 @@ $(document).ready(function() {
 	
 	$('#link-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Link']);
-		show_link_dialog(schedule);
+		openDialog('/schedule/dialog/link');
 	});
 	$('#fb-share-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Facebook']);
 		window.location = "<?php echo $fb_link?>"
 	});
 	window.school = '<%= school %>';
-	init();			
+	init(<%if(link){%>'<%- schedule %>'<%}%>);			
 });
 </script>

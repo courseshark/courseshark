@@ -11,7 +11,6 @@
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	})();
-	
 	(function() {
 		if ( String(window.location).indexOf('.dev') !== -1 ) return;
     var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
@@ -19,8 +18,9 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
   })();
 
-</script>
+ !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 
+</script>
 
 	<script type="text/javascript" src="/scripts/lib/jquery.min.js"></script>
 	<script type="text/javascript" src="/scripts/lib/jquery-ui.min.js"></script>

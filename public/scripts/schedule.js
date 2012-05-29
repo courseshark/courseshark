@@ -429,63 +429,38 @@ Schedule.prototype.testConflictsSync = function (schedule, section, ignore_secti
 	return false;
 }
 Schedule.prototype._generateIcs = function(){
-	var events, now, data, days, timeCombine, timeCombineTime, start, end, endParts, startParts, k
+	var events, now, data, days, timeCombine, timeCombineTime, start, end, k
 	days = {'monday':'MO','tuesday':'TU','wednesday':'WE','thursday':'TH','friday':'FR','saturday':'SA','sunday':'SU'}
 	events = []
-	endParts = term.endDate.split('-')
-	startParts = term.startDate.split('-')
-
 	for ( var i=0, section; (section=this['sections'][i]) !== undefined; i++ ){
 		evnt = { name: section['major_abbr']+' '+section['course_number'], daysets: [] }
 		timeCombine = {}
 		timeCombineTime = {}
 		for ( var j=0, ts; (ts=section['timeslots'][j]) !== undefined; j++ ){
-			k = ''+ts.start_hour+"-"+ts.start_minute+"-"+ts.end_hour+"-"+ts.end_minute;
-			start = new Date(parseInt(startParts[0],10), parseInt(startParts[1],10)-1, parseInt(startParts[2],10), ts.start_hour, ts.start_minute, 0)
-			end = new Date(parseInt(startParts[0],10), parseInt(startParts[1],10)-1, parseInt(startParts[2],10), ts.end_hour, ts.end_minute, 0)
+			startString = ''+dateFormat(ts.startTime, "yyyymmdd")+'T'+dateFormat(ts.startTime, "HHMMss")
+			endString = ''+dateFormat(ts.endTime, "yyyymmdd")+'T'+dateFormat(ts.endTime, "HHMMss")
+			k = startString+'---'+endString
 			if (!timeCombine[k]){
 				timeCombine[k] = [];
-				timeCombineTime[k] = { end: ''+dateFormat(end, "yyyymmdd")+'T'+dateFormat(end, "HHMMss"), location: ''+ts.location.building+' '+ts.location.room }
+				timeCombineTime[k] = {
+						start: startString
+					,	end: endString
+					, location: ''+ts.location
+					, endDate: ''+dateFormat(ts.endDate, "yyyymmdd")+'T'+dateFormat(ts.endTime, "HHMMss")
+					}
 			}
-			timeCombine[k].push(days[ts.day])
+			timeCombine[k] = ts.days.map(function(v,i){ return days[v]; })
 		}
 		for ( var timeStr in timeCombine ){
-			if ( typeof(timeStr) !== 'string'){
-				continue;
-			}
-			weekOffset = 7;
-			for ( j=0, _len = timeCombine[timeStr].length; j<_len; j++){
-				d = timeCombine[timeStr][j];
-				if ( d === 'MO' ){
-					weekOffset = Math.min(weekOffset, 0);
-				}else if ( d === 'TU' ){
-					weekOffset = Math.min(weekOffset, 1);
-				}
-				else if ( d === 'WE' ){
-					weekOffset = Math.min(weekOffset, 2);
-				}
-				else if ( d === 'TH' ){
-					weekOffset = Math.min(weekOffset, 3);
-				}
-				else if ( d === 'FR' ){
-					weekOffset = Math.min(weekOffset, 4);
-				}
-			}
-			partsSplit = timeStr.split('-');
-			ts = {start_hour: parseInt(partsSplit[0],10), start_minute: parseInt(partsSplit[1],10) }
-			start = new Date(parseInt(startParts[0],10), parseInt(startParts[1],10)-1, parseInt(startParts[2],10)+weekOffset, ts.start_hour, ts.start_minute, 0)
-			timeCombineTime[timeStr].start = ''+dateFormat(start, "yyyymmdd")+'T'+dateFormat(start, "HHMMss")
 			evnt['daysets'].push( $.extend(timeCombineTime[timeStr], {days: timeCombine[timeStr].join(',')}) )
 		}
+		console.log(evnt)
 		events.push(evnt);
 	}
 	now = new Date();
-	termEndMonth = parseInt(endParts[1],10)-1===0?12:parseInt(endParts[1],10)-1;
-	termEnd = new Date(parseInt(endParts[0],10), termEndMonth, parseInt(endParts[2],10), 23, 59, 59, 999);
 	data = { name: this.name
 		, timezone: 'America/New_York'
 		, now: (''+dateFormat(now, "yyyymmdd")+'T'+dateFormat(now, "HHMMss"))
-		, termEnd: (''+dateFormat(termEnd, "yyyymmdd")+'T'+dateFormat(termEnd, "HHMMss"))
 		, events: events
 		, user: 'contact@courseshark.com'
 	};
@@ -581,7 +556,7 @@ function init(passed){
 			
 	}else{
 		if ( typeof(passed) === 'string' ){
-			passed = JSON.decode(passed)
+			passed = JSON.parse(passed)
 		}
 		schedule = Schedule.fromObj(passed);
 		term = schedule.term;
@@ -661,6 +636,7 @@ function addSectionToCalendar(section, scheduleId){
 
 		slot.startTime = new Date(slot.startTime)
 		slot.endTime = new Date(slot.endTime)
+		slot.endDate = new Date(slot.endDate)
 
 		if ( $('.option.'+section.id+(isFriendsSection?'.friend':'')+'#'+section.id+'-'+t).length ){
 			continue;

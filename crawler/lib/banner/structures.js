@@ -118,6 +118,8 @@
 		this.type = args[3]
 		this.location = args[4]
 		this.instructor = args[5]
+		this.endDate = args[6]
+
 	}
 	Timeslot.createFromInfo = function(details){
 		timesString = details[1]
@@ -142,7 +144,7 @@
 				startDate.setDate(startDate.getDate()+1)
 			}
 		}
-
+		endDate = new Date(dateParts[1])
 
 		// Function to get am/pm to 0-23 hour format
 		function toHour(time){
@@ -179,7 +181,7 @@
 		// Instructor String
 		instructor = instructorString.replace(/\s*\([pP]\)/, '')
 
-		return new Timeslot({0:days, 1:startTime, 2:endTime, 3:type, 4:locationString, 5:instructor})
+		return new Timeslot({0:days, 1:startTime, 2:endTime, 3:type, 4:locationString, 5:instructor, 6:endDate})
 	}
 
 

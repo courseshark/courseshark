@@ -14,6 +14,7 @@ TimeslotSchema = new Schema({
 		days: [ { type: String } ]
 	,	startTime: { type: Date }
 	,	endTime: { type: Date }
+	, endDate: {type: Date}
 	,	type: { type: String }
 	, location: { type: String }
 	, instructor: { type: String }
