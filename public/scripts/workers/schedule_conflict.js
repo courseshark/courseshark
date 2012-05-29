@@ -13,27 +13,26 @@ self.onmessage = function (event) {
 	self.postMessage(JSON.stringify(res));
 };
 
+array_diff = function(o,a) {
+	return o.filter(function(e) {return !(a.indexOf(e) > -1)})
+};
+
 
 function testConflicts(schedule, section, ignore_section){
 	if ( !schedule.sections.length )
 		return false;
-		
-	for ( i in schedule.sections ){
+	for ( var i in schedule.sections ){
 		ss = schedule.sections[i]
 		if ( !ss || !section || ss.id == section.id || (ignore_section && ss.id == ignore_section.id))
 			continue;
-		for ( t in ss.timeslots ){
+		for ( var t=0,tlen=ss.timeslots.length; t<tlen; t++ ){
 			ts = ss.timeslots[t];
-			st = parseInt(ts.start_hour*60)+parseInt(ts.start_minute);
-			et = parseInt(ts.end_hour*60)+parseInt(ts.end_minute);
-			for( _t in section.timeslots ){
+			for( var _t=0,_tlen=section.timeslots.length; _t<_tlen; _t++ ){
 				_ts = section.timeslots[_t];
-				_st = parseInt(_ts.start_hour)*60+parseInt(_ts.start_minute);
-				_et = parseInt(_ts.end_hour)*60+parseInt(_ts.end_minute);
-				if ( _ts.day == ts.day ){
-				 	if ( _st <= et && _et >= st )
+				if ( array_diff(_ts.days,ts.days).length || array_diff(ts.days,_ts.days).length ){
+					if ( _ts.startTime <= ts.endTime && _ts.endTime >= ts.startTime )
 						return true;
-					else if ( st <= _et && et >= _st )
+					else if ( ts.startTime <= _ts.endTime && ts.endTime >= _ts.startTime )
 						return true;
 				}
 			}

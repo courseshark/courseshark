@@ -1,3 +1,5 @@
 *.coffee
 *.log
 *.ejs
+public/scripts/*-courseshark.js
+public/styles/*-courseshark.css

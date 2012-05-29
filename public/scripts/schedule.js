@@ -15,6 +15,10 @@ var term = {}
 		, majors_updating = {}
 		, tooltip_data = {}
 
+array_diff = function(o, a) {
+	return o.filter(function(e) {return !(a.indexOf(e) > -1)})
+};
+
 
 function loadSeatData(id, child){
 /*
@@ -59,7 +63,7 @@ function dl_seat_info(id, child){
 	
 	if (Modernizr.webworkers) {
 		if ( !seat_workers[seat_workers_i] ){
-			seat_workers[seat_workers_i] = new Worker('/scripts/workers/seat_load.0.js');
+			seat_workers[seat_workers_i] = new Worker('/scripts/workers/seat_load.js');
 			
 			seat_workers[seat_workers_i].onmessage = function(event){
 				var s = JSON.parse(event.data);
@@ -303,8 +307,6 @@ Schedule.prototype.show = function(){
 		for ( t=0; t<times.length; $(times[t]).show(),$(times[t]).hasClass('tbd-listing')?$('#tbd-container').show():{}, t++){}
 		addCourseToList(section.course, section.id)
 	}
-	updateScheduleConflicts();
-	this.updateHours();
 	return this;
 }
 Schedule.prototype.addSection = function(section){
@@ -374,7 +376,7 @@ Schedule.prototype.updateHours = function(){
 Schedule.prototype.testConflicts = function(section){
 	if (Modernizr.webworkers) {
 		if ( !conflict_worker ){
-			conflict_worker = new Worker('/scripts/workers/schedule_conflict.1.js');
+			conflict_worker = new Worker('/scripts/workers/schedule_conflict.js');
 			conflict_worker.onmessage = function(event){
 				var res = JSON.parse(event.data);
 				if(res.conflicts && res.section){
@@ -407,20 +409,16 @@ Schedule.prototype.testConflictsSync = function (schedule, section, ignore_secti
 		return false;
 	for ( var i in schedule.sections ){
 		ss = schedule.sections[i]
-		if ( ss.id == section.id || (ignore_section && ss.id == ignore_section.id))
+		if ( !ss || !section || ss.id == section.id || (ignore_section && ss.id == ignore_section.id))
 			continue;
-		for ( var t in ss.timeslots ){
+		for ( var t=0,tlen=ss.timeslots.length; t<tlen; t++ ){
 			ts = ss.timeslots[t];
-			st = parseInt(ts.start_hour*60, 10)+parseInt(ts.start_minute, 10);
-			et = parseInt(ts.end_hour*60, 10)+parseInt(ts.end_minute, 10);
-			for( var _t in section.timeslots ){
+			for( var _t=0,_tlen=section.timeslots.length; _t<_tlen; _t++ ){
 				_ts = section.timeslots[_t];
-				_st = parseInt(_ts.start_hour, 10)*60+parseInt(_ts.start_minute, 10);
-				_et = parseInt(_ts.end_hour, 10)*60+parseInt(_ts.end_minute, 10);
-				if ( _ts.day == ts.day ){
-					if ( _st <= et && _et >= st )
+				if ( array_diff(_ts.days,ts.days).length || array_diff(ts.days,_ts.days).length ){
+					if ( _ts.startTime <= ts.endTime && _ts.endTime >= ts.startTime )
 						return true;
-					else if ( st <= _et && et >= _st )
+					else if ( ts.startTime <= _ts.endTime && ts.endTime >= _ts.startTime )
 						return true;
 				}
 			}
@@ -737,15 +735,10 @@ function addSectionToCourseList($container, section, selectedSection){
 	if ( section.timeslots[0] === undefined ){
 		tbd_class = true;
 	}
-	else if ( section.timeslots[0].day == 'TBA' ){
+	else if ( section.timeslots[0].day === 'TBA' || section.timeslots[0].day === null){
 		tbd_class = true;
 	}
-	// else if ( section.timeslots[0].start_minute === '' && section.timeslots[0].start_hour === '' ) {
-	// 	tbd_class = true;
-	// }
-	// else if ( section.timeslots[0].end_minute === '' && section.timeslots[0].end_hour === '' ) {
-	// 	tbd_class = true;
-	// }
+
 	section.tbd_class = tbd_class;
 	
 	sstemplate = $('#template-section-selector').html();
@@ -761,15 +754,13 @@ function addSectionToCourseList($container, section, selectedSection){
 	
 	if ( section.id === selectedSection ){
 		$sectionOption.addClass('selected').data('selected', true);
+		schedule.testConflicts(section);
 	}
 	
 	//plotGpaOnCanvas($('canvas#gpa-for-'+section.id), section.gpa);
 	
 	if ( !selectedSection ){
 		loadSeatData(section.id);
-	}
-	if ( section && window.schedule ){
-		window.schedule.testConflicts(section);
 	}
 	
 	if ( section.has_children && section.children && section.children[0].id && parseInt(section.children[0].id, 10) > 0){
@@ -780,11 +771,9 @@ function addSectionToCourseList($container, section, selectedSection){
 			addSectionToCalendar(section.children[c]);
 		}
 	}
-			
+	updateScheduleConflicts();
+	schedule.updateHours();
 }
-
-
-
 
 
 function setupTooltip(section){
@@ -883,7 +872,7 @@ function unHilightSection(id){
 function updateScheduleConflicts(){
 	hide_schedule_conflict();
 	window.s_c = false;
-	$('.section-option').each(function(){
+	$('[rel="section-option"]').each(function(){
 		schedule.testConflicts($(this).data('section'));
 	});
 }
