@@ -33,10 +33,6 @@ var gatech = module.exports = everySchool.submodule('gatech')
 		.step('storeResults')
 		.step('closeDB')
 
-	.howto('updateSection')
-		.step('sectionDetails')
-			.accepts('term section')
-
 	.configurable('saveSelf')
 	.saveSelf(function(){
 		var fs = require('fs')
@@ -168,3 +164,32 @@ var gatech = module.exports = everySchool.submodule('gatech')
 			emitter.emit('doneLoadingDept', self.loadDepartmentSectionsCount)
 		})
 	})
+
+
+	.configurable('updateSection')
+	.updateSection(function(section, term, callback){
+		var self = this
+		self.dl.downloadSectionDetails(section, term, function(window, html){
+			var $ = window.$, $table, $sectionHead, $sectionDetails, $sectionDetailsContainer, $sectionDetailsList
+			$numbers = $('.dddefault').filter(function(){return (/^[0-9\-]+$/).test($(this).text())})
+			console.log($numbers.length)
+			section.seatsTotal = parseInt($numbers.eq(0).text(), 10)
+			avail = $numbers.eq(1).text()
+			section.seatsAvailable = remain = parseInt($numbers.eq(2).text(),10)
+			if ( $numbers.length === 6 ){
+				section.waitSeatsTotal = parseInt($numbers.eq(3).text(), 10)
+				waitAvail = $numbers.eq(4).text()
+				section.waitSeatsAvailable = waitRemain = parseInt($numbers.eq(5).text(),10)
+			}
+			section.updated = new Date()
+			section.save(function(err){
+				callback(err, section)
+			});
+		})
+	})
+
+
+
+
+
+

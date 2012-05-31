@@ -5,6 +5,7 @@
 	, querystring = require('querystring')
 	, jsdom = require('jsdom')
 	, fs = require('fs')
+	, url =  require('url')
 	, jq = fs.readFileSync(__dirname + '/jquery-1.7.min.js').toString()
 	, school = ''
 
@@ -23,10 +24,14 @@
 			secureOptions: require('constants').SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS
 		});
 		options.method = options.method!==undefined ? String(options.method).toUpperCase() : "GET"
+		console.log(typeof(options.data), options.data, querystring.stringify(options.data))
 		options.data = options.data!==undefined ? querystring.stringify(options.data) : undefined
 		isPostRequest = (options.data !== undefined && options.method === "POST")
 		options.headers = isPostRequest ? {'Content-Type': 'application/x-www-form-urlencoded','Content-Length': options.data.length } : options.headers
 		
+		if ( !isPostRequest && options.data.length ){
+			options.path += '?'+options.data
+		}
 		// Create the request
 		req = https.request(options, function(res){
 			var buffer = ''
@@ -106,9 +111,21 @@
 	}
 
 
+	function downloadSectionDetails(section, term, callback){
+		var data, options
+		data = {
+				term_in: ''+term.number
+			,	crn_in: ''+section.number
+		}
+		console.log('data:', data)
+		options = {host: school.url, path: school.paths.details, method: 'GET', data: data}
+		download(options, callback)
+	}
+
 	ex.init = init
 	ex.download = download
 	ex.downloadDepartments = downloadDepartments
 	ex.downloadSections = downloadSections
+	ex.downloadSectionDetails = downloadSectionDetails
 	
 })(exports);

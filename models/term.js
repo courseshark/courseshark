@@ -17,7 +17,7 @@ TermSchema = new Schema({
 	,	number: { type: Number, index: true }
 	, startDate: { type: Date }
 	, endDate: { type: Date }
-	, school: { type: Schema.ObjectId, index: true }
+	, school: { type: Schema.ObjectId, ref: 'School', index: true }
 });
 
 TermSchema.virtual('id')

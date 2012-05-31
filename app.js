@@ -6,8 +6,11 @@ var	express = require('express')
 		, utils = require('./lib/utils')
 		, app = express.createServer()
 		, port = (typeof process !== "undefined" && process !== null ? (_ref2 = process.env) !== null ? _ref2.PORT : undefined : undefined) || 80
+		, sio = require('socket.io')
+		, io = sio.listen(app)
 
-app.config = config;
+app.config = config
+app.io = io
 
 // Database
 mongoose = require('mongoose')
@@ -36,7 +39,6 @@ controller_files = fs.readdirSync(controller_loc)
 controller_files.forEach( function (file) {
 	require(controller_loc + '/' + file)(app)
 })
-
 
 require('./build').build(app);
 

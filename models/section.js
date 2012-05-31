@@ -21,6 +21,8 @@ SectionSchema = new Schema({
 	, credits: { type: String }
 	, seatsAvailable: { type: Number }
 	, seatsTotal: { type: Number }
+	, waitSeatsAvailable: { type: Number }
+	, waitSeatsTotal: { type: Number }
 	, timeslots: [ TimeslotSchema ]
 	, deleted: { type: Boolean, 'default': false }
 	, updated: { type: Date, 'default': Date.now }

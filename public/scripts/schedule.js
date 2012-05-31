@@ -14,160 +14,26 @@ var term = {}
 		, conflict_worker = 0
 		, majors_updating = {}
 		, tooltip_data = {}
+		, seats = io.connect('/seats')
 
 array_diff = function(o, a) {
 	return o.filter(function(e) {return !(a.indexOf(e) > -1)})
 };
 
-
-function loadSeatData(id, child){
-/*
-	if ( school == 3 ) {
-		sel = '#'+id+'[rel="section-option"]';
-		console.log(sel);
-		if ( child )
-			major = $(sel).parent().parent().parent().children('.course-title').html().split(' ')[0];
-		else
-			major = $(sel).parent().parent().children('.course-title').html().split(' ')[0];
-
-		if ( majors_updating[major] === undefined ){
-			majors_updating[major] = [];
-			dl_seat_info(id, child);
-		}else if ( majors_updating[major] === true ){
-			dl_seat_info(id, child);
-		}else{
-			majors_updating[major].push([id,child]);
-			return;
-		}
-	}else{
-		dl_seat_info(id, child);
-	}
-*/
-}
-
-
-function dl_seat_info(id, child){
-		
-	var sel = '[rel="section-option"]#'+id;
-	if ( !$(sel+' > .section-seats').hasClass('loading') )
+seats.on('result', function(data){
+	var id = data.id
+	$sel = $('[rel="section-option"]#'+id+' .section-seats')
+	if ( $sel.length === 0 ){
 		return;
-	
-	/* if ( child )
-	/	major = $(sel).parent().parent().parent().children('.course-title').html().split(' ')[0];
-	/	else
-	/	major = $(sel).parent().parent().children('.course-title').html().split(' ')[0];
-	*/
-	major = $(sel).data('section');
-	major = section.major_abbr;
-	
-	
-	if (Modernizr.webworkers) {
-		if ( !seat_workers[seat_workers_i] ){
-			seat_workers[seat_workers_i] = new Worker('/scripts/workers/seat_load.js');
-			
-			seat_workers[seat_workers_i].onmessage = function(event){
-				var s = JSON.parse(event.data);
-				s.sel = '[rel="section-option"]#'+s.id;
-				$(s.sel+' > .section-seats').removeClass('loading');
-				$(s.sel+' > .section-seats span.remaining').html(s.available_seats);
-				$(s.sel+' > .section-seats span.total').html(s.total_seats);
-				if ( parseInt(s.available_seats, 10) <= 0 ){
-					id = s.id;
-					var caff = window.tmpl($('#template-caffeine-bar').html(),{id:id});
-					$(s.sel).append(caff);
-				}
-				
-				
-				if (  majors_updating[major] !== undefined &&  majors_updating[major] !== true ){
-					queued_section = majors_updating[major].shift();
-					while ( queued_section !== undefined ){
-						dl_seat_info(queued_section[0], queued_section[1]);
-						queued_section = ((mu = majors_updating[major]) ? mu.shift() : undefined);
-					}
-					majors_updating[major] = true;
-				}
-				
-			};
-			seat_workers[seat_workers_i].onerror = function(event){}
-			
-		}
-		
-		msg = {};
-		msg.id = id;
-		msg.child = child;
-		msg.school = school;
-		
-		seat_workers[seat_workers_i].postMessage(JSON.stringify(msg));
-		seat_workers_i = (seat_workers_i+1)%seat_workers_cnt;
-		
-	}else{
-		$.ajax({
-			url:"/schedule/section/"+id+"/seats",
-			async: true,
-			dataType: 'json',
-			success: function(s){
-				
-				$(sel+' > .section-seats').removeClass('loading');
-				$(sel+' > .section-seats span.remaining').html(s.available_seats);
-				$(sel+' > .section-seats span.total').html(s.total_seats)
-				if ( parseInt(s.available_seats, 10) <= 0 ){
-					var caff = window.tmpl($('#template-caffeine-bar').html(),{id:id});
-					$(sel).append(caff);
-				}
-				
-				if (  majors_updating[major] !== undefined &&  majors_updating[major] !== true ){
-					queued_section = majors_updating[major].shift();
-					while ( queued_section !== undefined ){
-						dl_seat_info(queued_section[0], queued_section[1]);
-						queued_section = majors_updating[major].shift();
-					}
-					majors_updating[major] = true;
-				}
-			}
-			});
 	}
+	$sel.removeClass('loading')
+	$sel.children('.remaining').html(data.avail)
+	$sel.children('.total').html(data.total)
+})
+
+function loadSeatData(id){
+	seats.emit('update', id)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
