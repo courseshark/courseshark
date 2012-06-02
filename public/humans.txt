@@ -1,9 +1,13 @@
 /* TEAM */
-	Designer/Developer:James Rundquist
+	Founder:James Rundquist
 	Contact: jrundquist [at] courseshark.com
 	Twitter: @jamesrundquist
 
-	Marketing/Upcoming Developer:Greg Cobb
+	CoFounder:Anastasia Marchenkova
+	Contact: anastasia [at] courseshark.com
+	Twitter: @amarchenkova
+
+	CoFounder:Greg Cobb
 	Contact: greg [at] courseshark.com
 	Twitter: @gregmcobb 
 
