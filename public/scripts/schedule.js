@@ -15,10 +15,7 @@ var term = {}
 		, majors_updating = {}
 		, tooltip_data = {}
 		, seats = io.connect('/seats')
-
-array_diff = function(o, a) {
-	return o.filter(function(e) {return !(a.indexOf(e) > -1)})
-};
+		,	array_diff = function(o,a){return o.filter(function(e){return(!(a.indexOf(e)>-1))})}
 
 seats.on('result', function(data){
 	var id = data.id

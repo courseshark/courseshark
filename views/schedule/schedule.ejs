@@ -71,10 +71,10 @@
 		<dl>
 			<dt>Seats</dt>
 			<dd>
-				<$ if ( !section['seats_available'] && section['seats_total'] ){ $>
-					All <$=section.seats_total$> seats are taken
-				<$ } else if ( section['seats_total'] ) { $>
-					<$=section.seats_available$> available of <$=section.seats_total$>
+				<$ if ( !section['seatsAvailable'] && section['seatsTotal'] ){ $>
+					All <$=section.seatsTotal$> seats are taken
+				<$ } else if ( section['seatsTotal'] ) { $>
+					<$=section.seatsAvailable$> available of <$=section.seatsTotal$>
 				<$ } else { $>
 					Unavailable
 				<$ } $>
