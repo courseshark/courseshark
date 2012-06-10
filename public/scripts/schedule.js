@@ -124,7 +124,7 @@ Schedule.prototype.save = function(skipServer){
 			type:'PUT',
 			dataType:'json',
 			success:function(t){
-				show_timed_message("Schedule Saved");
+				show_timed_message("saved");
 			}
 		});
 	}

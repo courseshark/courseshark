@@ -1,0 +1,225 @@
+<script type="text/plain" id="template-notification">
+	<div class="notification row <$=notification.deleted?'canceled':''$>" rel="notification" data-id="<$=notification._id$>">
+		<div class="row">
+			<div class="span4">
+				<h1>
+					<$= notification.section.department.abbr$> <$= notification.section.course.number$>
+				</h1>
+			</div>
+			<div class="span2">
+				<h3>
+				<$ if( notification.deleted ){	$>
+					Canceled
+				<$ }else if( notification.section.seatsAvailable > 0 ){$>
+					<$= notification.section.seatsAvailable $> Seats Available
+				<$ }else {$>
+					Checking
+				<$ } $>
+				</h3>
+			</div>
+			<div class="span2">
+				<div class="btn-group">
+					<a class="btn btn-primary">
+						<i class="icon-pencil icon-white"></i> Edit
+					</a>
+					<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#" ><span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#" rel="cancel-notification"><i class="icon-ban-circle"></i> Cancel</a></li>
+						<li><a href="#" rel="delete-notification"><i class="icon-trash"></i> Delete</a></li>
+					</ul>
+				</div>
+			</div>
+		</div> <!-- /.row -->
+		<div class="row">
+			<div class="span4">
+				<p>
+					When is it? 
+				</p>
+				<p>Prof and Location</p>
+			</div>
+			<div class="span4">
+				<h4>
+				<$ if ( notification.deleted ){ $>
+					<a href="#" rel="activate-notification" title="Restore to Active status">Click to reactivate<a>
+				<$ }else{ $>
+					Last Update: <$= notification.section.modified$> 
+				<$ } $>
+				</h4>
+			</div>
+		</div>
+		<div class="well notification-edit" rel="edit-form" data-id="<$=notification._id$>">
+			<form class="form-inline">
+					<label for="email">Email</label>
+					<input type="email" name="email" class="span2" value="<$=notification.email$>" />
+					<label for="phone">Phone</label>
+					<input type="tel" name="phone" class="span2" value="<$=notification.sms$>" />
+					<button type="button" class="btn btn-primary" rel="update-notification" >Save</button>
+			</form>
+		</div>
+	</div><!-- /.notification -->
+</script>
+
+<div class="container">
+	<div class="row">
+		<div class="span8 offset2 well">
+			<h1>Single Seat Notification</h1>
+			<p>Receive a notification when a seat opens in a full class. Optionally recieve a notification when a spot opens on the class's waiting list.</p>
+			<div class="row">
+				<div class="span6">
+					<h3>$1.99<small>/course</small></h3>
+				</div>
+				<div class="span2">
+					<button class="btn btn-success btn-large right" onclick="purchase('credit');">Get One!</button>
+				</div>
+			</div>
+		</div>
+	</div><!-- /.row -->
+</div>
+
+<div class="container" id="create-notification-form">
+	<div class="row">
+
+		<!-- Create form -->
+		<div class="span8 offset2">
+			<form action="/notifications" method="post" name="new-notification" id="new-notification-form">
+				<input type="hidden" name="_method" value="post" />
+				<div class="row">
+					<fieldset class="span3">
+						<legend>Step 1 <small>Select A Course</small></legend>
+					    <div class="control-group">
+				      <label class="control-label" for="term_id">Term</label>
+				      <div class="controls">
+								<select name="term_id" id="term_id" autocomplete="on" onchange="$('#major_id').change()" required/>
+									<% for(t in terms){ term = terms[t] %>
+										<option value="<%= term._id %>"><%=term.season%> <%=term.year%></option>
+									<%}%>
+								</select>
+				      </div>
+				      <label class="control-label" for="major_id">Major</label>
+				      <div class="controls">
+								<select name="major_id" id="major_id" autocomplete="off"/>
+									<option value=""></option>
+								</select>
+				      </div>
+				      <label class="control-label" for="course_id">Course</label>
+				      <div class="controls">
+								<select name="course_id" id="course_id" autocomplete="off" />
+									<option value=""></option>
+								</select>
+				      </div>
+							<label class="control-label" for="section_id">Section</label>
+				      <div class="controls">
+								<select name="section_id" id="section_id" autocomplete="off" />
+									<option value=""></option>
+								</select>
+				      </div>
+							<div class="v-divide"><span>OR</span></div>
+							<div class="right-col">					
+								<label for="manual_section_id">Course Registration Number</label>
+								<input type="text" name="manual_section_id" placeholder="CRN or Course ID" value=""/>
+							</div>
+				    </div>
+					</fieldset>
+					
+					<fieldset class="span3">
+						<legend>Step 2 <small>Notification Methods</small></legend>
+						<div class="control-group">
+				      <label class="control-label" for="email">Email <span class="label">optional</span></label>
+				      <div class="controls">
+								<input type="email" name="email" placeholder="you@domain.com" value="<%=user.email?user.email:''%>"/>
+							</div>
+						</div>
+						<div class="control-group">
+				      <label class="control-label" for="phone">SMS Number <span class="label">optional</span></label>
+				      <div class="controls">
+								<input type="tel" name="phone" placeholder="xxx.xxx.xxxx"/>
+							</div>
+						</div>
+					</fieldset>
+					
+					<fieldset class="span2">
+						<legend>Step 3 <small>Settings</small></legend>
+						<div class="control-group">
+				      <label class="control-label" for="notification-on">Notified when</label>
+				      <div class="controls">
+								<label class="checkbox">
+									<input type="checkbox" name="notification-on" value="seat" checked disabled>
+									Seat opens in class.
+								</label>
+								<label class="checkbox">
+									<input type="checkbox" name="notification-on" value="waitlist">
+									Spot opens on waiting list.
+								</label>
+							</div>
+						</div>
+						<div class="form-actions">
+							<button type="button" class="btn btn-large btn-primary" id="submit-button">
+								<i class="icon-shopping-cart icon-white"></i>
+								Create
+							</button>
+						</div>
+					</fieldset>
+				</div>
+			</form>
+		</div>
+	</div> <!-- /.row -->
+
+
+
+	<div class="row">
+		<div class="span8 offset3">
+			<div class="" id="notifications-list">
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+n_io = io.connect('/notifications')
+sp = new SectionPicker({
+		term: $('#term_id')
+	, department: $('#major_id')
+	, course: $('#course_id')
+	, section: $('#section_id')
+	, options: {empty: true, seperateName: false}
+});
+
+
+var notifications = new Notifications($('#notifications-list'), $('#template-notification'));
+notifications.show();
+
+
+
+$('#submit-button').click(function(){
+	var info = {
+		section: $('select[name="section_id"]').val()||$('input[name="manual_section_id"]').val()
+		,	email: $('input[name="email"]').val()
+		,	phone: $('input[name="phone"]').val()
+		,	user: '<%=user.id%>'
+		,	school: '<%=school.id%>'
+		, waitlist: !!$('input[name="notification-on"][value="waitlist"]').attr('checked')
+	}
+	
+	n_io.emit('create', info)
+})
+
+n_io.on('payment_needed', function(data){
+	success = function(purchaseAction){
+		purchaseAction.response = purchaseAction.response?purchaseAction.response:{orderId:''};
+		n_io.emit('paid', purchaseAction.response.orderId)
+	}
+	fail = function(purchaseAction){
+		_gaq.push(['_trackEvent', 'PurchaseNotification', 'Abandon', purchaseAction.response.errorType]);
+	}
+	goog.payments.inapp.buy({parameters: {},jwt: data.token, success: success, failure: fail});
+});
+
+n_io.on('activated', function(notification){
+	notifications.add(notification);
+})
+n_io.on('error', function(err){
+	console.error(err);
+})
+
+</script>
+

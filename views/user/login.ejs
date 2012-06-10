@@ -1,0 +1,104 @@
+<div class="row">
+	<div class="span6 offset4">
+		<h1>Login <small>to Course<strong>Shark</strong></small></h1>
+	</div>
+</div>
+
+<div class="row">
+	<div class="span6 offset4">
+	<form id="login" method="post" action="/users/login" class="form-horizontal well">
+		<fieldset>
+			<!-- Email -->
+			<div class="control-group" id="login-email-control">
+				<label class="control-label" for="email">Email</label>
+	      <div class="controls">
+						<input type="email" name="email" id="email" tabindex="1" placeholder="Email Address" class="span4">
+						<p class="help-inline" for="email"></p>
+				</div>
+			</div>
+			<!-- Password -->
+			<div class="control-group" id="login-password-control">
+				<label class="control-label" for="password">Password</label>
+	      <div class="controls">
+					<input type="password" name="password" tabindex="2" id="password"  onKeyUp="if(event.keyCode===13){login_submit();}" placeholder="Password" class="span4">
+					<p class="help-inline"><a id="login-forgot-password" onClick="openDialog('/users/password-recovery');" data-dismiss="modal">Forgot?</a></p>
+					<p class="help-inline" for="password"></p>
+				</div>
+				<div class="controls">
+					<label class="checkbox"><input type="checkbox" name="remember" id="remember" checked="checked" tabindex="3"> Keep me logged in</label>
+				</div>
+			</div>
+			<!-- Alt login --> 
+			<div class="control-group" id="login-oauth-control">
+				<label class="control-label" for="alt">or Login with </label>
+	      <div class="controls">
+					<a href="/auth/facebook" class="btn"><img class="icon-img" src="/images/login/facebook.png" /> Facebook</a>
+					<a href="/auth/google"   class="btn"><img class="icon-img" src="/images/login/google.png" /> Google</a>
+					<a href="/auth/twitter"  class="btn"><img class="icon-img" src="/images/login/twitter.ico" /> Twitter</a>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+	<a href="#" class="btn btn-primary left" onClick="login_submit()">Login</a>
+	</div>
+</div>
+<div class="row">
+	<div class="span6 offset4">
+		<p>Don't have an account? <a class="auth-register" data-dismiss="modal" onClick="openDialog('/signup');">Create one</a></p>
+	</div>
+</div>
+
+
+<script>
+	function login_submit(){
+		$('button#login-button').attr('disabled');
+		$('form#login #login-email-control, form#login #login-password-control').removeClass('error')
+		$('form#login #login-password-control .help-inline[for="email"]').html("")
+		$('form#login #login-password-control .help-inline[for="password"]').html("")
+		if ( $('input#email').val()!=""){
+			if ( $('input#password').val() != ""){
+				console.log({
+						'password':$('input#password').val(),
+						'email':$('input#email').val(),
+						'remember':$('input#remember').val()
+					});
+				$.ajax({
+					url:'/users/login',
+					async:false,
+					data:{
+							'password':$('input#password').val(),
+							'email':$('input#email').val(),
+							'remember':$('input#remember').val()
+						},
+					type:'POST',
+					dataType:'json',
+					success: function(response){
+						if ( response == null ){
+							errorHandler('Unknown response','','Null response from login_submit()');
+							return;
+						}
+						if ( response.success == true ){
+							window.location = response.message;
+						}else{
+							$('form#login #login-email-control, form#login #login-password-control').addClass('error');
+							$('form#login #login-password-control .help-inline[for="password"]').html("Invalid username or password");
+						}
+					},
+					error: function(jqXHR, textStatus, errorThrown){errorHandler(jqXHR,'',errorThrown);}
+				});
+			}
+			else
+			{
+				$('form#login #login-password-control').addClass('error');
+				$('form#login #login-password-control .help-inline[for="password"]').html("Invalid password");
+			}
+		}
+		else
+		{
+			$('form#login .control-group#login-email-control').addClass('error');
+			$('form#login .control-group#login-email-control .help-inline[for="email"]').html("Invalid email");
+		}
+		$('button#login-button').removeAttr('disabled');
+	}
+	
+</script>

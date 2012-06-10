@@ -11,6 +11,8 @@ var	express = require('express')
 
 app.config = config
 app.io = io
+io.set('log level', 1);
+
 
 // Database
 mongoose = require('mongoose')

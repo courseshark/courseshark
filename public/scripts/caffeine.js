@@ -1,9 +1,9 @@
 /**************************************************************
  *
  *   Caffeine Code
- *  
+ *
  *  All the methods specific to the caffine management page
- * 
+ *
  **************************************************************/
 
 function save_caffeine()
@@ -22,12 +22,9 @@ function save_caffeine()
 			_gaq = _gaq || {};
 			_gaq.push(['_trackPageview', '/watcher/save']);			
 			
-				if ( data == true )
-				{					
-					show_timed_message('Saved');
-				}
-				else
-				{
+				if ( data === true ){
+					show_timed_message('saved');
+				}else{
 					show_timed_error('Not saved: Please Try Again');
 				}
 			},

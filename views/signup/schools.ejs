@@ -8,7 +8,7 @@
 	<div class="row">
 		<ul class="thumbnails" id="schools">
 		<% for(var i=0,len=schools.length; i<len; i++){school=schools[i];%>
-			<a href="//<%= school.abbr %>.courseshark.com/schedule" style="text-align:center">
+			<a href="/schools/set/<%= school.abbr %>" style="text-align:center">
 				<li class="span3 thumbnail">
 		    	<img src="/images/schools/<%= school.abbr %>_logo.png" alt="<%= school.name %>" style="margin:0 auto">
 				  <p><%= school.name %></p>

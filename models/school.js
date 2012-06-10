@@ -20,6 +20,7 @@ SchoolSchema = new Schema({
 	,	terms: [TermSchema]
 	,	currentTerm: { type: Schema.ObjectId, ref: 'Term' }
 	,	enabled: { type: Boolean, 'default': true, index: true }
+	, waitlist: { type: Boolean, 'default': false }
 	,	created: { type: Date, 'default': Date.now }
 	,	modified: { type: Date, 'default': Date.now }
 });

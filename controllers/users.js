@@ -1,10 +1,14 @@
-/* 
- * Static site pages, including the main page and about pages 
+/*
+ * Static site pages, including the main page and about pages
  */
 exports = module.exports = function(app){
 	// home
 	app.get('/login', function(req, res){
-		res.render('dialogs/login');
+		if ( req.headers['x-requested-with'] === 'XMLHttpRequest' ){
+			res.render('dialogs/login');
+		}else{
+			res.render('user/login')
+		}
 	})
 	
 	app.post('/login.:format?', function(req, res){
@@ -40,9 +44,31 @@ exports = module.exports = function(app){
 	
 	// Choose School page
 	app.get('/choose-school', function(req, res){
+		console.log(req.header('Referer'))
 		School.find({enabled: true}, function(err, schools){
 			res.render('signup/schools', {schools: schools});
 		});
 	})
 	
+		// Choose School page
+	app.get('/schools/set/:abbr', function(req, res){
+		School.findOne({enabled: true, abbr: req.params.abbr}, function(err, school){
+			if ( err ){
+				res.redirect('/choose-school')
+				return;
+			}
+			console.log(school)
+			url = req.session.schoolNeeded===undefined?'/':req.session.schoolNeeded
+			newDomain = 'http://'+school.abbr+'.'+req.app.config.domain+url
+			res.redirect(newDomain)
+		});
+	})
+
+
+	app.get('/settings', function(req, res){
+		res.render('user/settings', {user: req.user})
+	})
+
+
+
 }

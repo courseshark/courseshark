@@ -6,10 +6,15 @@ exports.boot = module.exports.boot = function(app){
 			request: function (req){ return req; }
 		,	loggedIn: function (req){ return (req.session && req.session.auth ) && (req.session.auth.loggedIn) }
 		,	hasMessages: function (req) {
-				if (!req.session) return false 
+				if (!req.session) return false;
 				return Object.keys(req.session.flash || {}).length }
 		,	messages: require('express-messages-bootstrap')
 		,	base: function (){ return '/' == app.route ? '' : app.route }
 		, revision: function(){return app.settings.revision}
+		, mode: function(){return process.env.ENV_VARIABLE}
+		, numberize: function(number){
+				var r = (''+number).substr(-1,1)
+				return r==='1'?'st':r==='2'?'nd':r==='3'?'rd':'th';
+			}
 	});
 }

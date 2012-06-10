@@ -140,6 +140,11 @@ exports = module.exports = function(app){
 			res.json(terms)
 		})
 	})
+	app.get('/term/:tid/departments', requireSchool, function(req, res){
+		Department.find({school: req. school}, function(err, departments){
+			res.json(departments)
+		})
+	})
 	app.get('/term/:tid/courses/:did', function(req, res){
 		termId = new ObjectId(req.params.tid)
 		departmentId = new ObjectId(req.params.did)
@@ -150,6 +155,12 @@ exports = module.exports = function(app){
 	app.get('/sections/:cid', function(req, res){
 		courseId = new ObjectId(req.params.cid)
 		Section.find({course: courseId }, function(err, sections){
+			res.json(sections)
+		})
+	})
+	app.get('/sections/:cid/full', function(req, res){
+		courseId = new ObjectId(req.params.cid)
+		Section.find({course: courseId, seatsAvailable: 0 }, function(err, sections){
 			res.json(sections)
 		})
 	})
@@ -164,10 +175,10 @@ exports = module.exports = function(app){
 					sectionUpdated = new Date(section.updated)
 					if ( sectionUpdated.getTime() + FIFTEEN_MINUTES < now.getTime() && typeof(section.seatsAvailable) !== undefined ){
 						crawler[term.school.abbr].updateSection(section, term, function(err, section){
-							seats.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal})
+							seats.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal, section: section})
 						})
 					}else{
-						seats.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal})
+						seats.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal, section: section})
 					}
 				})
 			})

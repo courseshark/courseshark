@@ -71,7 +71,7 @@ function compileJS(app){
                   "dialog.js",
                   "micro-template.js",
                   "schedule.js",
-                  "caffeine.js",
+                  "notification.js",
                   "jquery.qtip.min.js",
                   "friendsSearch.js",
                   "social.js",

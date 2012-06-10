@@ -20,12 +20,22 @@
 
  !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 
+ // UserVoice
+  var uvOptions = {};
+  (function() {
+    var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+    uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/tIb1gzaiG6zO90NjfnA.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+  })();
+
 </script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script src="/socket.io/socket.io.js"></script>
 
 <%if ( app.settings.env === 'development' ){ %>
 	<script type="text/javascript" src="/scripts/lib/jquery.min.js"></script>
 	<script type="text/javascript" src="/scripts/lib/jquery-ui.min.js"></script>
+	<script>google.load('payments','1.0',{'packages':['sandbox_config']});</script>
 	<!-- Custom Scripts -->
 	<script type="text/javascript" src="/scripts/modernizr.js"></script>
 	<script type="text/javascript" src="/scripts/master.js"></script>
@@ -33,8 +43,7 @@
 	<script type="text/javascript" src="/scripts/micro-template.js"></script>
 	<script type="text/javascript" src="/scripts/schedule.js"></script>
 	<script type="text/javascript" src="/scripts/social.js"></script>
-	<script type="text/javascript" src="/scripts/caffeine.js"></script>
-	<!-- <script type="text/javascript" src="/scripts/jquery.qtip.min.js"></script> -->
+	<script type="text/javascript" src="/scripts/notification.js"></script>
 	<script type="text/javascript" src="/scripts/jquery.base64.min.js"></script>
 	<script type="text/javascript" src="/scripts/friendsSearch.js"></script>
 	<script type="text/javascript" src="/scripts/dateFormat.js"></script>
@@ -46,5 +55,6 @@
   <script src="/scripts/lib/bootstrap-tooltip.js"></script>
   <script src="/scripts/lib/bootstrap-popover.js"></script>
 <% } else {%>
+	<script>google.load('payments','1.0',{'packages':['production_config']});</script>
 	<script type="text/javascript" src="/scripts/<%-revision%>-courseshark.js"/>
 <% }%>
