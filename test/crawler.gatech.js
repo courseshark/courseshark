@@ -8,10 +8,8 @@
 	console.log('Testing existance of gatech submodule')
 	console.assert(typeof(crawler.gatech) === 'object')
 
-	gt = crawler.gatech
-
 	console.log('Crawling')
-	crawl = gt.crawl('201208')
+	crawl = crawler.gatech.crawl('201208')
 	crawl.on('done', function(d){
 		console.log('GOT DONE EVENT:', d.length)
 	})

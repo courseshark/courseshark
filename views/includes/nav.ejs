@@ -6,7 +6,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</a>
-      <a class="brand" href="/#"><!-- <img src="/images/logo-white.png" height="20"> -->Course<strong>Shark</strong> </a>
+      <a class="brand" href="//<%=domain%>"><!-- <img src="/images/logo-white.png" height="20"> -->Course<strong>Shark</strong> </a>
 			<div class="nav-collapse">
 				<ul class="nav">
 					<li><a href="/">Home</a></li> 
@@ -14,7 +14,10 @@
 					<li><a href="/watcher">SeatWatcher</a></li>
 					<li><a href="http://books.courseshark.com/" target="_blank" onClick="_gaq = _gaq||{};_gaq.push(['_trackPageview', '/books']);">Books</a></li>
 					<li><a href="/about">About</a></li>
-          <li><a href="#" onClick="openDialog('/about/feedback')">Feedback</a></li>
+          <li><a href="javascript:UserVoice.showPopupWidget();" title="Open feedback &amp; support dialog (powered by UserVoice)">Feedback</a></li>
+          <% if (loggedIn && user.admin){ %>
+          <li><a href="//admin.<%=domain%>">Admin</a></li>
+          <% } %>
 				</ul>
 				<ul class="nav pull-right">
 					<% if (loggedIn) { %>

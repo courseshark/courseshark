@@ -17,10 +17,6 @@ var includeSchools = files.map( function (fname) {
 
 for (var i=0, l=includeSchools.length; i < l; i++){
 	var school = includeSchools[i]
-	Object.defineProperty(crawler, school, {
-		value: require('./lib/schools/' + school)
-	});
-	Object.defineProperty(crawler[school], 'mongoose', {
-		value: mongoose
-	})
+	crawler[school] = require('./lib/schools/' + school)
+	crawler[school]['mongoose'] = mongoose
 }

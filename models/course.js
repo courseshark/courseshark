@@ -22,6 +22,9 @@ CourseSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})
 
 CourseSchema.method('addSection', function(section){
+	if ( !section ){
+		return;
+	}
 	for( var i=0, len=this.sections.length; i<len; i++ ){
 		if ( this.sections[i].toHexString() === section['_id'].toHexString() ){
 			return;

@@ -10,7 +10,7 @@ exports = module.exports = function(app){
 	*
 	**/
 	app.get('/schedule', requireSchool, function(req, res){
-		Department.find({school:req.school._id}, {abbr:1, name:1}, function(err, departments){
+		Department.find({school:req.school._id}, {abbr:1, name:1}, {sort:{abbr:1}}, function(err, departments){
 			res.render('schedule/schedule', {departments: departments, link: false, school: req.school._id});
 		})
 	})
@@ -41,7 +41,8 @@ exports = module.exports = function(app){
 			var schedule
 			schedule = new Schedule()
 			schedule.school = req.school._id
-			Term.findOne({_id: req.school.currentTerm._id}, function(err, term){
+			termId = req.school['currentTerm'] ? req.school.currentTerm._id : req.school.terms[req.school.terms.length-1]
+			Term.findOne({_id: termId}, function(err, term){
 				schedule.term = term
 				res.json(schedule)
 			})
@@ -148,7 +149,7 @@ exports = module.exports = function(app){
 	app.get('/term/:tid/courses/:did', function(req, res){
 		termId = new ObjectId(req.params.tid)
 		departmentId = new ObjectId(req.params.did)
-		Course.find({term: termId, department: departmentId }, {number:1, name:1, department:1}).populate('department').run(function(err, courses){
+		Course.find({term: termId, department: departmentId }, {number:1, name:1, department:1}, {sort:{number:1}}).populate('department').run(function(err, courses){
 			res.json(courses)
 		})
 	})
@@ -166,23 +167,25 @@ exports = module.exports = function(app){
 	})
 
 
+
+
+
+
+
+
+
 	seats.on('connection', function (socket) {
 		socket.on('update', function(sectionId){
 			var now = new Date()
 				, FIFTEEN_MINUTES = 1000 * 60 * 15
 			Section.findById(sectionId).populate('course').run(function(err, section){
 				Term.findById(section.course.term).populate('school').run(function(err, term){
-					sectionUpdated = new Date(section.updated)
-					if ( sectionUpdated.getTime() + FIFTEEN_MINUTES < now.getTime() && typeof(section.seatsAvailable) !== undefined ){
-						crawler[term.school.abbr].updateSection(section, term, function(err, section){
-							seats.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal, section: section})
-						})
-					}else{
+					crawler[term.school.abbr].safeUpdateSection(section, FIFTEEN_MINUTES, function(err, section){
 						seats.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal, section: section})
-					}
+					})
 				})
 			})
 		})
-	});
+	})
 
 }

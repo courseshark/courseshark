@@ -1,0 +1,33 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head>
+	<meta charset=utf-8 /> 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale = 1, maximum-scale = 5"/>
+	<title>Admin | CourseShark</title> 
+	<link rel="stylesheet" href="/styles/admin.css" type="text/css" media="all" /> 
+</head>
+<body>
+
+    <%- partial('../includes/nav.ejs') %>
+
+
+	    <div class="container-fluid">
+			<%- messages() %>
+      <div class="row-fluid">
+        <div class="span3">
+          	<%- partial('admin/includes/nav.ejs') %>
+        </div><!--/span-->
+        <div class="span9">
+          	<%- body %>
+        </div><!--/span-->
+      </div><!--/row-->
+      <hr>
+      <footer>
+        	&copy; <%= (new Date()).getFullYear() %> CourseShark.com
+        	<small>rev. <%= revision %></small>
+      </footer>
+    </div><!--/.fluid-container-->
+
+</body>
+</html>

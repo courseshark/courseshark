@@ -45,7 +45,7 @@ exports = module.exports = function(app){
 	// Choose School page
 	app.get('/choose-school', function(req, res){
 		console.log(req.header('Referer'))
-		School.find({enabled: true}, function(err, schools){
+		School.find({enabled: true}, {}, {sort:{abbr:1}}, function(err, schools){
 			res.render('signup/schools', {schools: schools});
 		});
 	})
@@ -57,7 +57,10 @@ exports = module.exports = function(app){
 				res.redirect('/choose-school')
 				return;
 			}
-			console.log(school)
+			if ( req.user && req.user._id ){
+				req.user.school = school
+				req.user.save()
+			}
 			url = req.session.schoolNeeded===undefined?'/':req.session.schoolNeeded
 			newDomain = 'http://'+school.abbr+'.'+req.app.config.domain+url
 			res.redirect(newDomain)

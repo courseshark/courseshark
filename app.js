@@ -41,9 +41,15 @@ controller_files = fs.readdirSync(controller_loc)
 controller_files.forEach( function (file) {
 	require(controller_loc + '/' + file)(app)
 })
-
-require('./build').build(app);
+// Build
+require('./build').build(app)
+// Start the seat watcher
+if ( String(process.argv[2]).toLowerCase()!='no-cron' ){
+	require('./seat-watcher').boot(app)
+}
 
 // Start the app by listening on <port>
 app.listen(port)
-console.log('Express app started on port ' + port);
+
+console.log('CourseShark started on port ' + port);
+

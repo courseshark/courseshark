@@ -42,12 +42,12 @@ function bootApplication(app){
 		app.use(gzippo.compress())
 		
 	});
-	
+
 	everyauth.helpExpress(app);
 
 	app.set('showStackError', false)
 	app.configure('development', function(){
-		app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+		app.use(express.errorHandler({ dumpExceptions: true, showStack: true }))
 	})
 	app.configure('staging', function(){
 		app.enable('view cache')

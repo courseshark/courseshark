@@ -19,6 +19,8 @@ NotificationSchema = new Schema({
 	,	phone: { type: String }
 	, history: [{ type: Number }]
 	, sent: { type: Boolean, 'default': false }
+	, lastSent: {type: Date}
+	, smsInfo: [{ type: String }]
 	, deleted: { type: Boolean, 'default': false }
 	, hidden: { type: Boolean, 'default': false }
 	, school: { type: Schema.ObjectId, ref: 'School' }

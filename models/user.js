@@ -41,7 +41,7 @@ UserSchema.virtual('id')
 	.get( function (){ return this._id.toHexString() } )
 
 UserSchema.virtual('name')
-	.get( function () { return (""+this.fistName+" "+this.lastName).trim() })
+	.get( function () { return (""+this.firstName+(this.lastName?" "+this.lastName:'')).trim() })
 	.set( function (fullName) {
 		p = fullName.split(' ');
 		this.firstName = p[0];

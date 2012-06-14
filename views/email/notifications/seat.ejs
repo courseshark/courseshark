@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>SeatWatcher Alert</title>
+	</head>
+	<body bgcolor="#ffffff"> 
+		<center> 
+		<div style="width:720px; margin:0 auto; text-align:left; background: #adddf1;"> 
+		  <a style="margin: 0 0 0 15px; font-weight: bold; font-family:'Arial',sans-serif; font-size:18px; height: 18px; color: #fff;" href="#">CourseShark.com</a> 
+		  <div style="width:640px; margin: 15px auto; background: #fff; padding: 5px 10px;"> 
+		    <p>Hey <%= user.name %></p> 
+		    <p>This is an automated message from <%= domain %> to inform you that the section of <br /><span style="font-weight:bold;"><%=sectionName%></span><br />you were watching now has <span style="font-size:18px;font-weight:bold;"><%=seats%> <%=(seats==1?"seat":"seats")%></span> available as of <%=now%></p> 
+		    <p>You will continue to receive these notifications via email until you inform us that you no longer need them. You may do this by canceling the notification on the Seat Watcher page, or by clicking the link below.</p> 
+		    <p><a href="<%=removeLink%>" target="_blank">Unsubscribe</a></p> 
+		  </div> 
+		  <div style="width:690px margin:0 auto; text-align:left; background: #eee; padding: 10px 30px; color:#555;"> 
+		    <p style="font-size:10px">You are receiving this message because you have requested to be notified at this address when the CourseShark systems detect an open seat in the class listed above.</p> 
+		    <p style="font-size:10px">If you received this message in error, or would not longer like to be notified of open seats in this section, please <a href="<%=removeLink%>" target="_blank">click here</a></p> 
+		    <p style="font-size:10px">CourseShark.com can be contacted via email at contact@courseshark.com. Feel free to contact us about any matters and we shall do our best to assist you.</p> 
+		  </div>
+		</center>
+	</body> 
+</html>

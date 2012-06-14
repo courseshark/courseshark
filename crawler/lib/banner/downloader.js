@@ -24,12 +24,11 @@
 			secureOptions: require('constants').SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS
 		});
 		options.method = options.method!==undefined ? String(options.method).toUpperCase() : "GET"
-		console.log(typeof(options.data), options.data, querystring.stringify(options.data))
-		options.data = options.data!==undefined ? querystring.stringify(options.data) : undefined
-		isPostRequest = (options.data !== undefined && options.method === "POST")
+		options.data = options.data ? querystring.stringify(options.data) : options.data
+		isPostRequest = (options.method === "POST")
 		options.headers = isPostRequest ? {'Content-Type': 'application/x-www-form-urlencoded','Content-Length': options.data.length } : options.headers
 		
-		if ( !isPostRequest && options.data.length ){
+		if ( !isPostRequest && options.data ){
 			options.path += '?'+options.data
 		}
 		// Create the request
@@ -117,7 +116,6 @@
 				term_in: ''+term.number
 			,	crn_in: ''+section.number
 		}
-		console.log('data:', data)
 		options = {host: school.url, path: school.paths.details, method: 'GET', data: data}
 		download(options, callback)
 	}

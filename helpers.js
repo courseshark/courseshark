@@ -9,12 +9,10 @@ exports.boot = module.exports.boot = function(app){
 				if (!req.session) return false;
 				return Object.keys(req.session.flash || {}).length }
 		,	messages: require('express-messages-bootstrap')
+		, domain: function(){ return app.config.domain }
+		, path: function(req){ return req['route']?req.route['path']:'' }
 		,	base: function (){ return '/' == app.route ? '' : app.route }
 		, revision: function(){return app.settings.revision}
 		, mode: function(){return process.env.ENV_VARIABLE}
-		, numberize: function(number){
-				var r = (''+number).substr(-1,1)
-				return r==='1'?'st':r==='2'?'nd':r==='3'?'rd':'th';
-			}
 	});
 }

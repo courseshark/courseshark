@@ -1,5 +1,6 @@
 var EventEmitter = require("events").EventEmitter
 	,	fs = require('fs')
+	, clone =  require('../util').clone
 
 
 var everyschool = module.exports = {
@@ -109,11 +110,20 @@ var everyschool = module.exports = {
 	, submodules: {}
 	, submodule: function (abbr) {
 			var self = this
-				, submodule = this.submodules[abbr] = Object.create(this, {
-						abbr: { value: abbr }
-					, submodules: { value: {} }
-					});
-				return submodule;
+				, submodule = self.submodules[abbr] = clone(self)
+			
+			submodule.abbr = abbr
+			submodule.paths = {}
+			submodule.name = ''
+			
+      
+      var steps = this._steps
+        , newSteps = submodule._steps = {};
+      for (var stepName in steps) {
+        newSteps[stepName] = steps[stepName].clone(stepName, submodule);
+      }
+
+      return submodule;
 		}
 
 
@@ -137,7 +147,10 @@ var everyschool = module.exports = {
 				this[structStore] = []
 				this[structAdd] = (function(structStore, structName){
 					return function(){
-							newStruct = new sysModule.structures[structName](arguments)
+							var a = []
+							for (var i in arguments){ v = (arguments.hasOwnProperty(i) && a.push(arguments[i])) }
+							newStruct = new sysModule.structures[structName]()
+							newStruct.init.apply(newStruct, a)
 							this[structStore].push(newStruct)
 						}
 					})(structStore, struct)

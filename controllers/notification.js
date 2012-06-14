@@ -10,7 +10,7 @@ exports = module.exports = function(app){
 
 	app.get('/watcher', function(req, res){
 		Notification.find().count().run(function(err, total){
-			Notification.find({deleted: false, hidden:true}).count().run(function(err, active){
+			Notification.find({deleted: false, hidden:false}).count().run(function(err, active){
 				NotificationFeedback.find({ignore:false}).count().run(function(err, feedBackCount){
 					NotificationFeedback.find({success:true,ignore:false}).count().run(function(err, successNumber){
 						success = feedBackCount>0?successNumber / feedBackCount:0
@@ -34,7 +34,6 @@ exports = module.exports = function(app){
 	})
 
 	app.post('/notifications/purchase/post-back', function(req, res){
-		console.log('correct')
 		var jwt = req.body.jwt
 			,	transaction = require('jwt-simple').decode(jwt, app.config.google.sellerSecret)
 			,	time = Math.round((new Date()).getTime()/1000)

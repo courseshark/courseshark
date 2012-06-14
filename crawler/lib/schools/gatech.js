@@ -50,7 +50,6 @@ var gatech = module.exports = everySchool.submodule('gatech')
 	})
 
 
-
 	.loadTerms(function(termUpdating){
 		var self = this
 		options = {host: self.url, path: self.paths.termList}
@@ -73,7 +72,9 @@ var gatech = module.exports = everySchool.submodule('gatech')
 	})
 	.loadDepartments(function(termUpdating){
 		var self = this
-		this.dl.downloadDepartments(termUpdating, function(window, html){
+			,	data = {p_calling_proc: "bwckschd.p_disp_dyn_sched", p_term: termUpdating}
+			,	options = {host: self.url, path: self.paths.term, method: 'POST', data: data}
+		this.dl.download(options, function(window, html){
 			var $ = window.$
 			$('SELECT[name="sel_subj"] OPTION').each(function(){
 				$this = $(this)
@@ -125,8 +126,36 @@ var gatech = module.exports = everySchool.submodule('gatech')
 	.configurable('loadDepartmentSections')
 	.loadDepartmentSections(function(termUpdating, department, emitter){
 		var self = this
+			,	data = {
+						term_in: termUpdating
+					,	sel_subj: ["", department.abbr]
+					,	sel_day: ""
+					,	sel_schd: ""
+					,	sel_insm: ""
+					,	sel_camp: ["", "%"]
+					,	sel_levl: ""
+					,	sel_sess: ""
+					,	sel_instr: ["", "%"]
+					,	sel_ptrm: ""
+					,	sel_attr: ["", "%"]
+
+					,	sel_crse: ""
+					,	sel_title: ""
+
+					,	sel_from_cred: ""
+					,	sel_to_cred: ""
+
+					,	begin_hh: "0"
+					,	begin_mi: "0"
+					,	begin_ap: "a"
+
+					,	end_hh: "0"
+					,	end_mi: "0"
+					,	end_ap: "a"
+				}
+			,	options = {host: self.url, path: self.paths.listing, method: 'POST', data: data}
 		self.loadDepartmentSectionsCount++
-		self.dl.downloadSections(termUpdating, department.abbr, function(window, html){
+		self.dl.download(options, function(window, html){
 			var $ = window.$, $table, $sectionHead, $sectionDetails, $sectionDetailsContainer, $sectionDetailsList
 			if ( self.debug ){
 				console.log("Recieved "+department.abbr+" listing")
@@ -155,6 +184,7 @@ var gatech = module.exports = everySchool.submodule('gatech')
 					}
 					c = department.findOrAddCourseBySectionTitle(title)
 					section = c.addSectionFromInfo(title, details, credits)
+					section.instructor = section.timeslots[0]?section.timeslots[0].instructor:''
 				})
 			}else{
 				console.log($table.text())
@@ -166,26 +196,49 @@ var gatech = module.exports = everySchool.submodule('gatech')
 	})
 
 
+	.configurable('safeUpdateSection')
 	.configurable('updateSection')
-	.updateSection(function(section, term, callback){
+	.updateSection(function(section, callback){
 		var self = this
-		self.dl.downloadSectionDetails(section, term, function(window, html){
-			var $ = window.$, $table, $sectionHead, $sectionDetails, $sectionDetailsContainer, $sectionDetailsList
-			$numbers = $('.dddefault').filter(function(){return (/^[0-9\-]+$/).test($(this).text())})
-			console.log($numbers.length)
-			section.seatsTotal = parseInt($numbers.eq(0).text(), 10)
-			avail = $numbers.eq(1).text()
-			section.seatsAvailable = remain = parseInt($numbers.eq(2).text(),10)
-			if ( $numbers.length === 6 ){
-				section.waitSeatsTotal = parseInt($numbers.eq(3).text(), 10)
-				waitAvail = $numbers.eq(4).text()
-				section.waitSeatsAvailable = waitRemain = parseInt($numbers.eq(5).text(),10)
-			}
-			section.updated = new Date()
-			section.save(function(err){
-				callback(err, section)
-			});
+
+		cId = section.course['_id'] || section.course
+		Course.findById(cId).populate('term').run(function(err, course){
+			downloadHelper(section, course.term, callback);
 		})
+
+		downloadHelper = function(section, term, callback){
+			var data = {
+							term_in: ''+term.number
+						,	crn_in: ''+section.number
+					}
+				,	options = {host: self.url, path: self.paths.details, method: 'GET', data: data}
+			self.dl.download(options, function(window, html){
+				var $ = window.$, $table, $sectionHead, $sectionDetails, $sectionDetailsContainer, $sectionDetailsList
+				$numbers = $('.dddefault').filter(function(){return (/^[0-9\-]+$/).test($(this).text())})
+				section.seatsTotal = parseInt($numbers.eq(0).text(), 10)
+				avail = $numbers.eq(1).text()
+				section.seatsAvailable = remain = parseInt($numbers.eq(2).text(),10)
+				if ( $numbers.length === 6 ){
+					section.waitSeatsTotal = parseInt($numbers.eq(3).text(), 10)
+					waitAvail = $numbers.eq(4).text()
+					section.waitSeatsAvailable = waitRemain = parseInt($numbers.eq(5).text(),10)
+				}
+				section.updated = new Date()
+				section.save(function(err){
+					callback(err, section)
+				})
+			})
+		}
+	})
+
+	.safeUpdateSection(function(section, expires, callback){
+		updated = new Date(section.updated).getTime()
+		now = (new Date()).getTime()
+		if ( updated + expires < now || !section.seatsAvailable ){
+			this.updateSection(section, callback)
+		}else{
+			callback(undefined, section)
+		}
 	})
 
 

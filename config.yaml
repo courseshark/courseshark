@@ -15,6 +15,14 @@ development:
     clientSecret: "Dia4zMwugrzVzNEQU5LGpue9"
     iss: "11866213978865467686"
     sellerSecret: "driJET-bAFB2e-fJEIaJRQ"
+  twilio:
+    sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
+    authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
+    outgoing: "+14155992671"
+  email:
+    notification:
+      account: "alert@courseshark.com"
+      pass: "espress0!5~"
 
 staging:
   domain: "courseshark.tst"
@@ -33,6 +41,14 @@ staging:
     clientSecret: "d1bPhrQutGrZqj7lPrbfNHrQ"
     iss: "11866213978865467686"
     sellerSecret: "driJET-bAFB2e-fJEIaJRQ"
+  twilio:
+    sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
+    authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
+    outgoing: "+14155992671"
+  email:
+    notification:
+      account: "alert@courseshark.com"
+      pass: "espress0!5~"
 
 production:
   domain: "courseshark.com"
@@ -51,3 +67,11 @@ production:
     clientSecret: "d1bPhrQutGrZqj7lPrbfNHrQ"
     iss: "11866213978865467686"
     sellerSecret: "3jTkSAUyQ2eC2j_H-L88ZQ"
+  twilio:
+    sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
+    authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
+    outgoing: "+14155992671"
+  email:
+    notification:
+      account: "alert@courseshark.com"
+      pass: "espress0!5~"

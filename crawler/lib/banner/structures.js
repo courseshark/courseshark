@@ -23,9 +23,9 @@
 		this.init(arguments[0])
 		return this
 	}
-	Term.prototype.init = function(args){
-		number = args[0]
-		text = args[1]
+	Term.prototype.init = function(){
+		number = arguments[0]
+		text = arguments[1]
 		this.number = number
 		this.text = text
 
@@ -40,9 +40,9 @@
 		this.init(arguments[0])
 		return this
 	}
-	Department.prototype.init = function(args){
-		abbr = args[0]
-		text = args[1]
+	Department.prototype.init = function(){
+		abbr = arguments[0]
+		text = arguments[1]
 		this.abbr = abbr
 		this.text = text
 		this.courses = {}
@@ -58,19 +58,22 @@
 	}
 
 	Course = function(){
-		this.init(arguments[0])
+		this.title = 0
+		this.number = 0
+		this.sections = {}
 		return this
 	}
-	Course.prototype.init = function(args){
-		this.title = args[0]
-		this.number = parseInt(args[1],10)
+	Course.prototype.init = function(){
+		this.title = arguments[0]
+		this.number = parseInt(arguments[1],10)
 		this.sections = {}
+		return this
 	}
 	Course.createFromInfo = function(title){
 		pieces = title.split(' - ')
 		title = pieces[0]
 		number = pieces[2].match(/[0-9]+/)[0]
-		return new Course({0:title, 1:number})
+		return (new Course()).init(title,number)
 	}
 	Course.prototype.addSectionFromInfo = function(title, details, credits){
 		section = Section.createFromInfo(title, details, credits)
@@ -83,14 +86,19 @@
 
 
 	Section = function(){
-		this.init(arguments[0])
+		this.number = 0
+		this.sectionId = 0
+		this.credits = 0
+		this.timeslots = []
+		this.name = ""
+		this.instructor = ""
 		return this
 	}
-	Section.prototype.init = function(args){
-		this.number = args[0]
-		this.sectionId = args[1]
-		this.credits = args[2]
-		this.timeslots = []
+	Section.prototype.init = function(){
+		this.number = arguments[0]
+		this.sectionId = arguments[1]
+		this.credits = arguments[2]
+		return this
 	}
 	Section.createFromInfo = function(title, details, credits){
 		var pieces, number, sectionId, row, result
@@ -98,7 +106,7 @@
 		number = pieces[2]
 		sectionId = pieces[0]
 		row=details.splice(0,7)
-		result = new Section({0:number, 1:sectionId, 2:credits})
+		result = (new Section()).init(number, sectionId, credits)
 		while (row.length>1) {
 			result.timeslots.push(Timeslot.createFromInfo(row))
 			row=details.splice(0,7)
@@ -108,18 +116,24 @@
 
 
 	Timeslot = function(){
-		this.init(arguments[0])
+		this.days = []
+		this.startTime = ''
+		this.endTime = ''
+		this.type = ''
+		this.location = ''
+		this.instructor = ''
+		this.endDate = ''
 		return this
 	}
-	Timeslot.prototype.init = function(args){
-		this.days = args[0]
-		this.startTime = args[1]
-		this.endTime = args[2]
-		this.type = args[3]
-		this.location = args[4]
-		this.instructor = args[5]
-		this.endDate = args[6]
-
+	Timeslot.prototype.init = function(){
+		this.days = arguments[0]
+		this.startTime = arguments[1]
+		this.endTime = arguments[2]
+		this.type = arguments[3]
+		this.location = arguments[4]
+		this.instructor = arguments[5]
+		this.endDate = arguments[6]
+		return this
 	}
 	Timeslot.createFromInfo = function(details){
 		timesString = details[1]
@@ -130,8 +144,8 @@
 		instructorString = details[6]
 
 		// Split out days and convery to full name
-		dayMap = {'M':'monday', 'T':'tuesday','W':'wednesday','R':'thursday','F':'friday','A':'saturday','S':'sunday'}
-		dayNumbers = ['S','M','T','W','R','F','A']
+		dayMap = {'M':'monday', 'T':'tuesday','W':'wednesday','R':'thursday','F':'friday','S':'saturday','U':'sunday','O':'online'}
+		dayNumbers = ['U','M','T','W','R','F','S']
 		days = dayString.split('').map(function(d){return dayMap[d]})
 
 
@@ -140,7 +154,7 @@
 		startDate = new Date(dateParts[0])
 		if ( days.length > 1 ){
 			// Adjust date to actual start day
-			while (dayMap[dayNumbers[startDate.getDay()]] != days[0]){
+			while (days[0]!='online' && dayMap[dayNumbers[startDate.getDay()]] != days[0]){
 				startDate.setDate(startDate.getDate()+1)
 			}
 		}
@@ -148,17 +162,17 @@
 
 		// Function to get am/pm to 0-23 hour format
 		function toHour(time){
-			var pieces = time.split(/\s|:/)
-			if (pieces[2].toLowerCase() === 'pm' && pieces[0] !== '12'){
-				return parseInt(pieces[0], 10)+12
-			}else if (pieces[2].toLowerCase() === 'am' && pieces[0] === '12'){
+			var pieces = time.match(/([0-9]+):([0-9]+)\s?([a-z]+)/i)
+			if (pieces[3].toLowerCase() === 'pm' && pieces[1] !== '12'){
+				return parseInt(pieces[1], 10)+12
+			}else if (pieces[3].toLowerCase() === 'am' && pieces[1] === '12'){
 				return 0;
 			}else{
-				return parseInt(pieces[0], 10)
+				return parseInt(pieces[1], 10)
 			}
 		}
 
-		if ( timesString === 'TBA' ){
+		if ( timesString === 'TBA' || timesString === 'ONLINE'){
 			startTime = startDate
 			endTime = startDate
 		}else{
@@ -167,7 +181,7 @@
 			startParts = timeParts[0].split(/\s|:/)
 			startTime = new Date(startDate)
 			startTime.setHours(toHour(timeParts[0]))
-			startTime.setMinutes(parseInt(startParts[1], 10))
+			startTime.setMinutes(parseInt(startParts[1].replace(/[a-z]+/gi, ''), 10))
 
 			endParts = timeParts[1].split(/\s|:/)
 			endTime = new Date(startDate)
@@ -181,7 +195,7 @@
 		// Instructor String
 		instructor = instructorString.replace(/\s*\([pP]\)/, '')
 
-		return new Timeslot({0:days, 1:startTime, 2:endTime, 3:type, 4:locationString, 5:instructor, 6:endDate})
+		return (new Timeslot()).init(days,startTime,endTime,type,locationString,instructor,endDate)
 	}
 
 
@@ -265,7 +279,7 @@
 		delete(upsertData._id)
 
 		structs.Term.update(search, upsertData, {upsert: true}, function(err, numAffected){
-			structs.Term.findOne(search, function(err, dbTerm){ 
+			structs.Term.findOne(search, function(err, dbTerm){
 				dbSchool.addTerm(dbTerm)
 				storeDepartments(objSchool, dbSchool, dbTerm);
 			})
@@ -335,7 +349,7 @@
 			structs.Course.update(search, upsertData, {upsert: true}, (function(dbTerm, objCourse, search){
 				return function(err, numAffected){
 					structs.Course.findOne(search, function(err, dbCourse){
-						storeSections(dbTerm, objCourse, dbCourse);
+						storeSections(dbTerm, objCourse, dbCourse, dbDep);
 						courseEmitter.emit('decreaseCount'); })
 				}})(dbTerm, objCourse, search)
 			)
@@ -351,7 +365,7 @@
 	}
 
 
-	function storeSections(dbTerm, objCourse, dbCourse){
+	function storeSections(dbTerm, objCourse, dbCourse, dbDep){
 		//console.log('Inserting Sections for Course', ''+objCourse)
 		emitter.emit('increaseCount')
 		var secCount = 0
@@ -375,12 +389,27 @@
 			
 			delete(upsertData._id);
 			delete(search.credits);
+			delete(search.name);
+
+			upsertData.name = dbDep.abbr + ' ' + dbCourse.number + ' #' + upsertData.number
+			upsertData.instructor = objSection['instructor']
+			if ( objSection['seatsTotal'] !== undefined ){
+				upsertData.seatsTotal=objSection['seatsTotal']
+			}
+			if ( objSection['seatsAvailable'] !== undefined ){
+				upsertData.seatsAvailable = objSection['seatsAvailable']
+			}
+			
 
 			structs.Section.update(search, upsertData, {upsert: true}, (function(dbTerm, objSection, search){
 				return function(err, numAffected){
+					if ( err ){
+						console.log("-- Error --",err,objSection,search);
+						return;
+					}
 					structs.Section.findOne(search, function(err, dbSection){
-						if ( err ){
-							console.log(err, objSection, search);
+						if ( err || !dbSection ){
+							console.log(err, objSection, search, dbSection);
 						}
 						dbCourse.addSection(dbSection)
 						storeTimeslots(dbTerm, objSection, dbSection)
@@ -401,7 +430,6 @@
 		emitter.emit('increaseCount')
 		dbSection.timeslots = []
 		dbSection.save(function(err){
-			//console.log('Inserting time slots for', ''+objSection.number)
 			for ( var i=0, len=objSection.timeslots.length; i<len; i++ ){
 				ts = objSection.timeslots[i]
 				timeslot = new structs.Section(ts)
@@ -416,6 +444,9 @@
 	ex.init = init
 	ex.Term = Term
 	ex.Department = Department
+	ex.Course = Course
+	ex.Section = Section
+	ex.Timeslot = Timeslot
 
 	ex.storeSchool = storeSchool
 })(exports);

@@ -3,6 +3,7 @@ var util = require('../lib/utils')
 	, Schema = mongoose.Schema
 	, SectionSchema
 	, TimeslotSchema = require('./timeslot').TimeslotSchema
+	, Course = require('./course')
 
 exports.boot = module.exports.boot = function (app){
 	mongoose.model('Section', SectionSchema);
@@ -15,12 +16,14 @@ SectionSchema = new Schema({
 		number: { type: Number, index: true }
 	,	info: { type: String }
 	,	type: { type: String }
+	, name: { type: String }
 	,	course: { type: Schema.ObjectId, index: true, ref: 'Course' }
 	, department: { type: Schema.ObjectId, index: true, ref: 'Department' }
+	, instructor: { type: String }
 	,	parent: { type: Schema.ObjectId, ref: 'Section' }
 	, credits: { type: String }
 	, seatsAvailable: { type: Number }
-	, seatsTotal: { type: Number }
+	, seatsTotal: { type: Number, 'default': 0 }
 	, waitSeatsAvailable: { type: Number }
 	, waitSeatsTotal: { type: Number }
 	, timeslots: [ TimeslotSchema ]

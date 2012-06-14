@@ -21,6 +21,8 @@ SchoolSchema = new Schema({
 	,	currentTerm: { type: Schema.ObjectId, ref: 'Term' }
 	,	enabled: { type: Boolean, 'default': true, index: true }
 	, waitlist: { type: Boolean, 'default': false }
+	, notifications: { type: Boolean, 'default': true }
+	, notificationCron: { type: String, 'default': '0 */15 * * * *' }
 	,	created: { type: Date, 'default': Date.now }
 	,	modified: { type: Date, 'default': Date.now }
 });

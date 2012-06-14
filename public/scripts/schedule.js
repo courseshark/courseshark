@@ -608,7 +608,7 @@ function addSectionToCourseList($container, section, selectedSection){
 	if ( section.timeslots.length===0 ){
 		section.instructor = 'TBA'
 	}else{
-		section.instructor = section.timeslots[0].instructor.trim().split(' ').splice(-1,1).join('')
+		//section.instructor = section.timeslots[0].instructor.trim().split(' ').splice(-1,1).join('')
 	}
 	section.friends = []
 	section_selector = window.tmpl(sstemplate, {section: section, child: false});

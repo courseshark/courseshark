@@ -8,10 +8,17 @@ module.exports = function(req, res, next) {
 			return
 		}
 		// restrict 'admin'
-		if (/^admin/.test(host) && ( !req.user || !req.user.admin ) ){
-			req.flash('messgae', 'You are not an administrator')
-			res.redirect(protocol + '://' + host.replace(/^admin\./, '') + req.url)
-			return
+		console.log(/^admin\./i.test(host))
+		if (/^admin\./i.test(host) ){
+			if ( !req.user || !req.user.admin ){
+				req.flash('messgae', 'You are not an administrator')
+				res.redirect(protocol + '://' + host.replace(/^admin\./, '') + req.url)
+				return;
+			}else{
+				req.url = '/admin' + req.url
+				next();
+				return
+			}
 		}
 		host = host===undefined?'':host
 		parts = host.split('.', 3)
