@@ -19,6 +19,7 @@ function bootApplication(app){
 		app.set('view engine', 'ejs')
 		app.use(express.logger({stream: logFile}));
 		app.use(express.bodyParser())
+		app.use(require('./query-filter'))
 		app.use(express.methodOverride())
 		app.use(require('connect-less')({ src: __dirname + '/public/', compress: true, yuicompress: true }));
 		app.use(gzippo.staticGzip(__dirname + '/public'))

@@ -8,7 +8,6 @@ module.exports = function(req, res, next) {
 			return
 		}
 		// restrict 'admin'
-		console.log(/^admin\./i.test(host))
 		if (/^admin\./i.test(host) ){
 			if ( !req.user || !req.user.admin ){
 				req.flash('messgae', 'You are not an administrator')

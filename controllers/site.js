@@ -23,4 +23,5 @@ exports = module.exports = function(app){
 	app.get('/about/feedback', function(req, res){
 		res.render('dialogs/feedback', {});
 	})
+
 }

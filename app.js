@@ -33,7 +33,7 @@ require('./error-handler').boot(app);
 require('./helpers').boot(app);
 // make a global helper
 requireLogin = auth.requireLogin
-requireOrganizer = auth.requireOrganizer
+requireAdmin = auth.requireAdmin
 requireSchool = utils.requireSchool
 // Bootstrap controllers
 controller_loc = __dirname + '/controllers'

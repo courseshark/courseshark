@@ -1,0 +1,36 @@
+<h1>Schools</h1>
+
+<div class="row">
+	<div class="span10">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Abbr</th>
+					<th>Location</th>
+					<th>Waitlist</th>
+					<th>Notifications</th>
+					<th>Update Cron</th>
+					<th>Enabled</th>
+				</tr>
+			</thead>
+			<tbody>
+		<% if (schools.length) { %>
+    	<% schools.forEach(function(school){ %>
+				<tr>
+					<td><%=school._id%></td>
+					<td><%=school.name%></td>
+					<td><%=school.abbr%></td>
+					<td><%=(school.city+', '+school.state+' '+school.zip)%></td>
+					<td><%=school.waitlist%></td>
+					<td><%=school.notifications%></td>
+					<td><%=school.notificationCron%></td>
+					<td><%=school.enabled%></td>
+				</tr>
+			<% }) %>
+		<% } %>
+			</tbody>
+		</table>
+	</div>
+</div>

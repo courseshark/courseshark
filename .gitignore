@@ -5,3 +5,5 @@ logs/access.log
 
 public/scripts/*-courseshark.js
 public/styles/*-courseshark.css
+
+public/styles/lib/.DS_Store
