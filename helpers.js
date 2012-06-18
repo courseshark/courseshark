@@ -15,4 +15,11 @@ exports.boot = module.exports.boot = function(app){
 		, revision: function(){return app.settings.revision}
 		, mode: function(){return process.env.ENV_VARIABLE}
 	});
+
+	app.helpers({
+		numberize: function(number){
+			var r = (''+number).substr(-1,1)
+			return r==='1'?'st':r==='2'?'nd':r==='3'?'rd':'th'
+		}
+	})
 }

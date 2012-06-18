@@ -47,6 +47,8 @@ UserSchema.virtual('name')
 		this.firstName = p[0];
 		this.lastName = p[1];
 	});
+UserSchema.virtual('initials')
+	.get( function() { return ((""+this.firstName).substring(0,1))+((""+(this.lastName?this.lastName:' ')).substring(0,1).trim())})
 
 UserSchema.method('encryptPassword', function (pass) {
 	return crypto.MD5(pass, { asString: true });
@@ -59,13 +61,17 @@ UserSchema.method('setPassword', function (pass) {
 UserSchema.method('authenticate', function (plainText) {
 	return this.hashPassword == this.encryptPassword(plainText);
 });
-
 UserSchema.pre('save', function (next) {
 	if ( !this.oauth && !util.validatePresenceOf(this.password) )
 		next(Error('No password specified'))
 	else
 		next();
 });
+
+UserSchema.method('avatar', function(size){
+	size = size || 64
+	return 'https://secure.gravatar.com/avatar/'+crypto.MD5(this.email||"",{asString:true})+'?s='+size+'&d=http%3A%2F%2Fplacehold.it%2F'+size+'x'+size+'%26text%3D'+this.initials;
+})
 
 UserSchema.method('isFriend', function(user) {
 	for ( var _len=this.friends.length,_i=0; _i<_len; _i++ ){

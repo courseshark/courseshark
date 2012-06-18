@@ -1,0 +1,69 @@
+<h1>Links <small>found <%=links.length%></h1>
+
+<div class="row">
+	<div class="span1">
+		<i>Search</i>
+	</div>
+	<div class="span9">
+		<form name="user" action="#" method="get">
+			<input type="text" name="link.hash" placeholder="Hash"/>
+			<input type="text" name="link.to" placeholder="To"/>
+			<input type="text" name="link.user" placeholder="userId"/>
+			<button type="submit">go</button>
+		</form>
+	</div>
+</div>
+
+<div class="row">
+	<div class="span1">
+		<i>Create</i>
+	</div>
+	<div class="span9">
+		<form name="user" action="#" method="post">
+			<input type="text" name="link.hash" placeholder="Hash"/>
+			<input type="text" name="link.to" placeholder="To"/>
+			<input type="text" name="link.user" placeholder="userId" value="<%=user._id%>"/>
+			<button type="submit">save</button>
+		</form>
+	</div>
+</div>
+
+<div class="row">
+	<div class="span10">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Hash</th>
+					<th>To</th>
+					<th>User</th>
+					<th>Visits</th>
+					<th>Referals</th>
+					<th>Created</th>
+					<th>Remove</th>
+				</tr>
+			</thead>
+			<tbody>
+		<% if (links.length) { %>
+    	<% links.forEach(function(link){ %>
+				<tr>
+					<td title="<%=link._id%>"><%=(""+link._id).substring((""+link._id).length-7, (""+link._id).length)%></td>
+					<td><%=link.hash%></td>
+					<td><%=link.to%></td>
+					<td><%=link.user?link.user.name:'&mdash;'%></td>
+					<td><%=link.visits%></td>
+					<td><%=link.referals%></td>
+					<td><%=link.createdOn%></td>
+					<td>
+						<form method="post" action="/links/<%=link._id%>">
+							<input type="hidden" name="_method" value="delete" />
+							<button type="submit">X</button>
+						</form>
+					</td>
+				</tr>
+			<% }) %>
+		<% } %>
+			</tbody>
+		</table>
+	</div>
+</div>

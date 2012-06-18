@@ -124,7 +124,7 @@ exports = module.exports = function(app){
 		link = new ScheduleLink()
 		link.schedule = pSchedule;
 		link.save(function(err){
-			url = 'http//' + req.headers.host + '/sl/' + link.id
+			url = app.createLink('http://'+req.headers.host+'/sl/'+link.id, req.user)
 			res.json({id: link.id, url: url, err: err})
 		})
 	})

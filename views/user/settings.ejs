@@ -1,17 +1,17 @@
 <div class="container">
 	<div class="row">
 		<div class="span3">
-			<img src="<%=user.avatar(200)%>" alt="Profile Image" />
+			<img src="<%=account.avatar(200)%>" alt="Profile Image" />
 			<p><small>Change your avatar at <a href="https://gravatar.com" target="_blank">gravatar.com</a></small></p>
 		</div>
 		<div class="span6">
-			<h1><%=user.name%></h1>
-			<h3><%=user.year%><sup><%=numberize(user.year)%></sup> year</h3>
-			<h3><%=user.major.name%> @ <%=user.school.abbr%></h3>
+			<h1><%=account.name%></h1>
+			<h3><%=account.year%><sup><%=numberize(account.year)%></sup> year</h3>
+			<h3><%=account.major?account.major.name:'&mdash;'%> @ <%=account.school.abbr%></h3>
 		</div>
 		<div class="span3">
 			<h1>Friends</h1>
-			<h4>You have added <a href="/friends"><?php echo count($user->getFriendsIds())?> friends</a></h4>
+			<h4>You have added <a href="/friends"><%=account.friends.length%> friends</a></h4>
 			<button class="btn btn-success" onClick="openDialog('/social/friends/dialog').friendsSearch({next: addUsers})">Add Friends</button>
 		</div>
 	</div> <!-- /.row -->
@@ -29,15 +29,15 @@
 			    <div class="control-group">
 			      <label class="control-label" for="fist_name">Name</label>
 			      <div class="controls">
-							<input type="text" class="input-xlarge" name="first_name" value="<?php echo $user->firstName?>" placeholder="First Name"/>
-							<input type="text" class="input-xlarge" name="last_name"  value="<?php echo $user->lastName;?>" placeholder="Last Name"/>
+							<input type="text" class="input-xlarge" name="user.firstName" value="<%=account.firstName%>" placeholder="First Name"/>
+							<input type="text" class="input-xlarge" name="user.lastName"  value="<%=account.lastName?account.lastName:''%>" placeholder="Last Name"/>
 			      </div>
 			    </div>
 
 					<div class="control-group">
 			      <label class="control-label" for="email">Email</label>
 			      <div class="controls">
-							<input type="email" class="input-xlarge" name="email" value="<?php echo $user->email;?>" placeholder="Email"/>
+							<input type="email" class="input-xlarge" name="user.email" value="<%=account.email?account.email:''%>" placeholder="Email"/>
 			      </div>
 			    </div>
 				</fieldset>
@@ -51,21 +51,21 @@
 					<div class="control-group">
 			      <label class="control-label" for="email">Current</label>
 			      <div class="controls">
-							<input type="password" class="input-xlarge" name="current_password" value="" autocomplete="off"/>
+							<input type="password" class="input-xlarge" name="user.currentPassword" value="" autocomplete="off"/>
 			      </div>
 			    </div>
 	
 					<div class="control-group">
 			      <label class="control-label" for="new_password">New Password</label>
 			      <div class="controls">
-							<input type="password" class="input-xlarge" name="new_password" value="" autocomplete="off"/>
+							<input type="password" class="input-xlarge" name="user.password" value="" autocomplete="off"/>
 			      </div>
 			    </div>
 
 					<div class="control-group">
 			      <label class="control-label" for="confirm_password">Confirm Password</label>
 			      <div class="controls">
-							<input type="password" class="input-xlarge" name="confirm_password" value="" autocomplete="off"/>
+							<input type="password" class="input-xlarge" name="user.confirmPassword" value="" autocomplete="off"/>
 			      </div>
 			    </div>
 				</fieldset>
@@ -79,18 +79,22 @@
 					<div class="control-group">
 			      <label class="control-label" for="school_id">School</label>
 			      <div class="controls">
-							<select name="school_id" id="school-change" class="input-xlarge">
-							<?php foreach($schools as $school):?>
-								<option value="<?php echo $school->id?>" <?php echo (($user->school_id == $school->id)?'selected':'');?>><?php echo $school->name?></option>
-							<?php endforeach;?>	
+							<select name="user.school" id="user.school" class="input-xlarge">
+							<% schools.forEach(function(school){%>
+								<% if ( school._id.toString() == account.school._id.toString() ){ %>
+								<option value="<%=school._id%>" selected><%=school.name%></option>
+								<% }else{ %>
+								<option value="<%=school._id%>"><%=school.name%></option>
+								<% } %>
+							<% }) %>
 							</select>
 			      </div>
 			    </div>
 		
 					<div class="control-group">
-			      <label class="control-label" for="major_id">Major</label>
+			      <label class="control-label" for="user.major">Major</label>
 			      <div class="controls">
-							<select name="major_id" id="major-change" class="input-xlarge">
+							<select name="user.major" id="major-change" class="input-xlarge">
 								<option value="">Loading...</option>
 							</select>
 			      </div>
@@ -99,14 +103,14 @@
 					<div class="control-group">
 			      <label class="control-label" for="year">Year</label>
 			      <div class="controls">
-							<select name="year" id="year-change" class="input-xlarge">
-								<option value="1" <?php echo $user->year==1?'selected':''?>>First Year (Freshman)</option>
-								<option value="2" <?php echo $user->year==2?'selected':''?>>Second Year (Sophomore)</option>
-								<option value="3" <?php echo $user->year==3?'selected':''?>>Third Year (Junior)</option>
-								<option value="4" <?php echo $user->year==4?'selected':''?>>Fourth Year (Senior)</option>
-								<option value="5" <?php echo $user->year==5?'selected':''?>>Fifth Year (Super-Senior)</option>
-								<option value="6" <?php echo $user->year==6?'selected':''?>>6+ Years</option>
-								<option value="7" <?php echo $user->year==7?'selected':''?>>Graduate Student</option>
+							<select name="user.year" id="year-change" class="input-xlarge">
+								<option value="1" <%= account.year==1?'selected':''%>>First Year (Freshman)</option>
+								<option value="2" <%= account.year==2?'selected':''%>>Second Year (Sophomore)</option>
+								<option value="3" <%= account.year==3?'selected':''%>>Third Year (Junior)</option>
+								<option value="4" <%= account.year==4?'selected':''%>>Fourth Year (Senior)</option>
+								<option value="5" <%= account.year==5?'selected':''%>>Fifth Year (Super-Senior)</option>
+								<option value="6" <%= account.year==6?'selected':''%>>6+ Years</option>
+								<option value="7" <%= account.year==7?'selected':''%>>Graduate Student</option>
 							</select>
 			      </div>
 			    </div>
@@ -121,11 +125,11 @@
 			      <label class="control-label" for="major_id">Auto Accept Friends</label>
 			      <div class="controls">
 							<label for="friend_accept_yes">
-								<input type="radio" name="auto_accept_friends" value="true" id="friend_accept_yes" <?=$user->auto_accept_friends?'checked':''?>/>
+								<input type="radio" name="user.autoAcceptFriends" value="true" id="friend_accept_yes" <%=account.autoAcceptFriends?'checked':''%>/>
 								Yes, automatically accept friends when they add me.
 							</label>
 							<label for="friend_accept_no" >
-								<input type="radio" name="auto_accept_friends" value="false"id="friend_accept_no" <?=$user->auto_accept_friends?'':'checked'?>/>
+								<input type="radio" name="user.autoAcceptFriends" value="false"id="friend_accept_no" <%=account.autoAcceptFriends?'':'checked'%>/>
 								No, I must manually confirm friends before they can see my information. 
 							</label>
 							<p class="help-block">Invitations set to you will be automatically accepted.</p>
@@ -136,11 +140,11 @@
 			      <label class="control-label" for="major_id">Invite Emails</label>
 			      <div class="controls">
 							<label for="friend_email_yes">
-								<input type="radio" name="can_email_friend_requests" value="true" id="friend_email_yes" <?=$user->can_email_friend_requests?'checked':''?>/>
+								<input type="radio" name="user.canEmailFriendRequests" value="true" id="friend_email_yes" <%=account.canEmailFriendRequests?'checked':''%>/>
 								Yes, send me an email when users request me as a friend.
 							</label>
 							<label for="friend_email_no" >
-								<input type="radio" name="can_email_friend_requests" value="false"id="friend_email_no" <?=$user->can_email_friend_requests?'':'checked'?>/>
+								<input type="radio" name="user.canEmailFriendRequests" value="false" id="friend_email_no" <%=account.canEmailFriendRequests?'':'checked'%>/>
 								No, I would not like to receive emails when users request me as a friend.
 							</label>
 							<p class="help-block">Send me emails when friends want to add me.</p>
@@ -160,13 +164,13 @@
 	</div><!-- /.container -->
 
 	<script>
-		var current_school = <?php echo @$user->school_id?>,
-				current_major  = <?php echo $user->major_id?>;
-		$('#school-change').bind('change', updateMajors);
+		var current_school = "<%= account.school%>",
+				current_major  = "<%= account.major?account.major.id:''%>";
+		$('#user.school').bind('change', updateMajors);
 		function updateMajors(){
 			var k = $('#school-change').val(),
 				$s = $('#major-change').empty();
-			$.ajax({url: '/school/'+k+'/majors',dataType: 'json',
+			$.ajax({url: '/term/1/departments',dataType: 'json',
 					success: function(j){
 						r = j.message;for(i in r){$s.append($('<option>', { value : r[i].id, selected:(r[i].id==current_major)}).text(r[i].name));}}
 			});

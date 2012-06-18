@@ -19,4 +19,25 @@ exports = module.exports = function(app){
 		})
 	})
 
+	app.get('/admin/links', /*requireAdmin,*/ function(req, res){
+		Link.find(req.query.link).populate('user').run(function(err, links){
+			res.render('admin/links/index', {links: links, layout:'../layout.ejs'});
+		})
+	})
+	app.post('/admin/links', /*requireAdmin,*/ function(req, res){
+		console.log(req.body)
+		link = new Link(req.body.link)
+		console.log(link)
+		link.save()
+		res.redirect('/links')
+	})
+
+	app.delete('/admin/links/:linkId', /*requireAdmin,*/ function(req, res){
+		Link.findOne({_id: req.params.linkId}, function(err, link){
+			if ( !err && link ){
+				link.remove()
+			}
+			res.redirect('/links')
+		})
+	})
 }

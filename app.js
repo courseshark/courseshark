@@ -25,6 +25,8 @@ model_files = fs.readdirSync(model_loc)
 model_files.forEach( function (file) {
 	require(model_loc + '/' + file).boot(app)
 })
+
+require('./social-track').boot(app)
 // Configuration
 require('./settings').boot(app);
 //Error Handler

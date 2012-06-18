@@ -69,7 +69,12 @@ exports = module.exports = function(app){
 
 
 	app.get('/settings', function(req, res){
-		res.render('user/settings', {user: req.user})
+		User.findById(req.user._id).populate('major').populate('school').run(function(err, user){
+			School.find({enabled: true}, {}, {sort:{abbr:1}}).run(function(err, schools){
+				schools = schools || []
+				res.render('user/settings', {account: user, schools: schools})
+			})
+		})
 	})
 
 
