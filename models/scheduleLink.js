@@ -12,7 +12,10 @@ exports.boot = module.exports.boot = function (app){
 exports.ScheduleLinkSchema = module.exports.ScheduleLinkSchema = ScheduleLinkSchema
 
 ScheduleLinkSchema = new Schema({
-		_schedule: [ScheduleSchema]
+			_schedule: [ScheduleSchema]
+		,	hash: { type: String }
+		,	user: { type: Schema.ObjectId, ref:'User' }
+		, createdOn: { type: Date, 'default': Date.now() }
 });
 
 ScheduleLinkSchema.virtual('id')

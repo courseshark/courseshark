@@ -13,7 +13,7 @@ exports.boot = module.exports.boot = function(app){
 		, path: function(req){ return req['route']?req.route['path']:'' }
 		,	base: function (){ return '/' == app.route ? '' : app.route }
 		, revision: function(){return app.settings.revision}
-		, mode: function(){return process.env.ENV_VARIABLE}
+		, mode: function(){return app.settings.env}
 	});
 
 	app.helpers({

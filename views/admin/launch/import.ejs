@@ -1,0 +1,116 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head>
+	<meta charset=utf-8 /> 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale = 1, maximum-scale = 5"/>
+	<title>Data Import | CourseShark</title> 
+	<link rel="stylesheet" href="/styles/admin.css" type="text/css" media="all" /> 
+</head>
+<body>
+    <%- partial('../../includes/js.ejs') %>
+    <script>
+      aio = io.connect('/admin')
+    </script>
+    <div class="container-fluid">
+			<div class="row">
+        <div class="span4 offset4">
+          <h1>Importing</h1>
+          <div class="progress progress-striped active" id="progress" style="width:inherit">
+            <div class="bar" id="progress-bar">Confirming Permissions</div>
+          </div>
+          <div id="log">
+          </div>
+        </div>
+      </div><!--/row-->
+      <hr>
+    </div><!--/.fluid-container-->
+
+    <script>
+      aio.emit('start-import', "<%=user.id%>")
+
+      aio.on('message', function(){
+        console.log(message);
+      })
+
+      aio.on('start-confirmed', function(){
+        $('#log').append('<p>Started Import</p>')
+        $('#progress-bar').width('5%').html('Clearing DB');
+      })
+      aio.on('drop-confirmed', function(){
+        $('#log').append('<p>Dropped DB</p>')
+        $('#progress-bar').width('10%').html('Connecting to remote DB');
+      })
+      aio.on('connection-confirmed', function(){
+        $('#log').append('<p>Connected to courseshark.com DB</p>')
+        $('#progress-bar').width('15%').html('Finding Users');
+      })
+      aio.on('found-users', function(users){
+        $('#log').append('<p>Found '+users.length+' users</p>')
+        $('#progress-bar').width('20%').html('Adding Users');
+      })
+      aio.on('added-users', function(){
+        $('#log').append('<p>Added users</p>')
+        $('#progress-bar').width('30%').html('Finding Schools');
+      })
+      aio.on('found-schools', function(schools){
+        $('#log').append('<p>Found '+schools.length+' schools</p>')
+        $('#progress-bar').width('35%').html('Adding Schools');
+      })
+      aio.on('added-schools', function(){
+        $('#log').append('<p>Added schools [updated users]</p>')
+        $('#progress-bar').width('40%').html('Downloading Schedules');
+      })
+      aio.on('found-schedules', function(schedules){
+        $('#log').append('<p>Found '+schedules+' schedules</p>')
+        $('#progress-bar').width('45%').html('Adding Schedules');
+      })
+      aio.on('added-schedules', function(){
+        $('#log').append('<p>Added schedules</p>')
+        $('#progress-bar').width('50%').html('Loading Notifications');
+      })
+      aio.on('found-notifications', function(notifications){
+        $('#log').append('<p>Found '+notifications+' notifications</p>')
+        $('#progress-bar').width('55%').html('Saving Notifications');
+      })
+      aio.on('added-notifications', function(){
+        $('#log').append('<p>Added notifications</p>')
+        $('#progress-bar').width('60%').html('Loading Notification Feedbacak');
+      })
+      // Feedback
+      aio.on('found-feedback', function(){
+        $('#log').append('<p>Found feedback</p>')
+        $('#progress-bar').width('65%').html('Saving Notifications');
+      })
+      aio.on('added-feedback', function(){
+        $('#log').append('<p>Added Feedback</p>')
+        $('#progress-bar').width('70%').html('Downloading credits');
+      })
+      // Feedback
+      aio.on('found-credits', function(num){
+        $('#log').append('<p>Found '+num+' Credits</p>')
+        $('#progress-bar').width('75%').html('Saving Credits');
+      })
+      aio.on('added-credits', function(){
+        $('#log').append('<p>Added Credits</p>')
+        $('#progress-bar').width('80%').html('Downloading Links');
+      })
+      // Links
+      aio.on('found-links', function(){
+        $('#log').append('<p>Found links</p>')
+        $('#progress-bar').width('85%').html('Adding Links');
+      })
+      aio.on('added-links', function(){
+        $('#log').append('<p>Added Links</p>')
+        $('#progress-bar').width('90%').html('Saving Notifications');
+      })
+      // Cleanup
+      aio.on('cleanup-data', function(){
+        $('#log').append('<p>Cleanup Complete</p>')
+        $('#progress-bar').width('100%').html('Done!');
+      })
+
+    </script>
+
+</body>
+</html>

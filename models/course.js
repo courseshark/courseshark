@@ -12,7 +12,7 @@ exports.CourseSchema = module.exports.CourseSchema = CourseSchema
 
 CourseSchema = new Schema({
 		name: { type: String }
-	,	term: { type: Schema.ObjectId, ref: 'Term' }
+	,	terms: [{ type: Schema.ObjectId, ref: 'Term' }]
 	,	department: { type: Schema.ObjectId, ref: 'Department' }
 	,	number: { type: Number, index: true }
 	, sections: [{ type: Schema.ObjectId, ref: 'Section' }]
@@ -33,3 +33,4 @@ CourseSchema.method('addSection', function(section){
 	this.sections.push(section['_id'])
 	this.save()
 })
+

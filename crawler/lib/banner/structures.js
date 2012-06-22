@@ -339,16 +339,18 @@
 			//console.log('   inserting course', ''+objCourse)
 			var search = {
 					name: objCourse.title
-				,	term: dbTerm['_id']
 				,	department: dbDep['_id']
 				,	number: objCourse.number
 			}
 			, course = new structs.Course(search)
 			,	upsertData = course.toObject();
-			delete(upsertData._id)
-			structs.Course.update(search, upsertData, {upsert: true}, (function(dbTerm, objCourse, search){
+			delete(upsertData._id);
+			delete(upsertData.terms);
+			structs.Course.update(search, {$set:upsertData,$addToSet:{terms:dbTerm._id}}, {upsert: true}, (function(dbTerm, objCourse, search){
 				return function(err, numAffected){
+					if ( err ){ throw err }
 					structs.Course.findOne(search, function(err, dbCourse){
+						if ( err ){ throw err }
 						storeSections(dbTerm, objCourse, dbCourse, dbDep);
 						courseEmitter.emit('decreaseCount'); })
 				}})(dbTerm, objCourse, search)
@@ -381,6 +383,7 @@
 				,	info: objSection.sectionId
 				, course: dbCourse['_id']
 				,	department: dbCourse['department']
+				, term: dbTerm._id
 				, credits: objSection.credits
 			}
 

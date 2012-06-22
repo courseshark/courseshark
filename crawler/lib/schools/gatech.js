@@ -26,7 +26,6 @@ var gatech = module.exports = everySchool.submodule('gatech')
 		.step('listSections')
 			.accepts('term')
 		.step('storeResults')
-		.step('closeDB')
 	
 
 	.howto('save')
@@ -116,6 +115,7 @@ var gatech = module.exports = everySchool.submodule('gatech')
 	.storeResults(function(termUpdating){
 		this.structures.storeSchool(this, next)
 	})
+	.configurable('closeDB')
 	.closeDB(function(){
 		this.mongoose.disconnect()
 		next()
@@ -201,9 +201,8 @@ var gatech = module.exports = everySchool.submodule('gatech')
 	.updateSection(function(section, callback){
 		var self = this
 
-		cId = section.course['_id'] || section.course
-		Course.findById(cId).populate('term').run(function(err, course){
-			downloadHelper(section, course.term, callback);
+		Term.findOne(section.term).exec(function(err, term){
+			downloadHelper(section, term, callback);
 		})
 
 		downloadHelper = function(section, term, callback){

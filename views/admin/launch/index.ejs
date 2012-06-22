@@ -1,0 +1,26 @@
+<h1>Launching Tools</h1>
+
+<div class="row">
+	<div class="span3">
+		<div class="well">
+			<h2>Current Mode</h2>
+			<h3><strong><%=: mode | capitalize %></strong></h3>
+		</div>
+	</div>
+	<div class="span3">
+		<div class="well">
+			<h2>DB Stuff</h2>
+			<p><a href="#" onClick="confirmDialog('Are you sure?', 'window.location=\'/launch/purge\'')">Clean DB</a><small> ( will insert an admin/admin account )</small></p>
+			<p><a href="#" onClick="confirmDialog('Are you sure?', 'window.location=\'/launch/import\'')">Import From MySQL live</a></p>
+		</div>
+	</div>
+	<div class="span3">
+		<div class="well">
+			<h2>Crawl Schools</h2>
+			<% schools.forEach(function(school){%>
+				<p><a href="/launch/crawl/<%=school._id%>">Crawl <%=school.abbr%></a></p>
+			<%})%>
+			</p>
+		</div>
+	</div>
+</div>

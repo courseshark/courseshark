@@ -8,11 +8,14 @@
 	<link rel="stylesheet" href="/styles/admin.css" type="text/css" media="all" /> 
 </head>
 <body>
+    <%- partial('../includes/js.ejs') %>
+    <script>
+      aio = io.connect('/admin')
+    </script>
+
 
     <%- partial('../includes/nav.ejs') %>
-
-
-	    <div class="container-fluid">
+    <div class="container-fluid">
 			<%- messages() %>
       <div class="row-fluid">
         <div class="span2">

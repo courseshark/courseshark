@@ -15,7 +15,7 @@ CreditSchema = new Schema({
 	,	orderId: {type: String}
 	, used: {type: Boolean, 'default': false}
 	, item: {type: Schema.ObjectId, ref: 'Notification'}
-	, modifiedOn: {type: Date}
+	, usedOn: {type: Date}
 	, createdOn: {type: Date, 'default': Date.now()}
 });
 

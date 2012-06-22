@@ -6,8 +6,8 @@
 		</div>
 		<div class="span6">
 			<h1><%=account.name%></h1>
-			<h3><%=account.year%><sup><%=numberize(account.year)%></sup> year</h3>
-			<h3><%=account.major?account.major.name:'&mdash;'%> @ <%=account.school.abbr%></h3>
+			<%if (account.year) { %><h3><%=account.year%><sup><%=numberize(account.year)%></sup> year</h3><%}%>
+			<h3><%=: account.major?account.major.name:'&mdash;' | capitalize%> @ <%=: account.school.abbr | capitalize%></h3>
 		</div>
 		<div class="span3">
 			<h1>Friends</h1>
@@ -47,13 +47,15 @@
 			<div class="span8 offset2">
 				<fieldset>
 			    <legend>Password</legend>
-	
+					
+					<% if ( !user.isPasswordless() ){ %>
 					<div class="control-group">
 			      <label class="control-label" for="email">Current</label>
 			      <div class="controls">
 							<input type="password" class="input-xlarge" name="user.currentPassword" value="" autocomplete="off"/>
 			      </div>
 			    </div>
+			    <% } %>
 	
 					<div class="control-group">
 			      <label class="control-label" for="new_password">New Password</label>
@@ -77,9 +79,9 @@
 			    <legend>School Information</legend>
 		
 					<div class="control-group">
-			      <label class="control-label" for="school_id">School</label>
+			      <label class="control-label" for="user.school">School</label>
 			      <div class="controls">
-							<select name="user.school" id="user.school" class="input-xlarge">
+							<select name="user.school" id="user_school" class="input-xlarge">
 							<% schools.forEach(function(school){%>
 								<% if ( school._id.toString() == account.school._id.toString() ){ %>
 								<option value="<%=school._id%>" selected><%=school.name%></option>
@@ -94,7 +96,7 @@
 					<div class="control-group">
 			      <label class="control-label" for="user.major">Major</label>
 			      <div class="controls">
-							<select name="user.major" id="major-change" class="input-xlarge">
+							<select name="user.major" id="user_major" class="input-xlarge">
 								<option value="">Loading...</option>
 							</select>
 			      </div>
@@ -164,15 +166,16 @@
 	</div><!-- /.container -->
 
 	<script>
-		var current_school = "<%= account.school%>",
+		var current_school = "<%= account.school.id%>",
 				current_major  = "<%= account.major?account.major.id:''%>";
-		$('#user.school').bind('change', updateMajors);
+		$('#user_school').bind('change', updateMajors);
 		function updateMajors(){
-			var k = $('#school-change').val(),
-				$s = $('#major-change').empty();
-			$.ajax({url: '/term/1/departments',dataType: 'json',
+			var k = $('#user_school').val(),
+				$s = $('#user_major').empty();
+			$.ajax({url: '/school/departments/'+k,dataType: 'json',
 					success: function(j){
-						r = j.message;for(i in r){$s.append($('<option>', { value : r[i].id, selected:(r[i].id==current_major)}).text(r[i].name));}}
+						for(i in j){
+							$s.append($('<option>', { value : j[i]._id, selected:(j[i]._id==current_major)}).text(j[i].name));}}
 			});
 		}
 		updateMajors();
@@ -180,11 +183,12 @@
 		
 		function submit_change(){
 			data = $('form#settings-form').serialize();
+			data._method = 'PUT'
 			console.log(data);
 			$.ajax({
-				url:'/account/settings',
+				url:'/settings',
 				data: data,
-				type:'POST',
+				type: 'PUT',
 				dataType: 'json',
 				success: function(result){
 					if ( result.success == false )
@@ -193,17 +197,14 @@
 					}
 					else
 					{
-						$('input[name="current_password"]').val('');
-						$('input[name="new_password"]').val('');
-						$('input[name="confirm_password"]').val('');
-						show_timed_message(result.message+'<br /><small>'+result.information+'</small>');
+						window.location = window.location;
 					}	
 					$('html, body').animate({scrollTop:0}, 'fast');
 				}
 			});
 		}
 		$('.submit').click(function(){
-			if ( $('#school-change').val() != current_school ){
+			if ( $('#user_school').val() != current_school ){
 				confirmDialog('<h4>Your school has changed!</h4><br /><p>If you continue all your previously <strong>saved schedules and caffeine notifications will be </strong>removed permanently!</strong> Are you sure you want to change schools?</p>', 'dialog_close();submit_change();current_school=$(\'#school-change\').val();localStorage.clear();','dialog_close();');
 			}else{
 				submit_change();
@@ -211,30 +212,6 @@
 			return;
 		});
 		
-		$('select#school-change').qtip({
-			content: '<h4>WARNING</h4><div align="center">By changing your school, all saved schedules and caffeine notifications will be removed!</div>',
-			show: 'focus',
-			hide: 'blur',
-			position: {
-		   		corner: {
-		         	target: 'rightMiddle',
-		         	tooltip: 'leftMiddle'
-		      	},
-				adjust: { 
-					x: 23, 
-					y: 0 
-				}
-		   	},
-			style: {
-				tip: 'leftMiddle',
-				textAlign: 'center',
-				name: 'red'
-			},
-			title: {
-				text: '::Warning::',
-				button:false
-			}
-		});
 		function showSchoolDialog() {
 			openDialog('/account/set-school').on('hidden', function(){setTimeout(showSchoolDialog, 1000)});
 		}

@@ -15,6 +15,7 @@ TermSchema = new Schema({
 	,	season: { type: String }
 	,	year: { type: Number }
 	,	number: { type: Number, index: true }
+	,	active: { type: Boolean, 'default': false }
 	, startDate: { type: Date }
 	, endDate: { type: Date }
 	, school: { type: Schema.ObjectId, ref: 'School', index: true }

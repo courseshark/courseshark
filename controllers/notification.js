@@ -9,11 +9,11 @@ exports = module.exports = function(app){
 	var notification_io = app.io.of('/notifications')
 
 	app.get('/watcher', function(req, res){
-		Notification.find().count().run(function(err, total){
-			Notification.find({deleted: false, hidden:false}).count().run(function(err, active){
-				NotificationFeedback.find({ignore:false}).count().run(function(err, feedBackCount){
-					NotificationFeedback.find({success:true,ignore:false}).count().run(function(err, successNumber){
-						success = feedBackCount>0?successNumber / feedBackCount:0
+		Notification.find().count().exec(function(err, total){
+			Notification.find({deleted: false, hidden:false}).count().exec(function(err, active){
+				NotificationFeedback.find({ignore:false}).count().exec(function(err, feedBackCount){
+					NotificationFeedback.find({success:true,ignore:false}).count().exec(function(err, successNumber){
+						success = Math.round((feedBackCount>0?successNumber / feedBackCount:0)*1000)/10 + '%'
 						res.render('watcher/index', {total:spanNumbers(total), active:spanNumbers(active), success:spanNumbers(success)})
 					})
 				})
@@ -23,11 +23,11 @@ exports = module.exports = function(app){
 
 	app.get('/notifications.:format?', requireLogin, requireSchool, function(req, res){
 		if ( req.params.format === 'json' ){
-			Notification.find({user: req.user}).populate('section').populate('section.course').populate('section.department').run(function(err, notifications){
+			Notification.find({user: req.user}).populate('section').populate('section.course').populate('section.department').exec(function(err, notifications){
 				res.json(notifications);
 			})
 		}else{
-			Term.find({school: req.school}, function(err, terms){
+			Term.find({school: req.school, active: true}, function(err, terms){
 				res.render('notifications/index', {user: req.user, school: req.school, terms:terms})
 			})
 		}
@@ -68,7 +68,7 @@ exports = module.exports = function(app){
 							socket.emit('error', err)
 						}else{
 							credit.used = true
-							credit.modifiedOn = Date.now()
+							credit.usedOn = Date.now()
 							credit.item = note._id
 							credit.save(function(err){
 								if ( !err ){

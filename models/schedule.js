@@ -24,11 +24,6 @@ ScheduleSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})
 
 ScheduleSchema.method('addSection', function(section){
-	for( var i=0, len=this.sections.length; i<len; i++ ){
-		if ( this.sections[i].toHexString() === section['_id'].toHexString() ){
-			return;
-		}
-	}
-	this.sections.push(section['_id'])
+	this.sections.push(section)
 	this.save()
 })

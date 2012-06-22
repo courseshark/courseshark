@@ -1,5 +1,11 @@
-*.coffee
+# this is my ignore file with a nice comment at the top
+
+logs/access.log
+/logs/*       # ignore all logs
+/logs*       # ignore all logs
+/public/*     # static files
+/public*     # static files
+/views/*     # view files
+/views*     # view files
+*.coffee      # ignore any CSS files too
 *.log
-*.ejs
-public/scripts/*-courseshark.js
-public/styles/*-courseshark.css

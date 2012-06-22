@@ -4,7 +4,7 @@
 </div>
 
 <div class="modal-body">
-	<form id="login" method="post" action="/users/login" class="form-horizontal">
+	<form id="login" method="post" action="/login" class="form-horizontal">
 		<fieldset>
 			<!-- Email -->
 			<div class="control-group" id="login-email-control">
@@ -57,34 +57,30 @@
 		$('form#login #login-password-control .help-inline[for="password"]').html("")
 		if ( $('input#email').val()!=""){
 			if ( $('input#password').val() != ""){
-				console.log({
-						'password':$('input#password').val(),
-						'email':$('input#email').val(),
-						'remember':$('input#remember').val()
-					});
-				$.ajax({
-					url:'/users/login',
-					async:false,
-					data:{
-							'password':$('input#password').val(),
-							'email':$('input#email').val(),
-							'remember':$('input#remember').val()
-						},
+
+				d = {	'user.password':$('input#password').val(),
+							'user.email':$('input#email').val(),
+							'user.remember':$('input#remember').val()
+						}
+
+			$.ajax({
+					url:'/login',
+					data:d,
 					type:'POST',
 					dataType:'json',
-					success: function(response){
-						if ( response == null ){
+					success: function(r){
+						if ( r == null ){
 							errorHandler('Unknown response','','Null response from login_submit()');
 							return;
 						}
-						if ( response.success == true ){
-							window.location = response.message;
+						if ( r.success == true ){
+							window.location = r.redirect;
 						}else{
 							$('form#login #login-email-control, form#login #login-password-control').addClass('error');
 							$('form#login #login-password-control .help-inline[for="password"]').html("Invalid username or password");
 						}
 					},
-					error: function(jqXHR, textStatus, errorThrown){errorHandler(jqXHR,'',errorThrown);}
+					error: function(jqXHR, textStatus, errorThrown){console.log('nope');errorHandler(jqXHR,'',errorThrown);}
 				});
 			}
 			else

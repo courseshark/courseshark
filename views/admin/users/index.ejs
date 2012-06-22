@@ -40,7 +40,7 @@
 		<% if (users.length) { %>
     	<% users.forEach(function(user){ %>
 				<tr>
-					<td><%=user._id%></td>
+					<td title="<%=user._id%>"><%=(""+user._id).substring((""+user._id).length-7, (""+user._id).length)%></td>
 					<td><%=user.name%></td>
 					<td><%=user.email?user.email:'&mdash;'%></td>
 					<td><%=user.oauth?user.oauth:'&mdash;'%></td>

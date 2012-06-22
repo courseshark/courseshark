@@ -21,10 +21,6 @@
 	      <div class="controls">
 					<input type="password" name="password" id="reg-password" placeholder="Password" />
 					<p class="help-inline" for="password"></p>
-				</div>
-				
-				<label class="control-label" for="c_password">Confirm Password</label>
-	      <div class="controls">
 					<input type="password" name="c_password" id="reg-c_password" placeholder="Confirm Password" required="true" />
 					<p class="help-inline" for="c_password"></p>
 				</div>
@@ -39,6 +35,7 @@
 						<option value="<%= schools[_i].id %>"><%= schools[_i].name %></option>
 						<% } %>
 					</select>
+				</div>
 			</div>
 		</fieldset>
 	</form>
@@ -52,44 +49,39 @@
 
 
 <script>
-	function register_submit(){
-		
-		//Reset diaply 
-		$('form#reg .control-group').removeClass('error')
-		$('.help-inline[for="email"]').html("")
-		$('.help-inline[for="password"]').html("")
-		$('.help-inline[for="c_password"]').html("")
-		
-		data = {password   : $('input#reg-password').val(),
-						c_password : $('input#reg-c_password').val(),
-						email      : $('input#reg-email').val(),
-						school_id  : $('select#reg-school_id').val()};
-		
-		if ( data.email === '' || !validateEmail(data.email) ){
-			$('#personal-info').addClass('error').find('.help-inline[for="email"]').html("Invalid Email");
-			return;
-		}
-		if ( data.password === '' ){
-			$('#password-info').addClass('error').find('.help-inline[for="password"]').html("Invalid Password");
-			return;
-		}
-		if ( data.password !== data.c_password ){
-			$('#password-info').addClass('error').find('.help-inline[for="c_password"]').html("Passwords do not match");
-			return;
-		}
-		
-		$.ajax({
-			url: '/users/register',
-			async: false,
-			data: data,
-			type: 'POST',
-			dataType: 'json',
-			success: function(response){
-				if ( response == null ){
+function register_submit(){
+	//Reset diaply 
+	$('form#reg .control-group').removeClass('error')
+	$('.help-inline[for="email"]').html("")
+	$('.help-inline[for="password"]').html("")
+	$('.help-inline[for="c_password"]').html("")
+	
+	var d = {'user.password' : $('input#reg-password').val()
+					, 'user.email'     : $('input#reg-email').val()
+					, 'user.school'    : $('select#reg-school_id').val()};
+	
+	if ( d['user.email'] === '' || !validateEmail(d['user.email']) ){
+		$('#personal-info').addClass('error').find('.help-inline[for="email"]').html("Invalid Email");
+		return;
+	}else if ( d['user.password'] === '' ){
+		$('#password-info').addClass('error').find('.help-inline[for="password"]').html("Invalid Password");
+		return;
+	}else if ( d['user.password'] !== $('input#reg-c_password').val() ){
+		$('#password-info').addClass('error').find('.help-inline[for="c_password"]').html("Passwords do not match");
+		return;
+	}
+	
+	$.ajax({
+			url: '/signup'
+		, data: d
+		, type: 'POST'
+		, dataType: 'json'
+		,  success: function(response){
+				if ( response === null ){
 					errorHandler('Unknown response','','Null response from register_submit()');
 					return;
 				}
-				if ( response.success == true ){
+				if ( response.success === true ){
 					window.location = response.message;
 				}else if ( response.message == 'email' ) {
 					$('#personal-info').addClass('error').find('.help-inline[for="email"]').html("Email already taken.");
@@ -97,10 +89,9 @@
 					errorHandler('Unknown response',response.message,'Uncaught response');
 					return;
 				}
-			},
-			error: function(jqXHR, textStatus, errorThrown){errorHandler(jqXHR,'',errorThrown);}
-		});
-	}
-	
+			}
+		, error: function(jqXHR, textStatus, errorThrown){errorHandler(jqXHR,'',errorThrown)}
+	})
+}
 </script>
 

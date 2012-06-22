@@ -150,18 +150,18 @@ SectionPicker = function(opts){
 
 	term = $term?$term.val():window.term?window.term.id?window.term.id:window.term:'';
 
-		$.ajax({
-				url: '/term/'+term+'/departments'
-			, dataType: 'json'
-			, success: function(d){
-					var options = '', e = {}
-					for ( var i=0,len=d.length; i<len; i++ ){
-						e = d[i]
-						options += '<option value="'+e._id+'">'+e.name+'</option>'
-					}
-					$department.html(options).removeAttr('disabled').change()
+	$.ajax({
+			url: '/school/departments'
+		, dataType: 'json'
+		, success: function(d){
+				var options = '', e = {}
+				for ( var i=0,len=d.length; i<len; i++ ){
+					e = d[i]
+					options += '<option value="'+e._id+'">'+e.name+'</option>'
 				}
-			})
+				$department.html(options).removeAttr('disabled').change()
+			}
+	})
 
 	$department.change(function(){
 		var id = $department.val()
@@ -190,7 +190,7 @@ SectionPicker = function(opts){
 		$section.attr('disabled','true').html("<option value=''>Loading...</option>");
 		if (!id){return;}
 		$.ajax({
-				url:"/sections/"+id
+				url:"/term/"+term+"/sections/"+id
 			, dataType:'json'
 			, success: function(secs){
 					updating[id] = 0
@@ -229,7 +229,6 @@ SectionPicker = function(opts){
 		});
 	}
 }
-
 
 function validateEmail(email) {
 		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

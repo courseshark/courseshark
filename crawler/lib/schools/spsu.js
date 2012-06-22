@@ -34,7 +34,6 @@ var spsu = module.exports = everySchool.submodule('spsu')
 		.step('listSections')
 			.accepts('term')
 		.step('storeResults')
-		.step('closeDB')
 
 
 	.configurable('termDates')
@@ -103,6 +102,7 @@ var spsu = module.exports = everySchool.submodule('spsu')
 	.storeResults(function(termUpdating){
 		this.structures.storeSchool(this, next)
 	})
+	.configurable('closeDB')
 	.closeDB(function(){
 		this.mongoose.disconnect()
 		next()
@@ -192,11 +192,12 @@ var spsu = module.exports = everySchool.submodule('spsu')
 	.configurable('updateSection')
 	.updateSection(function(section, callback){
 		var self = this
-			,	data = {
-						term_in: ''+term.number
-					,	crn_in: ''+section.number
-				}
-			,	options = {host: self.url, path: self.paths.details, method: 'GET', data: data}
+		Course.findById(section.course).populate('term').populate('department').exec(function(err, course){
+			var data = {
+						cterm_in: course.term.number
+					, csubj_in: course.department.abbr
+					}
+				,	options = {host: self.url, path: self.paths.listing, method: 'GET', data: data}
 			self.dl.download(options, function(window, html){
 				var $ = window.$, $table, $sectionHead, $sectionDetails, $sectionDetailsContainer, $sectionDetailsList
 				$numbers = $('.dddefault').filter(function(){return (/^[0-9\-]+$/).test($(this).text())})
@@ -212,8 +213,9 @@ var spsu = module.exports = everySchool.submodule('spsu')
 				section.save(function(err){
 					callback(err, section)
 				})
-			})
-	})
+			}) // end download
+		}) // end course
+	}) // end update section
 
 	.safeUpdateSection(function(section, expires, callback){
 		updated = new Date(section.updated).getTime()

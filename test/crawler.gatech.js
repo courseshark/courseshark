@@ -9,7 +9,7 @@
 	console.assert(typeof(crawler.gatech) === 'object')
 
 	console.log('Crawling')
-	crawl = crawler.gatech.crawl('201208')
+	crawl = crawler.gatech.crawl('201108')
 	crawl.on('done', function(d){
 		console.log('GOT DONE EVENT:', d.length)
 	})

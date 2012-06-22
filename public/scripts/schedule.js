@@ -145,7 +145,6 @@ Schedule.prototype.pushSave = function(getId){
 			type:'PUT',
 			dataType:'json',
 			success:function(res){
-				console.log(res);
 				self.id = this._id = res._id;
 				self.user = res.user;
 			}
@@ -168,6 +167,7 @@ Schedule.prototype.show = function(){
 		section.course = section.course || {id: section.course.id, major_abbr: section.department.abbr, number: section.course.number};
 		times = addSectionToCalendar(section);
 		for ( t=0; t<times.length; $(times[t]).show(),$(times[t]).hasClass('tbd-listing')?$('#tbd-container').show():{}, t++){}
+		section.course.department = typeof section.course.department == 'object'?section.course.department:section.department
 		addCourseToList(section.course, section.id)
 	}
 	return this;
@@ -315,7 +315,6 @@ Schedule.prototype._generateIcs = function(){
 		for ( var timeStr in timeCombine ){
 			evnt['daysets'].push( $.extend(timeCombineTime[timeStr], {days: timeCombine[timeStr].join(',')}) )
 		}
-		console.log(evnt)
 		events.push(evnt);
 	}
 	now = new Date();
@@ -514,7 +513,8 @@ function addSectionToCalendar(section, scheduleId){
 			startHourAdjusted = (slot.startTime.getHours()%12===0)?12:slot.startTime.getHours()%12;
 			endHourAdjusted = (slot.endTime.getHours()%12===0)?12:slot.endTime.getHours()%12;
 			html = window.tmpl($('#template-event-listing').html(), {
-						section:section, slot:slot
+						section:section
+					, slot:slot
 					, t:t
 					, startHourAdjusted: startHourAdjusted
 					, endHourAdjusted: startHourAdjusted
@@ -525,7 +525,7 @@ function addSectionToCalendar(section, scheduleId){
 			for (var i=0,len=slot.days.length; i<len; i++){
 				day = slot.days[i];
 				addedTimeslot = $(html).appendTo('.wk-event-wrapper#'+day);
-				for( var j=0,flen=section.friends.length; j<flen; j++ ){
+				for( var j=0,flen=(section.friends||[]).length; j<flen; j++ ){
 					addedTimeslot.children(".friends-dots").append("<div class=\"friend-dot\" style=\"border-color: "+section.friends[j].color+"\"></div>");
 				}
 				addedTimeslot.css({'border-top':'3px solid '+section.color});
@@ -547,10 +547,10 @@ function addSectionToCalendar(section, scheduleId){
 
 
 function addCourseToList(course, selectedSection){
+	course.id = (course._id||course.id)
 	if ( $('.course-options-container#'+course.id).length ){
 		return;
 	}
-	
 	var course_container_el = window.tmpl($('#template-course-options').html(), {course: course});
 	$('#class-list').prepend(course_container_el);
 	var $bar = $('.course-options-container#'+course.id).show();
@@ -562,7 +562,7 @@ function addCourseToList(course, selectedSection){
 	$.ajax({
 		beforeSend:function(jqXHR, settings){if ( !$('#class-list-loader').hasClass('showing') ){$('#class-list-loader').addClass('showing').show();}},
 		complete:function(jqXHR, textStatus){$('#class-list-loader').hide(0,function(){$(this).removeClass('showing');});},
-		url:"/sections/"+course.id,
+		url:"/term/"+schedule.term.id+"/sections/"+(course._id||course.id),
 		dataType: 'json',
 		success: function(sections){
 			if ( sections && sections.length > 0 ){

@@ -9,7 +9,7 @@
 		</div>
 	</script>
 	<script type="text/plain" id="template-section-selector">
-		<div rel="section-option" id="<$=section.id$>" class="section-option <$= ( (section.has_children)?' parent':'') + ( section.tbd_class?' TBA':'' ) +(section.friends.length?'friends':'')$>" credits="<$=(section.credits)$>"  <$=section.friends.length>0?'title="You have '+section.friends.length+' friends in this section"':''$> >
+		<div rel="section-option" id="<$=section.id$>" class="section-option <$= ( (section.has_children)?' parent':'') + ( section.tbd_class?' TBA':'' ) +((section.friends||[]).length?'friends':'')$>" credits="<$=(section.credits)$>"  <$=(section.friends||[]).length>0?'title="You have '+(section.friends||[]).length+' friends in this section"':''$> >
 			<div class="section-number"><$=section.number$></div>
 			<div class="section-instructor"><$=section.instructor$></div>
 			<div class="section-seats loading">
@@ -21,7 +21,7 @@
 		<div id="caffeine_<$=id$>" class="seat-notification">Create an open seat <a href="#" onClick="caffeine_clicked=true;show_caffeine_dialog(<$=id$>);return false;">Notification</a></div>
 	</script>
 	<script type="text/plain" id="template-event-listing">
-		<div rel="section-timeslot" class="wk-event-listing option <$=section.id$> <$=section.friends.length>0?'friends':''$>" id="<$=section.id$>-<$=t$>" data-friends="<$=section.friends.length$>" style="top:<$=top_offset$>px;width:95%;height:<$=height$>px;" data-original-title="<$=section.department.abbr$> <$=section.course.number$> <$=(slot.type!='None'?slot.type+' ':'')$> [<$=section.number$>]"> \
+		<div rel="section-timeslot" class="wk-event-listing option <$=section.id$> <$=(section.friends||[]).length>0?'friends':''$>" id="<$=section.id$>-<$=t$>" data-friends="<$=(section.friends||[]).length$>" style="top:<$=top_offset$>px;width:95%;height:<$=height$>px;" data-original-title="<$=section.department.abbr$> <$=section.course.number$> <$=(slot.type!='None'?slot.type+' ':'')$> [<$=section.number$>]"> \
 			<div class="friends-dots"></div>
 			<dl class="wk-event-listing-dl">
 				<dt data-color="<$=section.color$>">

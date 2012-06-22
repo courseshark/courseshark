@@ -14,10 +14,13 @@ exports = module.exports = function(app){
 			res.render('schedule/schedule', {departments: departments, link: false, school: req.school._id});
 		})
 	})
-	app.get('/sl/:id', function(req, res){
-		ScheduleLink.findById(req.params.id, function(err, scheduleLink){
+	app.get('/schedule/link/:hash', function(req, res){
+		res.redirect('/sl/'+req.params.hash);
+	});
+	app.get('/sl/:hash', function(req, res){
+		ScheduleLink.findOne({hash: req.params.hash}, function(err, scheduleLink){
 			if ( !scheduleLink ){
-				throw new NotFound()
+				throw new app.NotFound()
 			}else{
 				schedule = scheduleLink.schedule
 				sJson = JSON.stringify(schedule)
@@ -32,7 +35,7 @@ exports = module.exports = function(app){
 	*
 	**/
 	app.get('/schedule/load/:sid', requireLogin, requireSchool, function(req, res){
-		Schedule.findOne({_id: req.params.sid, user: req.user._id}).run(function(err, schedule){
+		Schedule.findOne({_id: req.params.sid, user: req.user._id}).exec(function(err, schedule){
 			res.json(schedule)
 		})
 	})
@@ -59,7 +62,7 @@ exports = module.exports = function(app){
 		}
 	})
 	app.get('/schedule/dialog/load', requireLogin, function(req, res){
-		Schedule.find({user: req.user}).populate('term').run(function(err, schedules){
+		Schedule.find({user: req.user}).populate('term').exec(function(err, schedules){
 			res.render('schedule/dialogs/load', {schedules: schedules})
 		})
 	})
@@ -106,7 +109,7 @@ exports = module.exports = function(app){
 	*
 	**/
 	app.get('/schedule/dialog/new', requireSchool, function(req, res){
-		Term.find({school:req.school._id}, function(err, terms){
+		Term.find({school:req.school._id}, {number:1,name:1,season:1,year:1}, {sort:{number:-1}}, function(err, terms){
 			res.render('schedule/dialogs/new', {terms: terms })
 		})
 	});
@@ -117,14 +120,21 @@ exports = module.exports = function(app){
 		res.render('schedule/dialogs/link')
 	})
 	app.post('/schedule/link', function(req, res){
+		function randomHash(){
+			return (Math.floor(Math.random() * 10) + parseInt((new Date()).getTime()*10, 10)).toString(36)
+		}
 		pSchedule = JSON.parse(req.body.schedule);
 		delete pSchedule._id;
 		delete pSchedule.id;
 		delete pSchedule.user;
 		link = new ScheduleLink()
 		link.schedule = pSchedule;
+		link.hash = randomHash()
+		if ( req.user && req.session.auth && req.session.auth.loggedIn ){
+			link.user = req.user._id
+		}
 		link.save(function(err){
-			url = app.createLink('http://'+req.headers.host+'/sl/'+link.id, req.user)
+			url = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
 			res.json({id: link.id, url: url, err: err})
 		})
 	})
@@ -141,25 +151,31 @@ exports = module.exports = function(app){
 			res.json(terms)
 		})
 	})
-	app.get('/term/:tid/departments', requireSchool, function(req, res){
-		Department.find({school: req. school}, function(err, departments){
+		app.get('/school/departments', requireSchool, function(req, res){
+		Department.find({school: req.school}, {}, {sort:{abbr:1}}, function(err, departments){
+			res.json(departments)
+		})
+	})
+	app.get('/school/departments/:sid', function(req, res){
+		var id = req.params.sid || ''
+		Department.find({school: id}, {}, {sort:{abbr:1}}, function(err, departments){
 			res.json(departments)
 		})
 	})
 	app.get('/term/:tid/courses/:did', function(req, res){
 		termId = new ObjectId(req.params.tid)
 		departmentId = new ObjectId(req.params.did)
-		Course.find({term: termId, department: departmentId }, {number:1, name:1, department:1}, {sort:{number:1}}).populate('department').run(function(err, courses){
+		Course.find({terms: termId, department: departmentId }, {number:1, name:1, department:1}, {sort:{number:1}}).populate('department').exec(function(err, courses){
 			res.json(courses)
 		})
 	})
-	app.get('/sections/:cid', function(req, res){
+	app.get('/term/:tid/sections/:cid', function(req, res){
 		courseId = new ObjectId(req.params.cid)
-		Section.find({course: courseId }, function(err, sections){
+		Section.find({course: courseId, term: req.params.tid}, function(err, sections){
 			res.json(sections)
 		})
 	})
-	app.get('/sections/:cid/full', function(req, res){
+	app.get('/term/:tid/sections/:cid/full', function(req, res){
 		courseId = new ObjectId(req.params.cid)
 		Section.find({course: courseId, seatsAvailable: 0 }, function(err, sections){
 			res.json(sections)
@@ -167,22 +183,21 @@ exports = module.exports = function(app){
 	})
 
 
-
-
-
-
-
-
-
 	seats.on('connection', function (socket) {
 		socket.on('update', function(sectionId){
 			var now = new Date()
 				, FIFTEEN_MINUTES = 1000 * 60 * 15
-			Section.findById(sectionId).populate('course').run(function(err, section){
-				Term.findById(section.course.term).populate('school').run(function(err, term){
-					crawler[term.school.abbr].safeUpdateSection(section, FIFTEEN_MINUTES, function(err, section){
-						seats.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal, section: section})
-					})
+			Section.findById(sectionId).exec(function(err, section){
+				Term.findById(section.term).populate('school').exec(function(err, term){
+					if ( term.active ){
+						crawler[term.school.abbr].safeUpdateSection(section, FIFTEEN_MINUTES, function(err, section){
+							seats.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal, section: section})
+						})
+					}else{
+							avail = section.seatsAvailable?section.seatsAvailable:'-'
+							tot = section.seatsTotal?section.seatsTotal:'?'
+							seats.emit('result', {id: section.id, avail: avail, total: tot, section: section})
+					}
 				})
 			})
 		})

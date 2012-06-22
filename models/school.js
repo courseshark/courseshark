@@ -19,7 +19,7 @@ SchoolSchema = new Schema({
 	, zip: { type: String }
 	,	terms: [TermSchema]
 	,	currentTerm: { type: Schema.ObjectId, ref: 'Term' }
-	,	enabled: { type: Boolean, 'default': true, index: true }
+	,	enabled: { type: Boolean, 'default': false, index: true }
 	, waitlist: { type: Boolean, 'default': false }
 	, notifications: { type: Boolean, 'default': true }
 	, notificationCron: { type: String, 'default': '0 */15 * * * *' }
@@ -31,11 +31,7 @@ SchoolSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})
 
 SchoolSchema.method('addTerm', function(term){
-	for( var i=0, len=this.terms.length; i<len; i++ ){
-		if ( this.terms[i] === term.id ){
-			return;
-		}
-	}
-	this.terms.push(term['_id'])
-	this.save()
+	School.update({_id: this._id}, {$addToSet:{terms:term._id}}).exec(function(err, num){
+		if ( err ) { console.log(err) }
+	})
 })

@@ -36,7 +36,6 @@ createLink = exports.createLink = function(to, user){
 	}
 	link.save()
 	p = url.parse(to)
-	console.log(p);
 	if ( ! p.search || p.search === '' ){
 		return to+'?lRef='+link.hash
 	}else{
