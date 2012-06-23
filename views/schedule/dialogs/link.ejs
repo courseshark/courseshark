@@ -3,7 +3,7 @@
 	<h3>Schedule Link</h3>
 </div>
 
-<div class="modal-body">
+<div class="modal-body" style="overflow-y:visible;">
 	<div id="link" class="well">
 		<h2 id="url">
 		</h2>
@@ -13,7 +13,7 @@
 			<a href="https://twitter.com/share" id="twitter-link" class="twitter-share-button" data-url="" data-text="Check out my schedule for next semester!" data-via="courseshark" data-count="none" >Tweet</a>
 		</div>
 		<div class="span2">
-			<a name="f-2b" type="button" share_url="YOUR_URL"></a> 
+			<div id="fb-link-dyn" class="fb-send" data-href="http://courseshark.com" data-font="arial"></div>
 		</div>
 
 		<div class="span2">
@@ -26,7 +26,6 @@
 	<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 </div>
 
-<script src="https://facebook.com/connect.php/js/FB.Share" type="text/javascript"></script>
 <script>
 // create the twitter buttons
 $url = $('#link #url');
@@ -35,9 +34,9 @@ showLink = function(res){
 	if ( !res.err ){
 		selectText($url.html(res.url).attr('id'))
 		$twitterButton.attr('data-url', res.url)
-		$('a[name="f-2b"]').attr('share_url', res.url).attr('name', 'fb_share')
+		$('#fb-link-dyn').attr('data-href', res.url).parent().parent().parent().parent().css({'overflow-y':'visible'})
 		window.twttr ? window.twttr.widgets.load() : 0
-		window.FB ? window.FB.Share ? window.FB.Share.renderAll() : 0 : 0
+		window.FB ? window.FB.XFBML.parse ? window.FB.XFBML.parse() : 0 : 0
 	}else{
 		errorDialog(res.err)
 	}

@@ -1,5 +1,5 @@
-/* 
- * Static site pages, including the main page and about pages 
+/*
+ * Static site pages, including the main page and about pages
  */
 exports = module.exports = function(app){
 	// Home
@@ -9,7 +9,11 @@ exports = module.exports = function(app){
 	
 	// About pages
 	app.get('/about', function(req, res){
-		res.render('about/index', {});
+		if ( req.headers['x-requested-with'] === 'XMLHttpRequest' ){
+			res.render('dialogs/about')
+		}else{
+			res.render('about/index')
+		}
 	})
 	
 	app.get('/about/terms', function(req, res){

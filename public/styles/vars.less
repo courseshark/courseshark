@@ -11,7 +11,7 @@
 @superLight: #e4e4e4;
 @orange: #ff6d00;
 @green: #1fff19;
-@lightBlue: rgb(63,169,245);
+@lightBlue: #3FA9F5;
 @subBlue: darken(@lightBlue, 30%);
 @subBlueTrans: fadeout(@subBlue,40%);
 @darkBlue: #4D6484;
@@ -19,31 +19,31 @@
 @saleRed: #B22222;
 
 
-.micro{ /* 13px / 18px */
+.micro() { /* 13px / 18px */
   font-size: 0.3693em;
   line-height: 1.3846153846153846em;
 }
-.small{ /* 13px / 18px */
+.small() { /* 13px / 18px */
   font-size: 0.8125em;
   line-height: 1.3846153846153846em;
 }
-.normal { /* 16px / 24px */
+.normal() { /* 16px / 24px */
   font-size: 1em;
   line-height: 1.5em;
 }
-.large { /* 26 / 36px */
+.large() { /* 26 / 36px */
   font-size: 1.625em;
   line-height: 1.3846153846153846em;
 }
-.huge { /* 42px / 48px */
+.huge() { /* 42px / 48px */
   font-size: 2.625em;
   line-height: 1.1428571428571428em;
 }
-.massive { /* 68px / 72px */
+.massive() { /* 68px / 72px */
   font-size: 4.25em;
   line-height: 1.0588235294117647em;
 }
-.gigantic { /* 110px / 120px */
+.gigantic() { /* 110px / 120px */
   font-size: 6.875em;
   line-height: 1.0909090909090908em;
 }
@@ -90,41 +90,6 @@
 	background: @from;
 	background: -webkit-gradient(radial, center top, @inner, center top, @outter, from(@from), to(@to)); 
 	background: -moz-radial-gradient( 50% 0%, circle, @from @inner px, @to @outter px );
-}
-
-
-
-
-
-/** Buttons  **/
-/* minimal
-*******************************************************************************/
-.minimal-button(){
-
-}
-
-.dialog-button(){
-	.minimal-button()
-}
-
-
-.rounded-gloss-button(){
-}
-
-
-.blue-button() {
-
-}
-/* clean gray
-*******************************************************************************/
-.clean-gray-button() {
-
-}
-
-/*
-Light blue
-******************************************************************************/
-.light-blue-button(){
 }
 
 /* button auto-width 

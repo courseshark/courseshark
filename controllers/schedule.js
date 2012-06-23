@@ -129,13 +129,22 @@ exports = module.exports = function(app){
 		delete pSchedule.user;
 		link = new ScheduleLink()
 		link.schedule = pSchedule;
-		link.hash = randomHash()
 		if ( req.user && req.session.auth && req.session.auth.loggedIn ){
 			link.user = req.user._id
 		}
-		link.save(function(err){
-			url = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
-			res.json({id: link.id, url: url, err: err})
+		// This bit doesnt seem to work right... it always makes a new link
+		ScheduleLink.findOne(link, {hash:1}, function(err, existingLink){
+			if ( err ){ console.log(err); }
+			if ( !existingLink ){
+				link.hash = randomHash()
+				link.save(function(err){
+					url = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
+					res.json({id: link.id, url: url, err: err})
+				})
+			}else{
+				url = app.createLink('http://'+req.headers.host+'/sl/'+existingLink.hash, req.user)
+				res.json({id: existingLink._id, url: url, err:err})
+			}
 		})
 	})
 

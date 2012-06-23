@@ -39,10 +39,33 @@
 
   , select: function () {
       var val = this.$menu.find('.active').attr('data-value')
+        , e = $.Event('selectitem')
       this.$element.val(val)
-      this.$element.change();
+      this.$element.change()
+      this.$element.trigger(e);
+      if (e.isDefaultPrevented()) return
       return this.hide()
     }
+
+  , showOptions: function(){
+      var that = this
+        , items
+        , q
+
+      this.query = ''
+
+      items = $.grep(this.source, function (item) {
+        return item
+      })
+
+      items = this.sorter(items)
+
+      if (!items.length) {
+        return this.shown ? this.hide() : this
+      }
+
+      return this.render(items.slice(0, this.options.items)).show()
+  }
 
   , show: function () {
       var pos = $.extend({}, this.$element.offset(), {

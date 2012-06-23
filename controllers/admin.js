@@ -106,7 +106,7 @@ exports = module.exports = function(app){
 		function downloadUsers(){
 			pauser.doneTxt = 'added-users'
 			pauser.next = downloadSchools
-			connection.query('SELECT * from `courseshark`.`users`;', function(err, rawUsers, fields) {
+			connection.query('SELECT `u`.*, group_concat(`_u`.id) as friends from `courseshark`.`users` as `u` LEFT JOIN `courseshark`.`friendships` as `f` ON `u`.id=`f`.user_id LEFT JOIN `courseshark`.`users` as `_u` ON `_u`.id=`f`.friend_id GROUP BY `u`.id; ', function(err, rawUsers, fields) {
 				if (err) throw err;
 				socket.emit('found-users', rawUsers)
 				pauser.count = rawUsers.length
@@ -118,7 +118,7 @@ exports = module.exports = function(app){
 							, email: u.email
 							, oldId: u.id
 							, oldSchool: u.school_id
-							, odlMajor: u.major_id
+							, oldMajor: u.major_id
 							,	year: u.year
 							, hashPassword: u.password
 							, canEmailFriendRequests: !!u.can_email_friend_requests
@@ -128,6 +128,7 @@ exports = module.exports = function(app){
 							, created: new Date(u.created)
 							, modified: new Date(u.modified)
 							,	admin: !!u.admin
+							, oldFriends: u.friends?u.friends.split(',').map(function(e){return parseInt(e,10)}): undefined
 							}
 						if ( u.oauth_provider!=='none' && u.oauth_provider!=='' ){
 							user.oauth = u.oauth_provider
@@ -360,7 +361,7 @@ exports = module.exports = function(app){
 		function downloadLinks(){
 			var unserialize = require('../lib/utils').unserialize
 			pauser.doneTxt = 'added-links'
-			pauser.next = function(){return;}
+			pauser.next = cleanupData
 			query = 'SELECT * FROM `courseshark`.`schedule_links` WHERE `schedule` LIKE "s:%";'
 			connection.query(query, function(err, rawLinks, fields) {
 				if( err ) { console.log(err); pauser.emit('-'); return;}
@@ -406,6 +407,36 @@ exports = module.exports = function(app){
 					}
 				})// each Credit
 			})// Connection
+		}
+
+		function cleanupData(){
+			pauser.doneTxt = 'cleanup-data1'
+			pauser.next = cleanupDataStep2
+			User.find({oldFriends:{$exists:true}}, function(err, users){
+				console.log('f',err,users);
+				pauser.count = users.length
+				users.forEach(function(user){
+					userD = user.toObject()
+					User.find({oldId:{$in:userD.oldFriends}}, function(err, friends){
+						user.friends = friends.map(function(f){return f['_id']})
+						console.log(user.friends);
+						user.oldFriends = undefined
+						user.save(function(err){
+							console.log(err, err?user:'');
+							pauser.emit('-')
+						})
+					})
+				})
+			})
+		}
+
+		function cleanupDataStep2(){
+			pauser.doneTxt = 'cleanup-data'
+			pauser.next = function(){ return; }
+			User.update({oldId:{$exists: true}}, {$unset: {oldId:1, odlMajor:1, oldMajor:1}}, {multi:1}, function(err, num){
+				console.log(err, num);
+				pauser.emit('-')
+			})
 		}
 
 

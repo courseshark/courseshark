@@ -6,6 +6,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale = 1, maximum-scale = 5"/>
 	<meta name="apple-mobile-web-app-capable" content="yes" />  
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />  
+
+	<meta property="og:title" content="<%if(typeof(title)=="undefined"){%>CourseShark<%}else{%><%=title%><%}%>"/>
+	<meta property="og:url" content="http://<%= (domain.replace('dev','com')+path) %>"/>
+	<meta property="og:site_name" content="CourseShark"/>
+	<meta property="og:type" content="<%if(typeof(type)=="undefined"){%>Website<%}else{%><%=type%><%}%>"/>
+	<meta property="og:image" content="http://<%= domain.replace('dev','com')%>/images/avatar.png"/>
+
 	<link rel="apple-touch-startup-image" href="/images/splash_screen.png" /> 
 	<meta name="description" content="College course schedule creator for Georgia Tech and Georgia State. CourseShark helps you create the perfect class schedule quickly and easily.">
 	<meta name="keywords" content="CourseShark, gatech, course shark, courseshark, georgia tech, shark, caffeine, AutoAdd, College, Schedule, Creator, Generator, Course, Catalog, Sections, Easy, Registration, Register, Quick, Easy, Calendar">

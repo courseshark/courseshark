@@ -15,8 +15,16 @@ ScheduleLinkSchema = new Schema({
 			_schedule: [ScheduleSchema]
 		,	hash: { type: String }
 		,	user: { type: Schema.ObjectId, ref:'User' }
-		, createdOn: { type: Date, 'default': Date.now() }
+		, createdOn: { type: Date }
+
 });
+
+ScheduleLinkSchema.pre('save', function(next){
+	if ( !this.createdOn ){
+		this.createdOn = Date.now();
+	}
+	next();
+})
 
 ScheduleLinkSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})

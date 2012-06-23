@@ -13,7 +13,7 @@
 					<li><a href="/schedule">Schedule</a></li>
 					<li><a href="/watcher">SeatWatcher</a></li>
 					<li><a href="http://books.courseshark.com/" target="_blank" onClick="_gaq = _gaq||{};_gaq.push(['_trackPageview', '/books']);">Books</a></li>
-					<li><a href="/about">About</a></li>
+					<li><a onClick="openDialog('/about')">About</a></li>
           <li><a href="javascript:UserVoice.showPopupWidget();" title="Open feedback &amp; support dialog (powered by UserVoice)">Feedback</a></li>
           <% if (loggedIn && user.admin){ %>
           <li><a href="//admin.<%=domain%>">Admin</a></li>
@@ -37,7 +37,7 @@
 							</li>
 						</ul>
 					<% } else { %>
-					 <li><a href="#" onClick="openDialog('/login')">Sign In</a></li>
+					 <li><button class="btn btn-primary btn-large"><i class="icon-white icon-user"></i> Sign In</button></li>
 					<% } %>
 				</ul>
 				<div class="social pull-right">

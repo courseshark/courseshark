@@ -3,7 +3,7 @@
 */
 @import "vars";
 @import "lib/bootstrap/bootstrap";
-@import "lib/bootstrap/responsive";
+//@import "lib/bootstrap/responsive";
 @import "dialog";
 @import "friends";
 @import "social";
@@ -24,13 +24,40 @@ button{
 h3 small{
 	font-size: 13px;
 }
-
-.navbar-inner{
-	border-bottom: 2px solid @lightBlue;
-	.social{
-		height: 40px;
-		line-height: 51px;
-		vertical-align: middle;
+.navbar {
+	.navbar-inner{
+		border-bottom: 3px solid @lightBlue;
+		background: @offWhite;
+		color: @grey;
+		height: 50px;
+		.social{
+			height: 40px;
+			line-height: 64px;
+			vertical-align: middle;
+		}
+		.brand{
+			text-indent:-9999px;
+			width: 100px;
+			margin:10px;
+			margin-top: 5px;
+			background: url('/images/logo.png') no-repeat center center;
+			background-size: contain;
+		}
+	}
+	.nav > li {
+		& > a {
+			font-variant: small-caps;
+			color: @black;
+			text-shadow: none;
+			line-height: 30px;
+			font-size: 1.4em;
+			&:hover{
+				color: @textBlue;
+			}
+		}
+		& > button{
+			margin: 7px 0;
+		}
 	}
 }
 
@@ -110,21 +137,33 @@ h3 small{
 
 .masthead{
 	background: none;
-	padding: 60px 0 0 0;
+	padding: 20px 0 0 0;
+	text-align: center;
+	font-variant:small-caps;
 	h1{
-		font-size: 80px;
+		.huge();
+		font-weight:200;
+		color: @grey;
+		letter-spacing: normal;
+	}
+	h2{
+		.gigantic();
+		font-weight:400;
 		letter-spacing: -1px;
-		line-height: 1;
-		text-align: center;
+		&#courseshark-intro{
+			text-indent: -9999px;
+			background: url('/images/logo.png') no-repeat center center;
+			background-size: contain;
+		}
+	}
+	h3{
+		.large();
+		color: @grey;
+		font-weight:300;
+		margin-bottom: 2em;
 	}
 	p{
-		margin-left: 5%;
-		margin-right: 5%;
-		margin-bottom: 10px;
-		margin-top: 10px;
-		font-size: 30px;
-		line-height: 36px;
-		text-align: center;
+		.large();
 	}
 	img{
 		width: 100%;
@@ -137,6 +176,10 @@ h3 small{
 		-webkit-border-radius: 6px;
 		-moz-border-radius: 6px;
 		border-radius: 6px;
+		font-variant: normal;
+		i{
+			margin-top: 4px;
+		}
 	}
 }
 
