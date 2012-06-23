@@ -237,7 +237,7 @@ Schedule.prototype.updateHours = function(){
 	refreshCreditDisplay();
 }
 Schedule.prototype.testConflicts = function(section){
-	if (Modernizr.webworkers) {
+	if ( false && Modernizr.webworkers ) {
 		if ( !conflict_worker ){
 			conflict_worker = new Worker('/scripts/workers/schedule_conflict.js');
 			conflict_worker.onmessage = function(event){
@@ -278,7 +278,8 @@ Schedule.prototype.testConflictsSync = function (schedule, section, ignore_secti
 			ts = ss.timeslots[t];
 			for( var _t=0,_tlen=section.timeslots.length; _t<_tlen; _t++ ){
 				_ts = section.timeslots[_t];
-				if ( array_diff(_ts.days,ts.days).length || array_diff(ts.days,_ts.days).length ){
+
+				if ( array_diff(_ts.days,ts.days).length!==_ts.days.length || array_diff(ts.days,_ts.days).length!==ts.days.length ){
 					if ( _ts.startTime <= ts.endTime && _ts.endTime >= ts.startTime )
 						return true;
 					else if ( ts.startTime <= _ts.endTime && ts.endTime >= _ts.startTime )

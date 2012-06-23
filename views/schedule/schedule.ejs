@@ -178,28 +178,25 @@ END:VCALENDAR
 					<div id="hours">Hours: <strong id="number">0</strong></div>
 				</div>
 				<% if ( !link ){ %>
+
 				<div id="class-adding-form">
 					<div id="add-course-content">
 						<article>
 							<div id="major">
 
-								<input type="text" id="major-id" data-provide="typeahead" placeholder="Department" rel="tooltip" data-placement="right" data-original-title="Type to find a department"/>
+								<div class="controls">
+								<div class="input-append" >
+									<input type="text" id="major-id" data-provide="typeahead" tabindex="1" placeholder="subject" rel="tooltip" data-placement="top" data-original-title="Choose a department" class="span1"/>
+									<button type="button" class="btn expand-arrow" rel="expander" data-expand="major-id"><i class="icon-arrow-down" tabindex="-1"></i></button>
 
+									<input type="text" id="course-id" data-provide="typeahead" tabindex="2" placeholder="course" class="span2"/>
+									<button type="button" class="btn expand-arrow" rel="expander" data-expand="course-id" tabindex="-2"><i class="icon-arrow-down"></i></button>
+								</div>
 <!-- 								<label for="major_id">Department &raquo;</label>
 								<select name="major_id" id="major_id" autocomplete="off">
 									<option value=""></option>
 								</select>
 								<div id="selected-major-name"></div> -->
-							</div>
-							<div id="course">
-								<input type="text" id="course-id" data-provide="typeahead" tab-index="-1" placeholder="Course"/>
-<!-- 
-								<label for="course_id">Course &raquo;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-								<select name="course_id" id="course_id">
-									<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
-								</select>
-								<span id="courses-loading"><img src="/images/seat_loading.gif"/></span>
-								<div id="selected-course-name"></div> -->
 							</div>
 						</article>
 						<div id="add-course">
@@ -238,9 +235,9 @@ $(document).ready(function() {
 						})
 						$('#major-id')
 							.data('typeahead',false)
-							.tooltip('show')
 							.typeahead({source: source, items: Infinity })
 							.on('selectitem', function(){
+								$(this).tooltip('disable')
 								department = departments[$(this).val().trim()]
 								$('#course-id').val('');
 						   	$.ajax({
@@ -255,7 +252,8 @@ $(document).ready(function() {
 												courses[val] = course
 												source.push(val)
 											})
-											$('#course-id').data('typeahead',false)
+											$('#course-id')
+													.data('typeahead',false)
 													.typeahead({source: source, items: Infinity })
 													.typeahead('showOptions')
 													.on('selectitem', function(e){ 
@@ -269,6 +267,16 @@ $(document).ready(function() {
 				}
 		});
 
+	$('[rel="expander"]').click(function(){
+		var what = $(this).data('expand')
+			,	$thing = $('#'+what)
+			,	typeahead = $thing.data('typeahead')
+		if ( typeahead.shown ){
+			$thing.typeahead('hide')
+		}else{
+			$thing.typeahead('showOptions')	
+		}
+	})
 	_gaq = _gaq || {};
 		
 	$('#save-button').click(function(){

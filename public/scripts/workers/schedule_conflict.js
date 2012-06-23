@@ -29,7 +29,7 @@ function testConflicts(schedule, section, ignore_section){
 			ts = ss.timeslots[t];
 			for( var _t=0,_tlen=section.timeslots.length; _t<_tlen; _t++ ){
 				_ts = section.timeslots[_t];
-				if ( array_diff(_ts.days,ts.days).length || array_diff(ts.days,_ts.days).length ){
+				if ( array_diff(_ts.days,ts.days).length!==_ts.days.length || array_diff(ts.days,_ts.days).length!==ts.days.length ){
 					if ( _ts.startTime <= ts.endTime && _ts.endTime >= ts.startTime )
 						return true;
 					else if ( ts.startTime <= _ts.endTime && ts.endTime >= _ts.startTime )

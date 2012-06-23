@@ -192,10 +192,12 @@ var spsu = module.exports = everySchool.submodule('spsu')
 	.configurable('updateSection')
 	.updateSection(function(section, callback){
 		var self = this
-		Course.findById(section.course).populate('term').populate('department').exec(function(err, course){
+		Section.findById(section._id).populate('term').populate('department').exec(function(err, section){
+			if ( err ){ console.log(err);}
+			if ( !section ) { console.log('section not found'); callback(err, section) }
 			var data = {
-						cterm_in: course.term.number
-					, csubj_in: course.department.abbr
+						cterm_in: section.term.number
+					, csubj_in: section.department.abbr
 					}
 				,	options = {host: self.url, path: self.paths.listing, method: 'GET', data: data}
 			self.dl.download(options, function(window, html){
