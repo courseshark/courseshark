@@ -165,6 +165,8 @@
 	</form>
 	</div><!-- /.container -->
 
+	<%- partial('includes/js.ejs') %>
+
 	<script>
 		var current_school = "<%= account.school.id%>",
 				current_major  = "<%= account.major?account.major.id:''%>";

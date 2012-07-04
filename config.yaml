@@ -20,6 +20,7 @@ development:
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
     outgoing: "+14155992671"
   email:
+    mandrillKey: "90377328-8b07-4377-85fe-817e28ceae3b"
     notification:
       account: "alert@courseshark.com"
       pass: "espress0!5~"
@@ -46,6 +47,7 @@ staging:
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
     outgoing: "+14155992671"
   email:
+    mandrillKey: "90377328-8b07-4377-85fe-817e28ceae3b"
     notification:
       account: "alert@courseshark.com"
       pass: "espress0!5~"
@@ -72,6 +74,7 @@ production:
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
     outgoing: "+14155992671"
   email:
+    mandrillKey: "90377328-8b07-4377-85fe-817e28ceae3b"
     notification:
       account: "alert@courseshark.com"
       pass: "espress0!5~"

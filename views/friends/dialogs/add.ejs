@@ -1,0 +1,46 @@
+<div class="modal-header">
+	<a href="#" class="close" data-dismiss="modal">&times;</a>
+	<h3>Add Friends</h3>
+</div>
+
+<div class="modal-body">
+	<p>Add friends to view and share schedules with.</p>
+	<div id="friends-add">
+		<input type="text" id="active-search-box" placeholder="Search by name or enter an email" />
+		<div id="adding-list">
+		</div>
+		<div id="search-list">
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<a href="#" class="btn btn-primary next" data-dismiss="modal" onClick="addUsers(list)">Invite</a>
+	<a href="#" class="btn" data-dismiss="modal" >Close</a>
+</div>
+
+
+<script type="text/plain" id="template-search-friend-result">
+	<div class="friend" id="<$=user.id$>">
+		<div class="friend-image">
+			<img src="<$=user.avatar$>" alt="<$=user.name$> Avatar">
+		</div>
+		<div class="friend-name">
+			<$=user.name$>
+			<span class="friend-email">(<$=user.email$>)</span>
+		</div>
+		<div class="click-to-add"></div>
+	</div>
+</script>
+<script type="text/plain" id="template-action-list-friend">
+	<div class="friend-holder" id="<$=user.id$>">
+		<div class="friend-name">
+			<$=user.name$>
+		</div>
+		<div class="click-to-remove">&times;</div>
+	</div>
+</script>
+
+<script>
+$('.friends.modal-body:last').friendsSearch({next: addUsers});
+</script>

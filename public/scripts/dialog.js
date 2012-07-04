@@ -62,9 +62,9 @@ function openDialog(url, name, specialClass, next){
 	return $existing;
 }
 function closeDialog(){
-	hideOverlay();
-	$('#dialog-container').removeAttr('class');
-
+	$('.close:last').click()
+	//hideOverlay();
+	//$('#dialog-container').removeAttr('class');
 }
 function dialog_close(){
 	closeDialog();

@@ -219,6 +219,8 @@ END:VCALENDAR
 		</div>
 	</div>
 
+<%- partial('includes/js.ejs') %>
+
 <script>
 $(document).ready(function() {
   	$("[rel='tooltop']").tooltip()
@@ -234,6 +236,8 @@ $(document).ready(function() {
 							source.push(val)
 						})
 						$('#major-id')
+							.focus(function(){$(this).select()})
+							.mouseup(function(e){e.preventDefault()})
 							.data('typeahead',false)
 							.typeahead({source: source, items: Infinity })
 							.on('selectitem', function(){
@@ -253,6 +257,8 @@ $(document).ready(function() {
 												source.push(val)
 											})
 											$('#course-id')
+													.focus(function(){$(this).select()})
+													.mouseup(function(e){e.preventDefault()})
 													.data('typeahead',false)
 													.typeahead({source: source, items: Infinity })
 													.typeahead('showOptions')

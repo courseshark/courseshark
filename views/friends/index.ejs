@@ -1,0 +1,79 @@
+<div class="container">
+	<div class="row">
+		<div class="span8 offset1">
+			<header>
+				<h1>Friends</h1>
+			</header>
+			<% if (invited.length){ %>
+			<section id="invites">
+				<h2>Invites</h2>
+				<p id="description">The following people have indicated that you may be their friends. Do you accept? 
+					<div id="invites">
+						<% invited.forEach(function(potentialFriend){ %>
+							<div class="friend-invite span8" data-friend-id="<%=potentialFriend._id%>">
+								<div class="friend-image">
+									<img src="<%= potentialFriend.avatar(45) %>" alt="<%= potentialFriend.name %> Avatar">
+								</div>
+								<div class="action-buttons" data-friend-id="<%=potentialFriend._id%>" >
+									<button class="btn btn-primary"  data-type="a" data-friend-id="<%=potentialFriend._id%>">Accept</button>
+									<button class="btn" data-type="d" data-friend-id="<%=potentialFriend._id%>">Ignore</button>
+								</div>
+								<div class="friend-info">
+									<div class="name"><%=potentialFriend.name%></div>
+									<div class="email-info"><%=potentialFriend.email%></div>
+								</div>
+							</div>
+						<% }) %>
+					</div>
+				</section>
+			<% } %>
+			<section id="friends-list">
+				<h2>Friends List</h2>
+				<button class="btn btn-success btn-large" onClick="openDialog('/friends/add').friendsSearch({next: addUsers})">Add Friends</button>
+
+				<div id="friends">
+					<% if (friends.length){ %>
+					<% friends.forEach(function(friend){ %>
+					<div class="friend span8" data-friend-id="<%=friend._id%>">
+						<div class="friend-image">
+							<img src="<%= friend.avatar(45) %>" alt="<%=friend.name%> Avatar">
+						</div>
+						<div class="remove-friend close" data-friend="<%=friend._id%>">&times;</div>
+						<div class="friend-info">
+							<div class="name"><%= friend.name %></div>
+							<div class="email-info"><%= friend.email %></div>
+						</div>
+					</div>
+					<% })%>
+					<% } %>
+				</div>	
+			</section>
+		</div>
+		<div class="span3">
+			<p class="description span3">
+				We&rsquo;ve all got friends, and college is a social experience. So why not take some classes together? 
+				Revolutionary we know. You probably already coordinate with some friends to get into the same classes, 
+				but it&rsquo;s probably a complicated process that takes more time and effort than it really should in 
+				today&rsquo;s tech-based world. Now, with CourseShark Friends, you can easily see what
+				your friends are taking this semester, find times for group meetings, and invite friends to join you in a 
+				specific section. 
+			</p>
+		</div>
+	</div>
+</div>
+
+<%- partial('includes/js.ejs') %>
+<script>
+	$('#invites .friend-invite .action-buttons button').bind('click', function(){
+		$this = $(this);
+		$this.parent().children('button').each(function(){$(this).attr('disabled', true);});
+		if($this.data('type')=='a')
+			openDialog('/friends/accept/'+$this.data('friendship'));
+		else
+			openDialog('/friends/decline/'+$this.data('friendship'));
+	});
+	$('.remove-friend').bind('click', function(){
+		$this = $(this);
+		openDialog('/friends/remove/'+$this.data('friend')+'/confirm');
+	});
+</script>

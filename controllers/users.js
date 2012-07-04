@@ -1,7 +1,17 @@
 /*
- * Static site pages, including the main page and about pages
+ * User management site pages
  */
+var MandrillAPI = require('mailchimp').MandrillAPI
+
 exports = module.exports = function(app){
+
+	try {
+		var mandrill = new MandrillAPI(app.config.email.mandrillKey, { version : '1.0', secure: false });
+	} catch (error) {
+		console.log('Mandrill Error: ' + error);
+	}
+
+
 	// home
 	app.get('/login', function(req, res){
 		if ( req.headers['x-requested-with'] === 'XMLHttpRequest' ){
@@ -67,9 +77,57 @@ exports = module.exports = function(app){
 		})
 	});
 	
+
+	// Forgot password
+	app.get('/forgot-password', function(req, res){
+		res.render('dialogs/forgot')
+	})
+
+	app.post('/forgot-password', function(req, res){
+		if ( req.body.user.email === '' ){
+			res.json(false); return;
+		}
+		User.findOne({email: req.body.user.email}, function(err, userFound){
+			if ( err ){ console.log(err); res.json(false); return; }
+			if ( !userFound ){ res.json(false); return; }
+			newPassword = (Math.floor(Math.random() * 10) + parseInt((new Date()).getTime()*10, 10)).toString(36);
+			userFound.setPassword(newPassword)
+			userFound.save(function(err){
+				if (err){ res.json(false); return; }
+				mandrill.messages_send_template({
+						template_name:'password_reset'
+					, template_content:''
+					,	message:{
+							subject: 'CourseShark Password'
+						,	from_email: 'shark-cage@courseshark.com'
+						,	from_name: 'CourseShark Password'
+						,	track_opens: true
+						, track_clicks: true
+						,	auto_txt: true
+						,	to: [{name: userFound.name, email: userFound.email}]
+						,	template_content: [{name: 'DATAPASS', content: newPassword}]
+						,	global_merge_vars:[
+								{name: 'CURRENT_YEAR', content: (new Date()).getFullYear()}
+							,	{name: 'SUBJECT', content: 'CourseShark Password'}
+							]
+						, merge_vars:[{
+								rcpt: userFound.email
+							,	vars:[
+									{name: 'FNAME', content: userFound.firstName}
+								,	{name: 'DATAPASS', content: newPassword}]
+							}]
+						, tags: ['user', 'password']
+						}
+					}, function (data){
+						res.json(true)
+				})
+			})
+		})
+	})
+
+
 	// Choose School page
 	app.get('/choose-school', function(req, res){
-		console.log(req.header('Referer'))
 		School.find({enabled: true}, {}, {sort:{abbr:1}}, function(err, schools){
 			res.render('signup/schools', {schools: schools});
 		});
@@ -97,7 +155,7 @@ exports = module.exports = function(app){
 		User.findById(req.user._id).populate('major').populate('school').exec(function(err, user){
 			School.find({enabled: true}, {}, {sort:{abbr:1}}).exec(function(err, schools){
 				schools = schools || []
-				res.render('user/settings', {account: user, schools: schools})
+				res.render('user/settings', {account: user, schools: schools, noJS: true})
 			})
 		})
 	})
@@ -121,7 +179,6 @@ exports = module.exports = function(app){
 			req.user.setPassword(req.body.user.password).save()
 		}
 		User.update({_id: req.user.id}, updateData, function(err, num){
-			console.info(err, num, updateData, req.user);
 			return
 		})
 	})

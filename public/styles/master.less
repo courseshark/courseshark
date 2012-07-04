@@ -3,14 +3,14 @@
 */
 @import "vars";
 @import "lib/bootstrap/bootstrap";
-//@import "lib/bootstrap/responsive";
+// @import "lib/bootstrap/responsive";
 @import "dialog";
 @import "friends";
 @import "social";
 @import "schedule";
 @import "caffeine";
 
-/*@import url("https://fonts.googleapis.com/css?family=PT+Sans:400,700");*/
+// @import url("https://fonts.googleapis.com/css?family=PT+Sans:400,700|Pontano+Sans");
 
 body{
 	padding-top: 60px;
@@ -43,20 +43,31 @@ h3 small{
 			background: url('/images/logo.png') no-repeat center center;
 			background-size: contain;
 		}
+
 	}
-	.nav > li {
-		& > a {
-			font-variant: small-caps;
-			color: @black;
-			text-shadow: none;
-			line-height: 30px;
-			font-size: 1.4em;
+	.nav {
+		.dropdown-toggle .caret, .open.dropdown .caret, {
 			&:hover{
-				color: @textBlue;
+				border-top-color: #000;
+				border-bottom-color: #000;
 			}
+			border-top-color: #000 !important;
+			border-bottom-color: #000 !important;
 		}
-		& > button{
-			margin: 7px 0;
+		& > li {
+			& > a {
+				color: @black;
+				text-shadow: none;
+				line-height: 30px;
+				font-size: 1.2em;
+				&:hover{
+					color: @textBlue;
+				}
+			}
+			& > button{
+				margin: 7px 0;
+				font-size: 1.2em;
+			}
 		}
 	}
 }
@@ -138,32 +149,21 @@ h3 small{
 .masthead{
 	background: none;
 	padding: 20px 0 0 0;
-	text-align: center;
-	font-variant:small-caps;
+	height: 350px;
+	background: url('/images/macbook.png') right bottom no-repeat;
+	margin-right: -90px;
+	//text-align: center;
+	//font-variant:small-caps;
 	h1{
-		.huge();
-		font-weight:200;
-		color: @grey;
-		letter-spacing: normal;
-	}
-	h2{
-		.gigantic();
-		font-weight:400;
-		letter-spacing: -1px;
-		&#courseshark-intro{
-			text-indent: -9999px;
-			background: url('/images/logo.png') no-repeat center center;
-			background-size: contain;
-		}
-	}
-	h3{
-		.large();
-		color: @grey;
-		font-weight:300;
-		margin-bottom: 2em;
+		font-size: 38px;
+		margin-top: 0.6em;
+		line-height: 1.1;
+		font-weight: normal;
+		letter-spacing: 0px;
 	}
 	p{
-		.large();
+		margin: 1em 0;
+		font-size: 20px;
 	}
 	img{
 		width: 100%;
@@ -234,53 +234,19 @@ h3 small{
 	}
 }
 
+.section-head{
+	text-align: center;
+	h1{
+		font-size: 30px;
+		font-weight: 400;
+		margin: 1em 0 0.2em;
+	}
+}
 
 
 /* Responsive Docs
 -------------------------------------------------- */
 @media (max-width: 480px) {
-
-  body {
-    padding-top: 70px;
-  }
-
-  /* Change up some type stuff */
-  h2 {
-    margin-top: 27px;
-  }
-  h2 small {
-    display: block;
-    line-height: 18px;
-  }
-  h3 {
-    margin-top: 18px;
-  }
-
-  /* Adjust the Large Intros */
-
-  .masthead {
-		padding-top: 0;
-    h1,p {
-    	text-align: center;
-	    margin-right: 0;
-		}
-	  h1 {
-	    font-size: 45px;
-	    margin-right: 0;
-	  }
-	  p {
-	    margin-right: 0;
-	    margin-left: 0;
-	    font-size: 18px;
-	    line-height: 24px;
-	  }
-	  .btn {
-	    display: block;
-	    font-size: 18px;
-	    padding: 10px 14px;
-	    margin: 0 auto 10px;
-	  }
-  }
 /** Fix bootstrap nonsense **/
 	.modal.fade.in {
 		top: 8%;
@@ -289,63 +255,26 @@ h3 small{
 
 @media (max-width: 768px) {
 
-  /* Remove any padding from the body */
-  body {
-    padding-top: 0;
-  }
-  /* Jumbotron buttons */
-  .masthead .btn {
-    margin-bottom: 10px;
-  }
 }
 
 
 @media (min-width: 480px) and (max-width: 768px) {
-
-  /* Scale down the jumbotron content */
-  .masthead h1 {
-    font-size: 54px;
-  }
-  .masthead p {
-    margin-right: 0;
-    margin-left: 0;
-  }
 
 }
 
 
 @media (min-width: 768px) and (max-width: 980px) {
 
-  /* Remove any padding from the body */
-  body {
-    padding-top: 0;
-  }
-
-  /* Scale down the jumbotron content */
-  .masthead {
-		padding-top: 0;
-		h1 {
-    	font-size: 72px;
-		}
-  }
-
 }
 
 
 @media (max-width: 980px) {
-	.masthead{
-		padding-top: 0;
-	}
+
 }
 
 
 /* LARGE DESKTOP SCREENS */
 @media (min-width: 1210px) {
-
-  /* Update subnav container */
-  .subnav-fixed .nav {
-    width: 1168px; /* 2px less to account for left/right borders being removed when in fixed mode */
-  }
 
 }
 

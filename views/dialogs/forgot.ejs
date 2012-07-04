@@ -1,0 +1,65 @@
+<div class="modal-header">
+	<a href="#" class="close" data-dismiss="modal">&times;</a>
+	<h3>Forgot <small>password @ Course<strong>Shark</strong><small></h3>
+</div>
+
+<div class="modal-body">
+	<form action="/forgot-password" method="POST" id="reg" class="form-horizontal">
+		<fieldset>
+			<!-- Email -->
+			<div class="control-group" id="personal-info">
+				<label class="control-label" for="email">Email</label>
+	      <div class="controls">
+					<input type="email" name="user.email" id="user-email" placeholder="Your Email" >
+					<p class="help-inline" for="email"></p>
+				</div>
+			</div>
+			<div class="control-group" id="login-oauth-control">
+				<label class="control-label" for="alt">or Login with </label>
+	      <div class="controls">
+					<a href="/auth/facebook" class="btn"><img class="icon-img" src="/images/login/facebook.png" /> Facebook</a>
+					<a href="/auth/google"   class="btn"><img class="icon-img" src="/images/login/google.png" /> Google</a>
+					<a href="/auth/twitter"  class="btn"><img class="icon-img" src="/images/login/twitter.ico" /> Twitter</a>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>
+
+
+<div class="modal-footer">
+	<a href="#" class="btn btn-primary" onClick="forgot_submit()">Recover</a>
+	<a href="#" class="btn" data-dismiss="modal">Close</a>
+</div>
+
+<script>
+	function forgot_submit(){
+		$('#recovery-form').removeClass('error')
+											.find('.help-inline[for="email"]').html('');
+		data = { 'user.email': $('input#user-email').val() } 
+		if ( data['user.email'] === '' || !validateEmail(data['user.email']) ){
+			$('#recovery-form').addClass('error').find('.help-inline[for="email"]').html("Invalid Email");
+			return;
+		}
+		$.ajax({
+				url:'/forgot-password',
+				cache: false,
+				async: false,
+				data: data,
+				type: 'POST',
+				dataType: 'json',
+				success: function(response){
+					if ( response == false ){
+						$('#recovery-form').addClass('error').find('.help-inline[for="email"]').html("Woops... something went wrong, maybe try again.");
+						return;
+					}else{
+						closeDialog()
+						messageDialog('An email has been sent with recovery instructions');
+					}
+				},
+				error: function(jqXHR, textStatus, errorThrown){errorHandler(jqXHR,'',errorThrown);}
+			});
+	}
+</script>
+
+

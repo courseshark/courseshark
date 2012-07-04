@@ -4,7 +4,9 @@
 exports = module.exports = function(app){
 	// Home
 	app.get('/', function(req, res){
-		res.render('index', {});
+		School.find({enabled: true}, {name:1, abbr:1}).exec(function(err, schools){
+			res.render('index', {schools: schools});
+		})
 	})
 	
 	// About pages

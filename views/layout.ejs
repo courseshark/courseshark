@@ -22,10 +22,14 @@
 		
 </head>
 <body>
-	<%- partial('includes/js.ejs') %>
 	<%- partial('includes/nav.ejs') %>
-	<%- messages() %>
+	<div class="container">
+		<%- messages() %>
+	</div>
 	<%- body %>
 	<%- partial('includes/foot.ejs') %>
+	<% if ( typeof noJS == 'undefined' || !noJS ){ %>
+	<%- partial('includes/js.ejs') %>
+	<%}%>
 </body>
 </html>

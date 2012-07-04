@@ -11,7 +11,7 @@ exports = module.exports = function(app){
 	**/
 	app.get('/schedule', requireSchool, function(req, res){
 		Department.find({school:req.school._id}, {abbr:1, name:1}, {sort:{abbr:1}}, function(err, departments){
-			res.render('schedule/schedule', {departments: departments, link: false, school: req.school._id});
+			res.render('schedule/schedule', {departments: departments, link: false, school: req.school._id, noJS: true});
 		})
 	})
 	app.get('/schedule/link/:hash', function(req, res){

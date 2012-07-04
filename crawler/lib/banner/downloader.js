@@ -26,11 +26,17 @@
 		options.method = options.method!==undefined ? String(options.method).toUpperCase() : "GET"
 		options.data = options.data ? querystring.stringify(options.data) : options.data
 		isPostRequest = (options.method === "POST")
-		options.headers = isPostRequest ? {'Content-Type': 'application/x-www-form-urlencoded','Content-Length': options.data.length } : options.headers
+		options.headers = isPostRequest ? {'Content-Type': 'application/x-www-form-urlencoded','Content-Length': options.data.length } : options.headers||{}
 		
+		options.headers['User-Agent'] = 'CourseShark Crawler/nodejs 1.5'
+		options.headers['referer'] = options.referer?options.referer:undefined
+
 		if ( !isPostRequest && options.data ){
 			options.path += '?'+options.data
 		}
+
+		options['user-agent'] = 'nodejs';
+
 		// Create the request
 		req = https.request(options, function(res){
 			var buffer = ''
@@ -63,6 +69,7 @@
 		if ( isPostRequest ){
 			req.write(options.data)
 		}
+		//Refererconsole.log(req);
 		req.end()
 	}
 

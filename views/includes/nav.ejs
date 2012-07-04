@@ -13,7 +13,6 @@
 					<li><a href="/schedule">Schedule</a></li>
 					<li><a href="/watcher">SeatWatcher</a></li>
 					<li><a href="http://books.courseshark.com/" target="_blank" onClick="_gaq = _gaq||{};_gaq.push(['_trackPageview', '/books']);">Books</a></li>
-					<li><a onClick="openDialog('/about')">About</a></li>
           <li><a href="javascript:UserVoice.showPopupWidget();" title="Open feedback &amp; support dialog (powered by UserVoice)">Feedback</a></li>
           <% if (loggedIn && user.admin){ %>
           <li><a href="//admin.<%=domain%>">Admin</a></li>
@@ -22,22 +21,32 @@
 				<ul class="nav pull-right">
 					<% if (loggedIn) { %>
 						<ul class="nav pull-right">
-							<li class="dropdown">
-						    <a href="#"
-						          class="dropdown-toggle"
-						          data-toggle="dropdown">
-				          <i class="icon-user icon-white"></i>&nbsp;<%= '' + user.firstName + ' ' + (user.friends.banner?user.friends.banner:'') %>
+							<li>
+								<div class="btn-group">
+	  							<a class="btn btn-large dropdown-toggle" data-toggle="dropdown" href="#" >
+	    							<i class="icon-user icon"></i>&nbsp;<%= user.firstName %>
+	    						<span class="caret"></span>
+	  							</a>
+								  <ul class="dropdown-menu">
+										<li><a href="/settings"><i class="icon-cog"></i>&nbsp;Settings</a></li>
+										<li><a href="/friends"><i class="icon-comment"></i>&nbsp;Friends</a></li>
+										<li><a href="/logout"><i class="icon-off"></i>&nbsp;Log Out</a></li>
+								  </ul>
+								</div>
+							</li>
+
+<!-- 							<li class="dropdown">
+						    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				          <i class="icon-user icon"></i>&nbsp;<%= '' + user.firstName + ' ' + (user.friends.banner?user.friends.banner:'') %>
 				          <b class="caret"></b>
 						    </a>
 						    <ul class="dropdown-menu">
-									<li><a href="/settings">Settings</a></li>
-									<li><a href="/friends">Friends <%= user.friends.banner %></a></li>
-									<li><a href="/logout">Log Out</a></li>
+
 								</ul>
-							</li>
+							</li> -->
 						</ul>
 					<% } else { %>
-					 <li><button class="btn btn-primary btn-large"><i class="icon-white icon-user"></i> Sign In</button></li>
+					 <li><button class="btn btn-primary btn-large" onClick="openDialog('/login')"><i class="icon-white icon-user"></i> Sign In</button></li>
 					<% } %>
 				</ul>
 				<div class="social pull-right">

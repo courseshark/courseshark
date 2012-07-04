@@ -69,11 +69,11 @@
 		this.sections = {}
 		return this
 	}
-	Course.createFromInfo = function(title){
-		pieces = title.split(' - ')
+	Course.createFromInfo = function(titleString){
+		pieces = titleString.split(' - ')
 		title = pieces[0]
-		number = pieces[2].match(/[0-9]+/)[0]
-		return (new Course()).init(title,number)
+		number = (t=titleString.match(/[a-z]+\s[0-9]{3,}/i))?t:''
+		return (new Course()).init(titleString,number)
 	}
 	Course.prototype.addSectionFromInfo = function(title, details, credits){
 		section = Section.createFromInfo(title, details, credits)

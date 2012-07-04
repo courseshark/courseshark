@@ -85,21 +85,14 @@ UserSchema.method('avatar', function(size){
 	}
 })
 
-UserSchema.method('isFriend', function(user) {
-	for ( var _len=this.friends.length,_i=0; _i<_len; _i++ ){
-		if ( this.friends[_i] == user || this.friends[_i] == user.id || this.friends[_i].id == user.id){
-			return true
-		}
-	}
-	return false;
-});
+UserSchema.method('getFriends', function(callback){
+	User.find({_id: {$in: this.friends}, school: this.school, friends: this._id}, callback)
+})
 
-UserSchema.method('removeFriend', function(user) {
-	for ( var _i=0; _i<this.friends.length; _i++ ){
-		if ( this.friends[_i] == user || this.friends[_i] == user.id || this.friends[_i].id == user.id){
-			this.friends.splice(_i, 1);
-			_i--;
-		}
-	}
-	return false;
-});
+UserSchema.method('getInvites', function(callback){
+	User.find({_id: {$in: this.friends}, school: this.school, friends: {$ne: this._id}}, callback)
+})
+
+UserSchema.method('getInvited', function(callback){
+	User.find({_id: {$nin: this.friends}, school: this.school, friends: this._id}, callback)
+})

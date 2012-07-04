@@ -21,6 +21,13 @@
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	})();
+	 // Twitter
+  window.twttr = (function (d,s,id) {
+    var t, js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return; js=d.createElement(s); js.id=id;
+    js.src="//platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs);
+    return window.twttr == undefined ? (t = { _e: [], ready: function(f){ t._e.push(f) } }) : window.twttr;
+  }(document, "script", "twitter-wjs"));
 	// Google+
 	(function() {
 		if ( String(window.location).indexOf('.dev') !== -1 ) return;
@@ -28,13 +35,6 @@
     po.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'apis.google.com/js/plusone.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
   })();
-  // Twitter
-  window.twttr = (function (d,s,id) {
-    var t, js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return; js=d.createElement(s); js.id=id;
-    js.src="//platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs);
-    return window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f) } });
-  }(document, "script", "twitter-wjs"));
  // UserVoice
   var uvOptions = {};
   (function() {
@@ -69,7 +69,6 @@
 		  _gaq.push(['_trackSocial', 'facebook', 'send', targetUrl]);
 		});
 	}
-
 	trackTwitter = function(intent_event) {
 		function extractParamFromUri(uri, paramName) {
   		if (!uri) {return;}

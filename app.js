@@ -26,13 +26,13 @@ model_files.forEach( function (file) {
 	require(model_loc + '/' + file).boot(app)
 })
 
-require('./social-track').boot(app)
+require('./lib/social-track').boot(app)
 // Configuration
-require('./settings').boot(app);
+require('./lib/settings').boot(app);
 //Error Handler
-require('./error-handler').boot(app);
+require('./lib/error-handler').boot(app);
 // Helpers
-require('./helpers').boot(app);
+require('./lib/helpers').boot(app);
 // make a global helper
 requireLogin = auth.requireLogin
 requireAdmin = auth.requireAdmin
@@ -47,7 +47,7 @@ controller_files.forEach( function (file) {
 require('./build').build(app)
 // Start the seat watcher
 if ( String(process.argv[2]).toLowerCase()!='no-cron' ){
-	require('./seat-watcher').boot(app)
+	require('./lib/seat-watcher').boot(app)
 }
 
 // Start the app by listening on <port>
