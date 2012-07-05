@@ -1,9 +1,52 @@
 <div class="container">
 	<div class="row">
-		<div class="span8 offset1">
+		<div class="span8">
 			<header>
 				<h1>Friends</h1>
 			</header>
+
+
+			<div class="tabbable"> <!-- Only required for left/right tabs -->
+			  <ul class="nav nav-tabs">
+			    <li class="active"><a href="#friends" data-toggle="tab">Your Friends</a></li>
+			    <li><a href="#invites" data-toggle="tab">Invites<% if ( !invited.length ){ %><span class="label label-warning"><%=invited.length%></span><%}%></a></li>
+			  </ul>
+			  <div class="tab-content">
+			    <div class="tab-pane active" id="friends">
+			      <div class="well">
+							<% if (friends.length){ %>
+							<!-- Look at mister popular over here -->
+							<% friends.forEach(function(friend){ %>
+							<div class="friend span8" data-friend-id="<%=friend._id%>">
+								<div class="friend-image">
+									<img src="<%= friend.avatar(45) %>" alt="<%=friend.name%> Avatar">
+								</div>
+								<div class="remove-friend close" data-friend="<%=friend._id%>">&times;</div>
+								<div class="friend-info">
+									<div class="name"><%= friend.name %></div>
+									<div class="email-info"><%= friend.email %></div>
+								</div>
+							</div>
+							<% })%>
+							<% }else{ %>
+							<!-- We've got a loner over here -->
+							<div class="center">
+								<h3>Well then... lets get you some friends</h3>
+								<button class="btn btn-primary btn-large" onClick="openDialog('/friends/add').friendsSearch({next: addUsers})">Add Friends</button>
+							</div>
+							<%} %>
+			      </div>
+			    </div>
+			    <div class="tab-pane" id="invites">
+			      <p>Howdy, I'm in Section 2.</p>
+			    </div>
+			  </div>
+			</div>
+
+
+
+
+
 			<% if (invited.length){ %>
 			<section id="invites">
 				<h2>Invites</h2>
@@ -32,20 +75,7 @@
 				<button class="btn btn-success btn-large" onClick="openDialog('/friends/add').friendsSearch({next: addUsers})">Add Friends</button>
 
 				<div id="friends">
-					<% if (friends.length){ %>
-					<% friends.forEach(function(friend){ %>
-					<div class="friend span8" data-friend-id="<%=friend._id%>">
-						<div class="friend-image">
-							<img src="<%= friend.avatar(45) %>" alt="<%=friend.name%> Avatar">
-						</div>
-						<div class="remove-friend close" data-friend="<%=friend._id%>">&times;</div>
-						<div class="friend-info">
-							<div class="name"><%= friend.name %></div>
-							<div class="email-info"><%= friend.email %></div>
-						</div>
-					</div>
-					<% })%>
-					<% } %>
+					
 				</div>	
 			</section>
 		</div>

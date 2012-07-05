@@ -8,16 +8,6 @@
 			</a>
       <a class="brand" href="//<%=domain%>"><!-- <img src="/images/logo-white.png" height="20"> -->Course<strong>Shark</strong> </a>
 			<div class="nav-collapse">
-				<ul class="nav">
-					<li><a href="/">Home</a></li> 
-					<li><a href="/schedule">Schedule</a></li>
-					<li><a href="/watcher">SeatWatcher</a></li>
-					<li><a href="http://books.courseshark.com/" target="_blank" onClick="_gaq = _gaq||{};_gaq.push(['_trackPageview', '/books']);">Books</a></li>
-          <li><a href="javascript:UserVoice.showPopupWidget();" title="Open feedback &amp; support dialog (powered by UserVoice)">Feedback</a></li>
-          <% if (loggedIn && user.admin){ %>
-          <li><a href="//admin.<%=domain%>">Admin</a></li>
-          <% } %>
-				</ul>
 				<ul class="nav pull-right">
 					<% if (loggedIn) { %>
 						<ul class="nav pull-right">
@@ -34,20 +24,19 @@
 								  </ul>
 								</div>
 							</li>
-
-<!-- 							<li class="dropdown">
-						    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				          <i class="icon-user icon"></i>&nbsp;<%= '' + user.firstName + ' ' + (user.friends.banner?user.friends.banner:'') %>
-				          <b class="caret"></b>
-						    </a>
-						    <ul class="dropdown-menu">
-
-								</ul>
-							</li> -->
 						</ul>
 					<% } else { %>
 					 <li><button class="btn btn-primary btn-large" onClick="openDialog('/login')"><i class="icon-white icon-user"></i> Sign In</button></li>
 					<% } %>
+				</ul>
+				<ul class="nav pull-right">
+					<li><a href="/schedule">Schedule</a></li>
+					<li><a href="/watcher">SeatWatcher</a></li>
+					<li><a href="http://books.courseshark.com/" target="_blank" onClick="_gaq = _gaq||{};_gaq.push(['_trackPageview', '/books']);">Books</a></li>
+          <li><a href="javascript:UserVoice.showPopupWidget();" title="Open feedback &amp; support dialog (powered by UserVoice)">Feedback</a></li>
+          <% if (loggedIn && user.admin){ %>
+          <li><a href="//admin.<%=domain%>">Admin</a></li>
+          <% } %>
 				</ul>
 				<div class="social pull-right">
 					<div class="g-plusone" data-size="medium" data-align="right" data-width="200" data-href="http://courseshark.com/"></div>
