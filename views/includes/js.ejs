@@ -95,11 +95,9 @@
 <script src="/socket.io/socket.io.js"></script>
 
 <%if ( app.settings.env === 'development' ){ %>
-
-
 	<% if (true){ %>
-	<script type="text/javascript" src="/scripts/lib/jquery.min.js"></script>
-	<script type="text/javascript" src="/scripts/lib/jquery-ui.min.js"></script>
+	<script src="/scripts/lib/jquery.min.js"></script>
+	<script src="/scripts/lib/jquery-ui.min.js"></script>
 	<script>google.load('payments','1.0',{'packages':['sandbox_config']});</script>
 	<!-- Custom Scripts -->
 	<script type="text/javascript" src="/scripts/modernizr.js"></script>
@@ -124,8 +122,7 @@
 	<%}else{%>
 	<script src="/browserify.js"></script>
 	<%}%>
-
 <% } else {%>
-	<script>google.load('payments','1.0',{'packages':['production_config']});</script>
-	<script type="text/javascript" src="/scripts/<%-revision%>-courseshark.js"/>
+	<script src="/scripts/<%-revision%>-courseshark.js"/>
+	<script>google.load('payments', '1.0', { 'packages': ['production_config'] });</script>
 <% }%>
