@@ -22,38 +22,39 @@
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	})();
 	 // Twitter
-  window.twttr = (function (d,s,id) {
-    var t, js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return; js=d.createElement(s); js.id=id;
-    js.src="//platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs);
-    return window.twttr == undefined ? (t = { _e: [], ready: function(f){ t._e.push(f) } }) : window.twttr;
-  }(document, "script", "twitter-wjs"));
+	twttr = (function (d,s,id) {
+		var t, js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return; js=d.createElement(s); js.id=id;
+		js.src="//platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs);
+		return window.twttr == undefined ? (t = { _e: [], ready: function(f){ t._e.push(f) } }) : window.twttr;
+	}(document, "script", "twitter-wjs"));
 	// Google+
 	(function() {
 		if ( String(window.location).indexOf('.dev') !== -1 ) return;
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
- // UserVoice
-  var uvOptions = {};
-  (function() {
-    var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
-    uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/tIb1gzaiG6zO90NjfnA.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
-  })();
-  (function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=390689880955359";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));
+		var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+		po.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'apis.google.com/js/plusone.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+	})();
+ 	// UserVoice
+	var uvOptions = {};
+	(function() {
+		var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+		uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/tIb1gzaiG6zO90NjfnA.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+	})();
 
+	// Facebook stuff
+	(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=182622275092530";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
 
 	fbAsyncInit = function(){
 		if ( !FB || !FB.Event || !FB.Event.subscribe ){ return; }
-  	FB.Event.subscribe('edge.create', function(targetUrl) {
+		FB.Event.subscribe('edge.create', function(targetUrl) {
 			if (targetUrl.indexOf("facebook.com") > 0) {
 			// if the returned link contains 'facebook,com'. It's a 'Like' for your Facebook Page
 			_gaq.push(['_trackSocial','Facebook','Like',targetUrl]);
@@ -63,19 +64,19 @@
 			}
 		});
 		FB.Event.subscribe('edge.remove', function(targetUrl) {
-	  	_gaq.push(['_trackSocial', 'facebook', 'unlike', targetUrl]);
+			_gaq.push(['_trackSocial', 'facebook', 'unlike', targetUrl]);
 		});
 		FB.Event.subscribe('message.send', function(targetUrl) {
-		  _gaq.push(['_trackSocial', 'facebook', 'send', targetUrl]);
+			_gaq.push(['_trackSocial', 'facebook', 'send', targetUrl]);
 		});
 	}
 	trackTwitter = function(intent_event) {
 		function extractParamFromUri(uri, paramName) {
-  		if (!uri) {return;}
-  		var regex = new RegExp('[\\?&#]' + paramName + '=([^&#]*)');
-  		var params = regex.exec(uri);
-  		if (params != null) { return unescape(params[1]); }
-  		return;
+			if (!uri) {return;}
+			var regex = new RegExp('[\\?&#]' + paramName + '=([^&#]*)');
+			var params = regex.exec(uri);
+			if (params != null) { return unescape(params[1]); }
+			return;
 		}
 		if (intent_event) {
 			var opt_pagePath;
@@ -85,15 +86,18 @@
 			_gaq.push(['_trackSocial', 'twitter', 'tweet', opt_target]);
 		}
 	}
-  twttr.ready(function (twttr) {
-    twttr.events.bind('tweet', trackTwitter);
-  });
+	twttr.ready(function (twttr) {
+		twttr.events.bind('tweet', trackTwitter);
+	});
 
 </script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script src="/socket.io/socket.io.js"></script>
 
 <%if ( app.settings.env === 'development' ){ %>
+
+
+	<% if (true){ %>
 	<script type="text/javascript" src="/scripts/lib/jquery.min.js"></script>
 	<script type="text/javascript" src="/scripts/lib/jquery-ui.min.js"></script>
 	<script>google.load('payments','1.0',{'packages':['sandbox_config']});</script>
@@ -110,13 +114,17 @@
 	<script type="text/javascript" src="/scripts/dateFormat.js"></script>
 	<!-- Bootstrap javascripts -->
 	<script src="/scripts/lib/bootstrap-transition.js"></script>
-  <script src="/scripts/lib/bootstrap-modal.js"></script>
-  <script src="/scripts/lib/bootstrap-dropdown.js"></script>
-  <script src="/scripts/lib/bootstrap-collapse.js"></script>
-  <script src="/scripts/lib/bootstrap-tooltip.js"></script>
-  <script src="/scripts/lib/bootstrap-popover.js"></script>
-  <script src="/scripts/lib/bootstrap-typeahead.js"></script>
-  <script src="/scripts/lib/bootstrap-tab.js"></script>
+	<script src="/scripts/lib/bootstrap-modal.js"></script>
+	<script src="/scripts/lib/bootstrap-dropdown.js"></script>
+	<script src="/scripts/lib/bootstrap-collapse.js"></script>
+	<script src="/scripts/lib/bootstrap-tooltip.js"></script>
+	<script src="/scripts/lib/bootstrap-popover.js"></script>
+	<script src="/scripts/lib/bootstrap-typeahead.js"></script>
+	<script src="/scripts/lib/bootstrap-tab.js"></script>
+	<%}else{%>
+	<script src="/browserify.js"></script>
+	<%}%>
+
 <% } else {%>
 	<script>google.load('payments','1.0',{'packages':['production_config']});</script>
 	<script type="text/javascript" src="/scripts/<%-revision%>-courseshark.js"/>

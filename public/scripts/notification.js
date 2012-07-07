@@ -40,12 +40,17 @@ Notifications.prototype.show = function(){
 	for (var i=0,len=this.notifications.length; i<len; i++){
 		note = this.notifications[i];
 		if ( this.$list.find('[rel="notification"][data-id="'+note._id+'"]').length <= 0 ){
-			$(tmpl(this.template,{notification: note})).appendTo(this.$list).data('notification', note)
+			note = $(tmpl(this.template,{notification: note})).appendTo(this.$list).data('notification', note)
 		}
 	}
 	$('[rel="notification-updated"]').each(function(){
 		$this = $(this)
 		$this.html(prettyDate($this.data('updated')))
+	})
+	$('[rel="notification-edit"]').each(function(){
+		$(this).click(function(){
+			$('[rel="edit-form"][data-notification="'+$(this).data('notification')+'"]').toggle()
+		})
 	})
 	return this;
 }
@@ -61,6 +66,9 @@ Notifications.prototype.remove = function(notification){
 			})
 		}
 	}
+	return this;
+}
+Notifications.prototype.edit = function(notification){
 	return this;
 }
 

@@ -58,88 +58,13 @@ try{
 	$.ajaxSetup({timeout:15000});
 }catch(err){}
 
-$(document).mousemove(function(e){
-	document.x = e.pageX;
-	document.y = e.pageY;
-});
-
-
-/*
- * jQuery Placeholder Plug-in
- *
- * Copyright (c) 2010 Max Davis
- *
- * Dual licensed under the MIT and GPL licenses:
- *   http://www.opensource.org/licenses/mit-license.php
- *   http://www.gnu.org/licenses/gpl.html
- *
- * Revision: 2
- * Version: .1
- *
- * v0.1
- * - First public release
- *
- * Modified for use on CourseShark by James Rundquist
- * Copyright (c) 2011 James Rundquist
-*/
-(function($){
-	
-	$.fn.placeholder = function() {
-	
-		/** Test for modern HTML5 browsers **/
-		var dummy = document.createElement('input');
-		if(dummy.placeholder !== undefined){
-			return $(this)
-		}
-	
-		if($(this).attr("type") == "password") {
-			
-			var original_pass_field = $(this);
-
-			if(original_pass_field.val() === "") {
-				$(this).parent().prepend("<input type=\"text\" style=\"color:#777777;\" value=\""+ $(this).attr("placeholder") +"\" name=\"pass_placeholder\" class=\"form-text\" id=\"pass_placeholder\">");
-				$(this).css("display","none");
-			}
-
-			$("#pass_placeholder").focus(function() {
-				if(original_pass_field.val() === "") {
-					$("#pass_placeholder").css("display","none");
-					original_pass_field.css("display","");
-					original_pass_field.focus();
-				}
-			});
-
-			original_pass_field.blur(function() {
-				if(original_pass_field.val() === "") {
-					$("#pass_placeholder").css("display","");
-					original_pass_field.css("display","none");
-				}
-			});
-
-		} else {
-
-			if($(this).val() === "") {
-				$(this).val($(this).attr("placeholder"));
-				$(this).css("color","#777777");
-			}
-
-			$(this).focus(function() {
-				if($(this).val() === $(this).attr("placeholder")) {
-					$(this).css("color","#000000");
-					$(this).val("");
-				}
-			}).blur(function() {
-				if($(this).val() === "") {
-					$(this).css("color","#777777");
-					$(this).val($(this).attr("placeholder"));
-				}
-			});
-		}
-	}
-	
-})(jQuery);
+// $(document).mousemove(function(e){
+// 	document.x = e.pageX;
+// 	document.y = e.pageY;
+// });
 
 SectionPicker = function(opts){
+
 	var $term, $major, $course, $section, options, term, updating;
 	$term = this.$term = opts['term']
 	$department = this.$department = opts['department']
@@ -185,9 +110,9 @@ SectionPicker = function(opts){
 		});
 	});
 
-	$course.change(function(){
-		var id=$course.val()
-		$section.attr('disabled','true').html("<option value=''>Loading...</option>");
+	$course.bind('change',function(){
+		var id = $course.val()
+		$section.attr('disabled','true').html("<option value=''>Loading....</option>");
 		if (!id){return;}
 		$.ajax({
 				url:"/term/"+term+"/sections/"+id
@@ -217,7 +142,7 @@ SectionPicker = function(opts){
 			if ( section.avail <= 0 ){
 				$section.append('<option value="'+s._id+'">'+s.number+' &mdash; '+s.timeslots[0].instructor+'</option>')
 			}
-			if ( --updating[s.course._id] === 0 ){
+			if ( --updating[s.course] === 0 ){
 				$section.children("option[value='']").remove();
 				if ( $section.children('option').length === 0 ){
 					$section.html('<option value="">No Full Sections</option>')
@@ -228,6 +153,7 @@ SectionPicker = function(opts){
 			
 		});
 	}
+	return this
 }
 
 function validateEmail(email) {

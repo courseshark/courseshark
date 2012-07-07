@@ -1,9 +1,9 @@
 ($.fn.friendsSearch = function(options){
 	
-	var opts = $.extend({section: 0}, options),
-	$this = $(this).data('section', opts.section),
-	list = [],
-	$searchList = $this.find('#search-list');
+	var opts = $.extend({section: 0}, options)
+		,	$this = $(this).data('section', opts.section)
+		,	list = []
+		,	$searchList = $this.find('#search-list')
 	
 	$this.find('#active-search-box').bind('keyup', function(e) {
 		if ( e.keyCode === 13 ){
@@ -91,8 +91,8 @@ function inviteUsers(list, $this){
 
 
 function addUsers(list, $this){
-	ids = $.map( list, function( value, index ) { return value; });
-	ids.forEach(function(id){
-		$.ajax({url: '/friends/'+id, type: 'POST'})
+	var users = $.map( list, function( value, index ) { return value; });
+	users.forEach(function(user){
+		$.ajax({url: '/friends/'+user.id, type: 'POST'})
 	})
 }

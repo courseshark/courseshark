@@ -5,6 +5,9 @@ development:
     time: "5"
   db:
     uri: "mongodb://localhost/courseshark_dev"
+    auth:
+      user: 'courseshark'
+      pass: 'espress0!'
   facebook:
     appId: "182622275092530"
     appSecret: "885311f00c458526586a17ede8b3e57b"
@@ -32,6 +35,9 @@ staging:
     time: "15"
   db:
     uri: "mongodb://courseshark.com/courseshark_staging"
+    auth:
+      user: 'courseshark'
+      pass: 'espress0!'
   facebook:
     appId: "182622275092530"
     appSecret: "885311f00c458526586a17ede8b3e57b"
@@ -59,6 +65,9 @@ production:
     time: "15"
   db:
     uri: "mongodb://courseshark.com/courseshark"
+    auth:
+      user: 'courseshark'
+      pass: 'espress0!'
   facebook:
     appId: "182622275092530"
     appSecret: "885311f00c458526586a17ede8b3e57b"

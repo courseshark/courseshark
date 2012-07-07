@@ -151,11 +151,13 @@ exports = module.exports = function(app){
 	})
 
 
-	app.get('/settings', function(req, res){
+	app.get('/settings', requireLogin, function(req, res){
 		User.findById(req.user._id).populate('major').populate('school').exec(function(err, user){
-			School.find({enabled: true}, {}, {sort:{abbr:1}}).exec(function(err, schools){
-				schools = schools || []
-				res.render('user/settings', {account: user, schools: schools, noJS: true})
+			req.user.getFriends(function(err, friends){
+				School.find({enabled: true}, {}, {sort:{abbr:1}}).exec(function(err, schools){
+					schools = schools || []
+					res.render('user/settings', {account: user, schools: schools, friends:friends, noJS: true})
+				})
 			})
 		})
 	})

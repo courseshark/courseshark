@@ -2,6 +2,7 @@
  * Admin controller
  */
 var EventEmitter = require("events").EventEmitter
+	,	seatWatcher = require('../lib/seat-watcher')
 
 exports = module.exports = function(app){
 
@@ -17,6 +18,32 @@ exports = module.exports = function(app){
 			res.render('admin/schools/index', {schools: schools, layout:'../layout.ejs'});
 		})
 	})
+	app.get('/admin/schools/:school/toggle-enabled', requireAdmin, function(req, res){
+		res.json(true)
+		School.findOne({_id:req.params.school}).exec(function(err, school){
+			if (school){
+				school.enabled = !school.enabled
+				school.save(function(err){
+				})
+			}
+		})
+	})
+	app.get('/admin/schools/:school/toggle-notifications', requireAdmin, function(req, res){
+		res.json(true)
+		School.findOne({_id:req.params.school}).exec(function(err, school){
+			if (school){
+				school.notifications = !school.notifications
+				school.save(function(err){
+					if ( school.notifications ){
+						seatWatcher.startSchool(school)
+					}else{
+						seatWatcher.stopSchool(school)
+					}
+				})
+			}
+		})
+	})
+
 
 	app.get('/admin/users', requireAdmin, function(req, res){
 		User.find(req.query.user).populate('school').exec(function(err, users){

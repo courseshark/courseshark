@@ -7,21 +7,10 @@
  * (c) James Rundquist 2011
  *****************************************/
 
-/******************************************
- * Open/Close functions
- *****************************************/
- function initElements(){
-	$('<div id="dialog-overlay"></div><div id="dialog-wrapper"><div id="dialog-container"><div id="dialog-header"><div id="close-button">x</div></div><section id="dialog-content"></section></div></div>').appendTo('body').hide();
-
-}
-function initFooter(){
-	$('#dialog-wrapper #dialog-container').append('<div id="dialog-footer"><button id="dialog-close">close</button></div>');
-}
-
 /***
 * Functions to handle default events
 */
-$(document).delegate("#close-button, #dialog-wrapper, #dialog-close","click",function(event){
+$(document).delegate("#close-button, #dialog-wrapper, #dialog-close", "click" , function(event){
 	var options = {'close-button':'', 'dialog-wrapper':'', 'dialog-close':''};
 	// If one of the elements we are looking for has been clicked, close the dialog
 	// This check prevents against children from triggering the close
@@ -34,16 +23,6 @@ $(document).delegate("#close-button, #dialog-wrapper, #dialog-close","click",fun
 /***
 * Callable functions
 */
-function showOverlay(){
-	$('#dialog-wrapper').hide();
-	$('#dialog-overlay').fadeIn();
-	$('body').css({'-webkit-filter':'grayscale(0.5) blur(10px);'});
-}
-function hideOverlay(){
-	$('#dialog-wrapper').hide();
-	$('#dialog-overlay').fadeOut();
-}
-
 function openDialog(url, name, specialClass, next){
 	// Load either the template, or the URL passed
 	if ( $('script[type="text/template"]#_'+url).length !== 0 ){	// If we were passed an id of a template
@@ -65,9 +44,6 @@ function closeDialog(){
 	$('.close:last').click()
 	//hideOverlay();
 	//$('#dialog-container').removeAttr('class');
-}
-function dialog_close(){
-	closeDialog();
 }
 
 
@@ -98,10 +74,6 @@ function hide_schedule_conflict(){
 /******************************************
  * Utility dialogs
  *****************************************/
-
-function loading_dialog(){
-	dialog_open(true);
-}
 
 function errorDialog(html, info, callback){
 	info = '<div class="modal-header"><a href="#" class="close" data-dismiss="modal">&times;</a><h3>Message</h3></div>\
@@ -156,15 +128,11 @@ function show_login_dialog(){
 	openDialog("/users/login/dialog", "login");
 }
 
-function show_register_dialog(){
-	show_login_dialog();
-//	openDialog("/users/login/dialog", "register");
-}
-
 function showScheduleConflict(messgae){
 	$('#conflict-message').fadeIn(350);
 	$('#conflict-message').html(messgae);
 }
+
 function hideScheduleConflict(){
 	$('#conflict-message').fadeOut(350);
 }
@@ -329,5 +297,3 @@ function submit_success_form(id, data)
 function add_friends_dialog(){
 	openDialog("/social/friends/dialog").friendsSearch({next:addUsers});
 }
-
-

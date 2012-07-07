@@ -5,7 +5,11 @@ exports.build = function(app){
 }
 
 function buildApplication(app){
-  var mcss, mjs, foundCSS=false, foundJS=false;
+  var mcss
+    , mjs
+    , foundCSS=false
+    , foundJS=false
+    
   if ( app.settings.env == 'development' ){
     return;
   }

@@ -22,11 +22,11 @@ exports = module.exports = function(app){
 	})
 
 	app.get('/friends/search', requireLogin, function(req, res){
-		console.log('here');
+				res.render('friends/results', {users: [], search: req.params.name, error: 'Too few characters'})
 	})
 
 	app.get('/friends/search/:name.:format?', requireLogin, function(req, res){
-		query = req.params.name.replace(/[^a-z0-9\s]/gi, '').replace(/\\/, '\\').replace(/[^\\]\./,'\\.')
+		query = req.params.name.replace(/[^a-z0-9\s]/gi, '').replace(/\s+/gi, '|').replace(/\\/, '\\').replace(/[^\\]\./,'\\.')
 		if ( query.length < 3 ){
 			if ( req.params.format == 'json' ){
 				res.json({query: query, users:[]})
@@ -36,7 +36,6 @@ exports = module.exports = function(app){
 			return;
 		}
 		re = new RegExp(query, 'gi')
-		console.log(re);
 		User.find({school: req.user.school, $or:[{email: re}, {firstName: re}, {lastName: re}] }, function(err, users){
 			users = users.map(function(u){return {id:u.id, name:u.name, email:u.email.replace(/@.+/gi,''), avatar:u.avatar(30)}})
 			if ( req.params.format == 'json' ){
@@ -47,12 +46,25 @@ exports = module.exports = function(app){
 		})
 	})
 
-	app.post('/friends/:friendId.:format', requireLogin, function(req, res){
-		console.log('adding', req.params.friendId);
+	app.post('/friends/:friendId.:format?', requireLogin, function(req, res){
+		User.findById(req.params.friendId, function(err, friend){
+			if ( err ){ res.json(false); return; }
+			if ( !friend ) { res.json(false); return; }
+			User.update({_id: req.user._id}, {$addToSet: {friends: req.params.friendId}}, function(err, num){
+				if ( err ){ res.json(false); return; }
+				res.json(true);
+				// Email friend about invite
+			})
+		})
 	})
 
 	app.delete('/friends/:friendId.:format?', requireLogin, function(req, res){
-		console.log('deleting', req.params.friendId);
+		var friendId = req.params.friendId.replace(/[^0-9a-z]/ig, '')
+		User.update({_id: req.user.id}, {$pull:{friends:friendId}}, function(err, num){
+			User.update({_id: String(friendId)}, {$pull:{friends:req.user._id}}, function(err,num){
+				res.json(true)
+			})
+		})
 	})
 
 }

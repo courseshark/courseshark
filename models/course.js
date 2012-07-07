@@ -33,4 +33,3 @@ CourseSchema.method('addSection', function(section){
 	this.sections.push(section['_id'])
 	this.save()
 })
-

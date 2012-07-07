@@ -1,7 +1,4 @@
-var spanNumbers
-
-
-spanNumbers = function(n){
+var spanNumbers = function(n){
 	return (''+n).split('').map(function(a){return '<span class="number">'+a+'</span>'}).join('');
 }
 
@@ -28,7 +25,7 @@ exports = module.exports = function(app){
 			})
 		}else{
 			Term.find({school: req.school, active: true}, function(err, terms){
-				res.render('notifications/index', {user: req.user, school: req.school, terms:terms})
+				res.render('notifications/index', {user: req.user, school: req.school, terms:terms, noJS:true})
 			})
 		}
 	})

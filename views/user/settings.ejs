@@ -11,8 +11,8 @@
 		</div>
 		<div class="span3">
 			<h1>Friends</h1>
-			<h4>You have added <a href="/friends"><%=account.friends.length%> friends</a></h4>
-			<button class="btn btn-success" onClick="openDialog('/social/friends/dialog').friendsSearch({next: addUsers})">Add Friends</button>
+			<h4>You have added <a href="/friends"><%=friends.length%> friends</a></h4>
+			<button class="btn btn-success" onClick="openDialog('/friends/add').friendsSearch({next: addUsers})">Add Friends</button>
 		</div>
 	</div> <!-- /.row -->
 	<!-- Settings -->

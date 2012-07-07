@@ -3,6 +3,8 @@
 
 node_modules/*
 
+cert/*
+
 logs/access.log
 
 public/scripts/*-courseshark.js

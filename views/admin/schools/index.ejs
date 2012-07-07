@@ -17,15 +17,15 @@
 			<tbody>
 		<% if (schools.length) { %>
     	<% schools.forEach(function(school){ %>
-				<tr>
+				<tr data-school="<%=school._id%>">
 					<td><%=school._id%></td>
 					<td><%=school.name%></td>
 					<td><%=school.abbr%></td>
 					<td><%=(school.city+', '+school.state+' '+school.zip)%></td>
 					<td><%=school.waitlist%></td>
-					<td><%=school.notifications%></td>
-					<td><%=school.notificationCron%></td>
-					<td><%=school.enabled%></td>
+					<td><button class="school-notifications-toggle <%=(school.notifications?'btn-success':'btn-danger')%>"><%=school.notifications%></button></td>
+					<td contenteditable="true"><%=school.notificationCron%></td>
+					<td><button class="school-enabled-toggle <%=(school.enabled?'btn-success':'btn-danger')%>"><%=school.enabled%></button></td>
 				</tr>
 			<% }) %>
 		<% } %>

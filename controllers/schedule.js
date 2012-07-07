@@ -3,7 +3,7 @@
  */
 exports = module.exports = function(app){
 	var seats = app.io.of('/seats')
-		,	crawler = require('../crawler')
+		,	crawler = require('../lib/crawler')
 	/**
 	*
 	* Main Views
@@ -129,7 +129,7 @@ exports = module.exports = function(app){
 		delete pSchedule.user;
 		link = new ScheduleLink()
 		link.schedule = pSchedule;
-		if ( req.user && req.session.auth && req.session.auth.loggedIn ){
+		if ( req.user ){
 			link.user = req.user._id
 		}
 		// This bit doesnt seem to work right... it always makes a new link

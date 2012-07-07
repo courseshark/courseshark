@@ -4,6 +4,8 @@ var	express = require('express')
 		, config = config_file.readConfig('config.yaml')
 		, auth = require('./lib/authorization')
 		, utils = require('./lib/utils')
+		,	browserify = require('browserify')
+//		, appsec = express.createServer({key: privateKey, cert: certificate})
 		, app = express.createServer()
 		, port = (typeof process !== "undefined" && process !== null ? (_ref2 = process.env) !== null ? _ref2.PORT : undefined : undefined) || 80
 		, sio = require('socket.io')

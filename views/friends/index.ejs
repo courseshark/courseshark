@@ -9,7 +9,7 @@
 			<div class="tabbable"> <!-- Only required for left/right tabs -->
 			  <ul class="nav nav-tabs">
 			    <li class="active"><a href="#friends" data-toggle="tab">Your Friends</a></li>
-			    <li><a href="#invites" data-toggle="tab">Invites<% if ( !invited.length ){ %><span class="label label-warning"><%=invited.length%></span><%}%></a></li>
+			    <li><a href="#invites" data-toggle="tab">Invites<% if ( invited.length > 0 ){ %> <span class="label label-warning"><%=invited.length%></span><%}%></a></li>
 			  </ul>
 			  <div class="tab-content">
 			    <div class="tab-pane active" id="friends">
@@ -17,11 +17,13 @@
 							<% if (friends.length){ %>
 							<!-- Look at mister popular over here -->
 							<% friends.forEach(function(friend){ %>
-							<div class="friend span8" data-friend-id="<%=friend._id%>">
+							<div class="friend" data-friend-id="<%=friend._id%>">
 								<div class="friend-image">
 									<img src="<%= friend.avatar(45) %>" alt="<%=friend.name%> Avatar">
 								</div>
-								<div class="remove-friend close" data-friend="<%=friend._id%>">&times;</div>
+								<div class="remove-friend">
+									<div class="close" data-friend-id="<%=friend._id%>">&times;</div>
+								</div>
 								<div class="friend-info">
 									<div class="name"><%= friend.name %></div>
 									<div class="email-info"><%= friend.email %></div>
@@ -37,8 +39,35 @@
 							<%} %>
 			      </div>
 			    </div>
+
+
+
+			    <!-- Invites -->
 			    <div class="tab-pane" id="invites">
-			      <p>Howdy, I'm in Section 2.</p>
+						<% if (invited.length){ %>
+						<section id="invites" class="well">
+							<p id="description">The following people have indicated that you may be their friends. Do you accept? 
+								<div id="invites">
+									<% invited.forEach(function(potentialFriend){ %>
+										<div class="friend-invite" data-friend-id="<%=potentialFriend._id%>">
+											<div class="friend-image">
+												<img src="<%= potentialFriend.avatar(45) %>" alt="<%= potentialFriend.name %> Avatar">
+											</div>
+											<div class="action-buttons" data-friend-id="<%=potentialFriend._id%>" >
+												<button class="btn btn-primary"  data-type="a" data-friend-id="<%=potentialFriend._id%>">Accept</button>
+												<button class="btn" data-type="d" data-friend-id="<%=potentialFriend._id%>">Ignore</button>
+											</div>
+											<div class="friend-info">
+												<div class="name"><%=potentialFriend.name%></div>
+												<div class="email-info"><%=potentialFriend.email.replace(/@.*$/gi, '')%></div>
+											</div>
+										</div>
+									<% }) %>
+								</div>
+							</section>
+						<% }else{ %>
+						<h3>Nothing here yet</h3>
+						<% } %>
 			    </div>
 			  </div>
 			</div>
@@ -47,29 +76,7 @@
 
 
 
-			<% if (invited.length){ %>
-			<section id="invites">
-				<h2>Invites</h2>
-				<p id="description">The following people have indicated that you may be their friends. Do you accept? 
-					<div id="invites">
-						<% invited.forEach(function(potentialFriend){ %>
-							<div class="friend-invite span8" data-friend-id="<%=potentialFriend._id%>">
-								<div class="friend-image">
-									<img src="<%= potentialFriend.avatar(45) %>" alt="<%= potentialFriend.name %> Avatar">
-								</div>
-								<div class="action-buttons" data-friend-id="<%=potentialFriend._id%>" >
-									<button class="btn btn-primary"  data-type="a" data-friend-id="<%=potentialFriend._id%>">Accept</button>
-									<button class="btn" data-type="d" data-friend-id="<%=potentialFriend._id%>">Ignore</button>
-								</div>
-								<div class="friend-info">
-									<div class="name"><%=potentialFriend.name%></div>
-									<div class="email-info"><%=potentialFriend.email%></div>
-								</div>
-							</div>
-						<% }) %>
-					</div>
-				</section>
-			<% } %>
+
 			<section id="friends-list">
 				<h2>Friends List</h2>
 				<button class="btn btn-success btn-large" onClick="openDialog('/friends/add').friendsSearch({next: addUsers})">Add Friends</button>
@@ -97,13 +104,16 @@
 	$('#invites .friend-invite .action-buttons button').bind('click', function(){
 		$this = $(this);
 		$this.parent().children('button').each(function(){$(this).attr('disabled', true);});
-		if($this.data('type')=='a')
-			openDialog('/friends/accept/'+$this.data('friendship'));
-		else
-			openDialog('/friends/decline/'+$this.data('friendship'));
+		if($this.data('type')=='a'){
+			$.ajax({url:'/friends/'+$this.data('friend-id'),data:{_method:'POST'}, type:'POST'});
+		}else{
+			$.ajax({url:'/friends/'+$this.data('friend-id'),data:{_method:'DELETE'}, type:'DELETE'});
+		}
+		$this.parent().parent().fadeOut();
 	});
-	$('.remove-friend').bind('click', function(){
+	$('.remove-friend .close').bind('click', function(){
 		$this = $(this);
-		openDialog('/friends/remove/'+$this.data('friend')+'/confirm');
+		$.ajax({url:'/friends/'+$this.data('friend-id'),data:{_method:'DELETE'}, type:'DELETE'});
+		$this.parent().parent().fadeOut();
 	});
 </script>
