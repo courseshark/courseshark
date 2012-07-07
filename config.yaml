@@ -34,7 +34,7 @@ staging:
   update:
     time: "15"
   db:
-    uri: "mongodb://courseshark.com/courseshark_staging"
+    uri: "mongodb://courseshark.com/courseshark_staging, mongodb://2.courseshark.com/courseshark_staging"
     auth:
       user: 'courseshark'
       pass: 'espress0!'
@@ -64,7 +64,7 @@ production:
   update:
     time: "15"
   db:
-    uri: "mongodb://courseshark.com/courseshark"
+    uri: "mongodb://courseshark.com/courseshark, mongodb://2.courseshark.com/courseshark"
     auth:
       user: 'courseshark'
       pass: 'espress0!'

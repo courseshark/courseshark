@@ -18,7 +18,7 @@ io.set('log level', 1);
 
 // Database
 mongoose = require('mongoose')
-mongoose.connect(config.db.uri)
+mongoose.connectSet(config.db.uri, config.db.auth)
 Schema = mongoose.Schema
 ObjectId = mongoose.Types.ObjectId
 // Bootsrap models
