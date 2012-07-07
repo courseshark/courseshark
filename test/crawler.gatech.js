@@ -1,5 +1,5 @@
 (function(env){
-	var crawler = require('../crawler')
+	var crawler = require('../lib/crawler')
 			, gt
 	
 	console.log('Creating Crawler');

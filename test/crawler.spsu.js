@@ -1,5 +1,5 @@
 (function(env){
-	var crawler = require('../crawler')
+	var crawler = require('../lib/crawler')
 			, spsu
 	
 	console.log('Creating Crawler');
