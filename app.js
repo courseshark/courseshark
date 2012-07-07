@@ -17,7 +17,12 @@ io.set('log level', 1);
 
 // Database
 mongoose = require('mongoose')
-mongoose.connectSet(config.db.uri, config.db.auth)
+if ( app.settings.env === 'development' ){
+	mongoose.connect(config.db.uri, function(err){if(err){console.log('mongoose:',err)}})
+}else{
+	mongoose.connectSet(config.db.uri, function(err){if(err){console.log('mongoose:',err)}})
+}
+mongoose.connection.on('open', function(){console.log("mongodb connection open")})
 Schema = mongoose.Schema
 ObjectId = mongoose.Types.ObjectId
 // Bootsrap models
@@ -29,7 +34,7 @@ model_files.forEach( function (file) {
 
 require('./lib/social-track').boot(app)
 // Configuration
-require('./lib/settings').boot(app, mongoose);
+require('./lib/settings').boot(app);
 //Error Handler
 require('./lib/error-handler').boot(app);
 // Helpers
