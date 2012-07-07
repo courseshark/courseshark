@@ -18,9 +18,9 @@ io.set('log level', 1);
 // Database
 mongoose = require('mongoose')
 if ( app.settings.env === 'development' ){
-	mongoose.connect(config.db.uri, function(err){if(err){console.log('mongoose:',err)}})
+	mongoose.connect(config.db.uri, function(err){if(err){console.log('mongoose-dev:',err)}})
 }else{
-	mongoose.connectSet(config.db.uri, function(err){if(err){console.log('mongoose:',err)}})
+	mongoose.connectSet(config.db.uri, function(err){if(err){console.log('mongoose-prod:',err)}})
 }
 mongoose.connection.on('open', function(){console.log("mongodb connection open")})
 Schema = mongoose.Schema

@@ -1,11 +1,14 @@
 {
     "name": "Crawler"
-  , "description": "A simple and clean way to make your schedule"
-  , "version": "0.0.1"
+  , "description": "Crawler for CourseShark to crawl courses from Banner Websites"
+  , "version": "0.2.0"
   , "private": true
   , "main": "./index.js"
   , "author": "James Rundquist (http://github.com/jrundquist)"
   , "engines": {
       "node": ">= 0.6.14"
     }
+  , "dependencies": {
+  		"jsdom": "latest"
+  }
 }
