@@ -13,10 +13,9 @@ $.ajaxSetup({
 });
 
 
-function errorHandler(err, text, errInfo)
-{
+function errorHandler(err, text, errInfo){
 	if (text === ''){
-		text = '<strong>An unexpected error has occurred</strong>.<br /><br />Please check your information and try again.<br /><br />If the problem persists, please <a href="/about/contact" target="_blank">contact us</a> or file a <a target="_blank" href="http://bugs.courseshark.com/">bug report</a>."';
+		text = '<strong>An unexpected error has occurred</strong>.<br /><br />Please check your information and try again';
 	}
 	errorDialog(text, errInfo);
 }
@@ -44,27 +43,11 @@ function get_courses_from_major(id, callback, term){
 		});
 }
 
-function get_full_sections_from_course(id, term_id, callback){
-	$.ajax({
-			url:"/school/"+school+"/course/"+id+"/term/"+term_id+"/full" ,
-			success: callback,
-			dataType:'json',
-			data:{},
-			error: function(jqXHR, textStatus, errorThrown){errorHandler(jqXHR,'',errorThrown);}
-		});
-}
-
 try{
 	$.ajaxSetup({timeout:15000});
 }catch(err){}
 
-// $(document).mousemove(function(e){
-// 	document.x = e.pageX;
-// 	document.y = e.pageY;
-// });
-
 SectionPicker = function(opts){
-
 	var $term, $major, $course, $section, options, term, updating;
 	$term = this.$term = opts['term']
 	$department = this.$department = opts['department']

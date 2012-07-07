@@ -93,7 +93,7 @@ function compileJS(app){
   
   for ( var i in jsFiles ){
     try {
-      origJS += fs.readFileSync(jsDir+jsFiles[i], 'ascii');
+      origJS += fs.readFileSync(jsDir+jsFiles[i], 'ascii') + "\n;\n";
     }
     catch (err) {
       console.error("There was an error opening the file: ", jsFiles[i]);
