@@ -1,7 +1,7 @@
 var	express = require('express')
 		, fs = require('fs')
 		, config_file = require('yaml-config')
-		, config = config_file.readConfig('config.yaml')
+		, config = config_file.readConfig(__dirname + '/config.yaml')
 		, auth = require('./lib/authorization')
 		, utils = require('./lib/utils')
 		,	browserify = require('browserify')
@@ -14,7 +14,6 @@ var	express = require('express')
 app.config = config
 app.io = io
 io.set('log level', 1);
-
 
 // Database
 mongoose = require('mongoose')
