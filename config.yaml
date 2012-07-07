@@ -15,6 +15,9 @@ development:
     clientSecret: "Dia4zMwugrzVzNEQU5LGpue9"
     iss: "11866213978865467686"
     sellerSecret: "driJET-bAFB2e-fJEIaJRQ"
+  twitter:
+    consumerKey: "K6whFxok2yY5CIYlCMt21Q"
+    consumerSecret: "VVxJFuYOznOd4fPIiIiuZ5Grd2ITCjk5yvLXZyyV6s"
   twilio:
     sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
@@ -42,6 +45,9 @@ staging:
     clientSecret: "d1bPhrQutGrZqj7lPrbfNHrQ"
     iss: "11866213978865467686"
     sellerSecret: "driJET-bAFB2e-fJEIaJRQ"
+  twitter:
+    consumerKey: "K6whFxok2yY5CIYlCMt21Q"
+    consumerSecret: "VVxJFuYOznOd4fPIiIiuZ5Grd2ITCjk5yvLXZyyV6s"
   twilio:
     sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
@@ -72,6 +78,9 @@ production:
     clientSecret: "d1bPhrQutGrZqj7lPrbfNHrQ"
     iss: "11866213978865467686"
     sellerSecret: "3jTkSAUyQ2eC2j_H-L88ZQ"
+  twitter:
+    consumerKey: "K6whFxok2yY5CIYlCMt21Q"
+    consumerSecret: "VVxJFuYOznOd4fPIiIiuZ5Grd2ITCjk5yvLXZyyV6s"
   twilio:
     sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
