@@ -29,7 +29,7 @@ model_files.forEach( function (file) {
 
 require('./lib/social-track').boot(app)
 // Configuration
-require('./lib/settings').boot(app);
+require('./lib/settings').boot(app, mongoose);
 //Error Handler
 require('./lib/error-handler').boot(app);
 // Helpers
