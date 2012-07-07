@@ -76,7 +76,6 @@ function compileJS(app){
                   "micro-template.js",
                   "schedule.js",
                   "notification.js",
-                  "jquery.qtip.min.js",
                   "friendsSearch.js",
                   "social.js",
                   "jquery.base64.min.js",
@@ -86,10 +85,12 @@ function compileJS(app){
                   "lib/bootstrap-dropdown.js",
                   "lib/bootstrap-collapse.js",
                   "lib/bootstrap-tooltip.js",
-                  "lib/bootstrap-popover.js"
+                  "lib/bootstrap-popover.js",
+                  "lib/bootstrap-typeahead.js",
+                  "lib/bootstrap-tab.js"
                 ],
       origJS = "";
-      
+  
   for ( var i in jsFiles ){
     try {
       origJS += fs.readFileSync(jsDir+jsFiles[i], 'ascii');
