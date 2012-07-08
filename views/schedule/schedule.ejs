@@ -161,8 +161,8 @@ END:VCALENDAR
 					  	<ul class="dropdown-menu">
 					      <li><a href="#" id="link-button"/><i class="icon-share"></i> Create Link</a></li>
 								<li><a href="#" id="ical-button"/><i class="icon-download-alt"></i> Schedule Export</a></li>
-								<li><a type="#" id="fb-share-button"/><i class="icon-comment"></i> Post To Facebook</a></li>
-					    </ul>
+<!-- 								<li><a type="#" id="fb-share-button"/><i class="icon-comment"></i> Post To Facebook</a></li>
+ -->					    </ul>
 					 </li>
 	      </ul>
 			</div>
@@ -171,14 +171,13 @@ END:VCALENDAR
 	<% } %>
 	<div class="container">
 		<div class="row">
-			<div id="side-bar-wrapper" class="span3">
+			<div id="side-bar-wrapper" class="span3 hidden-phone">
 				<div id="schedule-summary">
 					<h2 id="name">-Untitled-</h2>
 					<div id="term">Term: <strong id="term-name"></strong></div>
 					<div id="hours">Hours: <strong id="number">0</strong></div>
 				</div>
 				<% if ( !link ){ %>
-
 				<div id="class-adding-form">
 					<div id="add-course-content">
 						<article>
@@ -209,8 +208,17 @@ END:VCALENDAR
 				<%- partial('calendars/week') %>
 			</div>
 
-			<div id="quick-share" class="span2">
-				<button id="big-share" class="btn-success">Share this schedule</button>
+			<div id="right-bar" class="span2 hidden-phone">
+				<div id="quick-share" class="row-fluid">
+					<div class="span12">
+						<button id="big-share" class="btn-success btn-large"><i class="icon-share icon-white"></i>&nbsp;Share</button>
+					</div>
+				</div>
+				<h2>CRN List</h2>
+				<div class="row-fluid">
+						<div id="crn-list" class="well"></div>
+					</div>
+				</div>
 			</div>
 
 			
@@ -328,10 +336,6 @@ $(document).ready(function() {
 	$('#link-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Link']);
 		openDialog('/schedule/dialog/link');
-	});
-	$('#fb-share-button').click(function(){
-		_gaq.push(['_trackEvent', 'Schedule', 'Facebook']);
-		window.location = "<?php echo $fb_link?>"
 	});
 
 	$('#big-share').click(function(){

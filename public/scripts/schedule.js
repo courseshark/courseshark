@@ -177,7 +177,7 @@ Schedule.prototype.addSection = function(section){
 	this.sections.push(section);
 	hilightSection(section.id);
 	$('[rel="section-option"]#'+section.id).data('selected', true).addClass('selected').children('.children').slideDown();
-	this.updateHours();
+	this.update();
 	return this;
 }
 Schedule.prototype.removeSection = function(section){
@@ -198,7 +198,7 @@ Schedule.prototype.removeSection = function(section){
 		schedule.removeSection(child);
 	}
 	$('[rel="section-option"]#'+section.id).children('.children').slideUp();
-	this.updateHours();
+	this.update();
 	return this;
 }
 Schedule.prototype.removeCourse = function(course){
@@ -211,9 +211,16 @@ Schedule.prototype.removeCourse = function(course){
 			i--;
 		}
 	}
-	this.updateHours();
+	this.update();
 	return this;
 }
+
+Schedule.prototype.update = function(){
+	this.updateHours();
+	this.updateCRN();
+}
+
+
 Schedule.prototype.updateHours = function(){
 	var credit_min = 0, credit_max = 0;
 	addCredits = function(string){
@@ -236,6 +243,18 @@ Schedule.prototype.updateHours = function(){
 	}
 	refreshCreditDisplay();
 }
+
+Schedule.prototype.updateCRN = function(){
+	var numbers = []
+		,	section;
+	for(var i=0,len=this.sections.length; i<len; i++){
+		section = this.sections[i];
+		name = section.name.replace(/\s+#[0-9]+/,'')
+		numbers[numbers.length] = section.number + "&nbsp;&nbsp;" + name;
+	}
+	$('#crn-list').html(numbers.join("<br />"));
+}
+
 Schedule.prototype.testConflicts = function(section){
 	if ( false && Modernizr.webworkers ) {
 		if ( !conflict_worker ){
@@ -636,7 +655,7 @@ function addSectionToCourseList($container, section, selectedSection){
 		}
 	}
 	updateScheduleConflicts();
-	schedule.updateHours();
+	schedule.update();
 }
 
 

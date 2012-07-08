@@ -103,6 +103,10 @@
 	user-select: none;
 }
 
+#crn-list.well{
+	padding:5px;
+}
+
 .course-options-container{
 	display:block;
 	overflow: hidden;
@@ -298,15 +302,16 @@
 			margin-right:5px;
 		}
 		.section-instructor{
-			font-size:12px;
-			line-height:16px;
-			margin-left:5px;
+			font-size: 12px;
+			line-height: 16px;
+			margin-left: 5px;
 			height: 16px;
 			overflow: hidden;
-			overflow-style: marquee;
 			display: inline-block;
 			min-width: 80px;
 			white-space: nowrap;
+			width: 160px;
+			text-overflow: ellipsis;
 		}
 		.section-gpa{
 			display: none;
@@ -460,17 +465,3 @@
 		}
 	}
 }
-
-@media (max-width: 768px) {
-  /* Remove any padding from the body */
-  #friends, #add-course-content, #class-list-loader, #class-list, #auto-pilot-button, #new-button {
-		display: none;
-	}
-	#schedule-summary{
-		padding: 0;
-	 	h2{
-			margin-top: 0;
-		}
-	}
-}
-

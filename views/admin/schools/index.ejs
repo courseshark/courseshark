@@ -19,7 +19,7 @@
     	<% schools.forEach(function(school){ %>
 				<tr data-school="<%=school._id%>">
 					<td><%=school._id%></td>
-					<td><%=school.name%></td>
+					<td><a href="/schools/<%=school._id%>"><%=school.name%></a></td>
 					<td><%=school.abbr%></td>
 					<td><%=(school.city+', '+school.state+' '+school.zip)%></td>
 					<td><%=school.waitlist%></td>

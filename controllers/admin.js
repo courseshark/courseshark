@@ -43,7 +43,23 @@ exports = module.exports = function(app){
 			}
 		})
 	})
+	app.get('/admin/schools/:school', requireAdmin, function(req, res){
+		School.findOne({_id:req.params.school}).populate('terms').exec(function(err, school){
+			if ( !school ){ res.redirect('back'); }
+			res.render('admin/schools/school', {school: school, layout:'../layout.ejs'});
+		})
+	})
 
+
+	app.get('/admin/terms/:term/toggle-active', requireAdmin, function(req, res){
+		res.json(true)
+		Term.findOne({_id:req.params.term}).exec(function(err, term){
+			if (term){
+				term.active = !term.active
+				term.save()
+			}
+		})
+	})
 
 	app.get('/admin/users', requireAdmin, function(req, res){
 		User.find(req.query.user).populate('school').exec(function(err, users){

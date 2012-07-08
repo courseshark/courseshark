@@ -26,6 +26,7 @@
 	<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
 </div>
 
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 <script>
 // create the twitter buttons
 $url = $('#link #url');
@@ -63,3 +64,4 @@ selectText = function(element) {
 
 $.ajax({url:'/schedule/link', type: 'POST', data: {schedule: JSON.stringify(schedule)}, success: showLink})
 </script>
+

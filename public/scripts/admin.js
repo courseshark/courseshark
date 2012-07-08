@@ -9,6 +9,11 @@ admin.schools = {
 		}
 }
 
+admin.terms = {
+		toggleActive: function(termId){
+			$.ajax({url: '/terms/'+termId+'/toggle-active'})
+		}
+}
 
 
 
@@ -22,4 +27,10 @@ $('.school-enabled-toggle').click(function(){
 	$(this).toggleClass('btn-success').toggleClass('btn-danger').html($(this).html()=='true'?'false':'true');
 	id = $(this).parent().parent().data('school')
 	admin.schools.toggleEnabled(id)
+})
+
+$('.term-active-toggle').click(function(){
+	$(this).toggleClass('btn-success').toggleClass('btn-danger').html($(this).html()=='true'?'false':'true');
+	id = $(this).parent().parent().data('term')
+	admin.terms.toggleActive(id)
 })

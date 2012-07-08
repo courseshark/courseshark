@@ -17,7 +17,7 @@ SchoolSchema = new Schema({
 	,	state: { type: String }
 	,	city: { type: String }
 	, zip: { type: String }
-	,	terms: [TermSchema]
+	,	terms: [{ type: Schema.ObjectId, ref: 'Term' }]
 	,	currentTerm: { type: Schema.ObjectId, ref: 'Term' }
 	,	enabled: { type: Boolean, 'default': false, index: true }
 	, waitlist: { type: Boolean, 'default': false }

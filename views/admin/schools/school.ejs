@@ -1,0 +1,31 @@
+<h1><%=school.name%></h1>
+<div class="row">
+	<div class="span10">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Number</th>
+					<th>Season</th>
+					<th>Year</th>
+					<th>Active</th>
+				</tr>
+			</thead>
+			<tbody>
+		<% if (school.terms.length) { %>
+    	<% school.terms.forEach(function(term){ %>
+				<tr data-term="<%=term._id%>">
+					<td><%=term._id%></td>
+					<td><a href="/terms/<%=term._id%>"><%=term.name%></a></td>
+					<td><%=term.number%></td>
+					<td><%=term.season%></td>
+					<td><%=term.year%></td>
+					<td><button class="term-active-toggle <%=(term.active?'btn-success':'btn-danger')%>"><%=term.active%></button></td>
+				</tr>
+			<% }) %>
+		<% } %>
+			</tbody>
+		</table>
+	</div>
+</div>
