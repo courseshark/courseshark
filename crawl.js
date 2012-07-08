@@ -1,7 +1,15 @@
 (function(env){
-
 	var school = ''
 		,	term = ''
+		,	config_file = require('yaml-config')
+		, config = config_file.readConfig(__dirname + '/../../config.yaml')
+		, mongoose = require('mongoose')
+
+	if ((process.env.NODE_ENV||'development') === 'development' ){
+		mongoose.connect(config.db.uri)
+	}else{
+		mongoose.connectSet(config.db.uri)
+	}
 
 	if ( process.argv.length < 4 ){
 		console.log('Error: usage is `node crawl.js [school.abbr] [term.number]`')
