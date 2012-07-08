@@ -6,13 +6,13 @@
 		, mongoose = require('mongoose')
 
 	if ((process.env.NODE_ENV||'development') === 'development' ){
-		mongoose.connect(config.db.uri)
+		mongoose.connect(config.db.uri, function(e){console.log(e, mongoose);})
 	}else{
-		mongoose.connectSet(config.db.uri)
+		mongoose.connectSet(config.db.uri, function(e){console.log(e, mongoose);})
 	}
 
 	if ( process.argv.length < 4 ){
-		console.log('Error: usage is `node crawl.js [school.abbr] [term.number]`')
+		console.log('Error: usage is `node crawl.js [school.abbr] [term.number] <cache>`')
 		return;
 	}else{
 		school = process.argv[2].toLowerCase()
