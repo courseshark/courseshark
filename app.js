@@ -15,6 +15,8 @@ app.config = config
 app.io = io
 io.set('log level', 1);
 
+
+console.log("Starting in mode:", app.settings.env)
 // Database
 mongoose = require('mongoose')
 if ( app.settings.env === 'development' ){
