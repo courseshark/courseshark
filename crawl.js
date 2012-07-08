@@ -2,7 +2,7 @@
 	var school = ''
 		,	term = ''
 		,	config_file = require('yaml-config')
-		, config = config_file.readConfig(__dirname + '/../../config.yaml')
+		, config = config_file.readConfig(__dirname + '/config.yaml')
 		, mongoose = require('mongoose')
 
 	if ((process.env.NODE_ENV||'development') === 'development' ){
@@ -26,9 +26,22 @@
 		return;
 	}
 
+
+	if ( process.argv.length >= 5 ){
+		if ( process.argv[4].toLowerCase() === 'cache' ){
+			crawl = crawler[school].cacheCrawl()
+			crawl.on('done', function(d){
+				console.log('Finished Storing Cache:', school)
+				crawler[school]['mongoose'].connection.close()
+			})
+			return;
+		}
+	}
 	crawl = crawler[school].crawl(term)
 	crawl.on('done', function(d){
 		console.log('Finished Crawling:', school)
 		crawler[school]['mongoose'].connection.close()
 	})
+	
+
 })(this)
