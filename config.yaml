@@ -34,7 +34,7 @@ staging:
   update:
     time: "15"
   db:
-    uri: "mongodb://courseshark:espress0!@2.courseshark.com/courseshark_staging, mongodb://courseshark:espress0!@courseshark.com/courseshark_staging"
+    uri: "mongodb://courseshark:espress0!@2.courseshark.com/courseshark_staging , mongodb://courseshark:espress0!@courseshark.com/courseshark_staging"
   facebook:
     appId: "182622275092530"
     appSecret: "885311f00c458526586a17ede8b3e57b"
@@ -64,7 +64,7 @@ production:
   update:
     time: "15"
   db:
-    uri: "mongodb://courseshark.com/courseshark, mongodb://2.courseshark.com/courseshark"
+    uri: "mongodb://courseshark.com/courseshark , mongodb://2.courseshark.com/courseshark"
     auth:
       user: 'courseshark'
       pass: 'espress0!'
