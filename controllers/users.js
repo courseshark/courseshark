@@ -2,6 +2,7 @@
  * User management site pages
  */
 var MandrillAPI = require('mailchimp').MandrillAPI
+	,	social = require('../lib/social-track')
 
 exports = module.exports = function(app){
 
@@ -59,6 +60,11 @@ exports = module.exports = function(app){
 				return;
 			}
 			var user = new User({email: req.body.user.email, school: req.body.user.school, firstName: req.body.user.email})
+
+			user.referedFrom = req.session.initialReferer
+			// Track a referal conversion
+			social.trackReferal(req.session)
+
 			user.setPassword(req.body.user.password)
 			user.save(function(err){
 				console.log(err);

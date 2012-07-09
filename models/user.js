@@ -24,6 +24,7 @@ UserSchema = new Schema({
 	, friends: [{ type: Schema.ObjectId, ref: 'User' }]
 	, loginCount: { type: Number }
 	, lastLogin: { type: Date, 'default': Date.now }
+	,	referedFrom: { type: String }
 	, created: { type: Date, 'default': Date.now }
 	, modified: { type: Date, 'default': Date.now }
 	, oauth: { type: String }

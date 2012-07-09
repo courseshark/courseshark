@@ -523,15 +523,15 @@ function addSectionToCalendar(section, scheduleId){
 		}
 
 		// If we have a TBD timeslot
-		if ( slot === false || slot.startTime.getHours() === 0 || slot.startTime == slot.endTime ){
+		if ( slot === false || slot.startTime.getUTCHours() === 0 || slot.startTime == slot.endTime ){
 			section.location = slot.location
 			html = window.tmpl($('#template-event-listing-tbd').html(), {section:section, t:t, location: section.location});
 			addedTimeslot = $(html).appendTo('#tbd-container #tbd-list');
 		}else{
-			top_offset = (slot.startTime.getHours() - 6 + (slot.startTime.getMinutes()/60.0)) * scale + offset;
-			height = Math.floor(Math.max(1, (Math.abs( slot.endTime.getMinutes() - slot.startTime.getMinutes() )/60.0 + slot.endTime.getHours() - slot.startTime.getHours()) * scale + offset));
-			startHourAdjusted = (slot.startTime.getHours()%12===0)?12:slot.startTime.getHours()%12;
-			endHourAdjusted = (slot.endTime.getHours()%12===0)?12:slot.endTime.getHours()%12;
+			top_offset = (slot.startTime.getUTCHours() - 6 + (slot.startTime.getUTCMinutes()/60.0)) * scale + offset;
+			height = Math.floor(Math.max(1, (Math.abs( slot.endTime.getUTCMinutes() - slot.startTime.getUTCMinutes() )/60.0 + slot.endTime.getUTCHours() - slot.startTime.getUTCHours()) * scale + offset));
+			startHourAdjusted = (slot.startTime.getUTCHours()%12===0)?12:slot.startTime.getUTCHours()%12;
+			endHourAdjusted = (slot.endTime.getUTCHours()%12===0)?12:slot.endTime.getUTCHours()%12;
 			html = window.tmpl($('#template-event-listing').html(), {
 						section:section
 					, slot:slot

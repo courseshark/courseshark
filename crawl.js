@@ -6,9 +6,9 @@
 		, mongoose = require('mongoose')
 
 	if ((process.env.NODE_ENV||'development') === 'development' ){
-		mongoose.connect(config.db.uri, function(e){console.log(e, mongoose);})
+		mongoose.connect(config.db.uri, function(e){if(e)console.log(e);})
 	}else{
-		mongoose.connectSet(config.db.uri, function(e){console.log(e, mongoose);})
+		mongoose.connectSet(config.db.uri, function(e){if(e)console.log(e);})
 	}
 
 	if ( process.argv.length < 4 ){
