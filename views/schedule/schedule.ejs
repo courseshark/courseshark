@@ -32,7 +32,7 @@
 					<br />
 					<$=slot.location$>
 					<br />
-					<span class="timeslot-time"><$=startHourAdjusted$>:<$=slot.startTime.getMinutes()$>-<$=endHourAdjusted$>:<$=slot.endTime.getMinutes()$></span>
+					<span class="timeslot-time"><$=startHourAdjusted$>:<$=slot.startTime.getUTCMinutes()$>-<$=endHourAdjusted$>:<$=slot.endTime.getUTCMinutes()$></span>
 				</dd>
 			</dl> 
 		</div>
@@ -89,7 +89,7 @@
 		</dl>
 		<$ } $>
 		<$ function pad(i){return ''+(i<10?'0'+i:i)} $>
-		<$ function toTime(dS){d=new Date(dS);sh=d.getHours()>12?d.getHours()-12:d.getHours();return ''+sh+':'+pad(d.getMinutes())} $>
+		<$ function toTime(dS){d=new Date(dS);sh=d.getUTCHours()>12?d.getUTCHours()-12:d.getUTCHours();return ''+sh+':'+pad(d.getUTCMinutes())} $>
 		<dl>
 			<dt>Times</dt>
 			<$for(var s=0,leng=section.timeslots.length; s<leng; s++ ){ $>
