@@ -669,10 +669,6 @@ function setupTooltip(section){
 			trigger:'manual',
 			placement: $(this).hasClass('tbd-listing')?'bottom':'right'
 		})
-		.on('click', function(){
-			$(this).popover('hide');
-			openDialog('/social/friends/invite-to-class/'+section.id).friendsSearch({next: inviteUsers, section: section.id});
-		})
 		.on('mouseenter', function(e) {
 			e.stopPropagation();
 			$('.option.'+section.id+':last').popover('show');
