@@ -8,13 +8,14 @@
 			</div>
 			<div class="span2">
 				<h3>
-				<$ if( notification.deleted ){	$>
-					Canceled
-				<$ }else if( notification.section.seatsAvailable > 0 ){$>
-					<$= notification.section.seatsAvailable $> Seats Available
-				<$ }else {$>
-					Checking
-				<$ } $>
+					<span class="if-deleted">Canceled</span>
+					<span class="if-active">
+						<$ if( notification.section.seatsAvailable > 0 ){$>
+							<$= notification.section.seatsAvailable $> Seats Available
+						<$ }else {$>
+							Checking
+						<$ } $>
+					</span>
 				</h3>
 			</div>
 			<div class="span2">
@@ -24,8 +25,13 @@
 					</a>
 					<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#" ><span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="#" rel="cancel-notification"><i class="icon-ban-circle"></i> Cancel</a></li>
-						<li><a href="#" rel="delete-notification"><i class="icon-trash"></i> Delete</a></li>
+						<span class="if-deleted">
+							<li><a href="#" rel="reactivate-notification" data-notification="<$=notification._id$>"><i class="icon-ban-circle"></i> Restore</a></li>
+						</span>
+						<span class="if-active">
+							<li><a href="#" rel="cancel-notification" data-notification="<$=notification._id$>"><i class="icon-ban-circle"></i> Cancel</a></li>
+						</span>
+						<li><a href="#" rel="delete-notification" data-notification="<$=notification._id$>"><i class="icon-trash"></i> Delete</a></li>
 					</ul>
 				</div>
 			</div>
@@ -40,7 +46,7 @@
 			<div class="span4">
 				<h4>
 				<$ if ( notification.deleted ){ $>
-					<a href="#" rel="activate-notification" title="Restore to Active status">Click to reactivate<a>
+					<a href="#" rel="reactivate-notification" data-notification="<$=notification._id$>" title="Restore to Active status">Click to reactivate<a>
 				<$ }else{ $>
 					Last Update: <span rel="notification-updated" data-updated="<$=(new Date(notification.section.updated).getTime())$>"></span> 
 				<$ } $>
@@ -52,8 +58,8 @@
 					<label for="email">Email</label>
 					<input type="email" name="email" class="span3" value="<$=notification.email$>" />
 					<label for="phone">Phone</label>
-					<input type="tel" name="phone" class="span2" value="<$=notification.sms$>" />
-					<button type="button" class="btn btn-primary" rel="update-notification" >Save</button>
+					<input type="tel" name="phone" class="span2" value="<$=notification.phone$>" />
+					<button type="button" class="btn btn-primary" rel="edit-notification" data-notification="<$=notification._id$>">Save</button>
 			</form>
 		</div>
 	</div><!-- /.notification -->
@@ -189,6 +195,29 @@ sp = new SectionPicker({
 
 var notifications = new Notifications($('#notifications-list'), $('#template-notification'));
 notifications.show();
+
+
+$('[rel="cancel-notification"]').bind('click', function(){
+	var $btn = $(this);
+	notifications.cancel({_id:$btn.data('notification')})
+	return false;
+})
+$('[rel="delete-notification"]').bind('click', function(){
+	var $btn = $(this);
+	notifications.remove({_id:$btn.data('notification')})
+	return false;
+})
+$('[rel="reactivate-notification"]').bind('click', function(){
+	var $btn = $(this);
+	notifications.reactivate({_id:$btn.data('notification')})
+	return false;
+})
+$('[rel="edit-notification"]').bind('click', function(){
+	var $btn = $(this);
+	notifications.edit({_id:$btn.data('notification')})
+	return false;
+})
+
 
 $('#submit-button').click(function(){
 	var info = {

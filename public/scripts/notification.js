@@ -54,21 +54,69 @@ Notifications.prototype.show = function(){
 	})
 	return this;
 }
+Notifications.prototype.cancel = function(notification){
+	for (var i=0,len=this.notifications.length; i<len; i++){
+		if ( (note=this.notifications[i])._id == notification._id ){
+			this.$list.find('[rel="notification"][data-id="'+note._id+'"]').addClass('canceled')
+			$.ajax({
+					url: note.cancelLink+'.json'
+				,	data: {'_method':'GET'}
+				, type: 'GET'
+			})
+		}
+	}
+	return this;
+}
+
+Notifications.prototype.reactivate = function(notification){
+	for (var i=0,len=this.notifications.length; i<len; i++){
+		if ( (note=this.notifications[i])._id == notification._id ){
+			this.notifications = this.notifications.splice(i, 1)
+			this.$list.find('[rel="notification"][data-id="'+note._id+'"]').removeClass('canceled')
+			$.ajax({
+					url: note.reactivateLink+'.json'
+				,	data: {'_method':'GET'}
+				, type: 'GET'
+			})
+		}
+	}
+	return this;
+}
+
 Notifications.prototype.remove = function(notification){
 	for (var i=0,len=this.notifications.length; i<len; i++){
 		if ( (note=this.notifications[i])._id == notification._id ){
 			this.notifications = this.notifications.splice(i, 1)
 			this.$list.find('[rel="notification"][data-id="'+note._id+'"]').fadeOut()
 			$.ajax({
-					url:'/notifications/'+note._id
-				,	data: {'_method':'DELETE'}
-				, type: 'DELETE'
+					url: note.deleteLink+'.json'
+				,	data: {'_method':'GET'}
+				, type: 'GET'
 			})
 		}
 	}
 	return this;
 }
+
 Notifications.prototype.edit = function(notification){
+	for (var i=0,len=this.notifications.length; i<len; i++){
+		if ( (note=this.notifications[i])._id == notification._id ){
+			var id = note._id
+				,	$form = $('[rel="edit-form"]')
+				,	$email = $form.find('input[name="email"]')
+				,	$phone = $form.find('input[name="phone"]')
+			console.log($form,$email,$phone);
+			note.email = $email.val()
+			note.phone = $phone.val()
+			$.ajax({
+				url: '/notifications/'+id+'.json',
+				data: {'notification.email':note.email, 'notification.phone':note.phone, '_method':'PUT'},
+				type: 'PUT'
+			})
+			$('[rel="edit-form"][data-notification="'+id+'"]').toggle()
+
+		}
+	}
 	return this;
 }
 

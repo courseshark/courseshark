@@ -32,8 +32,21 @@
 	background: @grayLighter;
 	margin-bottom: 3px;
 	
+	.if-deleted{
+		display: none;
+	}
+	.if-active{
+		display: block;
+	}
+
 	&.canceled{
 		background: @grayLight;
+		.if-deleted{
+			display: block;
+		}
+		.if-active{
+			display: none;
+		}
 	}
 	&.open{
 		background: @orange;

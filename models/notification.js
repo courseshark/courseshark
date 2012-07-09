@@ -7,6 +7,15 @@ var util = require('../lib/utils')
 exports.boot = module.exports.boot = function (app){
 	mongoose.model('Notification', NotificationSchema);
 	app.Notification = Notification = mongoose.model('Notification');
+
+	Notification.prototype.toJSON2 = function() {
+		var res = this.toJSON();
+		res.cancelLink = this.cancelLink;
+		res.reactivateLink = this.reactivateLink
+		res.deleteLink = this.deleteLink;
+		return res;
+	}
+
 }
 
 exports.NotificationSchema = module.exports.NotificationSchema = NotificationSchema
@@ -28,3 +37,22 @@ NotificationSchema = new Schema({
 
 NotificationSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})
+
+NotificationSchema.virtual('cancelLink')
+	.get(function (){
+		var u = typeof this.user['_id'] !== 'undefined' ? this.user._id : this.user
+			,	s = typeof this.section['_id'] !== 'undefined' ? this.section._id : this.section
+		return '/notification/cancel/'+u+'/'+this.id+'/'+s
+	})
+NotificationSchema.virtual('reactivateLink')
+	.get(function (){
+		var u = typeof this.user['_id'] !== 'undefined' ? this.user._id : this.user
+			,	s = typeof this.section['_id'] !== 'undefined' ? this.section._id : this.section
+		return '/notification/reactivate/'+u+'/'+this.id+'/'+s
+	})
+NotificationSchema.virtual('deleteLink')
+	.get(function (){
+		var u = typeof this.user['_id'] !== 'undefined' ? this.user._id : this.user
+			,	s = typeof this.section['_id'] !== 'undefined' ? this.section._id : this.section
+		return '/notification/remove/'+u+'/'+this.id+'/'+s
+	})

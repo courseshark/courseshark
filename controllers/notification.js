@@ -20,14 +20,39 @@ exports = module.exports = function(app){
 
 	app.get('/notifications.:format?', requireLogin, requireSchool, function(req, res){
 		if ( req.params.format === 'json' ){
-			Notification.find({user: req.user}).populate('section').populate('section.course').populate('section.department').exec(function(err, notifications){
-				res.json(notifications);
+			Notification.find({user: req.user, hidden:false}).populate('section').populate('section.course').populate('section.department').exec(function(err, notifications){
+				list = []
+				for(var i=0,len=notifications.length; i<len; i++){
+					list.push(notifications[i].toJSON2())
+				}
+				res.json(list);
 			})
 		}else{
 			Term.find({school: req.school, active: true}, function(err, terms){
 				res.render('notifications/index', {user: req.user, school: req.school, terms:terms, noJS:true})
 			})
 		}
+	})
+
+	app.put('/notifications/:notificationId.:format?', requireLogin, function(req, res){
+		Notification.findOne({user: req.user, _id:req.params.notificationId}, function(err, notification){
+			if (err||!notification){
+				if ( req.params.format == 'json' ){
+					res.json(false);
+				}
+			}else{
+				console.log(notification);
+				notification.email = req.body.notification.email
+				notification.phone = req.body.notification.phone
+				notification.save(function(err){
+				});
+				if ( req.params.format == 'json' ){
+					res.json(true);
+				}else{
+					res.redirect('back')
+				}
+			}
+		})
 	})
 
 	app.post('/notifications/purchase/post-back', function(req, res){
@@ -48,6 +73,160 @@ exports = module.exports = function(app){
 		credit.orderId = transaction.response.orderId
 		credit.save(function(err){
 			res.json(transaction.response.orderId)
+		})
+	})
+
+
+
+	app.get('/notification/cancel/:userId/:notificationId/:sectionId.:format?', function(req, res){
+		function fail(message){
+			if (req.params.format === 'json'){
+				res.json({success:false, message:message});
+			}else{
+				req.flash('error',message||'Could not delete notification.')
+				res.redirect('/notifications')
+			}
+		}
+		function success(){
+			if ( req.params.format === 'json'){
+				res.json(true);
+			}else{
+				res.redirect('/notifications')
+			}
+		}
+		User.findById(req.params.userId, function(err, user){
+			if (err || !user){fail('Invalid URL');return;}
+			Notification.findById(req.params.notificationId, function(err, notification){
+			if (err || !notification){fail('Invalid URL');return;}
+				if (notification.deleted){
+					success()
+					return;
+				}
+				if ( req.params.sectionId==notification.section ){
+					notification.deleted = true;
+					notification.save()
+					success()
+					return;
+				}else{
+					fail('Invalid URL')
+					return;
+				}
+			})
+		})
+	})
+
+
+	app.get('/notification/reactivate/:userId/:notificationId/:sectionId.:format?', function(req, res){
+		function fail(message){
+			if (req.params.format === 'json'){
+				res.json({success:false, message:message});
+			}else{
+				req.flash('error',message||'Could not delete notification.')
+				res.redirect('/notifications')
+			}
+		}
+		function success(){
+			if ( req.params.format === 'json'){
+				res.json(true);
+			}else{
+				res.redirect('/notifications')
+			}
+		}
+		User.findById(req.params.userId, function(err, user){
+			if (err || !user){fail('Invalid URL');return;}
+			Notification.findById(req.params.notificationId, function(err, notification){
+			if (err || !notification){fail('Invalid URL');return;}
+				if (!notification.deleted){
+					success()
+					return;
+				}
+				if ( req.params.sectionId==notification.section ){
+					notification.hidden = false;
+					notification.deleted = false;
+					notification.save()
+					success()
+					return;
+				}else{
+					fail('Invalid URL')
+					return;
+				}
+			})
+		})
+	})
+
+	app.get('/notification/remove/:userId/:notificationId/:sectionId.:format?', function(req, res){
+		function fail(message){
+			if (req.params.format === 'json'){
+				res.json({success:false, message:message});
+			}else{
+				req.flash('error',message||'Could not delete notification.')
+				res.redirect('/notifications')
+			}
+		}
+		function success(){
+			if ( req.params.format === 'json'){
+				res.json(true);
+			}else{
+				res.redirect('/notifications')
+			}
+		}
+		User.findById(req.params.userId, function(err, user){
+			if (err || !user){fail('Invalid URL');return;}
+			Notification.findById(req.params.notificationId, function(err, notification){
+			if (err || !notification){fail('Invalid URL');return;}
+				if (notification.hidden){
+					success()
+					return;
+				}
+				if ( req.params.sectionId==notification.section ){
+					notification.hidden = true;
+					notification.deleted = true;
+					notification.save()
+					success()
+					return;
+				}else{
+					fail('Invalid URL')
+					return;
+				}
+			})
+		})
+	})
+
+	app.get('/notification/remove/:userId/:notificationId/:sectionId.:format?', function(req, res){
+		function fail(message){
+			if (req.params.format === 'json'){
+				res.json({success:false, message:message});
+			}else{
+				req.flash('error',message||'Could not delete notification.')
+				res.redirect('/notifications')
+			}
+		}
+		function success(){
+			if ( req.params.format === 'json'){
+				res.json(true);
+			}else{
+				res.redirect('/notifications')
+			}
+		}
+		User.findById(req.params.userId, function(err, user){
+			if (err || !user){fail('Invalid URL');return;}
+			Notification.findById(req.params.notificationId, function(err, notification){
+			if (err || !notification){fail('Invalid URL');return;}
+				if (notification.hidden){
+					success()
+					return;
+				}
+				if ( req.params.sectionId==notification.section ){
+					notification.hidden = true;
+					notification.deleted = true;
+					notification.save()
+					success()
+					return;
+				}else{
+					fail('Invalid URL')
+					return;
+				}
+			})
 		})
 	})
 

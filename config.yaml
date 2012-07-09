@@ -46,12 +46,12 @@ staging:
     iss: "11866213978865467686"
     sellerSecret: "driJET-bAFB2e-fJEIaJRQ"
   twitter:
-    consumerKey: "K6whFxok2yY5CIYlCMt21Q"
-    consumerSecret: "VVxJFuYOznOd4fPIiIiuZ5Grd2ITCjk5yvLXZyyV6s"
+    consumerKey: "YRBvyvWtDzhf0OrCoJk4Ow"
+    consumerSecret: "7jPOKVGTD4MbA3s2F7qizizNBPKwejIAhEuUGTywKE"
   twilio:
     sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
-    outgoing: "+14155992671"
+    outgoing: "+14042208978"
   email:
     mandrillKey: "90377328-8b07-4377-85fe-817e28ceae3b"
     notification:
@@ -79,12 +79,12 @@ production:
     iss: "11866213978865467686"
     sellerSecret: "3jTkSAUyQ2eC2j_H-L88ZQ"
   twitter:
-    consumerKey: "K6whFxok2yY5CIYlCMt21Q"
-    consumerSecret: "VVxJFuYOznOd4fPIiIiuZ5Grd2ITCjk5yvLXZyyV6s"
+    consumerKey: "YRBvyvWtDzhf0OrCoJk4Ow"
+    consumerSecret: "7jPOKVGTD4MbA3s2F7qizizNBPKwejIAhEuUGTywKE"
   twilio:
     sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
-    outgoing: "+14155992671"
+    outgoing: "+14042208978"
   email:
     mandrillKey: "90377328-8b07-4377-85fe-817e28ceae3b"
     notification:

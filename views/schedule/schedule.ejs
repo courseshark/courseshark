@@ -154,16 +154,8 @@ END:VCALENDAR
 					<li><a href="#" id="load-button"><i class="icon-folder-open"></i> Load</a></li>
 					<li><a href="#" id="new-button" ><i class="icon-file"></i> New</a><li>
 					<li><a href="#"	id="print-button"/><i class="icon-print"></i> Print</a></li>
-					<li><a href="#" id="number-button"/><i class="icon-list-alt"></i> List CRNs</a></li>
-<!-- 					<li><a href="#" id="auto-pilot-button"/><i class="icon-random"></i> AutoAdd Classes</a></li> -->
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sharing <b class="caret"></b></a>
-					  	<ul class="dropdown-menu">
-					      <li><a href="#" id="link-button"/><i class="icon-share"></i> Create Link</a></li>
-								<li><a href="#" id="ical-button"/><i class="icon-download-alt"></i> Schedule Export</a></li>
-<!-- 								<li><a type="#" id="fb-share-button"/><i class="icon-comment"></i> Post To Facebook</a></li>
- -->					    </ul>
-					 </li>
+		      <li><a href="#" id="link-button"/><i class="icon-share"></i> Share Link</a></li>
+					<li><a href="#" id="ical-button"/><i class="icon-download-alt"></i> Export .ics</a></li>
 	      </ul>
 			</div>
 		</div>
@@ -313,11 +305,6 @@ $(document).ready(function() {
 		show_new_dialog();
 	});
 	
-	$('#auto-pilot-button').click(function(){
-		_gaq.push(['_trackEvent', 'AutoPilot', 'Start']);
-		show_autopilot_dialog();
-	});
-	
 	$('#print-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Print']);
 		window.print();
@@ -326,11 +313,6 @@ $(document).ready(function() {
 	$('#ical-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'iCal']);
 		$('#ical-button').attr('href', schedule.createCal()).attr('download', schedule.name);
-	});
-
-	$('#number-button').click(function(){
-		_gaq.push(['_trackEvent', 'Schedule', 'CRN List']);
-		show_number_dialog(schedule);
 	});
 	
 	$('#link-button').click(function(){

@@ -512,6 +512,7 @@ function addSectionToCalendar(section, scheduleId){
 			,	t = ( isFriendsSection )?''+d+scheduleId:d
 			,	scale = 42.0
 			, offset = 3.0
+			, height_offset = -10.0
 
 
 		slot.startTime = new Date(slot.startTime)
@@ -529,7 +530,7 @@ function addSectionToCalendar(section, scheduleId){
 			addedTimeslot = $(html).appendTo('#tbd-container #tbd-list');
 		}else{
 			top_offset = (slot.startTime.getUTCHours() - 6 + (slot.startTime.getUTCMinutes()/60.0)) * scale + offset;
-			height = Math.floor(Math.max(1, (Math.abs( slot.endTime.getUTCMinutes() - slot.startTime.getUTCMinutes() )/60.0 + slot.endTime.getUTCHours() - slot.startTime.getUTCHours()) * scale + offset));
+			height = Math.floor(Math.max(1, (Math.abs( slot.endTime.getUTCMinutes() - slot.startTime.getUTCMinutes() )/60.0 + slot.endTime.getUTCHours() - slot.startTime.getUTCHours()) * scale + offset)) + height_offset;
 			startHourAdjusted = (slot.startTime.getUTCHours()%12===0)?12:slot.startTime.getUTCHours()%12;
 			endHourAdjusted = (slot.endTime.getUTCHours()%12===0)?12:slot.endTime.getUTCHours()%12;
 			html = window.tmpl($('#template-event-listing').html(), {
