@@ -22,7 +22,7 @@ exports = module.exports = function(app){
 	})
 
 	app.get('/friends/search', requireLogin, function(req, res){
-				res.render('friends/results', {users: [], search: req.params.name, error: 'Too few characters'})
+		res.render('friends/results', {users: [], search: req.params.name, error: 'Too few characters'})
 	})
 
 	app.get('/friends/search/:name.:format?', requireLogin, function(req, res){
@@ -53,7 +53,37 @@ exports = module.exports = function(app){
 			User.update({_id: req.user._id}, {$addToSet: {friends: req.params.friendId}}, function(err, num){
 				if ( err ){ res.json(false); return; }
 				res.json(true);
-				// Email friend about invite
+				if ( !user.canEmailFriendRequests || !friend.email ){
+					return;
+				}
+				mandrill.messages_send_template({
+						template_name:'friend_invite'
+					, template_content:''
+					, message:{
+							subject: 'CourseShark Friends'
+						, from_email: 'friends@courseshark.com'
+						, from_name: 'CourseShark Friends'
+						, track_opens: true
+						, track_clicks: true
+						, auto_txt: true
+						, to: [{name: friend.name, email: friend.email}]
+						, template_content: []
+						, global_merge_vars:[
+								{name: 'CURRENT_YEAR', content: (new Date()).getFullYear()}
+							, {name: 'SUBJECT', content: 'Friend Invite'}]
+						, merge_vars:[{
+								rcpt: friend.email
+							, vars:[
+									{name: 'FNAME', content: user.firstName}
+								, {name: 'SENDER', content: friend.name}
+							]}]
+						, tags: ['friends', 'invite']
+						}
+					}, function (data){
+						if ( data.status == 'error' ){
+							console.log('ERROR: friend-email-send',data)
+						}
+				})
 			})
 		})
 	})
