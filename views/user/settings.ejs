@@ -168,7 +168,7 @@
 	<%- partial('includes/js.ejs') %>
 
 	<script>
-		var current_school = "<%= account.school.id%>",
+		var current_school = "<%= account.school?account.school.id:''%>",
 				current_major  = "<%= account.major?account.major.id:''%>";
 		$('#user_school').bind('change', updateMajors);
 		function updateMajors(){
@@ -206,7 +206,7 @@
 			});
 		}
 		$('.submit').click(function(){
-			if ( $('#user_school').val() != current_school ){
+			if ( $('#user_school').val() != current_school && current_school != '' ){
 				confirmDialog('<h4>Your school has changed!</h4><br /><p>If you continue all your previously <strong>saved schedules and caffeine notifications will be </strong>removed permanently!</strong> Are you sure you want to change schools?</p>', 'submit_change();current_school=$(\'#school-change\').val();localStorage.clear();','closeDialog();');
 			}else{
 				submit_change();
