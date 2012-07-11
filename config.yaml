@@ -64,7 +64,7 @@ production:
   update:
     time: "15"
   db:
-    uri: "mongodb://courseshark:espress0!@courseshark.com/courseshark_staging , mongodb://courseshark:espress0!@2.courseshark.com/courseshark_staging"
+    uri: "mongodb://courseshark:espress0!@courseshark.com/courseshark , mongodb://courseshark:espress0!@2.courseshark.com/courseshark"
     auth:
       user: 'courseshark'
       pass: 'espress0!'
