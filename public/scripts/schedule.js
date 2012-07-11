@@ -170,7 +170,7 @@ Schedule.prototype.show = function(){
 		section.course.department = typeof section.course.department == 'object'?section.course.department:section.department
 		addCourseToList(section.course, section.id)
 	}
-	this.updateCRN()
+	this.update()
 	return this;
 }
 Schedule.prototype.addSection = function(section){
