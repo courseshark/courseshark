@@ -23,6 +23,9 @@ exports = module.exports = function(app){
 				throw new app.NotFound()
 			}else{
 				schedule = scheduleLink.schedule
+				if ( !scheduleLink.schedule.term ){
+					scheduleLink.schedule.term = schedulLink.schedule.sections[0]?schedulLink.schedule.sections[0].term:'';
+				}
 				Term.findOne({_id: scheduleLink.schedule.term}, function(err, term){
 					scheduleLink.schedule.term = term;
 					sJson = JSON.stringify(schedule)
