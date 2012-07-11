@@ -86,7 +86,7 @@ function compileJS(app){
                   "lib/bootstrap-collapse.js",
                   "lib/bootstrap-tooltip.js",
                   "lib/bootstrap-popover.js",
-                  "lib/bootstrap-typeahead.js",
+                  "lib/select2.min.js",
                   "lib/bootstrap-tab.js"
                 ],
       origJS = "";

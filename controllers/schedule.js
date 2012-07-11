@@ -180,7 +180,7 @@ exports = module.exports = function(app){
 	})
 	app.get('/term/:tid/sections/:cid', function(req, res){
 		courseId = new ObjectId(req.params.cid)
-		Section.find({course: courseId, term: req.params.tid}, function(err, sections){
+		Section.find({course: courseId, term: req.params.tid}, {}, {sort:{number:1}}, function(err, sections){
 			res.json(sections)
 		})
 	})

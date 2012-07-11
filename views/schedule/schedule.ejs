@@ -176,12 +176,13 @@ END:VCALENDAR
 							<div id="major">
 
 								<div class="controls">
-								<div class="input-append" >
-									<input type="text" id="major-id" data-provide="typeahead" tabindex="1" placeholder="subject" rel="tooltip" data-placement="top" data-original-title="Choose a department" class="span1"/>
-									<button type="button" class="btn expand-arrow" rel="expander" data-expand="major-id"><i class="icon-arrow-down" tabindex="-1"></i></button>
-
-									<input type="text" id="course-id" data-provide="typeahead" tabindex="2" placeholder="course" class="span2"/>
-									<button type="button" class="btn expand-arrow" rel="expander" data-expand="course-id" tabindex="-2"><i class="icon-arrow-down"></i></button>
+								<div class="input">
+									<select id="major-id" tabindex="1" placeholder="subject" rel="tooltip" data-placement="top" data-original-title="Choose a department">
+										<option></option>
+									</select>
+									<select id="course-id" tabindex="2" placeholder="course"/>
+										<option></option>
+									</select>
 								</div>
 							</div>
 						</article>
@@ -222,54 +223,62 @@ END:VCALENDAR
 <script>
 $(document).ready(function() {
   	$("[rel='tooltop']").tooltip()
+  	$majorSelect = $('#major-id').select2()
+  	$courseSelect = $('#course-id').select2()
   	$.ajax({url:'/school/departments'
 			,	type:'get'
 			, dataType:'json'
 			,	success: function(d){
 					var departments = []
 						,	source = []
-						d.forEach(function(dep){
-							var val = ''+dep.abbr+' - '+dep.name
+						,	selectOptions = [new Option('', '')]
+						for(var i=0,len=d.length; i<len; i++){
+							var dep = d[i]
+								,	val = ''+dep.abbr+' - '+dep.name
 							departments[val] = dep
 							source.push(val)
-						})
-						$('#major-id')
-							.focus(function(){$(this).select()})
-							.mouseup(function(e){e.preventDefault()})
-							.data('typeahead',false)
-							.typeahead({source: source, items: Infinity })
-							.on('selectitem', function(){
-								$(this).tooltip('disable')
-								department = departments[$(this).val().trim()]
-								$('#course-id').val('');
+							selectOptions.push(new Option(val, dep._id))
+						}
+						$('option', $majorSelect).remove()
+						window.so=selectOptions
+						$majorSelect
+							.append(selectOptions)
+							.select2()
+							.bind("change", function(){
+								department = $(this).val()
+								$('option', $courseSelect).remove()
+								if ( $courseSelect.data("select2") ){
+									$courseSelect.select2("destroy")
+								}
 						   	$.ajax({
-						   			url:'/term/'+term.id+'/courses/'+department._id
+						   			url:'/term/'+term.id+'/courses/'+department
 						   		,	type:'get'
 						   		,	dataType:'json'
 						   		,	success: function(c){
 											courses = {};
-											source = []
-											c.forEach(function(course){
-												var val = ''+course.number+' - '+course.name
-												courses[val] = course
-												source.push(val)
-											})
-											$('#course-id')
-													.focus(function(){$(this).select()})
-													.mouseup(function(e){e.preventDefault()})
-													.data('typeahead',false)
-													.typeahead({source: source, items: Infinity })
-													.typeahead('showOptions')
-													.on('selectitem', function(e){ 
-														var $this = $(this)
-														$this.data('course', courses[$(this).val().trim()])
-														addCourseToList($this.data('course'))
-													}).focus()
-						   			}
-						   	})
-							});
-				}
-		});
+											selectOptions = [new Option('', '')]
+											for(var i=0,len=c.length; i<len; i++){
+												var course = c[i]
+													,	val = ''+course.number+' - '+course.name
+												courses[course._id] = course
+												selectOptions.push(new Option(val, course._id))
+											}
+											console.log(
+											$courseSelect
+												.append(selectOptions)
+												.select2()
+												.select2('open')
+												.bind('change', function(e){ 
+													var $this = $(this)
+													$this.data('course', courses[$(this).val()])
+													addCourseToList($this.data('course'))
+												})
+											.select2("container"))
+						   			} // end success
+						   	}) // end ajax
+							}) // end bmajor change bind
+				} // end success
+		}) // end ajax
 
 	$('[rel="expander"]').click(function(){
 		var what = $(this).data('expand')

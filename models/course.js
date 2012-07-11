@@ -14,7 +14,7 @@ CourseSchema = new Schema({
 		name: { type: String }
 	,	terms: [{ type: Schema.ObjectId, ref: 'Term' }]
 	,	department: { type: Schema.ObjectId, ref: 'Department' }
-	,	number: { type: Number, index: true }
+	,	number: { type: String, index: true }
 	, sections: [{ type: Schema.ObjectId, ref: 'Section' }]
 });
 

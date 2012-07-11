@@ -13,9 +13,15 @@
 	 }
 }
 
-.typeahead.dropdown-menu{
-	max-height: 207px;
-	overflow-y: auto;
+.select2-container{
+	&:nth-child(2n){
+		margin-bottom: 7px
+	}
+	.select2-results li{
+		text-overflow: ellipsis;
+		overflow-x: hidden;
+		white-space: nowrap;
+	}
 }
 
 #major-id{
