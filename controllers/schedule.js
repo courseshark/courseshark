@@ -23,8 +23,11 @@ exports = module.exports = function(app){
 				throw new app.NotFound()
 			}else{
 				schedule = scheduleLink.schedule
-				sJson = JSON.stringify(schedule)
-				res.render('schedule/schedule', {link: true, school: schedule.school._id, schedule: sJson})
+				Term.findOne({_id: scheduleLink.schedule.term}, function(err, term){
+					scheduleLink.schedule.term = term;
+					sJson = JSON.stringify(schedule)
+					res.render('schedule/schedule', {link: true, school: schedule.school._id, schedule: sJson})
+				})
 			}
 		})
 	})

@@ -170,6 +170,7 @@ Schedule.prototype.show = function(){
 		section.course.department = typeof section.course.department == 'object'?section.course.department:section.department
 		addCourseToList(section.course, section.id)
 	}
+	this.updateCRN()
 	return this;
 }
 Schedule.prototype.addSection = function(section){
@@ -619,7 +620,7 @@ function addCourseToList(course, selectedSection){
 					$bar.data('skipping-seats', true);
 				}
 			}else{
-				errorDialog('This course not offered this term');
+				//errorDialog('This course not offered this term');
 			}
 			// Code to hilight the selected ones
 		}
