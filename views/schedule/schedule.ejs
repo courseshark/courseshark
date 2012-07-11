@@ -223,62 +223,66 @@ END:VCALENDAR
 <script>
 $(document).ready(function() {
   	$("[rel='tooltop']").tooltip()
-  	$majorSelect = $('#major-id').select2()
-  	$courseSelect = $('#course-id').select2()
-  	$.ajax({url:'/school/departments'
-			,	type:'get'
-			, dataType:'json'
-			,	success: function(d){
-					var departments = []
-						,	source = []
-						,	selectOptions = [new Option('', '')]
-						for(var i=0,len=d.length; i<len; i++){
-							var dep = d[i]
-								,	val = ''+dep.abbr+' - '+dep.name
-							departments[val] = dep
-							source.push(val)
-							selectOptions.push(new Option(val, dep._id))
-						}
-						$('option', $majorSelect).remove()
-						window.so=selectOptions
-						$majorSelect
-							.append(selectOptions)
-							.select2()
-							.bind("change", function(){
-								department = $(this).val()
-								$('option', $courseSelect).remove()
-								if ( $courseSelect.data("select2") ){
-									$courseSelect.select2("destroy")
-								}
-						   	$.ajax({
-						   			url:'/term/'+term.id+'/courses/'+department
-						   		,	type:'get'
-						   		,	dataType:'json'
-						   		,	success: function(c){
-											courses = {};
-											selectOptions = [new Option('', '')]
-											for(var i=0,len=c.length; i<len; i++){
-												var course = c[i]
-													,	val = ''+course.number+' - '+course.name
-												courses[course._id] = course
-												selectOptions.push(new Option(val, course._id))
-											}
-											console.log(
-											$courseSelect
-												.append(selectOptions)
-												.select2()
-												.select2('open')
-												.bind('change', function(e){ 
-													var $this = $(this)
-													$this.data('course', courses[$(this).val()])
-													addCourseToList($this.data('course'))
-												})
-											.select2("container"))
-						   			} // end success
-						   	}) // end ajax
-							}) // end bmajor change bind
-				} // end success
-		}) // end ajax
+  	$majorSelect = $('#major-id')
+  	$courseSelect = $('#course-id')
+  	if ( $majorSelect.length && $courseSelect.length ){
+  		$majorSelect.select2()
+  		$courseSelect.select2()
+	  	$.ajax({url:'/school/departments'
+				,	type:'get'
+				, dataType:'json'
+				,	success: function(d){
+						var departments = []
+							,	source = []
+							,	selectOptions = [new Option('', '')]
+							for(var i=0,len=d.length; i<len; i++){
+								var dep = d[i]
+									,	val = ''+dep.abbr+' - '+dep.name
+								departments[val] = dep
+								source.push(val)
+								selectOptions.push(new Option(val, dep._id))
+							}
+							$('option', $majorSelect).remove()
+							window.so=selectOptions
+							$majorSelect
+								.append(selectOptions)
+								.select2()
+								.bind("change", function(){
+									department = $(this).val()
+									$('option', $courseSelect).remove()
+									if ( $courseSelect.data("select2") ){
+										$courseSelect.select2("destroy")
+									}
+							   	$.ajax({
+							   			url:'/term/'+term.id+'/courses/'+department
+							   		,	type:'get'
+							   		,	dataType:'json'
+							   		,	success: function(c){
+												courses = {};
+												selectOptions = [new Option('', '')]
+												for(var i=0,len=c.length; i<len; i++){
+													var course = c[i]
+														,	val = ''+course.number+' - '+course.name
+													courses[course._id] = course
+													selectOptions.push(new Option(val, course._id))
+												}
+												console.log(
+												$courseSelect
+													.append(selectOptions)
+													.select2()
+													.select2('open')
+													.bind('change', function(e){ 
+														var $this = $(this)
+														$this.data('course', courses[$(this).val()])
+														addCourseToList($this.data('course'))
+													})
+												.select2("container"))
+							   			} // end success
+							   	}) // end ajax
+								}) // end bmajor change bind
+					} // end success
+			}) // end ajax
+		} // end check to make sure elements exist
 
 	$('[rel="expander"]').click(function(){
 		var what = $(this).data('expand')
