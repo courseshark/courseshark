@@ -587,16 +587,32 @@ function addCourseToList(course, selectedSection){
 		dataType: 'json',
 		success: function(sections){
 			if ( sections && sections.length > 0 ){
-				for ( var i = 0; i < sections.length; i++){
+				for ( var i=0,len=sections.length; i < len; i++){
 					section = sections[i];
 					section.id = section._id;
 					section.course = course;
 					section.department = section.course.department;
-					if ( section.id ){
+					if ( section.info.length >= 2 ){
+						for( var j=0; j<len; j++ ){
+							if ( !sections[j] || !sections[j]._id ){continue;}
+							if ( sections[j]._id != section.id && sections[j].info == section.info.substr(0,1) && section.timeslots[0].type.toLowerCase() != "lecture"){
+								console.log('matching', section.info, 'with', sections[j].info, '(', section, ')');
+								if ( typeof sections[j]["children"] === "undefined" ){
+									sections[j]["children"] = [section]
+								}else{
+									sections[j].children.push(section)
+								}
+								sections[i] = undefined
+							}
+						}
+					}
+				}
+				sections.forEach(function(section){
+					if ( section && section.id ){
 						addSectionToCourseList($container, section, selectedSection);
 						addSectionToCalendar(section);
 					}
-				}
+				})
 				if ( selectedSection === undefined ){
 					$container.show();
 				}else{
@@ -641,13 +657,10 @@ function addSectionToCourseList($container, section, selectedSection){
 		schedule.testConflicts(section);
 	}
 	
-	//plotGpaOnCanvas($('canvas#gpa-for-'+section.id), section.gpa);
-	
 	if ( !selectedSection ){
 		loadSeatData(section.id);
 	}
-	
-	if ( section.has_children && section.children && section.children[0].id && parseInt(section.children[0].id, 10) > 0){
+	if ( section.children && section.children[0].id && parseInt(section.children[0].id, 10) > 0){
 		$sectionOption.data('parent', true);
 		$childContainer = $('<div id="s_'+section.id+'" class="children"></div>').appendTo($sectionOption);
 		for ( var c = 0; c < section.children.length; c++ ){
@@ -683,8 +696,7 @@ function setupTooltip(section){
 					$this.addClass('fade-out');
 				}
 					
-			});
-			
+			})
 		})
 		.on('mouseleave', function(e) {
 			e.stopPropagation();
