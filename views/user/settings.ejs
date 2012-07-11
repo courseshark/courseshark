@@ -83,7 +83,7 @@
 			      <div class="controls">
 							<select name="user.school" id="user_school" class="input-xlarge">
 							<% schools.forEach(function(school){%>
-								<% if ( school._id.toString() == account.school._id.toString() ){ %>
+								<% if ( account.school && school._id.toString() == account.school._id.toString() ){ %>
 								<option value="<%=school._id%>" selected><%=school.name%></option>
 								<% }else{ %>
 								<option value="<%=school._id%>"><%=school.name%></option>
