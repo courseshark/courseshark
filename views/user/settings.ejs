@@ -7,7 +7,7 @@
 		<div class="span6">
 			<h1><%=account.name%></h1>
 			<%if (account.year) { %><h3><%=account.year%><sup><%=numberize(account.year)%></sup> year</h3><%}%>
-			<h3><%=: account.major?account.major.name:'&mdash;' | capitalize%> @ <%=: account.school.abbr | capitalize%></h3>
+			<h3><%=: account.major?account.major.name:'&mdash;' | capitalize%> @ <%=: account.school?account.school.abbr:'&mdash;' | capitalize%></h3>
 		</div>
 		<div class="span3">
 			<h1>Friends</h1>
