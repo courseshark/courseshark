@@ -128,7 +128,7 @@ exports = module.exports = function(app){
 	})
 	app.post('/schedule/link', function(req, res){
 		function randomHash(){
-			return (((1+Math.random())*0x10000000)|0).toString(36).substr(1)
+			return (((1+Math.random())*0x10000000)|0).toString(34).substr(1)
 		}
 		pSchedule = JSON.parse(req.body.schedule);
 		delete pSchedule._id;
