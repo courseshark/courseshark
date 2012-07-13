@@ -128,7 +128,7 @@ exports = module.exports = function(app){
 	})
 	app.post('/schedule/link', function(req, res){
 		function randomHash(){
-			return (Math.floor(Math.random() * 10) + parseInt((new Date()).getTime()*10, 10)).toString(36)
+			return (((1+Math.random())*0x10000000)|0).toString(36).substr(1)
 		}
 		pSchedule = JSON.parse(req.body.schedule);
 		delete pSchedule._id;
@@ -140,7 +140,12 @@ exports = module.exports = function(app){
 			link.user = req.user._id
 		}
 		// This bit doesnt seem to work right... it always makes a new link
-		ScheduleLink.findOne(link, {hash:1}, function(err, existingLink){
+		ScheduleLink.findOne({
+					'_schedule.term.id': link.schedule.term.id
+				,	'_schedule.name' : link.schedule.name
+				,	'_schedule.school' : link.schedule.school
+				, '_schedule.sections.id': {$all : link.schedule.sections.map(function(e){return e._id}) }
+				}, function(err, existingLink){
 			if ( err ){ console.log(err); }
 			if ( !existingLink ){
 				link.hash = randomHash()
@@ -149,8 +154,9 @@ exports = module.exports = function(app){
 					res.json({id: link.id, url: url, err: err})
 				})
 			}else{
-				url = app.createLink('http://'+req.headers.host+'/sl/'+existingLink.hash, req.user)
-				res.json({id: existingLink._id, url: url, err:err})
+				app.getExistingLink('http://'+req.headers.host+'/sl/'+existingLink.hash, req.user, function(url){
+					res.json({id: existingLink._id, url: url, err:err})
+				})
 			}
 		})
 	})
