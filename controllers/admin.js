@@ -89,6 +89,25 @@ exports = module.exports = function(app){
 		})
 	})
 
+
+
+
+	/****
+		* Notifcation Tools
+		***/
+	app.get('/admin/notifications', requireAdmin, function(req, res){
+		res.json("coming soon");
+	})
+
+
+
+
+
+
+
+	/****
+		* Launch Tools
+		***/
 	app.get('/admin/launch', requireAdmin, function(req, res){
 		School.find({}, {}, {sort:{abbr:1}}).exec(function(err, schools){
 			res.render('admin/launch/index', {schools: schools, layout:'../layout.ejs'})

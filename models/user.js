@@ -1,8 +1,11 @@
 var util = require('../lib/utils')
-	,	crypto = require('ezcrypto').Crypto
+	,	ezezcrypto = require('ezcrypto').crypto
+	, crypto = require('crypto')
 	,	mongoose = require('mongoose')
 	, Schema = mongoose.Schema
 	, UserSchema
+	, algorithm = "aes256"
+	, key = "qCi5zPedUoS6Yrl"
 
 exports.boot = module.exports.boot = function (app){
 	mongoose.model('User', UserSchema);
@@ -29,6 +32,8 @@ UserSchema = new Schema({
 	, modified: { type: Date, 'default': Date.now }
 	, oauth: { type: String }
 	, admin: { type: Boolean, 'default': false }
+	, _schoolUserId: { type: Buffer }
+	, _schoolPin: { type: Buffer }
 });
 
 UserSchema.virtual('password')
@@ -48,11 +53,49 @@ UserSchema.virtual('name')
 		this.firstName = p[0]
 		this.lastName = p[1]
 	});
+
 UserSchema.virtual('initials')
 	.get( function() { return ((""+this.firstName).substring(0,1))+((""+(this.lastName?this.lastName:' ')).substring(0,1).trim())})
 
+UserSchema.virtual('schoolUserId')
+	.get( function(){
+		if (this._schoolUserId){
+			return this.decryptSecure(this._schoolUserId)
+		}else{
+			return undefined
+		}
+	})
+	.set( function(userIdTxt){
+		this._schoolUserId = this.encryptSecure(userIdTxt.toString())
+	})
+
+UserSchema.virtual('schoolPin')
+	.get( function(){
+		if (this._schoolPin){
+			return this.decryptSecure(this._schoolPin)
+		}else{
+			return undefined
+		}
+	})
+	.set( function(userPinTxt){
+		this._schoolPin = this.encryptSecure(userPinTxt)
+	})
+
+
+
+
+
+UserSchema.method('encryptSecure', function(text){
+	var cipher = crypto.createCipher(algorithm, key)
+	return cipher.update(text, 'utf8', 'hex') + cipher.final('hex')
+})
+UserSchema.method('decryptSecure', function(encrypted){
+	var decipher = crypto.createDecipher(algorithm, key);
+	return decipher.update(encrypted, 'hex', 'utf8') + decipher.final('utf8');
+})
+
 UserSchema.method('encryptPassword', function (plainText) {
-	return crypto.MD5(plainText || '')
+	return ezcrypto.MD5(plainText || '')
 });
 
 UserSchema.method('setPassword', function (plainText) {
@@ -80,7 +123,7 @@ UserSchema.pre('save', function (next) {
 UserSchema.method('avatar', function(size){
 	size = size || 64
 	if ( this.email ) {
-		return 'https://secure.gravatar.com/avatar/'+crypto.MD5(this.email)+'?s='+size+'&d=http%3A%2F%2Fplacehold.it%2F'+size+'x'+size+'%26text%3D'+this.initials;
+		return 'https://secure.gravatar.com/avatar/'+ezcrypto.MD5(this.email)+'?s='+size+'&d=http%3A%2F%2Fplacehold.it%2F'+size+'x'+size+'%26text%3D'+this.initials;
 	}else{
 		return "http://placehold.it/"+size+'x'+size+'?text='+this.initials;
 	}
