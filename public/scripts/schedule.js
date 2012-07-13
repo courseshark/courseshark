@@ -315,7 +315,7 @@ Schedule.prototype._generateIcs = function(){
 	days = {'monday':'MO','tuesday':'TU','wednesday':'WE','thursday':'TH','friday':'FR','saturday':'SA','sunday':'SU'}
 	events = []
 	for ( var i=0, section; (section=this['sections'][i]) !== undefined; i++ ){
-		evnt = { name: section['name'].replace(/\s?#[0-9]+$/,''), daysets: [] }; console.log(evnt);
+		evnt = { name: section['name'].replace(/\s?#[0-9]+$/,''), daysets: [] };
 		timeCombine = {}
 		timeCombineTime = {}
 		for ( var j=0, ts; (ts=section['timeslots'][j]) !== undefined; j++ ){
