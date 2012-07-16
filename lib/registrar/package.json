@@ -1,0 +1,11 @@
+{
+    "name": "Registrar"
+  , "description": "Registrar for CourseShark to register students for courses"
+  , "version": "0.0.0"
+  , "private": true
+  , "main": "./index.js"
+  , "author": "James Rundquist (http://github.com/jrundquist)"
+  , "engines": {
+      "node": ">= 0.6.14"
+    }
+}
