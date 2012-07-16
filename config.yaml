@@ -71,7 +71,7 @@ production:
   facebook:
     appId: "182622275092530"
     appSecret: "885311f00c458526586a17ede8b3e57b"
-    host_uri: "http://agendaroo.com"
+    host_uri: "http://courseshark.com"
   google:
     apiKey: "AIzaSyAAmSeKu1IPJcGm9ec3041WqMO0mrKPHtk"
     clientId: "434297325029.apps.googleusercontent.com"
