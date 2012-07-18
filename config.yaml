@@ -16,8 +16,8 @@ development:
     iss: "11866213978865467686"
     sellerSecret: "driJET-bAFB2e-fJEIaJRQ"
   twitter:
-    consumerKey: "K6whFxok2yY5CIYlCMt21Q"
-    consumerSecret: "VVxJFuYOznOd4fPIiIiuZ5Grd2ITCjk5yvLXZyyV6s"
+    consumerKey: "2VXunkP9ckmX9T4E4BZf7g"
+    consumerSecret: "x7usGWdcun7BwW7g1kyMoMQZ73QQ7Q1U0FpBQKhZtPs"
   twilio:
     sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
@@ -46,8 +46,8 @@ staging:
     iss: "11866213978865467686"
     sellerSecret: "driJET-bAFB2e-fJEIaJRQ"
   twitter:
-    consumerKey: "YRBvyvWtDzhf0OrCoJk4Ow"
-    consumerSecret: "7jPOKVGTD4MbA3s2F7qizizNBPKwejIAhEuUGTywKE"
+    consumerKey: "2VXunkP9ckmX9T4E4BZf7g"
+    consumerSecret: "x7usGWdcun7BwW7g1kyMoMQZ73QQ7Q1U0FpBQKhZtPs"
   twilio:
     sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
@@ -79,8 +79,8 @@ production:
     iss: "11866213978865467686"
     sellerSecret: "3jTkSAUyQ2eC2j_H-L88ZQ"
   twitter:
-    consumerKey: "YRBvyvWtDzhf0OrCoJk4Ow"
-    consumerSecret: "7jPOKVGTD4MbA3s2F7qizizNBPKwejIAhEuUGTywKE"
+    consumerKey: "2VXunkP9ckmX9T4E4BZf7g"
+    consumerSecret: "x7usGWdcun7BwW7g1kyMoMQZ73QQ7Q1U0FpBQKhZtPs"
   twilio:
     sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
