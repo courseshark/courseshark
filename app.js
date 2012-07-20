@@ -1,11 +1,11 @@
-var	express = require('express')
+var		profiler = require('v8-profiler')
+		, express = require('express')
 		, fs = require('fs')
 		, config_file = require('yaml-config')
 		, config = config_file.readConfig(__dirname + '/config.yaml')
 		, auth = require('./lib/authorization')
 		, utils = require('./lib/utils')
-		,	browserify = require('browserify')
-//		, appsec = express.createServer({key: privateKey, cert: certificate})
+		, browserify = require('browserify')
 		, app = express.createServer()
 		, port = (typeof process !== "undefined" && process !== null ? (_ref2 = process.env) !== null ? _ref2.PORT : undefined : undefined) || 80
 		, sio = require('socket.io')
@@ -14,7 +14,6 @@ var	express = require('express')
 app.config = config
 app.io = io
 io.set('log level', 1);
-
 
 console.log("Starting in mode:", app.settings.env)
 // Database

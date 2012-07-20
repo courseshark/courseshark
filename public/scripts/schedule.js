@@ -117,17 +117,6 @@ Schedule.prototype.save = function(skipServer){
 	}
 	storeObject("primary-schedule", schedule);
 	updateScheduleConflicts();
-	if ( typeof this.user !== 'undefined' && !skipServer ){
-		$.ajax({
-			url:"/schedule/save",
-			data: {'schedule': JSON.stringify(schedule)},
-			type:'PUT',
-			dataType:'json',
-			success:function(t){
-				show_timed_message("saved");
-			}
-		});
-	}
 	return this;
 }
 Schedule.prototype.pushSave = function(getId){
@@ -257,7 +246,7 @@ Schedule.prototype.updateCRN = function(){
 }
 
 Schedule.prototype.testConflicts = function(section){
-	if ( false && Modernizr.webworkers ) {
+	if ( Modernizr.webworkers ) {
 		if ( !conflict_worker ){
 			conflict_worker = new Worker('/scripts/workers/schedule_conflict.js');
 			conflict_worker.onmessage = function(event){

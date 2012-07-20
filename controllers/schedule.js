@@ -22,7 +22,7 @@ exports = module.exports = function(app){
 			if ( !scheduleLink ){
 				throw new app.NotFound()
 			}else{
-				schedule = scheduleLink.schedule
+				var schedule = scheduleLink.schedule
 				if ( !scheduleLink.schedule.term ){
 					scheduleLink.schedule.term = schedulLink.schedule.sections[0]?schedulLink.schedule.sections[0].term:'';
 				}
@@ -48,10 +48,10 @@ exports = module.exports = function(app){
 	})
 	app.get('/schedule/load', requireSchool, function(req, res){
 		function returnNew(){
-			var schedule
-			schedule = new Schedule()
+			var schedule = new Schedule()
+				,	termId = req.school['currentTerm'] ? req.school.currentTerm._id : req.school.terms[req.school.terms.length-1]
+
 			schedule.school = req.school._id
-			termId = req.school['currentTerm'] ? req.school.currentTerm._id : req.school.terms[req.school.terms.length-1]
 			Term.findOne({_id: termId}, function(err, term){
 				schedule.term = term
 				res.json(schedule)
@@ -77,7 +77,7 @@ exports = module.exports = function(app){
 		res.render('schedule/dialogs/save', {user: req.user})
 	})
 	app.put('/schedule/save', requireLogin, requireSchool, function(req, res){
-		passedJSON = JSON.parse(req.body.schedule)
+		var passedJSON = JSON.parse(req.body.schedule)
 		passedJSON.term = passedJSON.term.id
 		passedJSON.school = req.school._id
 		passedJSON.user = req.user._id
@@ -130,7 +130,7 @@ exports = module.exports = function(app){
 		function randomHash(){
 			return (((1+Math.random())*0x10000000)|0).toString(34).substr(1)
 		}
-		pSchedule = JSON.parse(req.body.schedule);
+		var pSchedule = JSON.parse(req.body.schedule);
 		delete pSchedule._id;
 		delete pSchedule.id;
 		delete pSchedule.user;
