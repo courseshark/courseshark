@@ -21,10 +21,10 @@ app.config = config
 app.io = io
 io.set('log level', 1);
 
-if ( app.settings.env === 'development' ){
-	mongoose.connect(config.db.uri, function(err){if(err){console.log('mongoose-dev:',err)}})
+if ( config.db.uri.indexOf(',') == -1 ){
+	mongoose.connect(config.db.uri, function(err){if(err){console.log('mongoose-single:',err)}})
 }else{
-	mongoose.connectSet(config.db.uri, function(err){if(err){console.log('mongoose-prod:',err)}})
+	mongoose.connectSet(config.db.uri, function(err){if(err){console.log('mongoose-rs:',err)}})
 }
 mongoose.connection.on('open', function(){
 
