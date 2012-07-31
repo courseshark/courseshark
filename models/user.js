@@ -19,6 +19,7 @@ UserSchema = new Schema({
 	, school : { type: Schema.ObjectId, ref: 'School' }
 	, major:{ type: Schema.ObjectId, ref: 'Department' }
 	, year:{ type: Number }
+	, shareWithRecruiters: { type: Boolean }
 	, canEmailFriendRequests: { type: Boolean, 'default': true }
 	, autoAcceptFriends: { type: Boolean, 'default': false }
 	, friends: [{ type: Schema.ObjectId, ref: 'User' }]

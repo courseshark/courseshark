@@ -119,6 +119,30 @@
 				</fieldset>
 			</div><!-- /.row -->
 		</div>
+
+
+		<div class="row">
+			<div class="span8 offset2">
+				<fieldset>
+			    <legend>Sharing Settings</legend>
+					<div class="control-group">
+			      <label class="control-label" for="major_id">Make schedules searchable for recruiters</label>
+			      <div class="controls">
+							<label for="recruiters_yes">
+								<input type="radio" name="user.shareWithRecruiters" value="true" id="recruiters_yes" <%=account.shareWithRecruiters?'checked':''%>/>
+								Yes, allow job recruiters to search for me.
+							</label>
+							<label for="recruiters_no" >
+								<input type="radio" name="user.shareWithRecruiters" value="false"id="recruiters_no" <%=account.shareWithRecruiters?'':'checked'%>/>
+								No, I do not want my schedule to be searchable. 
+							</label>
+			      </div>
+			    </div>
+				</fieldset>
+			</div>
+		</div><!-- /.row -->
+
+
 		<div class="row">
 			<div class="span8 offset2">
 				<fieldset>

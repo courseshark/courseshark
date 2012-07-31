@@ -1,0 +1,32 @@
+<div class="modal-header">
+	<a href="#" class="close" data-dismiss="modal">&times;</a>
+	<h3>Share your Schedule?</h3>
+</div>
+
+<div class="modal-body">
+	<h4>Recruiters at many companies are are looking to find you!</h4>
+	<p>We can help by letting them find you based on the classes you&rsquo;re taking.</p>
+	<p>Do you want to share your schedule with recruiters looking to hire people from your field?<br />
+		<small>You can change this setting under your <a href="/settings" target="_blank">account settings</a></small>
+	</p>
+</div>
+
+<div class="modal-footer">
+	<a href="#" class="btn" data-dismiss="modal">Ask Me Later</a>
+	<button class="share-result" data-share="false" data-dismiss="modal">No</button>
+	<button class="btn-large btn-primary share-result" data-share="true"  data-dismiss="modal">Yes</button>
+</div>
+
+
+<script>
+(function(window, document, undefined){
+	$('button.share-result').click(function(){
+		$btn = $(this);
+		$.ajax({
+				url: '/share-with-recruiters'
+			,	type: 'PUT'
+			,	data: {share: $btn.data('share')}
+		})
+	})
+})(window, document)
+</script>
