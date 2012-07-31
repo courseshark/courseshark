@@ -62,8 +62,10 @@ exports = module.exports = function(app){
 	})
 
 	app.get('/admin/users', requireAdmin, function(req, res){
-		User.find(req.query.user).populate('school').exec(function(err, users){
-			res.render('admin/users/index', {users: users, layout:'../layout.ejs'});
+		User.find(req.query.user, {}, {sort: {created:-1}}).limit(10).populate('school').exec(function(err, users){
+			User.count(req.query.user, function(err, count){
+				res.render('admin/users/index', {users: users, count: count, layout:'../layout.ejs'});
+			})
 		})
 	})
 

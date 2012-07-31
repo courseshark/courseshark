@@ -1,4 +1,4 @@
-<h1>Users <small>found <%=users.length%></h1>
+<h1>Users <small>found <%=count%></h1>
 
 <div class="row">
 	<div class="span1">
@@ -27,7 +27,7 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th>ID</th>
+					<th>created</th>
 					<th>Name</th>
 					<th>Email</th>
 					<th>Oauth Prov.</th>
@@ -40,7 +40,7 @@
 		<% if (users.length) { %>
     	<% users.forEach(function(user){ %>
 				<tr>
-					<td title="<%=user._id%>"><%=(""+user._id).substring((""+user._id).length-7, (""+user._id).length)%></td>
+					<td title="<%=user.created%>"><%=((d=user.created), d.getMonth()+'.'+d.getDate()+'.'+d.getFullYear()+' '+d.toLocaleTimeString())%></td>
 					<td><%=user.name%></td>
 					<td><%=user.email?user.email:'&mdash;'%></td>
 					<td><%=user.oauth?user.oauth:'&mdash;'%></td>
