@@ -340,6 +340,25 @@ $(document).ready(function() {
 
 
 	window.school = '<%= school %>';
-	init(<%if(link){%>'<%- schedule %>'<%}%>);			
+	init(<%if(link){%>'<%- schedule %>'<%}%>);
+
+	<%if (!loggedIn){%>
+		var $login = $('.nav.pull-right > li > button.btn-large');
+		$.ajax({
+					url:'/recruiter-share-invite'
+				,	dataType: 'text'
+				,	success: function(d){
+						$login.popover({animation: true, 
+												placement:'bottom'
+											, delay: 100
+											, trigger:'hover'
+											, title:'Sign In for more'
+											, content:d
+								})
+							.popover('show')
+							.data('popover').tip().css({position:'fixed', 'z-index':'1039'})
+				}
+			})
+	<%}%>
 });
 </script>
