@@ -27,6 +27,8 @@ development:
     notification:
       account: "alert@courseshark.com"
       pass: "espress0!5~"
+  mixpanel:
+    accessToken: "22566cab7f699ae4100bd3d23dfc1420"
 
 staging:
   domain: "2.courseshark.com"
@@ -57,6 +59,8 @@ staging:
     notification:
       account: "alert@courseshark.com"
       pass: "espress0!5~"
+  mixpanel:
+    accessToken: "22566cab7f699ae4100bd3d23dfc1420"
 
 production:
   domain: "courseshark.com"
@@ -90,3 +94,5 @@ production:
     notification:
       account: "alert@courseshark.com"
       pass: "espress0!5~"
+  mixpanel:
+    accessToken: "22566cab7f699ae4100bd3d23dfc1420"

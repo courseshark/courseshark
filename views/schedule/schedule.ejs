@@ -359,7 +359,7 @@ $(document).ready(function() {
 							.data('popover').tip().css({position:'fixed', 'z-index':'1039'})
 				}
 			})
-	<%}else if ( typeof user.shareWithRecruiters !== "undefined" ) {%>
+	<%}else if ( typeof user.shareWithRecruiters == "undefined" ) {%>
 		openDialog('/share-with-recruiters');
 	<%}%>
 });

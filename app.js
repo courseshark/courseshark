@@ -14,6 +14,7 @@ var		express = require('express')
 		, sio = require('socket.io')
 		, io = sio.listen(app)
 		,	mongoose = require('mongoose')
+		,	mixpanel = new require('mixpanel').Client(config.mixpanel.accessToken)
 
 console.log("Starting in mode:", app.settings.env)
 
