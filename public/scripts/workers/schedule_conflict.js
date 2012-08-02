@@ -14,6 +14,7 @@ self.onmessage = function (event) {
 };
 
 array_diff = function(o,a) {
+	if ( !o || !a ){ return []; }
 	return o.filter(function(e) {return !(a.indexOf(e) > -1)})
 };
 
