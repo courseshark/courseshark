@@ -29,8 +29,17 @@ exports = module.exports = function(app){
 				scheduleLink.schedule.term = scheduleLink.schedule.term['_id']?scheduleLink.schedule.term['_id']:scheduleLink.schedule.term
 				Term.findOne({_id: scheduleLink.schedule.term}, function(err, term){
 					scheduleLink.schedule.term = term;
-					sJson = JSON.stringify(schedule)
-					res.render('schedule/schedule', {link: true, school: schedule.school._id, schedule: sJson, noJS: true})
+					
+
+					// Correct for timezone issue by re-finding the sections in the schedule
+					sectionIds = schedule.sections.map(function(s){return s._id});
+
+					Section.find({_id:{$in: sectionIds}}).populate('course').populate('department').exec(function(err, sections){
+						schedule.sections = sections;
+						sJson = JSON.stringify(schedule)
+						console.log(sJson);
+						res.render('schedule/schedule', {link: true, school: schedule.school._id, schedule: sJson, noJS: true})
+					})
 				})
 			}
 		})
