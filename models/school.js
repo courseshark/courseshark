@@ -13,7 +13,7 @@ exports.SchoolSchema = module.exports.SchoolSchema = SchoolSchema
 
 SchoolSchema = new Schema({
 		name: { type: String, index: { unique: true } }
-	,	abbr: { type: String }
+	,	abbr: { type: String, index: true }
 	,	state: { type: String }
 	,	city: { type: String }
 	, zip: { type: String }
@@ -21,7 +21,7 @@ SchoolSchema = new Schema({
 	,	currentTerm: { type: Schema.ObjectId, ref: 'Term' }
 	,	enabled: { type: Boolean, 'default': false, index: true }
 	, waitlist: { type: Boolean, 'default': false }
-	, notifications: { type: Boolean, 'default': true }
+	, notifications: { type: Boolean, 'default': false }
 	, notificationCron: { type: String, 'default': '0 */15 * * * *' }
 	,	created: { type: Date, 'default': Date.now }
 	,	modified: { type: Date, 'default': Date.now }
