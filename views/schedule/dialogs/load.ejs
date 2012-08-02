@@ -8,7 +8,7 @@
 	<div class="loadNode">
 		<div class="name title">Name</div>
 		<div class="term title">Term</div>
-		<div class="hours title">Hrs</div>
+		<!--<div class="hours title">Hrs</div>-->
 		<div class="delete title"></div>
 	</div>
 	<div id="loadList">
@@ -19,7 +19,7 @@
 			<div class="loadNode">
 				<a href="#" data-dismiss="modal" class="name" onClick="Schedule.load('<%=schedule.id%>');"><%=schedule.name%></a>
 				<div class="term"><%= schedule.term.season %> <%= schedule.term.year %></div>
-				<div class="hours"><%= schedule.creditHours?schedule.creditHours:'-' %></div>
+				<!--<div class="hours"><%= schedule.creditHours?schedule.creditHours:'-' %></div>-->
 				<div class="delete" onclick="if(confirm('Delete this schedule?')){if(deleteSchedule('<%=schedule.id%>')){$(this).parent().fadeOut();}}">&times;</div>
 			</div>			
 		<% } %>

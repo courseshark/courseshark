@@ -120,7 +120,7 @@ TZOFFSETFROM:-0500
 TZOFFSETTO:-0400
 TZNAME:EDT
 END:DAYLIGHT
-END:VTIMEZONE<$ for (var i=0, evnt; (evnt=events[i])!==undefined; i++){ for (var id=0, dayset; (dayset=evnt['daysets'][id])!==undefined; id++ ){ $>
+END:VTIMEZONE<$ for (var i=0, evnt; (evnt=events[i])!==undefined; i++){ for (var id=0, dayset; (dayset=evnt['daysets'][id])!==undefined; id++ ){ if (!dayset['days']||dayset['days']===""){continue;} $>
 BEGIN:VEVENT
 DTSTART;TZID=<$=timezone$>:<$=dayset['start']$>
 DTEND;TZID=<$=timezone$>:<$=dayset['end']$>
