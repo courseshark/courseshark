@@ -37,7 +37,6 @@ exports = module.exports = function(app){
 					Section.find({_id:{$in: sectionIds}}).populate('course').populate('department').exec(function(err, sections){
 						schedule.sections = sections;
 						sJson = JSON.stringify(schedule)
-						console.log(sJson);
 						res.render('schedule/schedule', {link: true, school: schedule.school._id, schedule: sJson, noJS: true})
 					})
 				})
