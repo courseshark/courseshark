@@ -33,6 +33,7 @@ exports = module.exports = function(app){
 				req.session.save()
 				if ( req.params.format === 'json' || req.headers['x-requested-with'] === 'XMLHttpRequest' ){
 					res.json({ success: true, redirect: '/' });
+					app.mixpanel.track('Logged In', {method: 'password', distinct_id: req.session.distinctId});
 				}else{
 					res.redirect('/');
 				}
@@ -64,6 +65,8 @@ exports = module.exports = function(app){
 			user.referedFrom = req.session.initialReferer
 			// Track a referal conversion
 			social.trackReferal(req.session)
+
+			app.mixpanel.track('Signup', {distinct_id: req.session.distinctId})
 
 			user.setPassword(req.body.user.password)
 			user.save(function(err){

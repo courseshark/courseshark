@@ -298,10 +298,12 @@ $(document).ready(function() {
 		
 	$('#save-button').click(function(){
 		<% if ( loggedIn ){ %>
+			mixpanel.track('Saved Schedule');
 			_gaq.push(['_trackEvent', 'Schedule', 'Save']);
 			schedule.pushSave();
 			return false;
 		<% } else { %>
+			mixpanel.track('Save Scheudle but !Logged In');
 			_gaq.push(['_trackEvent', 'Schedule', 'Login']);
 			openDialog('/login');
 			return false;
@@ -330,17 +332,25 @@ $(document).ready(function() {
 	
 	$('#link-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Link']);
+		mixpanel.track('Generate Share Link', {link: res.url, from: 'Menu'});
 		openDialog('/schedule/dialog/link');
 	});
 
 	$('#big-share').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Link', 'Big']);
+		mixpanel.track('Generate Share Link', {link: res.url, from: 'Big Button'});
 		openDialog('/schedule/dialog/link');
 	})
 
 
 	window.school = '<%= school %>';
 	init(<%if(link){%>'<%- schedule %>'<%}%>);
+
+	<$if(link){$>
+		mixpanel.track('Viewed Link', {url: window.location.href})
+	<$}else{$>
+		mixpanel.track('Viewed Scheduler');
+	<$}$>
 
 	<%if (!loggedIn){%>
 		var $login = $('.nav.pull-right > li > button.btn-large');
@@ -360,7 +370,9 @@ $(document).ready(function() {
 				}
 			})
 	<%}else if ( typeof user.shareWithRecruiters == "undefined" ) {%>
+		mixpanel.trigger("Asked to Share with Recruiters");
 		openDialog('/share-with-recruiters');
 	<%}%>
+	
 });
 </script>

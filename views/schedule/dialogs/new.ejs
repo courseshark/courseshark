@@ -25,6 +25,7 @@ $('#new-term-submit').on('click', function(){
 	newTerm = { id: $this.data('term'),
 							season: $this.data('season'),
 							year: $this.data('year')};
+	mixpanel.track('Create new schedule', {term: newTerm, school: window.school || (window.schedule&&window.schedule.school) });
 	Schedule.create(newTerm);
 	schedule.show();
 });

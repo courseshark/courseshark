@@ -18,9 +18,11 @@ var		express = require('express')
 
 console.log("Starting in mode:", app.settings.env)
 
-app.config = config
-app.io = io
-io.set('log level', 1);
+app.config = config;
+app.mixpanel = mixpanel;
+app.mixpanel.set_config({test: app.settings.env!="production", debug: app.settings.env!="production"});
+app.io = io;
+app.io.set('log level', 1);
 
 if ( config.db.uri.indexOf(',') == -1 ){
 	mongoose.connect(config.db.uri, function(err){if(err){console.log('mongoose-single:',err)}})

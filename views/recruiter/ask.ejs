@@ -12,7 +12,7 @@
 </div>
 
 <div class="modal-footer">
-	<a href="#" class="btn" data-dismiss="modal">Ask Me Later</a>
+	<a href="#" class="btn ignore-dialog" data-dismiss="modal">Ask Me Later</a>
 	<button class="share-result" data-share="false" data-dismiss="modal">No, I will never share!</button>
 	<button class="btn-large btn-primary share-result" data-share="true"  data-dismiss="modal">Yes, get me jobs!</button>
 </div>
@@ -20,13 +20,17 @@
 
 <script>
 (function(window, document, undefined){
+	$('button.ignore-dialog').click(function(){
+		mixpanel.track('Ignored Share With Recruiters');
+	});
 	$('button.share-result').click(function(){
 		$btn = $(this);
+		mixpanel.trigger("Answered Share With Recruiters", {willShare: $bt.data('share')});
 		$.ajax({
 				url: '/share-with-recruiters'
 			,	type: 'PUT'
 			,	data: {share: $btn.data('share')}
-		})
-	})
+		});
+	});
 })(window, document)
 </script>

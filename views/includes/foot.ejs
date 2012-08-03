@@ -2,9 +2,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="span3">
-				<img src="/images/logo.png" alt="CourseShark Logo"/>
+				<img class="logo" src="/images/logo.png" alt="CourseShark Logo"/>
 			</div>
-			<div class="span8">
+			<div class="span7">
 				<ul class="nav nav-pills">
 					<li><a href="/">Home</a></li>
 					<li><a onClick="openDialog('/about')">About</a></li>
@@ -16,10 +16,13 @@
 					<li><a href="https://facebook.com/CourseShark">Facebook</a></li>
 				</ul>
 			</div>
+			<div class="span1">
+				<a href="https://mixpanel.com/f/partner"><img src="https://mixpanel.cachefly.net/site_media/images/partner/badge_light.png" alt="Mobile Analytics" /></a>
+			</div>
 		</div>
 		<div class="row">
 			<div class="span4">
-				&copy; <%= (new Date).getFullYear() %> CourseShark LLC.
+				<p><small>&copy; <%= (new Date).getFullYear() %> CourseShark LLC.</small></p>
 			</div>
 		</div>
 	</div>
