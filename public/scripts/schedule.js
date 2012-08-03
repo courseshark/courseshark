@@ -73,6 +73,8 @@ function getObject(name){
 
 
 var Schedule = function(term){
+	this.id = '';
+	this._id = '';
 	this.term = (typeof term == 'object')?term:_terms[term]
 	this.sections=[]
 	this.name = "Schedule"
@@ -514,15 +516,16 @@ function addSectionToCalendar(section, scheduleId){
 		}
 
 		// If we have a TBD timeslot
-		if ( slot === false || slot.startTime.getHours() === 0 || slot.startTime == slot.endTime ){
+		if ( slot === false || slot.startTime.getUTCHours() === 0 || slot.startTime == slot.endTime ){
 			section.location = slot.location
 			html = window.tmpl($('#template-event-listing-tbd').html(), {section:section, t:t, location: section.location});
 			addedTimeslot = $(html).appendTo('#tbd-container #tbd-list');
+			addedSlots.push(addedTimeslot);
 		}else{
-			top_offset = (slot.startTime.getHours() - 6 + (slot.startTime.getMinutes()/60.0)) * scale + offset;
-			height = Math.floor(Math.max(1, (Math.abs( slot.endTime.getMinutes() - slot.startTime.getMinutes() )/60.0 + slot.endTime.getHours() - slot.startTime.getHours()) * scale + offset)) + height_offset;
-			startHourAdjusted = (slot.startTime.getHours()%12===0)?12:slot.startTime.getHours()%12;
-			endHourAdjusted = (slot.endTime.getHours()%12===0)?12:slot.endTime.getHours()%12;
+			top_offset = (slot.startTime.getUTCHours() - 6 + (slot.startTime.getUTCMinutes()/60.0)) * scale + offset;
+			height = Math.floor(Math.max(1, (Math.abs( slot.endTime.getUTCMinutes() - slot.startTime.getUTCMinutes() )/60.0 + slot.endTime.getUTCHours() - slot.startTime.getUTCHours()) * scale + offset)) + height_offset;
+			startHourAdjusted = (slot.startTime.getUTCHours()%12===0)?12:slot.startTime.getUTCHours()%12;
+			endHourAdjusted = (slot.endTime.getUTCHours()%12===0)?12:slot.endTime.getUTCHours()%12;
 			html = window.tmpl($('#template-event-listing').html(), {
 						section:section
 					, slot:slot
@@ -586,7 +589,6 @@ function addCourseToList(course, selectedSection){
 						for( var j=0; j<len; j++ ){
 							if ( !sections[j] || !sections[j]._id ){continue;}
 							if ( sections[j]._id != section.id && sections[j].info == section.info.substr(0,1) && section.timeslots[0].type.toLowerCase() != "lecture"){
-								console.log('matching', section.info, 'with', sections[j].info, '(', section, ')');
 								if ( typeof sections[j]["children"] === "undefined" ){
 									sections[j]["children"] = [section]
 								}else{

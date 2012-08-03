@@ -5,10 +5,10 @@
 		, config = config_file.readConfig(__dirname + '/config.yaml')
 		, mongoose = require('mongoose')
 
-	if ((process.env.NODE_ENV||'development') === 'development' ){
-		mongoose.connect(config.db.uri, function(e){if(e)console.log(e);})
+	if ( config.db.uri.indexOf(',') == -1 ){
+		mongoose.connect(config.db.uri, function(err){if(err){console.log('mongoose-single:',err)}})
 	}else{
-		mongoose.connectSet(config.db.uri, function(e){if(e)console.log(e);})
+		mongoose.connectSet(config.db.uri, function(err){if(err){console.log('mongoose-rs:',err)}})
 	}
 
 	if ( process.argv.length < 4 ){
