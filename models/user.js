@@ -23,9 +23,9 @@ UserSchema = new Schema({
 	, canEmailFriendRequests: { type: Boolean, 'default': true }
 	, autoAcceptFriends: { type: Boolean, 'default': false }
 	, friends: [{ type: Schema.ObjectId, ref: 'User' }]
-	, loginCount: { type: Number }
+	, loginCount: { type: Number, 'default': 0 }
 	, lastLogin: { type: Date, 'default': Date.now }
-	,	referedFrom: { type: String }
+	, referedFrom: { type: String }
 	, created: { type: Date, 'default': Date.now }
 	, modified: { type: Date, 'default': Date.now }
 	, oauth: { type: String }
