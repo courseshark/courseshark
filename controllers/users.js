@@ -66,7 +66,7 @@ exports = module.exports = function(app){
 			// Track a referal conversion
 			social.trackReferal(req.session)
 
-			app.mixpanel.track('Signup', {distinct_id: req.session.distinctId})
+			app.mixpanel.track('Signup', {method: 'password', distinct_id: req.session.distinctId})
 
 			user.setPassword(req.body.user.password)
 			user.save(function(err){
