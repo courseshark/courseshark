@@ -11,7 +11,7 @@
     'set_config','people.set','people.increment'];for(e=0;e<h.length;e++)d(g,h[e]);
     a._i.push([b,c,f])};a.__SV=1.1;})(document,window.mixpanel||[]);
 
-mixpanel.init("22566cab7f699ae4100bd3d23dfc1420", <%if (mode!="production"){%>{debug: true, test: true}<%}%>);
+mixpanel.init("22566cab7f699ae4100bd3d23dfc1420"<%if (mode!="production"){%>, {debug: true, test: true}<%}%>);
 mixpanel.register({ distinct_id: "<%= distinctId %>" });
 <% if (loggedIn){ %>mixpanel.identify("<%=user.id%>");<%}%>
 </script>
