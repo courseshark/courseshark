@@ -13,6 +13,6 @@
 
 mixpanel.init("22566cab7f699ae4100bd3d23dfc1420"<%if (mode!="production"){%>, {debug: true, test: true}<%}%>);
 mixpanel.register({ distinct_id: "<%= distinctId %>" });
-<% if (loggedIn){ %>mixpanel.identify("<%=user.id%>");mixpanel.people.set({"$email": "<%=user.email%>","$first_name": "<%=user.firstName%>","$last_name": "<%=user.lastName%>","created": new Date("<%=user.created%>"),"login_count": "<%=user.loginCount%>","$last_login": new Date("<%=user.lastLogin%>"),"school": "<%=user.school&&user.school._id||user.school||'none'%>","referrer": document.referrer});<%}%>
+<% if (loggedIn){ %>mixpanel.identify("<%=user.id%>");mixpanel.people.set({"$email": "<%=user.email%>","$first_name": "<%=user.firstName%>","$last_name": "<%=user.lastName%>","created": new Date("<%=user.created%>"),"login_count": "<%=user.loginCount%>","$last_login": new Date("<%=user.lastLogin%>"),"school": "<%=user.school&&user.school._id||user.school||'none'%>","referrer": document.referrer});mixpanel.name_tag('<%=user.email||user.firstName||user.id%>');<%}%>
 </script>
 <!-- end Mixpanel -->
