@@ -332,13 +332,13 @@ $(document).ready(function() {
 	
 	$('#link-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Link']);
-		mixpanel.track('Generate Share Link', {link: res.url, from: 'Menu'});
+		mixpanel.track('Generate Share Link', {from: 'Menu'});
 		openDialog('/schedule/dialog/link');
 	});
 
 	$('#big-share').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Link', 'Big']);
-		mixpanel.track('Generate Share Link', {link: res.url, from: 'Big Button'});
+		mixpanel.track('Generate Share Link', {from: 'Big Button'});
 		openDialog('/schedule/dialog/link');
 	})
 
