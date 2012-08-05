@@ -1,2 +1,32 @@
-<h1>Welcome to the admin</h1>
-<h3>running rev. <%=revision%></h3>
+<div class="row-fluid">
+	<div class="span8">
+		<h1>CourseShark Admin Dashboard</h1>
+	</div>
+	<div class="span4">
+		<h3><small>running rev. <%=revision%></small></h3>
+	</div>
+</div>
+	
+
+<div class="row-fluid">
+	<div class="span3">
+		<div class="well stat">
+			<h2>User Growth</h2>
+			<h1><%=userGrowth%>%</h1>
+			<p><small>In last 7 days</small></p>
+		</div>
+	</div>
+	<div class="span3">
+		<div class="well stat">
+			<h2>Total Users</h2>
+			<h1><%=totalUsers%></h1>
+		</div>
+	</div>
+	<div class="span3">
+		<div class="well stat">
+			<h2>Share Permissions</h2>
+			<h1><%=yesToShare%> - <%=noToShare%></h1>
+			<p><small>yes - no</small></p>
+		</div>
+	</div>
+</div>
