@@ -2,7 +2,6 @@
  * Kicks off the whole show
  */
 
-//require('nodetime').profile({accountKey:'8ead2b63584790025132d7ec0456d88fcd4147e0',appName:'CourseShark Dev'});
 var		express = require('express')
 		, fs = require('fs')
 		, config_file = require('yaml-config')
@@ -16,7 +15,7 @@ var		express = require('express')
 		,	mongoose = require('mongoose')
 		,	mixpanel = new require('mixpanel').Client(config.mixpanel.accessToken)
 
-console.log("Starting in mode:", app.settings.env)
+console.log("\n\nStarting in mode:", app.settings.env)
 
 app.config = config;
 app.mixpanel = mixpanel;

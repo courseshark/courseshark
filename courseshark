@@ -1,0 +1,126 @@
+#!/bin/bash
+#
+#	CourseShark run file
+#
+#
+
+CS_DIR=`pwd`;
+BIN_DIR=$CS_DIR/bin;
+NEW_PATH=$BIN_DIR/node/bin:$PATH;
+CUSTOM_NODE=$BIN_DIR/node/bin/node;
+
+OUT_LOG=$CS_DIR/logs/info.log;
+
+#make sure log directory exists
+mkdir -p $CS_DIR/logs;
+
+BLUE="$(tput setaf 4)";
+GREEN="$(tput setaf 2)";
+YELLOW="$(tput setaf 3)";
+RED="$(tput setaf 1)";
+RESET="$(tput sgr0)";
+
+
+
+if [ "$1" == "install" ]
+then
+	echo "Installing nodejs"
+	cd /tmp;
+	if [ -d "/tmp/node" ]
+	then
+		cd node;
+		git checkout $2;
+	else
+		git clone http://github.com/joyent/node.git -b $2;
+	fi
+	cd node;
+	./configure --prefix=$BIN_DIR/node;
+	make;
+	make install;
+	cd $CS_DIR
+
+
+	## Install Forever
+	(
+		export PATH=$NEW_PATH;
+		npm install forever -g;
+		npm install;
+	)
+
+	exit;
+fi
+
+
+
+if [ -f $CUSTOM_NODE ]
+then
+	: # no-op
+else
+	echo "";
+	echo "[warn] No node found.";
+	echo "";
+	echo "Run $0 install version";
+	echo "";
+	exit;
+fi
+
+
+if [ "$1" == "nodemon" ]
+then
+	echo $BLUE
+	echo "startting with nodemon $RESET";
+	(
+		export PATH=$NEW_PATH;
+	 	nodemon ./app.js;
+	)
+else
+	if [ "$1" == "forever" ]
+	then
+		if [ "$2" == "install" ]
+		then
+			(
+				export PATH=$NEW_PATH;
+				echo $GREEN;
+				echo "startting with nodemon $RESET";
+				npm install forever -g
+			)
+		else
+			echo $BLUE;
+			echo "startting with forever $RESET";
+			(
+				export PATH=$NEW_PATH;
+				shift 1;
+				forever $@;
+			)
+		fi
+	else
+		if [ "$1" == "start" ]
+		then
+			echo $BLUE;
+			echo "startting with forever $RESET";
+			(
+				export PATH=$NEW_PATH;
+				forever stopall
+				forever start -a -l $OUT_LOG $CS_DIR/app.js;
+			)
+		else
+			if [ "$1" == "stop" ]
+			then 
+				echo $RED;
+				echo "stopping $RESET";
+				(
+					export PATH=$NEW_PATH;
+					forever stopall;
+				)
+			else
+				echo $YELLOW;
+				echo "restarting $RESET";
+				(
+					export PATH=$NEW_PATH;
+					forever stopall;
+					forever start -a -l $OUT_LOG $CS_DIR/app.js;
+				)
+			fi
+		fi
+	fi
+fi

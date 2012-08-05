@@ -1,20 +1,14 @@
 *.DS_Store
 *.cache
 
+bin/node/*
 node_modules/*
-*/node_modules/*
-
 cert/*
-
-logs/access.log
+logs/*
 
 public/scripts/*-courseshark.js
 public/styles/*-courseshark.css
-
 public/styles/lib/.DS_Store
-
 public/styles/master.css
-
 public/.DS_Store
-
 public/images/.DS_Store
