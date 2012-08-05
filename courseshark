@@ -32,8 +32,9 @@ then
 		git checkout $2;
 	else
 		git clone http://github.com/joyent/node.git -b $2;
+		cd node;
 	fi
-	cd node;
+	make clean;
 	./configure --prefix=$BIN_DIR/node;
 	make;
 	make install;
