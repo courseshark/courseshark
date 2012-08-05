@@ -24,7 +24,7 @@ Releases will be numbered with the follow format:
 	<major>.<minor>.<patch>
 
 * Breaking backward compatibility bump the major (and resets the minor and patch)
-* New additions without breaking backward compatibility bump the minor [this includes school launches]  (and resets the patch)
+* New additions without breaking backward compatibility (including school launches) bump the minor (and resets the patch)
 * Bug fixes and small changes bump the patch
 
 For more information on SemVer, please visit [http://semver.org/](http://semver.org/).
