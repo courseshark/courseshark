@@ -6,6 +6,7 @@ node_modules/*
 cert/*
 logs/*
 
+logs/access.log
 npm-debug.log
 
 public/scripts/*-courseshark.js

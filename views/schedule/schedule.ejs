@@ -370,7 +370,7 @@ $(document).ready(function() {
 				}
 			})
 	<%}else if ( typeof user.shareWithRecruiters == "undefined" ) {%>
-		mixpanel.trigger("Asked to Share with Recruiters");
+		mixpanel.track("Asked to Share with Recruiters");
 		openDialog('/share-with-recruiters');
 	<%}%>
 	
