@@ -25,7 +25,7 @@
 	});
 	$('button.share-result').click(function(){
 		$btn = $(this);
-		mixpanel.track("Answered Share With Recruiters", {willShare: $bt.data('share')});
+		mixpanel.track("Answered Share With Recruiters", {willShare: $btn.data('share')});
 		$.ajax({
 				url: '/share-with-recruiters'
 			,	type: 'PUT'
