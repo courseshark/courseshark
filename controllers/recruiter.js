@@ -8,7 +8,7 @@ exports = module.exports = function(app){
 	})
 
 	app.put('/share-with-recruiters', requireLogin, function(req, res){
-		req.user.shareWithRecruiters = !!(req.body.share);
+		req.user.shareWithRecruiters = ((''+req.body.share)=="true");
 		req.user.save(function(err){
 			if (err) { console.log('Error saving share-with-recruiters:',err); }
 		})
