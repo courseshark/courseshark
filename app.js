@@ -11,16 +11,17 @@ var		express = require('express')
 		, app = express.createServer()
 		, port = (typeof process !== "undefined" && process !== null ? (_ref2 = process.env) !== null ? _ref2.PORT : undefined : undefined) || 80
 		, sio = require('socket.io')
-		, io = sio.listen(app)
+		, io
 		,	mongoose = require('mongoose')
 		,	mixpanel = new require('mixpanel').Client(config.mixpanel.accessToken)
+
 
 console.log("\n\nStarting in mode:", app.settings.env)
 
 app.config = config;
 app.mixpanel = mixpanel;
 app.mixpanel.set_config({test: app.settings.env!="production", debug: app.settings.env!="production"});
-app.io = io;
+app.io = io = sio.listen(app);
 app.io.set('log level', 1);
 
 if ( config.db.uri.indexOf(',') == -1 ){
