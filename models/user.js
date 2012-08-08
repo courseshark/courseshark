@@ -70,6 +70,7 @@ UserSchema.method('isPasswordless', function(){
 })
 
 UserSchema.pre('save', function (next) {
+	this.modified = new Date();
 	if ( !this.oauth && !util.validatePresenceOf(this.hashPassword) ){
 		console.log(this.oauth, this.hashPassword);
 		next(Error('No password specified'))
