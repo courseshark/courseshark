@@ -12,8 +12,8 @@ var		express = require('express')
 		, port = (typeof process !== "undefined" && process !== null ? (_ref2 = process.env) !== null ? _ref2.PORT : undefined : undefined) || 80
 		, sio = require('socket.io')
 		, io
-		,	mongoose = require('mongoose')
-		,	mixpanel = new require('mixpanel').Client(config.mixpanel.accessToken)
+		, mongoose = require('mongoose')
+		, mixpanel = new require('mixpanel').Client(config.mixpanel.accessToken)
 
 
 console.log("\n\nStarting in mode:", app.settings.env)
