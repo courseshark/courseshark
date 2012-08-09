@@ -311,7 +311,12 @@ $(document).ready(function() {
 	});
 	
 	$('#load-button').click(function(){
-		_gaq.push(['_trackEvent', 'Schedule', 'Load']);	
+		_gaq.push(['_trackEvent', 'Schedule', 'Load']);
+		<% if ( loggedIn ){ %>
+			mixpanel.track('Load Schedule', {from: 'Menu'});
+		<% } else { %>
+			mixpanel.track('Load Scheudle but !Logged In', {from: 'Menu'});
+		<% } %>
 		show_load_dialog();
 	});
 	
@@ -322,11 +327,13 @@ $(document).ready(function() {
 	
 	$('#print-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Print']);
+		mixpanel.track('Print Schedule', {from: 'Menu'});
 		window.print();
 	});
 	
 	$('#ical-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'iCal']);
+		mixpanel.track('Export Schedule', {from: 'Menu'});
 		$('#ical-button').attr('href', schedule.createCal()).attr('download', schedule.name);
 	});
 	
@@ -344,6 +351,7 @@ $(document).ready(function() {
 
 
 	window.school = '<%= school %>';
+	window.serverScheduleVersion = '<%= revision %>';
 	init(<%if(link){%>'<%- schedule %>'<%}%>);
 
 	<%if(link){%>
