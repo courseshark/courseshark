@@ -395,13 +395,15 @@ function init(passed){
 
 	if ( passed === undefined ){
 			// Load and show the primary schedule
-		schedule=getObject("primary-schedule")
-		if ( schedule ){
+		schedule= getObject("primary-schedule")
+		scheduleVersion = getObject('schedule-version')
+		if ( schedule && scheduleVersion == window.serverScheduleVersion ){
 			schedule = Schedule.fromObj(schedule);
 			term = schedule.term;
 			if ( schedule.school != window.school ){
 				removeItem("primary-schedule");
 				init();
+				return;
 			}
 			schedule.show();
 		}else{
@@ -415,6 +417,7 @@ function init(passed){
 						term = schedule.term
 						schedule.show();
 						storeObject("primary-schedule", schedule);
+						storeObject("schedule-version", window.serverScheduleVersion);
 					}
 			});
 		}
