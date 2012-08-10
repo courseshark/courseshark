@@ -14,7 +14,7 @@ exports = module.exports = function(app){
 		})
 		res.send(200);
 	})
-	
+
 	app.get('/recruiter-share-invite', function(req, res){
 		res.render('recruiter/dialog');
 	})

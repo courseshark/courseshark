@@ -8,7 +8,7 @@ exports = module.exports = function(app){
 			res.render('index', {schools: schools});
 		})
 	})
-	
+
 	// About pages
 	app.get('/about', function(req, res){
 		if ( req.headers['x-requested-with'] === 'XMLHttpRequest' ){
@@ -17,15 +17,15 @@ exports = module.exports = function(app){
 			res.render('about/index')
 		}
 	})
-	
+
 	app.get('/about/terms', function(req, res){
 		res.render('about/terms', {});
 	})
-	
+
 	app.get('/about/privacy', function(req, res){
 		res.render('about/privacy', {});
 	})
-	
+
 	app.get('/about/feedback', function(req, res){
 		res.render('dialogs/feedback', {});
 	})
