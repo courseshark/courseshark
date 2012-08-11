@@ -18,10 +18,16 @@ ScheduleSchema = new Schema({
 	,	school: { type: Schema.ObjectId, ref: 'School' }
 	,	user: { type: Schema.ObjectId, index: true }
 	, sections: [SectionSchema]
+	, modified: { type: Date, 'default': Date.now() }
 });
 
 ScheduleSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})
+
+ScheduleSchema.pre('save', function (next) {
+	this.modified = new Date();
+	next();
+});
 
 ScheduleSchema.method('addSection', function(section){
 	this.sections.push(section)

@@ -52,7 +52,7 @@ exports = module.exports = function(app){
 	app.get('/schedule/load/:sid', requireLogin, requireSchool, function(req, res){
 		Schedule.findOne({_id: req.params.sid, user: req.user._id}).exec(function(err, schedule){
 
-			sectionIds = schedule.sections.map(function(s){return s['_id'] || s});
+			var sectionIds = schedule.sections.map(function(s){return s['_id'] || s});
 
 			Section.find({_id:{$in: sectionIds}}).populate('course').populate('department').exec(function(err, sections){
 				schedule.sections = sections;

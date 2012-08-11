@@ -37,7 +37,7 @@ exports = module.exports = function(app){
 		}
 		re = new RegExp(query, 'gi')
 		User.find({school: req.user.school, $or:[{email: re}, {firstName: re}, {lastName: re}] }, function(err, users){
-			users = users.map(function(u){return {id:u.id, name:u.name, email:u.email.replace(/@.+/gi,''), avatar:u.avatar(30)}})
+			users = users.map(function(u){return {id:u.id, name:u.name, email:(u.email||'').replace(/@.+/gi,''), avatar:u.avatar(30)}})
 			if ( req.params.format == 'json' ){
 				res.json({query: query, users: users})
 			}else{
@@ -97,4 +97,25 @@ exports = module.exports = function(app){
 		})
 	})
 
+
+	app.get('/friends/:friendId/schedule/:termId', requireLogin, function(req, res){
+		var friendId = req.params.friendId.replace(/[^0-9a-z]/ig, '')
+			, temrId = req.params.termId.replace(/[^0-9a-z]/ig, '')
+		// Check is friend
+		req.user.isFriends(friendId, function(friendship){
+			if ( !friendship ){
+				res.json({});
+				return;
+			}else{
+				Schedule.findOne({user: friendId, term: termId }, {}, {$sort: {modified: 1}, $limit:1}).exec(function(err, schedule){
+					var sectionIds = schedule.sections.map(function(s){return s['_id'] || s});
+					Section.find({_id:{$in: sectionIds}}).populate('course').populate('department').exec(function(err, sections){
+						schedule.sections = sections;
+						sJson = JSON.stringify(schedule);
+						res.json(schedule);
+					});
+				});
+			}
+		});
+	});
 }

@@ -99,3 +99,18 @@ UserSchema.method('getInvites', function(callback){
 UserSchema.method('getInvited', function(callback){
 	User.find({_id: {$nin: this.friends}, school: this.school, friends: this._id}, callback)
 })
+
+
+/// Method to dermine if is a friend given an id
+UserSchema.method('isFriends', function(friend_id, callback){
+	// Chech through our friends list to see if they are there.
+	for ( var i=0,found=false,len=this.friends.length; i<len; i++ ){
+		found = found || (this.friends[i] == friend_id);
+	}
+	// Check they are in our friends list
+	if ( !found ){ callback(false); return; }
+	// Make sure it's a 2 way friendship
+	User.find({_id: friend_id, school: this.school, friends: this._id}, function(err, user){
+		callback(user || false);
+	})
+})

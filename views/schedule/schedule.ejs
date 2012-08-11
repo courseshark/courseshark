@@ -358,6 +358,7 @@ $(document).ready(function() {
 		mixpanel.track('Viewed Link', {url: window.location.href})
 	<%}else{%>
 		mixpanel.track('Viewed Scheduler');
+		initFriends();
 	<%}%>
 
 	<%if (!loggedIn){%>
