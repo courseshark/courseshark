@@ -20,7 +20,7 @@ exports = module.exports = function(app){
 	app.get('/sl/:hash', function(req, res){
 		ScheduleLink.findOne({hash: req.params.hash}, function(err, scheduleLink){
 			if ( !scheduleLink ){
-				throw new app.NotFound()
+				res.send(404);
 			}else{
 				var schedule = scheduleLink.schedule
 				if ( !scheduleLink.schedule.term ){
