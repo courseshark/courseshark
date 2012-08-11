@@ -33,10 +33,17 @@ NotificationSchema = new Schema({
 	, deleted: { type: Boolean, 'default': false }
 	, hidden: { type: Boolean, 'default': false }
 	, school: { type: Schema.ObjectId, ref: 'School' }
+	, created: { type: Date, 'default': Date.now() }
+	, mofidied: { type: Date }
 });
 
 NotificationSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})
+
+NotificationSchema.pre('save', function(next){
+	this.modified = new Date();
+	next();
+})
 
 NotificationSchema.virtual('cancelLink')
 	.get(function (){

@@ -32,6 +32,18 @@ exports = module.exports = function(app){
 		})
 	})
 
+	app.get('/admin/notifications', requireAdmin, function(req, res){
+		Notification.count({}).exec(function(err, count){
+			Notification.find({hidden: false, deleted: false}, {}, {$sort: {_id: -1}})
+				.populate('section')
+				.populate('school')
+				.populate('user')
+				.exec(function(err, notifications){
+					res.render('admin/notifications/index', {count: count, notifications: notifications, layout:'../layout.ejs'})
+				})
+		})
+	})
+
 	app.get('/admin/schools', requireAdmin, function(req, res){
 		School.find({}).exec(function(err, schools){
 			res.render('admin/schools/index', {schools: schools, layout:'../layout.ejs'});

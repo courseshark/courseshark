@@ -119,11 +119,13 @@
 									<option value=""></option>
 								</select>
 				      </div>
+							<!--
 							<div class="v-divide"><span>OR</span></div>
 							<div class="right-col">					
 								<label for="manual_section_id">Course Registration Number</label>
 								<input type="text" name="manual_section_id" placeholder="CRN or Course ID" value=""/>
 							</div>
+							-->
 				    </div>
 					</fieldset>
 					
@@ -221,7 +223,7 @@ $('[rel="edit-notification"]').bind('click', function(){
 
 $('#submit-button').click(function(){
 	var info = {
-		section: $('select[name="section_id"]').val()||$('input[name="manual_section_id"]').val()
+		section: $('select[name="section_id"]').val()
 		,	email: $('input[name="email"]').val()
 		,	phone: $('input[name="phone"]').val()
 		,	user: '<%=user.id%>'
@@ -229,6 +231,11 @@ $('#submit-button').click(function(){
 		, waitlist: !!$('input[name="notification-on"][value="waitlist"]').attr('checked')
 	}
 	
+	if ( !info.section || info.section.length < 24  ){
+		errorDialog('Form errors found', 'Please specify a section to watch');
+		return;
+	}
+
 	n_io.emit('create', info)
 })
 
