@@ -9,7 +9,7 @@
 			, "url": "http://git@courseshark.com:courseshark-node.git"
 		}
 	, "engines": {
-			"node": "0.6.19"
+			"node": "0.8.6"
 		}
 	, "dependencies": {
 			"connect-less": "0.3.1"
