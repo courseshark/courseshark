@@ -352,7 +352,7 @@ $(document).ready(function() {
 
 	window.school = '<%= school %>';
 	window.serverScheduleVersion = '<%= revision %>';
-	init(<%if(link){%>'<%- schedule %>'<%}%>);
+	init(<%if(link){%><%- schedule %><%}%>);
 
 	<%if(link){%>
 		mixpanel.track('Viewed Link', {url: window.location.href})
