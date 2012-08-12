@@ -1,6 +1,6 @@
 test:
 	@./node_modules/.bin/mocha \
-		--reporter landing \
+		--reporter spec \
 		test/controllers/*.js \
 		test/lib/*.js \
 		test/models/*.js

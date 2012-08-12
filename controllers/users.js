@@ -21,7 +21,7 @@ exports = module.exports = function(app){
 			res.render('user/login')
 		}
 	})
-	
+
 	app.post('/login.:format?', function(req, res){
 		User.findOne({ $or: [{ email: req.body.user.email }, { firstName: req.body.user.email }] }, function(err, user){
 			if ( user && user.authenticate(req.body.user.password) ){
@@ -85,7 +85,7 @@ exports = module.exports = function(app){
 			})
 		})
 	});
-	
+
 
 	// Forgot password
 	app.get('/forgot-password', function(req, res){
