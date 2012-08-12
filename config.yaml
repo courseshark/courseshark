@@ -4,11 +4,11 @@ development:
   update:
     time: "5"
   db:
-    uri: "mongodb://courseshark:espress0!@localhost/courseshark_dev"
+    uri: "mongodb://courseshark:espress0!@joker.courseshark.com/courseshark_dev,mongodb://bane.courseshark.com,mongodb://loki.courseshark.com"
   facebook:
     appId: "182622275092530"
     appSecret: "885311f00c458526586a17ede8b3e57b"
-    host_uri: "http://courseshark.dev:3000"
+    host_uri: "http://courseshark.dev"
   google:
     apiKey: "AIzaSyAAmSeKu1IPJcGm9ec3041WqMO0mrKPHtk"
     clientId: "1024134353230.apps.googleusercontent.com"

@@ -24,13 +24,11 @@ app.mixpanel.set_config({test: app.settings.env!="production", debug: app.settin
 app.io = io = sio.listen(app);
 app.io.set('log level', 1);
 
-if ( config.db.uri.indexOf(',') == -1 ){
-	mongoose.connect(config.db.uri, function(err){if(err){console.log('mongoose-single:',err)}})
-}else{
-	mongoose.connectSet(config.db.uri, function(err){if(err){console.log('mongoose-rs:',err)}})
-}
+mongoose.connect(config.db.uri, {rs_name:'courseshark-rset'})
+//mongoose.connection.on('error', function(err){if(err){console.log('mongoose-error:',err)}})
 mongoose.connection.on('open', function(){
 
+	//console.log(mongoose.connection);
 	Schema = mongoose.Schema
 	ObjectId = mongoose.Types.ObjectId
 	// Bootsrap models

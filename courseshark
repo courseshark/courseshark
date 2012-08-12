@@ -61,11 +61,11 @@ fi
 if [ "$1" == "deps" ]
 then 
  (
-	export PATH=$NEW_PATH;
-      	npm install forever nodemon -g;
-	npm install;
-	exit;
+		export PATH=$NEW_PATH;
+  	npm install forever nodemon -g;
+		npm install;
  )
+ exit;
 fi
 
 CURRENT_NODE_VERSION="$(export PATH=$NEW_PATH; node -v)";
