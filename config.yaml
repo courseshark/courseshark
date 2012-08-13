@@ -4,7 +4,7 @@ development:
   update:
     time: "5"
   db:
-    uri: "mongodb://localhost/courseshark_dev"
+    uri: "mongodb://courseshark:espress0!@localhost/courseshark_dev"
   facebook:
     appId: "182622275092530"
     appSecret: "885311f00c458526586a17ede8b3e57b"
