@@ -29,7 +29,6 @@ exports = module.exports = function(app){
 				scheduleLink.schedule.term = scheduleLink.schedule.term['_id']?scheduleLink.schedule.term['_id']:scheduleLink.schedule.term
 				Term.findOne({_id: scheduleLink.schedule.term}, function(err, term){
 					scheduleLink.schedule.term = term;
-					
 
 					// Correct for timezone issue by re-finding the sections in the schedule
 					sectionIds = schedule.sections.map(function(s){return s._id});
