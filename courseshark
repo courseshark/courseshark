@@ -124,7 +124,7 @@ else
 			echo "startting with forever $RESET";
 			(
 				export PATH=$NEW_PATH;
-				forever stopall
+				forever stopall;
 				forever start -a -l $OUT_LOG $CS_DIR/app.js;
 			)
 		else
