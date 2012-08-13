@@ -4,7 +4,7 @@ browser = new Browser()
 
 describe('Schedule controller', function(){
 
-  describe('Share with recruiters', function(){
+  describe('Schedule page', function(){
 
     it("should require you to select school if not logged in", function(done) {
       browser.visit("http://courseshark.dev/schedule", function(){
@@ -13,6 +13,16 @@ describe('Schedule controller', function(){
         browser.html("h1").should.include('Before we continue, we need to know what school you go to');
         done();
       });
+    });
+
+    // before(function(done){
+    //   browser.visit("http://courseshark.dev",function(){
+    //     browser.pressButton("Sign In");
+    //   });
+    // })
+
+    it("should take you to the schedule if you are logged in", function(){
+      return true;
     });
 
   });
