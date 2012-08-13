@@ -28,9 +28,11 @@ function testConflicts(schedule, section, ignore_section){
 			continue;
 		for ( var t=0,tlen=ss.timeslots.length; t<tlen; t++ ){
 			ts = ss.timeslots[t];
+			if ( !ts ){ continue; }
 			ts.days = ts.days || [];
 			for( var _t=0,_tlen=section.timeslots.length; _t<_tlen; _t++ ){
 				_ts = section.timeslots[_t];
+				if ( !_ts ){ continue; }
 				_ts.days = _ts.days || [];
 				if ( array_diff(_ts.days,ts.days).length!==_ts.days.length || array_diff(ts.days,_ts.days).length!==ts.days.length ){
 					if ( _ts.startTime <= ts.endTime && _ts.endTime >= ts.startTime )

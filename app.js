@@ -4,8 +4,6 @@
 
 var		express = require('express')
 		, fs = require('fs')
-		, config_file = require('yaml-config')
-		, config = config_file.readConfig(__dirname + '/config.yaml')
 		, auth = require('./lib/authorization')
 		, utils = require('./lib/utils')
 		, app = express.createServer()
@@ -13,6 +11,8 @@ var		express = require('express')
 		, sio = require('socket.io')
 		, io
 		, mongoose = require('mongoose')
+		, config_file = require('yaml-config')
+		, config = config_file.readConfig(__dirname + '/config.yaml', app.settings.env)
 		, mixpanel = new require('mixpanel').Client(config.mixpanel.accessToken)
 
 
@@ -54,7 +54,7 @@ mongoose.connection.on('open', function(){
 	// Build
 	require('./build').build(app);
 	// Start the seat watcher
-	if ( String(process.argv[2]).toLowerCase()!='no-cron' ){
+	if ( String(process.argv[2]).toLowerCase()!='no-cron' && process.env.SEAT_WATCHER=='true'){
 		require('./lib/seat-watcher').boot(app);
 	}
 

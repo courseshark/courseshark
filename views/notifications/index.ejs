@@ -221,7 +221,11 @@ $('[rel="edit-notification"]').bind('click', function(){
 })
 
 
-$('#submit-button').click(function(){
+function purchase(c){
+	if ( c=='credit' ){
+		$('input[name="email"]').focus();
+		return;
+	}
 	var info = {
 		section: $('select[name="section_id"]').val()
 		,	email: $('input[name="email"]').val()
@@ -237,6 +241,10 @@ $('#submit-button').click(function(){
 	}
 
 	n_io.emit('create', info)
+}
+
+$('#submit-button').click(function(){
+	purchase();
 })
 
 n_io.on('payment_needed', function(data){
