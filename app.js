@@ -14,7 +14,6 @@ var		express = require('express')
 		, io
 		, mongoose = require('mongoose')
 		, mixpanel = new require('mixpanel').Client(config.mixpanel.accessToken)
-		, db
 
 
 console.log("\n\nStarting in mode:", app.settings.env);
