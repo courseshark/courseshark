@@ -96,7 +96,7 @@ then
 	(
 		export PATH=$NEW_PATH;
 		forever stopall;
-	 	forever start ./seat-watcher.js;
+	 	forever start -a -l $OUT_LOG ./seat-watcher.js;
 	)
 	exit;
 fi
