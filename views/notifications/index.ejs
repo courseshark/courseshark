@@ -186,16 +186,18 @@
 
 
 <script>
-n_io = io.connect('/notifications')
-sp = new SectionPicker({
-		term: $('#term_id')
-	, department: $('#major_id')
-	, course: $('#course_id')
-	, section: $('#section_id')
-	, options: {empty: true, seperateName: false}
-});
+var noteSocketLocation = ((window.location.host||window.location.hostname).match(/\.dev/gi)?'':'io.courseshark.com')+'/notifications'
+	, n_io = io.connect(noteSocketLocation)
+	,	sp = new SectionPicker({
+				term: $('#term_id')
+			, department: $('#major_id')
+			, course: $('#course_id')
+			, section: $('#section_id')
+			, options: {empty: true, seperateName: false}
+		})
+	,	notifications = new Notifications($('#notifications-list'), $('#template-notification'));
 
-var notifications = new Notifications($('#notifications-list'), $('#template-notification'));
+
 notifications.show();
 
 

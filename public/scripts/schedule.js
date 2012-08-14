@@ -14,7 +14,8 @@ var term = {}
 		, conflict_worker = 0
 		, majors_updating = {}
 		, tooltip_data = {}
-		, seats = io.connect('/seats')
+		, socketLocation = ((window.location.host||window.location.hostname).match(/\.dev/gi)?'':'io.courseshark.com')+'/seats'
+		, seats = io.connect(socketLocation)
 		,	array_diff = function(o,a){return o.filter(function(e){return(!(a.indexOf(e)>-1))})}
 
 seats.on('result', function(data){
