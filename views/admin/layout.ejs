@@ -10,7 +10,8 @@
 <body>
     <%- partial('../includes/js.ejs') %>
     <script>
-      aio = io.connect('/admin')
+var adminSocketLocation = ((window.location.host||window.location.hostname).match(/\.dev/gi)?'':'io.courseshark.com')+'/admin'
+  , aio = io.connect(adminSocketLocation)
     </script>
 
 
