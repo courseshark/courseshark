@@ -89,6 +89,18 @@ else
 fi
 
 
+if [ "$1" == "seatwatcher" ]
+then
+	echo $GREEN;
+	echo "Starting seatwatcher with forever";
+	(
+		export PATH=$NEW_PATH;
+		forever stopall;
+	 	forever start ./seat-watcher.js;
+	)
+	exit;
+fi
+
 if [ "$1" == "nodemon" ]
 then
 	echo $BLUE

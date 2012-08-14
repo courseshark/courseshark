@@ -53,11 +53,6 @@ mongoose.connection.on('open', function(){
 	})
 	// Build
 	require('./build').build(app);
-	// Start the seat watcher
-	if ( String(process.argv[2]).toLowerCase()!='no-cron' && process.env.SEAT_WATCHER=='true'){
-		require('./lib/seat-watcher').boot(app);
-	}
-
 	// Start the app by listening on <port>
 	app.listen(port);
 	console.log('CourseShark started on port ' + port);

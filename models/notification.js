@@ -18,8 +18,6 @@ exports.boot = module.exports.boot = function (app){
 
 }
 
-exports.NotificationSchema = module.exports.NotificationSchema = NotificationSchema
-
 NotificationSchema = new Schema({
 		user: { type: Schema.ObjectId, ref: 'User' }
 	, section: { type: Schema.ObjectId, ref: 'Section' }
@@ -63,3 +61,7 @@ NotificationSchema.virtual('deleteLink')
 			,	s = typeof this.section['_id'] !== 'undefined' ? this.section._id : this.section
 		return '/notification/remove/'+u+'/'+this.id+'/'+s
 	})
+
+
+
+exports.NotificationSchema = module.exports.NotificationSchema = NotificationSchema

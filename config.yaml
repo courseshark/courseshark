@@ -36,7 +36,7 @@ staging:
   update:
     time: "15"
   db:
-    uri: "mongodb://courseshark:espress0!@loki.courseshark.com/courseshark_staging,mongodb://bane.courseshark.com,mongodb://joker.courseshark.com"
+    uri: "mongodb://courseshark:espress0!@localhost/courseshark_staging"
   facebook:
     appId: "182622275092530"
     appSecret: "885311f00c458526586a17ede8b3e57b"
@@ -68,7 +68,7 @@ production:
   update:
     time: "15"
   db:
-    uri: "mongodb://courseshark:espress0!@loki.courseshark.com/courseshark,mongodb://bane.courseshark.com,mongodb://joker.courseshark.com"
+    uri: "mongodb://courseshark:espress0!@localhost/courseshark"
   facebook:
     appId: "182622275092530"
     appSecret: "885311f00c458526586a17ede8b3e57b"
