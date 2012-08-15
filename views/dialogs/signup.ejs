@@ -10,22 +10,22 @@
 			<div class="control-group" id="personal-info">
 				<label class="control-label" for="email">Email</label>
 	      <div class="controls">
-					<input type="email" name="email" id="reg-email" placeholder="you@somewhere.com" >
+					<input type="email" name="signup_email" id="reg-email" placeholder="you@somewhere.com" >
 					<p class="help-inline" for="email"></p>
 				</div>
 			</div>
-			
+
 			<!-- Password -->
 			<div class="control-group" id="password-info">
 				<label class="control-label" for="password">Password</label>
 	      <div class="controls">
-					<input type="password" name="password" id="reg-password" placeholder="Password" />
+					<input type="password" name="signup_password" id="reg-password" placeholder="Password" />
 					<p class="help-inline" for="password"></p>
 					<input type="password" name="c_password" id="reg-c_password" placeholder="Confirm Password" required="true" />
 					<p class="help-inline" for="c_password"></p>
 				</div>
 			</div>
-			
+
 			<!-- School -->
 			<div class="control-group" id="school-info">
 				<label class="control-label" for="school_id">School</label>
@@ -43,23 +43,23 @@
 
 
 <div class="modal-footer">
-	<a href="#" class="btn btn-primary" onClick="register_submit()">Register</a>
+	<a href="#" class="btn btn-primary" name="registerButton" onClick="register_submit()">Register</a>
 	<a href="#" class="btn" data-dismiss="modal">Close</a>
 </div>
 
 
 <script>
 function register_submit(){
-	//Reset diaply 
+	//Reset diaply
 	$('form#reg .control-group').removeClass('error')
 	$('.help-inline[for="email"]').html("")
 	$('.help-inline[for="password"]').html("")
 	$('.help-inline[for="c_password"]').html("")
-	
+
 	var d = {'user.password' : $('input#reg-password').val()
 					, 'user.email'     : $('input#reg-email').val()
 					, 'user.school'    : $('select#reg-school_id').val()};
-	
+
 	if ( d['user.email'] === '' || !validateEmail(d['user.email']) ){
 		$('#personal-info').addClass('error').find('.help-inline[for="email"]').html("Invalid Email");
 		return;

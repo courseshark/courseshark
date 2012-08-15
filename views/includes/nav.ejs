@@ -13,20 +13,20 @@
 						<ul class="nav pull-right">
 							<li>
 								<div class="btn-group">
-	  							<a class="btn btn-large dropdown-toggle" data-toggle="dropdown" href="#" >
+	  							<a class="btn btn-large dropdown-toggle" data-toggle="dropdown" name="accountDropdown" href="#" >
 	    							<i class="icon-user icon"></i>&nbsp;<%= user.firstName %>
 	    						<span class="caret"></span>
 	  							</a>
 								  <ul class="dropdown-menu">
-										<li><a href="/settings"><i class="icon-cog"></i>&nbsp;Settings</a></li>
-										<li><a href="/friends"><i class="icon-comment"></i>&nbsp;Friends</a></li>
-										<li><a href="/logout"><i class="icon-off"></i>&nbsp;Log Out</a></li>
+										<li><a name="settings" href="/settings"><i class="icon-cog"></i>&nbsp;Settings</a></li>
+										<li><a name="friends" href="/friends"><i class="icon-comment"></i>&nbsp;Friends</a></li>
+										<li><a name="logOut" href="/logout"><i class="icon-off"></i>&nbsp;Log Out</a></li>
 								  </ul>
 								</div>
 							</li>
 						</ul>
 					<% } else { %>
-					 <li><button class="btn btn-primary btn-large" onClick="openDialog('/login')"><i class="icon-white icon-user"></i> Sign In</button></li>
+					 <li><button class="btn btn-primary btn-large" name="signInButton" onClick="openDialog('/login')"><i class="icon-white icon-user"></i> Sign In</button></li>
 					<% } %>
 				</ul>
 				<ul class="nav pull-right">

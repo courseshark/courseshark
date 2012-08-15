@@ -1,6 +1,6 @@
 var Browser = require("zombie")
   , should = require("should");
-browser = new Browser()
+browser = new Browser();
 
 describe('Sites controller', function(){
 

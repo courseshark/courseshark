@@ -37,19 +37,19 @@ function loadSeatData(id){
 
 
 
-
 /***************************************************************************
  *
  * New Schedule  Code, cleaner and with standards
  *
 ***************************************************************************/
-Storage = window.Storage || window.localStorage || {};
+if(typeof Storage === 'undefined'){Storage = Object}
 Storage.prototype.setObject = function(key, value) {
-		localStorage.setItem(key, JSON.stringify(value));
+    this.setItem(key, JSON.stringify(value));
 }
+
 Storage.prototype.getObject = function(key) {
-		// :TODO: Add experation code
-		return localStorage.getItem(key) && JSON.parse(localStorage.getItem(key));
+    var value = this.getItem(key);
+    return value && JSON.parse(value);
 }
 function storeObject(name, obj){
 	if ( Modernizr.localstorage ){

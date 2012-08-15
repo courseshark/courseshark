@@ -1,6 +1,6 @@
 var Browser = require("zombie")
   , should = require("should");
-browser = new Browser()
+browser = new Browser();
 
 describe('Schedule controller', function(){
 
