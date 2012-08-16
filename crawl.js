@@ -1,3 +1,5 @@
+#!./bin/node/bin/node
+
 (function(env){
 	var school = ''
 		,	term = ''
