@@ -27,7 +27,7 @@ SectionSchema = new Schema({
 	, seatsTotal: { type: Number, 'default': 0 }
 	, waitSeatsAvailable: { type: Number }
 	, waitSeatsTotal: { type: Number }
-	, timeslots: [ TimeslotSchema ]
+	, timeslots: []
 	, deleted: { type: Boolean, 'default': false }
 	, updated: { type: Date, 'default': Date.now }
 });
