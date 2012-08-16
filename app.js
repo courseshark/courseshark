@@ -20,7 +20,7 @@ console.log("\n\nStarting in mode:", app.settings.env);
 
 app.config = config;
 app.mixpanel = mixpanel;
-app.mixpanel.set_config({test: app.settings.env!="production", debug: app.settings.env!="production"});
+app.mixpanel.set_config({test: app.settings.env!="production", debug: app.settings.env=="development"});
 app.io = io = sio.listen(app);
 app.io.set('log level', 1);
 
