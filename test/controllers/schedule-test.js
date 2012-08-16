@@ -19,9 +19,9 @@ browser = soda.createClient({
   browser: "googlechrome",
   mode: 'sync'
 });
-browser.on('command', function(cmd, args){
-  console.log(' \x1b[33m%s\x1b[0m: %s', cmd, args.join(', '));
-});
+// browser.on('command', function(cmd, args){
+//   console.log(' \x1b[33m%s\x1b[0m: %s', cmd, args.join(', '));
+// });
 
 describe('Schedule controller', function(){
 
@@ -120,6 +120,7 @@ describe('Schedule controller', function(){
       t.click('id=link-button');
       t.verifyTextPresent('http://gatech.courseshark.dev/');
       t.click('share_close');
+      t.testComplete();
     }));
 
   });
