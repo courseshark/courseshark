@@ -30,7 +30,7 @@ SectionSchema = new Schema({
 	, timeslots: []
 	, deleted: { type: Boolean, 'default': false }
 	, updated: { type: Date, 'default': Date.now }
-});
+}, {shardkey: {course: 1}});
 
 SectionSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})
