@@ -160,7 +160,7 @@ END:VCALENDAR
 	      </ul>
 			</div>
 		</div>
-	</div>	
+	</div>
 	<% } %>
 	<div class="container">
 		<div class="row">
@@ -178,7 +178,7 @@ END:VCALENDAR
 
 								<div class="controls">
 								<div class="input">
-									<select id="major-id" tabindex="1" placeholder="subject" rel="tooltip" data-placement="top" data-original-title="Choose a department">
+									<select id="major-id" name="major-id" tabindex="1" placeholder="subject" rel="tooltip" data-placement="top" data-original-title="Choose a department">
 										<option></option>
 									</select>
 									<select id="course-id" tabindex="2" placeholder="course"/>
@@ -197,7 +197,7 @@ END:VCALENDAR
 				<!-- Containers for the Classes added to the Schedule -->
 				</div>
 			</div>
-			
+
 			<div id="schedule-container" class="span7">
 				<%- partial('calendars/week') %>
 			</div>
@@ -215,7 +215,6 @@ END:VCALENDAR
 				</div>
 			</div>
 
-			
 		</div>
 	</div>
 
@@ -295,7 +294,7 @@ $(document).ready(function() {
 		}
 	})
 	_gaq = _gaq || {};
-		
+
 	$('#save-button').click(function(){
 		<% if ( loggedIn ){ %>
 			mixpanel.track('Saved Schedule');
@@ -309,27 +308,27 @@ $(document).ready(function() {
 			return false;
 		<% } %>
 	});
-	
+
 	$('#load-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Load']);	
 		show_load_dialog();
 	});
-	
+
 	$('#new-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'New']);
 		show_new_dialog();
 	});
-	
+
 	$('#print-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Print']);
 		window.print();
 	});
-	
+
 	$('#ical-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'iCal']);
 		$('#ical-button').attr('href', schedule.createCal()).attr('download', schedule.name);
 	});
-	
+
 	$('#link-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Link']);
 		mixpanel.track('Generate Share Link', {from: 'Menu'});
@@ -373,6 +372,6 @@ $(document).ready(function() {
 		mixpanel.track("Asked to Share with Recruiters");
 		openDialog('/share-with-recruiters');
 	<%}%>
-	
+
 });
 </script>

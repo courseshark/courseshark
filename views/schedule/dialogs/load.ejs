@@ -14,19 +14,19 @@
 	<div id="loadList">
 		<% if ( schedules.length === 0 ){ %>
 			<div class="loadNode">You have no saved schedules.</div>
-		<% } %>		
+		<% } %>
 		<% for(var i=0, len=schedules.length; i<len; i++ ){ schedule = schedules[i]; %>
 			<div class="loadNode">
 				<a href="#" data-dismiss="modal" class="name" onClick="Schedule.load('<%=schedule.id%>');"><%=schedule.name%></a>
 				<div class="term"><%= schedule.term.season %> <%= schedule.term.year %></div>
 				<!--<div class="hours"><%= schedule.creditHours?schedule.creditHours:'-' %></div>-->
 				<div class="delete" onclick="if(confirm('Delete this schedule?')){if(deleteSchedule('<%=schedule.id%>')){$(this).parent().fadeOut();}}">&times;</div>
-			</div>			
+			</div>
 		<% } %>
 
 	</div>
 </div>
 
 <div class="modal-footer">
-	<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+	<a href="#" class="btn btn-primary" name="load_close" data-dismiss="modal">Close</a>
 </div>
