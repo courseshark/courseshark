@@ -17,6 +17,7 @@ The following schools are supported.
 * [West Virginia University](http://wvu.courseshark.com/) -- WVU (http://wvu.courseshark.com/)
 * [University of Alabama Huntsville](http://uah.courseshark.com/) -- UAH (http://uah.courseshark.com/)
 * [New Mexico Tech](http://nmt.courseshark.com/) -- NMT (http://nmt.courseshark.com/)
+* [Kennesaw State University](http://kennesaw.courseshark.com/) -- KENNESAW (http://kennesaw.courseshark.com/)
 
 
 Contributing
