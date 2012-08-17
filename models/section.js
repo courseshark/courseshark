@@ -13,7 +13,7 @@ exports.boot = module.exports.boot = function (app){
 exports.SectionSchema = module.exports.SectionSchema = SectionSchema
 
 SectionSchema = new Schema({
-		number: { type: Number, index: true }
+		number: { type: String, index: true }
 	,	info: { type: String }
 	,	type: { type: String }
 	, name: { type: String }
@@ -23,14 +23,15 @@ SectionSchema = new Schema({
 	, instructor: { type: String }
 	,	parent: { type: Schema.ObjectId, ref: 'Section' }
 	, credits: { type: String }
-	, seatsAvailable: { type: Number }
-	, seatsTotal: { type: Number, 'default': 0 }
+	, seatsAvailable: { type: Schema.Types.Mixed }
+	, seatsTotal: { type: Schema.Types.Mixed, 'default': 0 }
 	, waitSeatsAvailable: { type: Number }
 	, waitSeatsTotal: { type: Number }
 	, timeslots: []
 	, deleted: { type: Boolean, 'default': false }
 	, updated: { type: Date, 'default': Date.now }
 }, {shardkey: {course: 1}});
+
 
 SectionSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})
