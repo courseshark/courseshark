@@ -13,7 +13,7 @@ exports.boot = module.exports.boot = function (app){
 exports.SectionSchema = module.exports.SectionSchema = SectionSchema
 
 SectionSchema = new Schema({
-		number: { type: String, index: true }
+		number: { type: Number, index: true }
 	,	info: { type: String }
 	,	type: { type: String }
 	, name: { type: String }
