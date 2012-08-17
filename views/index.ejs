@@ -1,115 +1,25 @@
 <style>
-	.fancy{ 
-		background: url('/images/bg-home.png') center top no-repeat white;
-		margin-top: -10px;
-		margin-bottom: -15px;
-		padding-top: 10px;
-		padding-bottom: 18px;
-	}
-	.raffel-header{
-		display:none;
-		margin-bottom: 3px;
-		/*margin-top: -7px;*/
-		padding: 14px 0;
-		background: #FFF;
-		box-shadow: inset 0 0 8px #555;
-		position: relative;
-		top:-7px;
-		-webkit-transition: background 0.4s ease-in-out;
-		-moz-transition: background 0.4s ease-in-out;
-		-ms-transition: background 0.4s ease-in-out;
-		-o-transition: background 0.4s ease-in-out;
-		transition: background 0.4s ease-in-out;
-
-	}
-	.raffel-header.loading{
-		background: #d8fffc;
-	}
-	.raffel-header > .container{
-		padding-top:20px;
-	}
-	.raffel-header img#nexus-7-tablet{
-		width: 100%;
-	}
-	.raffel-header h1{
-		font-weight: 300;
-		font-size: 48px;
-		line-height: 50px;
-	}
-	.raffel-header h2{
-		font-weight: 300;
-		font-size: 36px;
-		line-height: 38px;
-	}
-	.raffel-header h3{
-		font-weight: 300;
-		font-size: 32px;
-		line-height: 36px;
-	}
-	.raffel-header img#nexus-7-text{
-		margin-bottom: 5px;
-	}
-	.raffel-header img#nexus-7-text, .raffel-header h2, .raffel-header h3{
-		margin-top:10px;
-	}
-	.raffel-header a.btn{
-		margin-top:58px;
-	}
-	.raffel-header .button-actions{
-		width: 460px;
-		text-align: right;
+	body{ 
+		background: url('/images/bg-home.png') center 50px no-repeat white;
 	}
 </style>
-
-
-
-<div class="raffel-header loading">
-	<div class="container">
-		<div class="row">
-			<div class="span6">
-				<img id="nexus-7-tablet" src="http://www.google.com/nexus/a-images/tablet-n7-features-ushome-family.png" alt="Nexus 7"/>
-			</div>
-			<div class="span6">
-				<h1>Invite friends</h1>
-				<h2>and win a</h2>
-				<img id="nexus-7-text" src="http://www.google.com/nexus/a-images/tablet-n7-logo.png" />
-				<h3>or one of many other pizes</h3>
-
-				<div class="button-actions">
-
-					<a class="btn btn-large">Hum... Tell me more</a>
-					<a class="btn btn-large btn-primary">Let's Do It!</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<script src="/scripts/raffel.js?t=<%= Date.now()%>"></script>
-
-
-<div class="fancy">
-	<div class="container" >
-		<div class="hero-unit masthead">
-			<div class="row">
-				<div class="introducing span6">		
-				  <h1>Scheduling made simple</h1>
-				  <p class="intro">
-				  	CourseShark crafts exactly the schedule you need and shares it with your inner circles.
-				  </p>
-				  <p>
-				  	<a href="/schedule" class="btn btn-success btn-large">
-							Get Started <i class="icon-white icon-arrow-right"></i>
-						</a>
-					</p>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
 <div class="container">
-
+	<div class="hero-unit masthead">
+		<div class="row">
+			<div class="introducing span6">		
+			  <h1>Scheduling made simple</h1>
+			  <p class="intro">
+			  	CourseShark crafts exactly the schedule you need and shares it with your inner circles.
+			  </p>
+			  <p>
+			  	<a href="/schedule" class="btn btn-success btn-large">
+						Get Started <i class="icon-white icon-arrow-right"></i>
+					</a>
+				</p>
+			</div>
+		</div>
+	</div>
+	
 	<div class="section-head">
  		<h1>Create your schedules and share them with friends and classmates</h1>
  		<p>We have the tools you need to get your schedule right.</p>
