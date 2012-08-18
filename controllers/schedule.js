@@ -166,12 +166,12 @@ exports = module.exports = function(app){
 			if ( !existingLink ){
 				link.hash = randomHash()
 				link.save(function(err){
-					url = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
-					res.json({id: link.id, url: url, err: err})
+					shareLink = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
+					res.json({id: link.id, url: shareLink.toString(), err: err})
 				})
 			}else{
-				app.getExistingLink('http://'+req.headers.host+'/sl/'+existingLink.hash, req.user, function(url){
-					res.json({id: existingLink._id, url: url, err:err})
+				app.getExistingLink('http://'+req.headers.host+'/sl/'+existingLink.hash, req.user, function(shareLink){
+					res.json({id: existingLink._id, url: shareLink.toString(), err:err})
 				})
 			}
 		})

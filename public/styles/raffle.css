@@ -1,0 +1,106 @@
+	.raffle-header{
+		display:none;
+		margin-bottom: 3px;
+		/*margin-top: -7px;*/
+		padding: 14px 0 30px 0;
+		background: #FFF;
+		box-shadow: inset 0 0 8px #555;
+		position: relative;
+		top:-7px;
+		
+		color: rgb(102, 102, 102);
+
+		-webkit-transition: background 0.4s ease-in-out;
+		-moz-transition: background 0.4s ease-in-out;
+		-ms-transition: background 0.4s ease-in-out;
+		-o-transition: background 0.4s ease-in-out;
+		transition: background 0.4s ease-in-out;
+
+	}
+	.raffle-header > .container{
+		padding-top: 20px;
+	}
+	.raffle-header img#nexus-7-tablet{
+		width: 100%;
+	}
+	.raffle-header h1{
+		font-weight: 300;
+		font-size: 48px;
+		line-height: 50px;
+	}
+	.raffle-header h2{
+		font-weight: 300;
+		font-size: 36px;
+		line-height: 38px;
+	}
+	.raffle-header h3{
+		font-weight: 300;
+		margin-top: 0;
+		font-size: 23px;
+		line-height: 100%;
+	}
+	.raffle-header img#nexus-7-text{
+		margin-bottom: 5px;
+	}
+	.raffle-header img#nexus-7-text, .raffle-header h2{
+		margin-top:10px;
+	}
+	.raffle-header a{
+		display:block;
+		font-size:13px;
+		color: #b4b4b4;
+	}
+	.raffle-header .btn{
+		line-height: 52px;
+		font-size: 38px;
+		margin-bottom: 3px;
+	}
+	.raffle-header .button-actions{
+		margin-top:20px;
+	}
+
+	.raffle-display-left{
+		position:relative;
+	}
+	.raffle-left{
+		margin-left:20px;
+		display: none;
+	}
+	.raffle-info{
+		display: block;
+	}
+	.raffle-login{
+		padding-top:140px;
+	}
+	.raffle-login img{
+		position: absolute;
+		top: -20px;
+		right: 40px;
+	}
+
+	.share{
+		margin-right: 6px;
+		float: left;
+	}
+	.social-links{
+		margin-left: 100px;
+		margin-bottom: -15px;
+	}
+	.share-link-container{
+		margin-top: 50px;
+		margin-bottom: -20px;
+	}
+	.link-well{
+		text-align: center;
+		background: #e7fffe;
+	}
+	.link-well .share-text{
+		font-weight: 300;
+		font-size: 17px;
+		margin-bttom: 5px;
+		margin-top: -15px;
+	}
+	.link-well .share-link{
+		font-weight: bold;
+		margin: 5px 0 15px 0;
+	}
