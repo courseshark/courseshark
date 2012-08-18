@@ -15,8 +15,18 @@ var term = {}
 		, majors_updating = {}
 		, tooltip_data = {}
 		, socketLocation = ((window.location.host||window.location.hostname).match(/\.dev/gi)?'':'io.courseshark.com')+'/seats'
-		, seats = io.connect(socketLocation)
+		, seats = {on:function(){}, emit:function(){}} // fake socket obj
 		,	array_diff = function(o,a){return o.filter(function(e){return(!(a.indexOf(e)>-1))})}
+
+if ( (window.location.pathname||window.location.href).match(/\/schedule/) ){
+	seats = io.connect(socketLocation, {
+			'transports': ['websocket', 'xhr-multipart', 'flashsocket', 'xhr-polling', 'jsonp-polling', 'htmlfile']
+		,	'sync disconnect on unload': true
+		,	'reconnection limit': 2000
+		,	'connect timeout': 750
+	})
+}
+
 
 seats.on('result', function(data){
 	var id = data.id
