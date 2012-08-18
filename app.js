@@ -21,8 +21,20 @@ console.log("\n\nStarting in mode:", app.settings.env);
 app.config = config;
 app.mixpanel = mixpanel;
 app.mixpanel.set_config({test: app.settings.env!="production", debug: app.settings.env=="development"});
+
+// Socket.io
 app.io = io = sio.listen(app);
-app.io.set('log level', 1);
+app.io.enable('browser client minification');  // send minified client
+app.io.enable('browser client etag');          // apply etag caching logic based on version number
+app.io.enable('browser client gzip');          // gzip the file
+app.io.set('log level', 1);                    // reduce logging
+app.io.set('transports', [                     // enable all transports (optional if you want flashsocket)
+    'websocket'
+  , 'flashsocket'
+  , 'xhr-polling'
+  , 'jsonp-polling'
+  , 'htmlfile'
+]);
 
 mongoose.connection.on('open', function(){
 	console.log('Database Connected');
