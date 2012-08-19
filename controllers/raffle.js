@@ -3,7 +3,14 @@
  */
 exports = module.exports = function(app){
 	// Home
-	app.get('/raffle', function(req, res){
-		res.render('raffle/index');
+	app.get('/giveaway', function(req, res){
+		if ( req.loggedIn ){
+			require('../lib/social-track').getExistingLink('http://courseshark.com/', req.user, function(link){
+				res.render('raffle/index', {raffleLink: link});
+			})
+		}
+		else{
+			res.render('raffle/index', {});
+		}
 	});
 }

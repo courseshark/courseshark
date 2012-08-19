@@ -1,3 +1,7 @@
+	
+	.raffle-container{
+		margin-top: 27px;
+	}
 	.raffle-header{
 		display:none;
 		margin-bottom: 3px;
@@ -7,8 +11,6 @@
 		box-shadow: inset 0 0 8px #555;
 		position: relative;
 		top:-7px;
-		
-		color: rgb(102, 102, 102);
 
 		-webkit-transition: background 0.4s ease-in-out;
 		-moz-transition: background 0.4s ease-in-out;
@@ -23,39 +25,39 @@
 	.raffle-header img#nexus-7-tablet{
 		width: 100%;
 	}
-	.raffle-header h1{
+	.raffle-left h1{
 		font-weight: 300;
 		font-size: 48px;
 		line-height: 50px;
 	}
-	.raffle-header h2{
+	.raffle-left h2{
 		font-weight: 300;
 		font-size: 36px;
 		line-height: 38px;
 	}
-	.raffle-header h3{
+	.raffle-left h3{
 		font-weight: 300;
 		margin-top: 0;
 		font-size: 23px;
 		line-height: 100%;
 	}
-	.raffle-header img#nexus-7-text{
+	.img#nexus-7-text{
 		margin-bottom: 5px;
 	}
-	.raffle-header img#nexus-7-text, .raffle-header h2{
+	.img#nexus-7-text, .raffle-left h2{
 		margin-top:10px;
 	}
-	.raffle-header a{
+	.raffle-left a{
 		display:block;
 		font-size:13px;
 		color: #b4b4b4;
 	}
-	.raffle-header .btn{
+	.raffle-left .btn{
 		line-height: 52px;
 		font-size: 38px;
 		margin-bottom: 3px;
 	}
-	.raffle-header .button-actions{
+	.raffle-left .button-actions{
 		margin-top:20px;
 	}
 
@@ -65,6 +67,7 @@
 	.raffle-left{
 		margin-left:20px;
 		display: none;
+		color: rgb(102, 102, 102);
 	}
 	.raffle-info{
 		display: block;
@@ -85,6 +88,8 @@
 	.social-links{
 		margin-left: 100px;
 		margin-bottom: -15px;
+		max-height: 25px;
+		overflow: hidden;
 	}
 	.share-link-container{
 		margin-top: 50px;
