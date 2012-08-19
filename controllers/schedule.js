@@ -111,6 +111,7 @@ exports = module.exports = function(app){
 				schedule.name = passedJSON.name
 				schedule.sections = passedJSON.sections
 				schedule.save(function(){
+					if ( err ){ console.log('--Schedule save--', err); }
 					res.json(schedule)
 				})
 			}
