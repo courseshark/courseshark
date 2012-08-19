@@ -1,4 +1,5 @@
 var util = require('../lib/utils')
+	,	url = require('url')
 	,	mongoose = require('mongoose')
 	, Schema = mongoose.Schema
 	, LinkSchema
@@ -21,3 +22,12 @@ LinkSchema = new Schema({
 
 LinkSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})
+
+LinkSchema.method('toString', function (){
+		var p = url.parse(this.to)
+		if ( ! p.search || p.search === '' ){
+			return this.to+'?lr='+this.hash
+		}else{
+			return this.to+'&lr='+this.hash
+		}
+	})
