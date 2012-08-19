@@ -298,14 +298,15 @@ $(document).ready(function() {
 		
 	var saveToggle;
 	$('#save-button').click(function(){
+
 		<% if ( loggedIn ){ %>
+			$('#save-button i').removeClass('icon-tag').addClass('icon-ok')
 			mixpanel.track('Saved Schedule');
 			_gaq.push(['_trackEvent', 'Schedule', 'Save']);
 			schedule.pushSave(function(){
-				$('#save-button i').removeClass('icon-tag').addClass('icon-ok')
 				saveToggle = setTimeout(function(){
 							$('#save-button i').addClass('icon-tag').removeClass('icon-ok')
-						}, 1000);
+						}, 750);
 			});
 			return false;
 		<% } else { %>
