@@ -18,7 +18,7 @@ var term = {}
 		, seats = {on:function(){}, emit:function(){}} // fake socket obj
 		,	array_diff = function(o,a){return o.filter(function(e){return(!(a.indexOf(e)>-1))})}
 
-if ( (window.location.pathname||window.location.href).match(/\/schedule/) ){
+if ( (window.location.pathname||window.location.href).match(/\/schedule|\/notification/) ){
 	seats = io.connect(socketLocation, {
 			'transports': ['websocket', 'xhr-multipart', 'flashsocket', 'xhr-polling', 'jsonp-polling', 'htmlfile']
 		,	'sync disconnect on unload': true
