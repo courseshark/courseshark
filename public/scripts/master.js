@@ -122,7 +122,7 @@ SectionPicker = function(opts){
 	if ( config['empty'] ){
 		seats.on('result', function(section){
 			s = section.section
-			if ( section.avail <= 0 ){
+			if ( section.avail <= 0 || section.seatsAvailable){
 				$section.append('<option value="'+s._id+'">'+s.number+' &mdash; '+s.timeslots[0].instructor+'</option>')
 			}
 			if ( --updating[s.course] === 0 ){

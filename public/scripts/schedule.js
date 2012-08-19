@@ -132,12 +132,15 @@ Schedule.prototype.save = function(skipServer){
 	updateScheduleConflicts();
 	return this;
 }
-Schedule.prototype.pushSave = function(getId){
+Schedule.prototype.pushSave = function(getId, callback){
+	// Adjust vars
+	if ( typeof getId == 'function' ){
+		callback =  getId;
+		getId = undefined;
+	}
+
 	self = this
-	if ( typeof this.user !== 'undefined' ){
-		self.save();
-		return;
-	}else if ( !getId ){
+	if ( !getId && !this._id ){
 		openDialog("/schedule/save");
 	}else{
 		self.show();
@@ -149,6 +152,9 @@ Schedule.prototype.pushSave = function(getId){
 			success:function(res){
 				self.id = this._id = res._id;
 				self.user = res.user;
+				if ( callback ){
+					callback();
+				}
 			}
 		});
 	}
