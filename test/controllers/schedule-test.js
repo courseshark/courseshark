@@ -56,6 +56,14 @@ describe('Schedule controller', function(){
       t.waitForTextPresent('CRN List');
     }));
 
+    it ("create a new schedule", SodaCan(function(){
+      t.click('id=new-button');
+      t.waitForElementPresent('id=term-selector');
+      t.click('id=new-term-submit');
+      t.verifyNotVisible('id=term-selector');
+      t.verifyElementNotPresent('xpath=//div[@class="wk-event-listing"]');
+    }));
+
     it ("select a subject and a class", SodaCan(function(){
       t.waitForElementPresent('id=major-id')
       t.select('id=major-id','index=1');
@@ -89,15 +97,12 @@ describe('Schedule controller', function(){
       t.verifyNotVisible('id=name-input');
     }));
 
-    it ("create a new schedule", SodaCan(function(){
+    it ("load a saved schedule", SodaCan(function(){
+      //setup
       t.click('id=new-button');
       t.waitForElementPresent('id=term-selector');
       t.click('id=new-term-submit');
-      t.verifyNotVisible('id=term-selector');
-      t.verifyElementNotPresent('xpath=//div[@class="wk-event-listing"]');
-    }));
-
-    it ("load a saved schedule", SodaCan(function(){
+      //foreal
       t.click('id=load-button');
       t.waitForTextPresent('Open a perviously created schedule:');
       t.click('xpath=//a[contains(.,"awesome")]');
