@@ -230,12 +230,12 @@ exports = module.exports = function(app){
 				Term.findById(section.term).populate('school').exec(function(err, term){
 					if ( term.active ){
 						crawler[term.school.abbr].safeUpdateSection(section, FIFTEEN_MINUTES, function(err, section){
-							seats.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal, section: section})
+							socket.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal, section: section})
 						})
 					}else{
-							avail = section.seatsAvailable?section.seatsAvailable:'-'
-							tot = section.seatsTotal?section.seatsTotal:'?'
-							seats.emit('result', {id: section.id, avail: avail, total: tot, section: section})
+						var avail = section.seatsAvailable?section.seatsAvailable:'-'
+							,	tot = section.seatsTotal?section.seatsTotal:'?';
+						socket.emit('result', {id: section.id, avail: avail, total: tot, section: section})
 					}
 				})
 			})

@@ -131,26 +131,29 @@ exports = module.exports = function(app){
 	})
 
 	app.get('/admin/giveaway', requireAdmin, function(req, res){
-		dateRange = {
+		var dateRange = {
 				$gte: new Date('Sun Aug 19 2012 23:00:00')
 			, $lte: new Date('Monday Sep 3 2012 4:01:00')
 		}
 
 		var o = {};
-		o.query = {createdOn: dateRage, user: {$ne: undefined}};
-		o.map = function () { emit(this.user, {referals: this.referals, visits: this.visits}) };
+		o.query = {createdOn: dateRange, user: {$ne: undefined}};
+		o.replace = "giveawayReferPoints"
+		o.map = function () { emit(this.user, {referals: this.referals, visits: this.visits, hash: this.hash}) };
 		o.reduce = function (k, vals) {
-			var ref=0,vis=0;
-			for(var i=0;i<values.length;i++ ){
-				ref += values[i].referals;
-				vis += values[i].visits;
+			var ref=0,vis=0,hash=[];
+			for(var i=0;i<vals.length;i++ ){
+				ref += vals[i].referals;
+				vis += vals[i].visits;
+				hash.push(vals[i].hash)
 			}
-			return {referals: this.referals, visits: this.visits}
+			return {referals: this.referals, visits: this.visits, hash: this.hash}
 		};
 		o.verbose = true;
 		Link.mapReduce(o, function (err, results) {
-		  console.log(results);
+			res.json(err||results);
+			console.log(results);
 		})
 
 	});
-
+}
