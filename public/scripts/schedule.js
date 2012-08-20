@@ -15,8 +15,18 @@ var term = {}
 		, majors_updating = {}
 		, tooltip_data = {}
 		, socketLocation = ((window.location.host||window.location.hostname).match(/\.dev/gi)?'':'io.courseshark.com')+'/seats'
-		, seats = io.connect(socketLocation)
+		, seats = {on:function(){}, emit:function(){}} // fake socket obj
 		,	array_diff = function(o,a){return o.filter(function(e){return(!(a.indexOf(e)>-1))})}
+
+if ( (window.location.pathname||window.location.href).match(/\/schedule|\/notification/) ){
+	seats = io.connect(socketLocation, {
+			'transports': ['websocket', 'xhr-multipart', 'flashsocket', 'xhr-polling', 'jsonp-polling', 'htmlfile']
+		,	'sync disconnect on unload': true
+		,	'reconnection limit': 2000
+		,	'connect timeout': 750
+	})
+}
+
 
 seats.on('result', function(data){
 	var id = data.id
@@ -122,12 +132,15 @@ Schedule.prototype.save = function(skipServer){
 	updateScheduleConflicts();
 	return this;
 }
-Schedule.prototype.pushSave = function(getId){
+Schedule.prototype.pushSave = function(getId, callback){
+	// Adjust vars
+	if ( typeof getId == 'function' ){
+		callback =  getId;
+		getId = undefined;
+	}
+
 	self = this
-	if ( typeof this.user !== 'undefined' ){
-		self.save();
-		return;
-	}else if ( !getId ){
+	if ( !getId && !this._id ){
 		openDialog("/schedule/save");
 	}else{
 		self.show();
@@ -139,6 +152,9 @@ Schedule.prototype.pushSave = function(getId){
 			success:function(res){
 				self.id = this._id = res._id;
 				self.user = res.user;
+				if ( callback ){
+					callback();
+				}
 			}
 		});
 	}

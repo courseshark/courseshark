@@ -9,11 +9,6 @@
 </head>
 <body>
     <%- partial('../includes/js.ejs') %>
-    <script>
-var adminSocketLocation = ((window.location.host||window.location.hostname).match(/\.dev/gi)?'':'io.courseshark.com')+'/admin'
-  , aio = io.connect(adminSocketLocation)
-    </script>
-
 
     <%- partial('../includes/nav.ejs') %>
     <div class="container-fluid">

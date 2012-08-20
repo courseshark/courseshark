@@ -296,11 +296,18 @@ $(document).ready(function() {
 	})
 	_gaq = _gaq || {};
 		
+	var saveToggle;
 	$('#save-button').click(function(){
+
 		<% if ( loggedIn ){ %>
+			$('#save-button i').removeClass('icon-tag').addClass('icon-ok')
 			mixpanel.track('Saved Schedule');
 			_gaq.push(['_trackEvent', 'Schedule', 'Save']);
-			schedule.pushSave();
+			schedule.pushSave(function(){
+				saveToggle = setTimeout(function(){
+							$('#save-button i').addClass('icon-tag').removeClass('icon-ok')
+						}, 750);
+			});
 			return false;
 		<% } else { %>
 			mixpanel.track('Save Scheudle but !Logged In');
