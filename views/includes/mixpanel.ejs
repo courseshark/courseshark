@@ -2,7 +2,7 @@
 <script type="text/javascript">
 (function(c,a){window.mixpanel=a;var b,d,h,e;b=c.createElement("script");
     b.type="text/javascript";b.async=!0;b.src=("https:"===c.location.protocol?"https:":"http:")+
-    '//api.mixpanel.com/site_media/js/api/mixpanel.2.js';d=c.getElementsByTagName("script")[0];
+    '//cdn.mxpnl.com/libs/mixpanel-2.0.min.js';d=c.getElementsByTagName("script")[0];
     d.parentNode.insertBefore(b,d);a._i=[];a.init=function(b,c,f){function d(a,b){
     var c=b.split(".");2==c.length&&(a=a[c[0]],b=c[1]);a[b]=function(){a.push([b].concat(
     Array.prototype.slice.call(arguments,0)))}}var g=a;"undefined"!==typeof f?g=a[f]=[]:
@@ -14,5 +14,6 @@
 mixpanel.init("22566cab7f699ae4100bd3d23dfc1420"<%if (mode!="production"){%>, {debug: true, test: true}<%}%>);
 mixpanel.register({ distinct_id: "<%= distinctId %>" });
 <% if (loggedIn && user){ %>mixpanel.identify("<%=user.id%>");mixpanel.people.set({"$email": "<%=user.email%>","$first_name": "<%=user.firstName%>","$last_name": "<%=user.lastName%>","created": new Date("<%=user.created%>"),"login_count": "<%=user.loginCount%>","$last_login": new Date("<%=user.lastLogin%>"),"school": "<%=user.school&&user.school._id||user.school||'none'%>","referrer": document.referrer});mixpanel.name_tag('<%=user.email||user.firstName||user.id%>');<%}%>
+window.onerror=function(m,f,l){var p={};p.message=m;p.file=f;p.line=l;mixpanel.track('js-err',p);}
 </script>
 <!-- end Mixpanel -->

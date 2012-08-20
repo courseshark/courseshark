@@ -8,8 +8,6 @@ exports.boot = module.exports.boot = function (app){
 	app.Term = Term = mongoose.model('Term');
 }
 
-exports.boot.TermSchema = module.exports.TermSchema = TermSchema
-
 TermSchema = new Schema({
 		name: { type: String }
 	,	season: { type: String }
@@ -23,3 +21,5 @@ TermSchema = new Schema({
 
 TermSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})
+
+exports.TermSchema = module.exports.TermSchema = TermSchema;

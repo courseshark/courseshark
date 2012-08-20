@@ -7,5 +7,6 @@ logs/access.log
 /public*     # static files
 /views/*     # view files
 /views*     # view files
+/node_modules/*
 *.coffee      # ignore any CSS files too
 *.log

@@ -290,16 +290,24 @@ $(document).ready(function() {
 		if ( typeahead.shown ){
 			$thing.typeahead('hide')
 		}else{
-			$thing.typeahead('showOptions')	
+			$thing.typeahead('showOptions')
 		}
 	})
 	_gaq = _gaq || {};
 
+	var saveToggle;
+
 	$('#save-button').click(function(){
+
 		<% if ( loggedIn ){ %>
+			$('#save-button i').removeClass('icon-tag').addClass('icon-ok')
 			mixpanel.track('Saved Schedule');
 			_gaq.push(['_trackEvent', 'Schedule', 'Save']);
-			schedule.pushSave();
+			schedule.pushSave(function(){
+				saveToggle = setTimeout(function(){
+							$('#save-button i').addClass('icon-tag').removeClass('icon-ok')
+						}, 750);
+			});
 			return false;
 		<% } else { %>
 			mixpanel.track('Save Scheudle but !Logged In');
@@ -310,7 +318,12 @@ $(document).ready(function() {
 	});
 
 	$('#load-button').click(function(){
-		_gaq.push(['_trackEvent', 'Schedule', 'Load']);	
+		_gaq.push(['_trackEvent', 'Schedule', 'Load']);
+		<% if ( loggedIn ){ %>
+			mixpanel.track('Load Schedule', {from: 'Menu'});
+		<% } else { %>
+			mixpanel.track('Load Scheudle but !Logged In', {from: 'Menu'});
+		<% } %>
 		show_load_dialog();
 	});
 
@@ -321,11 +334,13 @@ $(document).ready(function() {
 
 	$('#print-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Print']);
+		mixpanel.track('Print Schedule', {from: 'Menu'});
 		window.print();
 	});
 
 	$('#ical-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'iCal']);
+		mixpanel.track('Export Schedule', {from: 'Menu'});
 		$('#ical-button').attr('href', schedule.createCal()).attr('download', schedule.name);
 	});
 
@@ -343,7 +358,8 @@ $(document).ready(function() {
 
 
 	window.school = '<%= school %>';
-	init(<%if(link){%>'<%- schedule %>'<%}%>);
+	window.serverScheduleVersion = '<%= revision %>';
+	init(<%if(link){%><%- schedule %><%}%>);
 
 	<%if(link){%>
 		mixpanel.track('Viewed Link', {url: window.location.href})

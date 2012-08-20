@@ -24,6 +24,13 @@ var Notifications = function($list, $template){
 	this.load()
 	return this;
 }
+
+Notifications.prototype.add = function(note){
+	this.notifications.push(note);
+	this.$list.empty();
+	this.show();
+}
+
 Notifications.prototype.load = function(){
 	self = this
 	$.ajax({

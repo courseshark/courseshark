@@ -20,7 +20,7 @@ exports = module.exports = function(app){
 	app.get('/sl/:hash', function(req, res){
 		ScheduleLink.findOne({hash: req.params.hash}, function(err, scheduleLink){
 			if ( !scheduleLink ){
-				throw new app.NotFound()
+				res.send(404);
 			}else{
 				var schedule = scheduleLink.schedule
 				if ( !scheduleLink.schedule.term ){
@@ -110,6 +110,7 @@ exports = module.exports = function(app){
 				schedule.name = passedJSON.name
 				schedule.sections = passedJSON.sections
 				schedule.save(function(){
+					if ( err ){ console.log('--Schedule save--', err); }
 					res.json(schedule)
 				})
 			}
@@ -165,12 +166,12 @@ exports = module.exports = function(app){
 			if ( !existingLink ){
 				link.hash = randomHash()
 				link.save(function(err){
-					url = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
-					res.json({id: link.id, url: url, err: err})
+					shareLink = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
+					res.json({id: link.id, url: shareLink.toString(), err: err})
 				})
 			}else{
-				app.getExistingLink('http://'+req.headers.host+'/sl/'+existingLink.hash, req.user, function(url){
-					res.json({id: existingLink._id, url: url, err:err})
+				app.getExistingLink('http://'+req.headers.host+'/sl/'+existingLink.hash, req.user, function(shareLink){
+					res.json({id: existingLink._id, url: shareLink.toString(), err:err})
 				})
 			}
 		})

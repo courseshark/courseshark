@@ -153,6 +153,7 @@ exports = module.exports = function(app){
 				req.user.school = school
 				req.user.save()
 			}
+			app.mixpanel.track('Picked School', {school: school.abbr, distinct_id: req.session.distinctId});
 			url = req.session.schoolNeeded===undefined?'/':req.session.schoolNeeded
 			newDomain = 'http://'+school.abbr+'.'+req.app.config.domain+url
 			res.redirect(newDomain)

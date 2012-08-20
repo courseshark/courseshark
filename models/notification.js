@@ -18,25 +18,30 @@ exports.boot = module.exports.boot = function (app){
 
 }
 
-exports.NotificationSchema = module.exports.NotificationSchema = NotificationSchema
-
 NotificationSchema = new Schema({
 		user: { type: Schema.ObjectId, ref: 'User' }
 	, section: { type: Schema.ObjectId, ref: 'Section' }
 	, waitlist: { type: Boolean, 'default': false }
 	,	email: { type: String }
 	,	phone: { type: String }
-	, history: [{ type: Number }]
+	, history: []
 	, sent: { type: Boolean, 'default': false }
 	, lastSent: {type: Date}
-	, smsInfo: [{ type: String }]
+	, smsInfo: []
 	, deleted: { type: Boolean, 'default': false }
 	, hidden: { type: Boolean, 'default': false }
 	, school: { type: Schema.ObjectId, ref: 'School' }
+	, created: { type: Date, 'default': Date.now() }
+	, mofidied: { type: Date }
 });
 
 NotificationSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})
+
+NotificationSchema.pre('save', function(next){
+	this.modified = new Date();
+	next();
+})
 
 NotificationSchema.virtual('cancelLink')
 	.get(function (){
@@ -56,3 +61,7 @@ NotificationSchema.virtual('deleteLink')
 			,	s = typeof this.section['_id'] !== 'undefined' ? this.section._id : this.section
 		return '/notification/remove/'+u+'/'+this.id+'/'+s
 	})
+
+
+
+exports.NotificationSchema = module.exports.NotificationSchema = NotificationSchema
