@@ -132,27 +132,50 @@ exports = module.exports = function(app){
 
 	app.get('/admin/giveaway', requireAdmin, function(req, res){
 		var dateRange = {
-				$gte: new Date('Sun Aug 19 2012 23:00:00')
-			, $lte: new Date('Monday Sep 3 2012 4:01:00')
+				$gte: new Date('2012-08-19T23:00:00.000Z')
+			, $lte: new Date('2012-09-03T04:01:00.000Z')
 		}
 
 		var o = {};
 		o.query = {createdOn: dateRange, user: {$ne: undefined}};
-		o.replace = "giveawayReferPoints"
-		o.map = function () { emit(this.user, {referals: this.referals, visits: this.visits, hash: this.hash}) };
+		o.map = function () { emit(this.user, {referals: this.referals, visits: this.visits, schedule: !!this.to.match(/\/sl\//) }) };
 		o.reduce = function (k, vals) {
-			var ref=0,vis=0,hash=[];
+			var ref=0,vis=0,sch=0;
 			for(var i=0;i<vals.length;i++ ){
 				ref += vals[i].referals;
 				vis += vals[i].visits;
-				hash.push(vals[i].hash)
+				sch += vals[i].schedule;
 			}
-			return {referals: this.referals, visits: this.visits, hash: this.hash}
+			return {referals: ref, visits: vis, schedule: sch};
 		};
 		o.verbose = true;
 		Link.mapReduce(o, function (err, results) {
-			res.json(err||results);
-			console.log(results);
+
+			var collector = new (require( "events" ).EventEmitter)()
+				,	users = [];
+
+			collector.count = results.length;
+			for(var i=0,len=results.length; i<len; i++){
+				(function(res){
+					User.findById(res._id).exec(function(err, user){
+						vals = res.value;
+						vals.schedule=vals.schedule>0?1:0;
+						vals.recruiters=(user.shareWithRecruiters?1:0);
+						vals.points = vals.referals + (vals.schedule*2) + vals.recruiters;
+						users.push({user: user, values:vals})
+						collector.emit('decrement');
+					})
+				})(results[i]);
+			}
+			collector.on('decrement', function(){
+				if(--this.count===0){ this.emit('done') }
+			})
+
+			// Display the results
+			collector.on('done', function(){
+				users.sort(function(a,b){return b.values.points-a.values.points})
+				res.json(users);
+			})
 		})
 
 	});
