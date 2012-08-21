@@ -6,7 +6,6 @@ exports = module.exports = function(app){
 	app.get('/share-with-recruiters', function(req, res){
 		res.render('recruiter/ask');
 	})
-
 	app.put('/share-with-recruiters', requireLogin, function(req, res){
 		req.user.shareWithRecruiters = ((''+req.body.share)=="true");
 		req.user.save(function(err){
@@ -14,8 +13,8 @@ exports = module.exports = function(app){
 		})
 		res.send(200);
 	})
-	
 	app.get('/recruiter-share-invite', function(req, res){
 		res.render('recruiter/dialog');
 	})
+
 }

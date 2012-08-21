@@ -16,7 +16,7 @@ ScheduleSchema = new Schema({
 		name: { type: String }
 	,	term: { type: Schema.ObjectId, ref: 'Term' }
 	,	school: { type: Schema.ObjectId, ref: 'School' }
-	,	user: { type: Schema.ObjectId, index: true }
+	,	user: { type: Schema.ObjectId, index: true, ref: 'User' }
 	, sections: [SectionSchema]
 });
 

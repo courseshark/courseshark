@@ -126,9 +126,54 @@ exports = module.exports = function(app){
 		})
 	})
 
-	app.get('/admin/launch/import', requireAdmin, function(req, res){
-		res.render('admin/launch/import', {layout:false})
-	})
+		app.get('/admin/recruiter/class-search', requireAdmin, function(req, res){
+
+		var collector = new (require( "events" ).EventEmitter)()
+			,	classesByUser = [];
+
+		collector.on('decrement', function(){
+			if(--this.count===0){ this.emit('done') }
+		})
+
+		// Display the results
+		collector.on('done', function(){
+			res.render('admin/recruiters/search', {results:classesByUser, layout:'../layout.ejs'});
+			//res.json(classesByUser);
+		})
+
+		User.find({shareWithRecruiters: true}).populate('school').exec(function(err, users){
+			collector.count = users.length;
+			for(var i=0,len=users.length; i<len; i++){
+				getUserSections(users[i]);
+			}
+		})
+		
+		function getUserSections(user){
+			var o={};
+			o.query = {user: user._id};
+			o.map = function () { emit(this._id, {sections: this.sections}) };
+			o.reduce = function (k, vals) {
+				var sections=[];
+				for(var i=0;i<vals.length;i++){
+					for(var j=0;j<vals[i].sections.length;j++){
+						sections.push(vals[i].sections[j]['_id']?vals[i].sections[j]['_id']:vals[i].sections[j])
+					}
+				}
+				return {sections: sections};
+			};
+			o.verbose = true;
+			Schedule.mapReduce(o, function (err, results) {
+				sectionsList = results.reduce(function(list, current){
+					current.value.sections.map(function(e){ list.push(e['_id']?e['_id']:e); });
+					return list; }, []);
+				//console.log(sectionsList.length==47?sectionsList:'');
+				Section.find({_id: {$in:sectionsList} }).populate('course').populate('term').populate('department').exec(function(err, sections){
+					classesByUser.push({user:user, sections: sections});
+					collector.emit('decrement');
+				})
+			});
+		}
+	});
 
 	app.get('/admin/giveaway', requireAdmin, function(req, res){
 		var dateRange = {
