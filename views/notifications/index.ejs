@@ -186,9 +186,7 @@
 
 
 <script>
-var noteSocketLocation = ((window.location.host||window.location.hostname).match(/\.dev/gi)?'':'io.courseshark.com')+'/notifications'
-	, n_io = io.connect(noteSocketLocation)
-	,	sp = new SectionPicker({
+var sp = new SectionPicker({
 				term: $('#term_id')
 			, department: $('#major_id')
 			, course: $('#course_id')
@@ -201,33 +199,30 @@ var noteSocketLocation = ((window.location.host||window.location.hostname).match
 notifications.show();
 
 
-$('[rel="cancel-notification"]').bind('click', function(){
-	var $btn = $(this);
-	notifications.cancel({_id:$btn.data('notification')})
-	return false;
-})
-$('[rel="delete-notification"]').bind('click', function(){
-	var $btn = $(this);
-	notifications.remove({_id:$btn.data('notification')})
-	return false;
-})
-$('[rel="reactivate-notification"]').bind('click', function(){
-	var $btn = $(this);
-	notifications.reactivate({_id:$btn.data('notification')})
-	return false;
-})
-$('[rel="edit-notification"]').bind('click', function(){
-	var $btn = $(this);
-	notifications.edit({_id:$btn.data('notification')})
-	return false;
-})
+$('#notifications-list')
+	.on('click', '[rel="cancel-notification"]', function(){
+		var $btn = $(this);
+		notifications.cancel({_id:$btn.data('notification')})
+		return false;
+	})
+	.on('click', '[rel="delete-notification"]', function(){
+		var $btn = $(this);
+		notifications.remove({_id:$btn.data('notification')})
+		return false;
+	})
+	.on('click', '[rel="reactivate-notification"]', function(){
+		var $btn = $(this);
+		notifications.reactivate({_id:$btn.data('notification')})
+		return false;
+	})
+	.on('click', '[rel="edit-notification"]', function(){
+		var $btn = $(this);
+		notifications.edit({_id:$btn.data('notification')})
+		return false;
+	})
 
 
-function purchase(c){
-	if ( c=='credit' ){
-		$('input[name="email"]').focus();
-		return;
-	}
+function purchase(){
 	var info = {
 		section: $('select[name="section_id"]').val()
 		,	email: $('input[name="email"]').val()
@@ -242,30 +237,19 @@ function purchase(c){
 		return;
 	}
 
-	n_io.emit('create', info)
+	$.ajax({url:"/notifications"
+				,	type: "POST"
+				,	data:{notification: info}
+				,	success: function(m){
+					notifications.load().show();
+					if ( !m ){
+						errorDialog("Something went wrong in creating your notification", m);
+					}
+				}})
 }
 
 $('#submit-button').click(function(){
 	purchase();
 })
-
-n_io.on('payment_needed', function(data){
-	success = function(purchaseAction){
-		purchaseAction.response = purchaseAction.response?purchaseAction.response:{orderId:''};
-		n_io.emit('paid', purchaseAction.response.orderId)
-	}
-	fail = function(purchaseAction){
-		_gaq.push(['_trackEvent', 'PurchaseNotification', 'Abandon', purchaseAction.response.errorType]);
-	}
-	goog.payments.inapp.buy({parameters: {},jwt: data.token, success: success, failure: fail});
-});
-
-n_io.on('activated', function(notification){
-	notifications.add(notification);
-})
-n_io.on('error', function(err){
-	console.error(err);
-})
-
 </script>
 

@@ -3,7 +3,8 @@ var spanNumbers = function(n){
 }
 
 exports = module.exports = function(app){
-	var notification_io = app.io.of('/notifications')
+
+	//var notification_io = app.io.of('/notifications')
 
 	app.get('/watcher', function(req, res){
 		Notification.find().count().exec(function(err, total){
@@ -55,6 +56,37 @@ exports = module.exports = function(app){
 		})
 	})
 
+	app.delete('/notifications/:notificationId.:format?', requireLogin, function(req, res){
+		Notification.findOne({user: req.user, _id:req.params.notificationId}, function(err, notification){
+			if (err||!notification){
+				if ( req.params.format == 'json' ){
+					res.json(false);
+				}else{
+					res.send(404);
+				}
+			}else{
+				notification.hidden = true;
+				notification.deleted = true;
+				notification.save(function(err){
+					if ( req.params.format == 'json' ){
+						res.json(err||true);
+					}else{
+						res.redirect('back')
+					}
+				});
+			}
+		})
+	})
+
+	app.post('/notifications', requireLogin, function(req, res){
+		note = new Notification(req.body.notification);
+		note.user = req.user;
+		note.save(function(err){
+			res.json(err||true);
+		})
+	})
+
+/*
 	app.post('/notifications/purchase/post-back', function(req, res){
 		var jwt = req.body.jwt
 			,	transaction = require('jwt-simple').decode(jwt, app.config.google.sellerSecret)
@@ -75,7 +107,7 @@ exports = module.exports = function(app){
 			res.json(transaction.response.orderId)
 		})
 	})
-
+*/
 
 
 	app.get('/notification/cancel/:userId/:notificationId/:sectionId.:format?', function(req, res){
@@ -230,6 +262,7 @@ exports = module.exports = function(app){
 		})
 	})
 
+	/*
 	notification_io.on('connection', function (socket) {
 		note = {}
 		function transact(orderId){
@@ -293,4 +326,5 @@ exports = module.exports = function(app){
 		})
 		socket.on('paid', transact)
 	});
+	*/
 }
