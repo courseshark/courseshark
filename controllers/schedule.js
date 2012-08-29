@@ -20,7 +20,7 @@ exports = module.exports = function(app){
 	app.get('/sl/:hash', function(req, res){
 		ScheduleLink.findOne({hash: req.params.hash}, function(err, scheduleLink){
 			if ( !scheduleLink ){
-				throw new app.NotFound()
+				res.send(404);
 			}else{
 				var schedule = scheduleLink.schedule
 				if ( !scheduleLink.schedule.term ){
@@ -111,6 +111,7 @@ exports = module.exports = function(app){
 				schedule.name = passedJSON.name
 				schedule.sections = passedJSON.sections
 				schedule.save(function(){
+					if ( err ){ console.log('--Schedule save--', err); }
 					res.json(schedule)
 				})
 			}
@@ -166,12 +167,12 @@ exports = module.exports = function(app){
 			if ( !existingLink ){
 				link.hash = randomHash()
 				link.save(function(err){
-					url = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
-					res.json({id: link.id, url: url, err: err})
+					shareLink = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
+					res.json({id: link.id, url: shareLink.toString(), err: err})
 				})
 			}else{
-				app.getExistingLink('http://'+req.headers.host+'/sl/'+existingLink.hash, req.user, function(url){
-					res.json({id: existingLink._id, url: url, err:err})
+				app.getExistingLink('http://'+req.headers.host+'/sl/'+existingLink.hash, req.user, function(shareLink){
+					res.json({id: existingLink._id, url: shareLink.toString(), err:err})
 				})
 			}
 		})
@@ -229,12 +230,12 @@ exports = module.exports = function(app){
 				Term.findById(section.term).populate('school').exec(function(err, term){
 					if ( term.active ){
 						crawler[term.school.abbr].safeUpdateSection(section, FIFTEEN_MINUTES, function(err, section){
-							seats.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal, section: section})
+							socket.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal, section: section})
 						})
 					}else{
-							avail = section.seatsAvailable?section.seatsAvailable:'-'
-							tot = section.seatsTotal?section.seatsTotal:'?'
-							seats.emit('result', {id: section.id, avail: avail, total: tot, section: section})
+						var avail = section.seatsAvailable?section.seatsAvailable:'-'
+							,	tot = section.seatsTotal?section.seatsTotal:'?';
+						socket.emit('result', {id: section.id, avail: avail, total: tot, section: section})
 					}
 				})
 			})

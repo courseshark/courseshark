@@ -119,11 +119,13 @@
 									<option value=""></option>
 								</select>
 				      </div>
+							<!--
 							<div class="v-divide"><span>OR</span></div>
 							<div class="right-col">					
 								<label for="manual_section_id">Course Registration Number</label>
 								<input type="text" name="manual_section_id" placeholder="CRN or Course ID" value=""/>
 							</div>
+							-->
 				    </div>
 					</fieldset>
 					
@@ -184,16 +186,18 @@
 
 
 <script>
-n_io = io.connect('/notifications')
-sp = new SectionPicker({
-		term: $('#term_id')
-	, department: $('#major_id')
-	, course: $('#course_id')
-	, section: $('#section_id')
-	, options: {empty: true, seperateName: false}
-});
+var noteSocketLocation = ((window.location.host||window.location.hostname).match(/\.dev/gi)?'':'io.courseshark.com')+'/notifications'
+	, n_io = io.connect(noteSocketLocation)
+	,	sp = new SectionPicker({
+				term: $('#term_id')
+			, department: $('#major_id')
+			, course: $('#course_id')
+			, section: $('#section_id')
+			, options: {empty: true, seperateName: false}
+		})
+	,	notifications = new Notifications($('#notifications-list'), $('#template-notification'));
 
-var notifications = new Notifications($('#notifications-list'), $('#template-notification'));
+
 notifications.show();
 
 
@@ -219,9 +223,13 @@ $('[rel="edit-notification"]').bind('click', function(){
 })
 
 
-$('#submit-button').click(function(){
+function purchase(c){
+	if ( c=='credit' ){
+		$('input[name="email"]').focus();
+		return;
+	}
 	var info = {
-		section: $('select[name="section_id"]').val()||$('input[name="manual_section_id"]').val()
+		section: $('select[name="section_id"]').val()
 		,	email: $('input[name="email"]').val()
 		,	phone: $('input[name="phone"]').val()
 		,	user: '<%=user.id%>'
@@ -229,7 +237,16 @@ $('#submit-button').click(function(){
 		, waitlist: !!$('input[name="notification-on"][value="waitlist"]').attr('checked')
 	}
 	
+	if ( !info.section || info.section.length < 24  ){
+		errorDialog('Form errors found', 'Please specify a section to watch');
+		return;
+	}
+
 	n_io.emit('create', info)
+}
+
+$('#submit-button').click(function(){
+	purchase();
 })
 
 n_io.on('payment_needed', function(data){

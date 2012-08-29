@@ -61,11 +61,11 @@ fi
 if [ "$1" == "deps" ]
 then 
  (
-	export PATH=$NEW_PATH;
-      	npm install forever nodemon -g;
-	npm install;
-	exit;
+		export PATH=$NEW_PATH;
+  	npm install forever nodemon -g;
+		npm install;
  )
+ exit;
 fi
 
 CURRENT_NODE_VERSION="$(export PATH=$NEW_PATH; node -v)";
@@ -88,6 +88,18 @@ else
 	INSTALL;
 fi
 
+
+if [ "$1" == "seatwatcher" ]
+then
+	echo $GREEN;
+	echo "Starting seatwatcher with forever";
+	(
+		export PATH=$NEW_PATH;
+		forever stopall;
+	 	forever start -a -l $OUT_LOG ./seat-watcher.js;
+	)
+	exit;
+fi
 
 if [ "$1" == "nodemon" ]
 then
@@ -124,7 +136,7 @@ else
 			echo "startting with forever $RESET";
 			(
 				export PATH=$NEW_PATH;
-				forever stopall
+				forever stopall;
 				forever start -a -l $OUT_LOG $CS_DIR/app.js;
 			)
 		else

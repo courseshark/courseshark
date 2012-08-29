@@ -9,8 +9,6 @@ exports.boot = module.exports.boot = function (app){
 	app.User = User = mongoose.model('User');
 }
 
-exports.UserSchema = module.exports.UserSchema = UserSchema
-
 UserSchema = new Schema({
 		email: {type: String, index: true }
 	, hashPassword: {type: String, index: true}
@@ -114,3 +112,4 @@ UserSchema.method('isFriends', function(friend_id, callback){
 		callback(user || false);
 	})
 })
+exports.UserSchema = module.exports.UserSchema = UserSchema;

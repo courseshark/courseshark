@@ -1,0 +1,38 @@
+<h1>Notifications <small>count <%=count%></h1>
+
+<div class="row">
+	<div class="span10">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>User</th>
+					<th>Email</th>
+					<th>Phone</th>
+					<th>Section</th>
+					<th>School</th>
+					<th>Last Checked</th>
+					<th>Sent</th>
+					<th>Created</th>
+					<th>Modified</th>
+				</tr>
+			</thead>
+			<tbody>
+		<% if (notifications.length) { %>
+    	<% notifications.forEach(function(note){ %>
+				<tr>
+					<td title="<%=note.user.id%>"><%=(note.user.name||note.user.email)%></td>
+					<td><%=note.email||'-'%></td>
+					<td><%=note.phone||'-'%></td>
+					<td><%=(note.section&&note.section.name)||'-'%></td>
+					<td><%=note.school.abbr%></td>
+					<td><%=(note.section&&note.section.updated)||'-'%></td>
+					<td><%=note.sent?note.lastSent:'-'%></td>
+					<td><%=note.created||'-'%></td>
+					<td><%=note.modified||'-'%></td>
+				</tr>
+			<% }); %>
+		<% } %>
+			</tbody>
+		</table>
+	</div>
+</div>

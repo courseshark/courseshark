@@ -9,8 +9,6 @@ exports.boot = module.exports.boot = function (app){
 	app.School = School = mongoose.model('School');
 }
 
-exports.SchoolSchema = module.exports.SchoolSchema = SchoolSchema
-
 SchoolSchema = new Schema({
 		name: { type: String, index: { unique: true } }
 	,	abbr: { type: String, index: true }
@@ -35,3 +33,5 @@ SchoolSchema.method('addTerm', function(term){
 		if ( err ) { console.log(err) }
 	})
 })
+
+exports.SchoolSchema = module.exports.SchoolSchema = SchoolSchema
