@@ -46,6 +46,21 @@ exports = module.exports = function(app){
 		})
 	})
 
+	app.get('/friends/:friendId.:format?', requireLogin, function(req, res){
+		var friendId = req.params.friendId.replace(/[^0-9a-z]/ig, '')
+		// Check is friend
+		req.user.isFriends(friendId, function(friendship){
+			if ( !friendship ){
+				res.json({});
+				return;
+			}else{
+				User.findById(friendId).exec(function(err, friend){
+					res.json(err||friend);
+				})
+			}
+		})
+	})
+
 	app.post('/friends/:friendId.:format?', requireLogin, function(req, res){
 		User.findById(req.params.friendId, function(err, friend){
 			if ( err ){ res.json(false); return; }
@@ -53,7 +68,7 @@ exports = module.exports = function(app){
 			User.update({_id: req.user._id}, {$addToSet: {friends: req.params.friendId}}, function(err, num){
 				if ( err ){ res.json(false); return; }
 				res.json(true);
-				if ( !user.canEmailFriendRequests || !friend.email ){
+				if ( !req.user.canEmailFriendRequests || !friend.email ){
 					return;
 				}
 				mandrill.messages_send_template({
@@ -98,9 +113,104 @@ exports = module.exports = function(app){
 	})
 
 
-	app.get('/friends/:friendId/schedule/:termId', requireLogin, function(req, res){
+	app.get('/friends/:friendId/schedules.:format?', requireLogin, function(req, res){
 		var friendId = req.params.friendId.replace(/[^0-9a-z]/ig, '')
-			, temrId = req.params.termId.replace(/[^0-9a-z]/ig, '')
+		// Check is friend
+		req.user.isFriends(friendId, function(friendship){
+			if ( !friendship ){
+				res.json({});
+				return;
+			}else{
+				Schedule.findOne({user: friendId}, {}, {$sort: {modified: 1}}).exec(function(err, schedule){
+					if (!schedule){
+						res.json({});
+						return;
+					}
+					var sectionIds = schedule.sections.map(function(s){return s['_id'] || s});
+					Section.find({_id:{$in: sectionIds}}).populate('course').populate('department').exec(function(err, sections){
+						schedule.sections = sections;
+						sJson = JSON.stringify(schedule);
+						res.json(schedule);
+					});
+				});
+			}
+		});
+	});
+
+	app.get('/friends/:friendId/schedules/:scheduleId.:format?', requireLogin, function(req, res){
+		var friendId = req.params.friendId.replace(/[^0-9a-z]/ig, '')
+			,	scheduleId = req.params.scheduleId.replace(/[^0-9a-z]/ig, '')
+		// Check is friend
+		req.user.isFriends(friendId, function(friendship){
+			if ( !friendship ){
+				res.json({});
+				return;
+			}else{
+				Schedule.findOne({user: friendId, _id: scheduleId}, {}, {$sort: {modified: 1}}).exec(function(err, schedule){
+					if (!schedule){
+						res.json({});
+						return;
+					}
+					var sectionIds = schedule.sections.map(function(s){return s['_id'] || s});
+					Section.find({_id:{$in: sectionIds}}).populate('course').populate('department').exec(function(err, sections){
+						schedule.sections = sections;
+						sJson = JSON.stringify(schedule);
+						res.json(schedule);
+					});
+				});
+			}
+		});
+	});
+
+
+	function getScheduleFriendTerm(friendId, termId, next){
+		Schedule.findOne({user: friendId, term: termId }, {}, {$sort: {modified: 1}, $limit:1}).exec(function(err, schedule){
+			if (!schedule){
+				next({});
+				return;
+			}
+			var sectionIds = schedule.sections.map(function(s){return s['_id'] || s});
+			Section.find({_id:{$in: sectionIds}}).populate('course').populate('department').exec(function(err, sections){
+				schedule.sections = sections;
+				sJson = JSON.stringify(schedule);
+				next(schedule);
+			});
+		});
+	}
+
+	app.get('/friends/schedules/terms/:termId.:format?', requireLogin, function(req, res){
+		var termId = req.params.termId.replace(/[^0-9a-z]/ig, '')
+			,	counter = (new (require('events').EventEmitter)())
+			,	friendsSchedules = []
+
+		//Loop through friends getting schedule info
+		req.user.getFriends(function(err, friends){
+			counter.count = friends.length;
+			for ( var i=0, len=friends.length; i<len; i++ ){
+				getScheduleFriendTerm(friends[i]._id, termId, function(friend){
+					return function(schedule){
+						friendsSchedules.push({friend: friend, schedule: schedule});
+						counter.emit('-');
+					}
+				}(friends[i]))
+			}
+		})
+
+		counter.on('-', function(){
+			if ( --this.count <= 0 ){
+				counter.emit('done');
+			}
+		})
+
+		counter.on('done', function(){
+			res.json(friendsSchedules)
+		})
+
+	});
+
+	app.get('/friends/:friendId/terms/:termId/schedule.:format?', requireLogin, function(req, res){
+		var friendId = req.params.friendId.replace(/[^0-9a-z]/ig, '')
+			, termId = req.params.termId.replace(/[^0-9a-z]/ig, '')
 		// Check is friend
 		req.user.isFriends(friendId, function(friendship){
 			if ( !friendship ){
@@ -108,6 +218,10 @@ exports = module.exports = function(app){
 				return;
 			}else{
 				Schedule.findOne({user: friendId, term: termId }, {}, {$sort: {modified: 1}, $limit:1}).exec(function(err, schedule){
+					if (!schedule){
+						res.json({});
+						return;
+					}
 					var sectionIds = schedule.sections.map(function(s){return s['_id'] || s});
 					Section.find({_id:{$in: sectionIds}}).populate('course').populate('department').exec(function(err, sections){
 						schedule.sections = sections;

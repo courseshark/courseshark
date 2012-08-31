@@ -17,6 +17,12 @@
 			</div>
 		</div>
 	</script>
+	<script type="text/plain" id="template-friend-list">
+		<div class="friend-available" data-friend-id="<$=friend._id$>">
+			<div class="friend-dot" style="border-color:<$=friend.color?friend.color:'red'$>"></div>
+			<$=friend.firstName$> <$=friend.lastName$>
+		</div>
+	</script>
 	<script type="text/plain" id="template-caffeine-bar">
 		<div id="caffeine_<$=id$>" class="seat-notification">Create an open seat <a href="#" onClick="caffeine_clicked=true;show_caffeine_dialog(<$=id$>);return false;">Notification</a></div>
 	</script>

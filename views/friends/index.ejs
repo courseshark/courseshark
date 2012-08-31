@@ -59,7 +59,7 @@
 											</div>
 											<div class="friend-info">
 												<div class="name"><%=potentialFriend.name%></div>
-												<div class="email-info"><%=potentialFriend.email.replace(/@.*$/gi, '')%></div>
+												<div class="email-info"><%=potentialFriend.email?potentialFriend.email.replace(/@.*$/gi, ''):'-'%></div>
 											</div>
 										</div>
 									<% }) %>

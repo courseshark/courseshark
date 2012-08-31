@@ -72,7 +72,9 @@
 <!-- Setup -->
 <script>
 var GLOBALS = GLOBALS||{};
+<% if ( typeof school != 'undefined' ){ %>
 GLOBALS.school = '<%= school %>';
+<%}%>
 GLOBALS.serverScheduleVersion = '<%= revision %>';
 GLOBALS.loggedIn = <%= !!loggedIn %>;
 <% if ( !!loggedIn && user ){%>
