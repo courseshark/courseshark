@@ -14,9 +14,11 @@ exports = module.exports = function(app){
 			res.render('schedule/schedule', {departments: departments, link: false, school: req.school._id, noJS: true});
 		})
 	})
+
 	app.get('/schedule/link/:hash', function(req, res){
 		res.redirect('/sl/'+req.params.hash);
 	});
+	
 	app.get('/sl/:hash', function(req, res){
 		ScheduleLink.findOne({hash: req.params.hash}, function(err, scheduleLink){
 			if ( !scheduleLink ){
