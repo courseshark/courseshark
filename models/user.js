@@ -9,8 +9,6 @@ exports.boot = module.exports.boot = function (app){
 	app.User = User = mongoose.model('User');
 }
 
-exports.UserSchema = module.exports.UserSchema = UserSchema
-
 UserSchema = new Schema({
 		email: {type: String, index: true }
 	, hashPassword: {type: String, index: true}
@@ -99,3 +97,5 @@ UserSchema.method('getInvites', function(callback){
 UserSchema.method('getInvited', function(callback){
 	User.find({_id: {$nin: this.friends}, school: this.school, friends: this._id}, callback)
 })
+
+exports.UserSchema = module.exports.UserSchema = UserSchema;

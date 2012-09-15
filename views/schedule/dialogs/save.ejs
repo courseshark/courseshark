@@ -6,12 +6,12 @@
 <div class="modal-body">
 	<div id="save-form">
 		<label for="name" id="name-label">Name</label>
-		<input type="text" name="name" id="name-input" />
+		<input type="text" name="save_name" id="name-input" />
 	</div>
 </div>
 
 <div class="modal-footer">
-	<a href="#" class="btn btn-primary" data-dismiss="modal" onClick="schedule.pushSave('<%=user.id%>')">Save</button>
+	<a href="#" class="btn btn-primary" data-dismiss="modal" name="save_save" onClick="schedule.pushSave('<%=user.id%>')">Save</button>
 	<a href="#" class="btn" data-dismiss="modal">Close</a>
 </div>
 <script>

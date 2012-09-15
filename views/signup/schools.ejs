@@ -7,10 +7,14 @@
 	<div class="page-header"></div>
 	<div class="row">
 	<% for(var i=0,len=schools.length; i<len; i++){school=schools[i];%>
-		<a href="/schools/set/<%= school.abbr %>" style="text-align:center">
-			<div class="span3 well">
-	    	<img src="/images/schools/<%= school.abbr %>_logo.png" alt="<%= school.name %>" style="margin:0 auto">
-			  <p><%= school.name %></p>
+		<a href="/schools/set/<%= school.abbr %>" name="schools_<%= school.abbr%>" style="text-align:center">
+			<div class="span3 school-option">
+				<div class="well">
+		    	<img src="/images/schools/<%= school.abbr %>_logo.png" alt="<%= school.name %>" style="margin:0 auto">
+				  <div class="center-vertically">
+				  	<p><%= school.name %></p>
+				  </div>
+				</div>
 			</div>
 		</a>
 	<%}%>

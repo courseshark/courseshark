@@ -14,8 +14,19 @@ var term = {}
 		, conflict_worker = 0
 		, majors_updating = {}
 		, tooltip_data = {}
-		, seats = io.connect('/seats')
+		, socketLocation = ((window.location.host||window.location.hostname).match(/\.dev/gi)?'':'io.courseshark.com')+'/seats'
+		, seats = {on:function(){}, emit:function(){}} // fake socket obj
 		,	array_diff = function(o,a){return o.filter(function(e){return(!(a.indexOf(e)>-1))})}
+
+if ( (window.location.pathname||window.location.href).match(/\/schedule|\/notification/) ){
+	seats = io.connect(socketLocation, {
+			'transports': ['websocket', 'xhr-multipart', 'flashsocket', 'xhr-polling', 'jsonp-polling', 'htmlfile']
+		,	'sync disconnect on unload': true
+		,	'reconnection limit': 2000
+		,	'connect timeout': 750
+	})
+}
+
 
 seats.on('result', function(data){
 	var id = data.id
@@ -37,19 +48,19 @@ function loadSeatData(id){
 
 
 
-
 /***************************************************************************
  *
  * New Schedule  Code, cleaner and with standards
  *
 ***************************************************************************/
-Storage = window.Storage || window.localStorage || {};
+if(typeof Storage === 'undefined'){Storage = Object}
 Storage.prototype.setObject = function(key, value) {
-		localStorage.setItem(key, JSON.stringify(value));
+    this.setItem(key, JSON.stringify(value));
 }
+
 Storage.prototype.getObject = function(key) {
-		// :TODO: Add experation code
-		return localStorage.getItem(key) && JSON.parse(localStorage.getItem(key));
+    var value = this.getItem(key);
+    return value && JSON.parse(value);
 }
 function storeObject(name, obj){
 	if ( Modernizr.localstorage ){
@@ -121,12 +132,15 @@ Schedule.prototype.save = function(skipServer){
 	updateScheduleConflicts();
 	return this;
 }
-Schedule.prototype.pushSave = function(getId){
+Schedule.prototype.pushSave = function(getId, callback){
+	// Adjust vars
+	if ( typeof getId == 'function' ){
+		callback =  getId;
+		getId = undefined;
+	}
+
 	self = this
-	if ( typeof this.user !== 'undefined' ){
-		self.save();
-		return;
-	}else if ( !getId ){
+	if ( !getId && !this._id ){
 		openDialog("/schedule/save");
 	}else{
 		self.show();
@@ -138,6 +152,9 @@ Schedule.prototype.pushSave = function(getId){
 			success:function(res){
 				self.id = this._id = res._id;
 				self.user = res.user;
+				if ( callback ){
+					callback();
+				}
 			}
 		});
 	}

@@ -8,8 +8,6 @@ exports.boot = module.exports.boot = function (app){
 	app.Department = Department = mongoose.model('Department');
 }
 
-exports.DepartmentSchema = module.exports.DepartmentSchema = DepartmentSchema
-
 DepartmentSchema = new Schema({
 		name: { type: String }
 	,	abbr: { type: String }
@@ -18,3 +16,5 @@ DepartmentSchema = new Schema({
 
 DepartmentSchema.virtual('id')
 	.get(function (){return this._id.toHexString()})
+
+exports.DepartmentSchema = module.exports.DepartmentSchema = DepartmentSchema

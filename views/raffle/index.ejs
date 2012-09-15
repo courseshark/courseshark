@@ -1,0 +1,172 @@
+<%if ( loggedIn ){%>
+<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+	js = d.createElement(s); js.id = id;
+	js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1&appId=182622275092530";
+	js.acync = true;
+	fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+<%}%>
+
+<link rel="stylesheet" href="/styles/raffle.css" type="text/css" media="all" />
+
+
+<div class="container raffle-container">
+	<div class="row">
+		<div class="span6">
+			<img id="nexus-7-tablet" src="/images/raffle/nexus-7-tablet.png" alt="Nexus 7"/>
+		</div>
+		<div class="span6 raffle-display-left">
+			
+			<div class="raffle-info raffle-left">
+				<h1>Refer Friends</h1>
+				<h2>and win a</h2>
+				<img id="nexus-7-text" src="/images/raffle/nexus-7-logo.png" />
+				<h3>or one of many other pizes</h3>
+
+				<%if ( loggedIn ){%>
+
+				<div class="share-link-container">
+					<div class="link-well well">
+						<h2 class="share-text">Use this link to refer friends and get points!</h2>
+						<h3 class="share-link"><%=raffleLink.toString()%></h3>
+						<div class="social-links">
+							<div class="share share-facebook">
+								<div class="fb-like" data-href="http://courseshark.com" data-send="true" data-layout="button_count" data-width="450" data-show-faces="false" data-font="arial" data-ref="<%=raffleLink.hash%>"></div>
+							</div>
+							<div class="share share-twitter">
+								<a href="https://twitter.com/share" class="twitter-share-button" data-url="<%=raffleLink.toString()%>" data-text="Sign up for CourseShark and win a Nexus7" data-via="courseshark" data-count="none">Tweet</a>
+								<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+							</div>
+							<div style="clear:both;"></div>
+						</div>
+					</div><!-- End link-well -->
+				</div><!-- end link-container -->
+
+				<%}else{%>
+				<div class="button-actions">
+					<button class="btn btn-large btn-primary" onClick="$('.raffle-info').hide();$('.raffle-login').fadeIn()">Let's Get To It!</button>
+				</div>
+				<%}%>
+
+			</div>
+
+			<div class="raffle-login raffle-left">
+				<img src="/images/raffle/sign-in-arrow.png" alt=""/>
+				<h1>Sign In</h1>
+				<h3>so we can find you when you win</h1>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="section-head">
+ 		<div class="row">
+ 			<div class="span4">
+ 				<h1>How to Enter</h1>
+ 				<p>Its pretty simple</p>
+ 			</div>
+ 			<div class="span4">
+ 				<h1>Extra Points</h1>
+ 				<p>Increase your points</p>
+ 			</div>
+ 			<div class="span4">
+ 				<h1>Prizes</h1>
+ 				<p>What you win</p>
+ 			</div>
+ 		</div>
+ 	</div>
+
+
+ 	<div class="row">
+ 		<div class="span4">
+ 			<h2><small><i class="icon-user"></i></small> Sign In</h2>
+ 			<p>So we can keep track of who you invite</p>
+
+ 			<h2><small><i class="icon-share"></i></small> Share your link</h2>
+ 			<p>We will generate a custom link for you to share with the world.</p>
+ 			<p><strong>YOU MUST USE YOUR CUSTOMIZED LINK</strong></p>
+ 			<p>Also generate a custom share link from the schedule page by pressing the green "SHARE" button</p>
+
+ 			<h2><small><i class="icon-star-empty"></i></small> Get points</h2>
+ 			<p>Whenever anyone signs up from your link, we will give you one point!</p>
+ 			<p>The winner of the Nexus 7 will be the user with the most points! So tell all your friends to click your link and sign up!</p>
+
+ 			<h2><small><i class="icon-gift"></i></small> Win!</h2>
+ 			<p>Whoever has the most points wins! Enjoy your new Nexus 7!</p>
+ 		</div>
+
+ 		<!-- Extra points -->
+ 		<div class="span4">
+ 			<h1>+1<small>/each</small></h1>
+ 			<p>Get someone to create an account on CourseShark from your shareable link</p>
+
+ 			<h1>+1</h1>
+ 			<p>If you opt in to share your schedule with hiring job recruiters</p>
+
+ 			<h1>+2</h1>
+ 			<p>If we see you have created and shared your schedule on facebook, twitter, or google plus.</p>
+ 		</div>
+
+
+ 		<!-- Prize lists -->
+ 		<div class="span4">
+ 			<h2>Nexus 7</h2>
+ 			<p>This great new <a href="http://www.google.com/nexus/#/7" target="_blank">Nexus tablet</a> from Google is excellent for taking notes, reading books, or just keeping up to date with your social circles during class. We have some here in the office, and we can't imaging life without them, so to better the world we will be giving one away as our grand prize!</p>
+ 			
+ 			<h2>Amazon Gift Cards</h2>
+ 			<p>What's better than an Amazon Giftcard? Besides a Nexus 7, not too much! That's why we have added a few to the prize list.</p>
+ 			
+ 			<h2>Starbucks Gift Cards</h2>
+ 			<p>At some point this semester, you will feel a little drained and need a nice pick-me-up. Starbucks can help with that!</p>
+
+ 			<h2>Free SeatWatcher <small>spring '12</small></h2>
+ 			<p>Classes fill up. You need those classes, well with our SeatWatcher watching the classes you need for you, you dont have to worry about missing your chance to get into the class. <i>Everyone who refers at least one person will get a free notification!</i></p>
+
+ 		</div>
+ 	</div>
+
+
+	<div class="section-head">
+ 		<div class="row">
+ 			<div class="span4 offset4">
+ 				<h1>Rules</h1>
+ 				<p>Legal mumbo jumbo</p>
+ 				<p></p>
+ 			</div>
+ 		</div>
+ 	</div>
+
+ 	<div class="row"
+ 		<div class="span8 offset2">
+ 			<p>
+ 				<strong>Eligibility:</strong> The CourseShark Giveaway (the &ldquo;Giveaway&rdquo;) is open only to individuals who are legal residents of the fifty (50) United States (including the District of Columbia) and are 18 years of age or older. Employees of CourseShark LLC, their advertising or promotion agencies, those involved in the production, development, implementation or handling of Giveaways, any agents acting for, or on behalf of the above entities, their respective parent companies, officers, directors, subsidiaries, affiliates, licensees, service providers, prize suppliers any other person or entity associated with the Giveaway (collectively &ldquo;Giveaway Entities&rdquo;) and/or the immediate family (spouse, parents, siblings and children) and household members (whether related or not) of each such employee, are not eligible. All U.S., federal, state and local and municipal laws and regulations apply. Void in Puerto Rico and where prohibited by law.
+ 			</p>
+ 			<p><strong>Sponsor:</strong> The Giveaway is sponsored by CourseShark LLC, P.O Box 7003, Atlanta GA 30357 (&ldquo;Sponsor&rdquo;).
+ 			</p>
+ 			<p><strong>Agreement to Official Rules:</strong> Participation in the Giveaway constitutes entrant’s full and unconditional agreement to and acceptance of these Official Rules and the decisions of the Sponsor, which are final and binding. Winning a prize is contingent upon fulfilling all requirements set forth herein.
+ 			</p>
+ 			<p><strong>Entry Period:</strong> The start date of the of this Giveaway is Sunday August 19<sup>th</sup> 2012 at 7:00pm EST. The end date of the Giveaway is Monday Septemeber 3<sup>rd</sup> 2012 at 12:01am EST. The time frame laid out shall be known as the &ldquo;Entry Period&rdquo;.
+ 			</p>
+ 			<p><strong>Entry:</strong> To enter a Giveaway, follow the instructions on the Giveaway page. Sharing the cusomized link shall constitute entry into the Giveaway. Successful regiration leading from the customized link will increment the entrant's entry count by one (1) entry, begining with an initial value of zero (0) entries upon creation of the link. Additional (bonus) points may be awarded for additonal actions as long as such actions are made clear on the Giveaway description. The use of any agencies or automated software to submit entries will void all entries submitted by that person.
+ 			</p>
+ 			<p><strong>Drawing:</strong> At the conclusion of the Entry Period, Sponsor will select the names of the potential winners in a random drawing of all eligible entries received during the Entry Period. The number of winners to be selected in the Giveaway will be selected based on the number of applicants but shall not be less than one (1) Grand Prize winner. The odds of being selected as a potential winner depend on the number of eligible entries received during the Entry Period. Potential winners will be contacted via email and will be asked to provide their full name, age and mailing address within a specified time period. If a potential winner does not respond within the timeframe stated in the notification email, the Sponsor may select an alternate potential winner in his/her place at random from all entries received during the Entry Period. Limit one (1) prize per household.
+ 			</p>
+ 			<p><strong>Requirements of the Potential Winners:</strong> Except where prohibited, the potential winners may be required to complete and return an affidavit of eligibility and liability/publicity release (the &ldquo;Affidavit/Release&rdquo;) within seven (7) days of being notified. If a potential winner fails to sign and return the Affidavit/Release within the required time period, an alternate entrant will be selected in his/her place in a random drawing of all entries received.
+ 			</p>
+ 			<p><strong>Prize(s):</strong> The prize(s) (including each prize’s approximate retail value) available to be won in a specific Giveaway will be posted on the Giveaway site. No cash or other substitution may be made, except by the Sponsor, who reserves the right to substitute a prize with another prize of equal or greater value if the prize is not available for any reason as determined by the Sponsor in its sole discretion. The winners are responsible for any taxes and fees associated with receipt or use of a prize.
+ 			</p>
+ 			<p><strong>General Conditions:</strong> In the event that the operation, security, or administration of the Giveaway is impaired in any way for any reason, including, but not limited to fraud, virus, or other technical problem, the Sponsor may, in its sole discretion, either: (a) suspend the Giveaway to address the impairment and then resume the Giveaway in a manner that best conforms to the spirit of these Official Rules; or (b) award the prizes at random from among the eligible entries received up to the time of the impairment. The Sponsor reserves the right in its sole discretion to disqualify any individual it finds to be tampering with the entry process or the operation of the Giveaway or to be acting in violation of these Official Rules or in an unsportsmanlike or disruptive manner. Any attempt by any person to undermine the legitimate operation of the Giveaway may be a violation of criminal and civil law, and, should such an attempt be made, the Sponsor reserves the right to seek damages from any such person to the fullest extent permitted by law. The Sponsor’s failure to enforce any term of these Official Rules shall not constitute a waiver of that provision. In case of a dispute as to the owner of an entry, entry will be deemed to have been submitted by the authorized account holder of the screen name from which the entry is made. The authorized account holder is defined as the natural person who is assigned to an e-mail address by an Internet access provider, online service provider, or other organization responsible for assigning e-mail addresses for the domain associated with the submitted e-mail address.
+ 			</p>
+ 			<p><strong>Release and Limitations of Liability:</strong> By participating in the Giveaway, entrants agree to release and hold harmless the Giveaway Entities from and against any claim or cause of action arising out of participation in the Giveaway or receipt or use of any prize, including, but not limited to: (a) unauthorized human intervention in the Giveaway; (b) technical errors related to computers, servers, providers, or telephone or network lines; (c) printing errors; (d) lost, late, postage-due, misdirected, or undeliverable mail; (e) errors in the administration of the Giveaway or the processing of entries; or (f) injury or damage to persons or property which may be caused, directly or indirectly, in whole or in part, from entrant’s participation in the Giveaway or receipt of any prize. Entrant further agrees that in any cause of action, the Giveaway Entities’ liability will be limited to the cost of entering and participating in the Giveaway, and in no event shall the Giveaway Entities be liable for attorney’s fees. Entrant waives the right to claim any damages whatsoever, including, but not limited to, punitive, consequential, direct, or indirect damages.
+ 			</p>
+ 			<p><strong>Disputes:</strong> Except where prohibited, entrant agrees that any and all disputes, claims and causes of action arising out of, or connected with, the Giveaway or any prize awarded shall be resolved individually, without resort to any form of class action, and exclusively by the appropriate court located in the City of Atlanta Georgia. All issues and questions concerning the construction, validity, interpretation and enforceability of these Official Rules, entrant’s rights and obligations, or the rights and obligations of the Sponsors in connection with the Giveaway, shall be governed by, and construed in accordance with, the laws of the Commonwealth of Virginia, without giving effect to any choice of law or conflict of law rules (whether of the city of Atlanta Georgia or any other jurisdiction), which would cause the application of the laws of any jurisdiction other than the city of Atlanta Georgia.
+ 			</p>
+ 			<p><strong>Giveaway Results:</strong> To request the name of the winners, send a self-addressed stamped envelope (stating that this is a Giveaway Result Request) to CourseShark Winners List, P.O. Box 7003 Atlanta GA 30357. Requests must be received within thirty (30) days from the end date of the Giveaway.
+ 			</p>
+ 		</div>
+ 	</div>
+
+</div>

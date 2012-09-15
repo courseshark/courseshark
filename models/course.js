@@ -8,8 +8,6 @@ exports.boot = module.exports.boot = function (app){
 	app.Course = Course = mongoose.model('Course');
 }
 
-exports.CourseSchema = module.exports.CourseSchema = CourseSchema
-
 CourseSchema = new Schema({
 		name: { type: String }
 	,	terms: [{ type: Schema.ObjectId, ref: 'Term' }]
@@ -33,3 +31,5 @@ CourseSchema.method('addSection', function(section){
 	this.sections.push(section['_id'])
 	this.save()
 })
+
+exports.CourseSchema = module.exports.CourseSchema = CourseSchema

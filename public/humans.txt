@@ -1,6 +1,6 @@
 /* TEAM */
 	Founder:James Rundquist
-	Contact: jrundquist [at] courseshark.com
+	Contact: james [at] courseshark.com
 	Twitter: @jamesrundquist
 
 	CoFounder:Anastasia Marchenkova
@@ -16,6 +16,11 @@
 	Twitter:
 
 /* THANKS */
+
+	Professor Merrick Furst
+	For: Guidance in the development of the courseshark
+	business.
+
 	Dr. James D. Foley
 	For: Dr. Foley's teachings helped in the design 
 	and evaluation of the website as it is now.
@@ -28,4 +33,4 @@
 /* SITE */
 	Language:English
 	Doctype:HTML5
-	IDE:TextMate, Sublime Text, Illustrator, Photoshop
+	IDE:Sublime Text, Illustrator, Photoshop

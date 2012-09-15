@@ -29,7 +29,6 @@ exports = module.exports = function(app){
 				scheduleLink.schedule.term = scheduleLink.schedule.term['_id']?scheduleLink.schedule.term['_id']:scheduleLink.schedule.term
 				Term.findOne({_id: scheduleLink.schedule.term}, function(err, term){
 					scheduleLink.schedule.term = term;
-					
 
 					// Correct for timezone issue by re-finding the sections in the schedule
 					sectionIds = schedule.sections.map(function(s){return s._id});
@@ -111,6 +110,7 @@ exports = module.exports = function(app){
 				schedule.name = passedJSON.name
 				schedule.sections = passedJSON.sections
 				schedule.save(function(){
+					if ( err ){ console.log('--Schedule save--', err); }
 					res.json(schedule)
 				})
 			}
@@ -166,12 +166,12 @@ exports = module.exports = function(app){
 			if ( !existingLink ){
 				link.hash = randomHash()
 				link.save(function(err){
-					url = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
-					res.json({id: link.id, url: url, err: err})
+					shareLink = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
+					res.json({id: link.id, url: shareLink.toString(), err: err})
 				})
 			}else{
-				app.getExistingLink('http://'+req.headers.host+'/sl/'+existingLink.hash, req.user, function(url){
-					res.json({id: existingLink._id, url: url, err:err})
+				app.getExistingLink('http://'+req.headers.host+'/sl/'+existingLink.hash, req.user, function(shareLink){
+					res.json({id: existingLink._id, url: shareLink.toString(), err:err})
 				})
 			}
 		})

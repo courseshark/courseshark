@@ -160,7 +160,7 @@ END:VCALENDAR
 	      </ul>
 			</div>
 		</div>
-	</div>	
+	</div>
 	<% } %>
 	<div class="container">
 		<div class="row">
@@ -178,7 +178,7 @@ END:VCALENDAR
 
 								<div class="controls">
 								<div class="input">
-									<select id="major-id" tabindex="1" placeholder="subject" rel="tooltip" data-placement="top" data-original-title="Choose a department">
+									<select id="major-id" name="major-id" tabindex="1" placeholder="subject" rel="tooltip" data-placement="top" data-original-title="Choose a department">
 										<option></option>
 									</select>
 									<select id="course-id" tabindex="2" placeholder="course"/>
@@ -197,7 +197,7 @@ END:VCALENDAR
 				<!-- Containers for the Classes added to the Schedule -->
 				</div>
 			</div>
-			
+
 			<div id="schedule-container" class="span7">
 				<%- partial('calendars/week') %>
 			</div>
@@ -215,7 +215,6 @@ END:VCALENDAR
 				</div>
 			</div>
 
-			
 		</div>
 	</div>
 
@@ -291,16 +290,24 @@ $(document).ready(function() {
 		if ( typeahead.shown ){
 			$thing.typeahead('hide')
 		}else{
-			$thing.typeahead('showOptions')	
+			$thing.typeahead('showOptions')
 		}
 	})
 	_gaq = _gaq || {};
-		
+
+	var saveToggle;
+
 	$('#save-button').click(function(){
+
 		<% if ( loggedIn ){ %>
+			$('#save-button i').removeClass('icon-tag').addClass('icon-ok')
 			mixpanel.track('Saved Schedule');
 			_gaq.push(['_trackEvent', 'Schedule', 'Save']);
-			schedule.pushSave();
+			schedule.pushSave(function(){
+				saveToggle = setTimeout(function(){
+							$('#save-button i').addClass('icon-tag').removeClass('icon-ok')
+						}, 750);
+			});
 			return false;
 		<% } else { %>
 			mixpanel.track('Save Scheudle but !Logged In');
@@ -309,7 +316,7 @@ $(document).ready(function() {
 			return false;
 		<% } %>
 	});
-	
+
 	$('#load-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Load']);
 		<% if ( loggedIn ){ %>
@@ -319,24 +326,24 @@ $(document).ready(function() {
 		<% } %>
 		show_load_dialog();
 	});
-	
+
 	$('#new-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'New']);
 		show_new_dialog();
 	});
-	
+
 	$('#print-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Print']);
 		mixpanel.track('Print Schedule', {from: 'Menu'});
 		window.print();
 	});
-	
+
 	$('#ical-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'iCal']);
 		mixpanel.track('Export Schedule', {from: 'Menu'});
 		$('#ical-button').attr('href', schedule.createCal()).attr('download', schedule.name);
 	});
-	
+
 	$('#link-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Link']);
 		mixpanel.track('Generate Share Link', {from: 'Menu'});
@@ -381,6 +388,6 @@ $(document).ready(function() {
 		mixpanel.track("Asked to Share with Recruiters");
 		openDialog('/share-with-recruiters');
 	<%}%>
-	
+
 });
 </script>
