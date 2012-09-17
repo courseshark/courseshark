@@ -18,3 +18,9 @@ public/images/.DS_Store
 
 selenium-server.jar
 
+
+*.log
+
+*.jar
+
+*.pid
