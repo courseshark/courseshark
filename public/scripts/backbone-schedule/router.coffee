@@ -13,9 +13,10 @@ define(
         # Router Initilalized
 
       routes: 
-        '/projects':  'showProjects'
-        '/users':    'showUsers'
+        'projects':  'showProjects'
+        'users':    'showUsers'
 
+        's' : 'landingPage'
         '' : 'landingPage'
 
         ':action':                   'defaultAction',
