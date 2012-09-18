@@ -2,19 +2,30 @@
 # These will be usefull when requiring them later
 require.config(
   paths:
-    jQuery: '/scripts/libs/jquery/jquery.req'
-    Underscore: '/scripts/libs/underscore/underscore.req'
-    Backbone: '/scripts/libs/backbone/backbone.req'
+    jQuery: '/scripts/lib/jquery/jquery.req'
+    Underscore: '/scripts/lib/underscore/underscore.req'
+    Backbone: '/scripts/lib/backbone/backbone.req'
+
+  shim:
+    jQuery:
+      deps: []
+      exports: 'jQuery'
+    Underscore:
+      deps: ['jQuery']
+      exports: '_'
+    Backbone:
+      deps: ['jQuery', 'Underscore']
+      exports: 'Backbone'
 )
 
 require(
   [
     'app',
-    'order!/scripts/libs/jquery/jquery.req',
-    'order!/scripts/libs/underscore/underscore.req',
-    'order!/scripts/libs/backbone/backbone.req'
+    'jQuery',
+    'Underscore',
+    'Backbone'
   ], (Shark) ->
       #The "app" dependency is passed in as "App"
+      Shark.router = Shark.initialize()
       window.Shark = Shark
-      Shark.initialize();
 )

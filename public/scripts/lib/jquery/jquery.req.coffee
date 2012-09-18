@@ -1,1 +1,1 @@
-define( ['order!/scripts/libs/jquery/jquery'], () -> jQuery )
+define( ['/scripts/lib/jquery/jquery.js'], () -> jQuery )

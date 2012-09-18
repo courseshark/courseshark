@@ -2,15 +2,29 @@
 
   require.config({
     paths: {
-      jQuery: '/scripts/libs/jquery/jquery.req',
-      Underscore: '/scripts/libs/underscore/underscore.req',
-      Backbone: '/scripts/libs/backbone/backbone.req'
+      jQuery: '/scripts/lib/jquery/jquery.req',
+      Underscore: '/scripts/lib/underscore/underscore.req',
+      Backbone: '/scripts/lib/backbone/backbone.req'
+    },
+    shim: {
+      jQuery: {
+        deps: [],
+        exports: 'jQuery'
+      },
+      Underscore: {
+        deps: ['jQuery'],
+        exports: '_'
+      },
+      Backbone: {
+        deps: ['jQuery', 'Underscore'],
+        exports: 'Backbone'
+      }
     }
   });
 
-  require(['app', 'order!/scripts/libs/jquery/jquery.req', 'order!/scripts/libs/underscore/underscore.req', 'order!/scripts/libs/backbone/backbone.req'], function(Shark) {
-    window.Shark = Shark;
-    return Shark.initialize();
+  require(['app', 'jQuery', 'Underscore', 'Backbone'], function(Shark) {
+    Shark.router = Shark.initialize();
+    return window.Shark = Shark;
   });
 
 }).call(this);

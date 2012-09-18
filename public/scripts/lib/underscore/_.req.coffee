@@ -1,1 +1,0 @@
-define( ['order!/scripts/libs/underscore/underscore-min'], () -> _ )

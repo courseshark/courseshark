@@ -1,5 +1,5 @@
 define(
-	['order!/scripts/libs/backbone/backbone']
+	['/scripts/lib/backbone/backbone.js']
 	, () ->
 		_.noConflict()
 		$.noConflict()
