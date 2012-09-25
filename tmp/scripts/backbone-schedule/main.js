@@ -23,8 +23,8 @@
   });
 
   require(['app', 'jQuery', 'Underscore', 'Backbone'], function(Shark) {
-    window.Shark = Shark;
-    return Shark.router = Shark.initialize();
+    Shark.router = Shark.initialize();
+    return window.Shark = Shark;
   });
 
 }).call(this);

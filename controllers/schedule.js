@@ -13,8 +13,9 @@ exports = module.exports = function(app){
 	app.get('/schedule', requireSchool, function(req, res){
 		res.redirect('/s/');
 	})
-	app.get('/s/*?', requireSchool, function(req, res){
-		res.render('schedule/schedule', {school: req.school._id, layout: 'app-layout.ejs'});
+	
+	app.get('/s(/*)?', requireSchool, function(req, res){
+		res.render('schedule/schedule', {school: req.school._id, layout: 'app-layout.ejs', built: false});
 	})
 
 

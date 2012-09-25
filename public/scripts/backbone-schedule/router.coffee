@@ -5,39 +5,35 @@ define(
     #'views/projects/list',
     #'views/users/list'
   ], 
-  ($, _, Backbone, Session, projectListView, userListView) ->
+  ($, _, Backbone) ->
     
     SharkRouter = Backbone.Router.extend(
 
-      initialize: () ->
+      initialize: (Shark) ->
+        @Shark = Shark
         # Router Initilalized
 
       routes: 
-        'projects':  'showProjects'
-        'users':    'showUsers'
-
-        's' : 'landingPage'
-        '' : 'landingPage'
+        '/s/' : 'landingPage'
+        ''  : 'landingPage'
+        '/' : 'landingPage'
 
         ':action':                   'defaultAction',
         ':controller/:action':       'defaultAction',
         ':controller/:action/:vid':  'defaultAction',
 
 
-      landingPage: () ->
-        # console.log "Welcome to the landing page"
-
-      showProjects: () ->
-        projectListView.render()
-
-      showUsers: () ->
-        userListView.render()
+      landingPage: () =>
+        console.log "Welcome to the landing page"
+        @Shark.currentView = new @Shark.views.appView()
+        
 
       defaultAction: (actions) ->
+        @navigate '/' if actions is 's'
         console.log 'No route', actions
     )
-    initialize = () ->
-      router = new SharkRouter
+    initialize = (Shark) ->
+      router = new SharkRouter(Shark)
       Backbone.history.start pushState: true, root: CS.baseDir||''
       router
 

@@ -62,7 +62,7 @@ if [ "$1" == "deps" ]
 then 
  (
 		export PATH=$NEW_PATH;
-  	npm install forever nodemon -g;
+  	npm install -g requirejs forever nodemon;
 		npm install;
  )
  exit;
@@ -107,6 +107,16 @@ then
 	echo "startting with nodemon $RESET";
 	(
 		export PATH=$NEW_PATH;
+		coffee --compile ./public/scripts/backbone-schedule/;
+		
+		r.js -o \
+			baseUrl=./public/scripts/backbone-schedule \
+			name=main \
+			out=./public/scripts/backbone-schedule/build.main.js \
+				paths.jQuery=./lib/jquery/jquery.req \
+				paths.Underscore=./lib/underscore/underscore.req \
+				paths.Backbone=./lib/backbone/backbone.req
+
 	 	nodemon ./app.js;
 	)
 else

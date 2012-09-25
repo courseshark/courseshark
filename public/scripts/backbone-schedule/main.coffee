@@ -26,6 +26,6 @@ require(
     'Backbone'
   ], (Shark) ->
       #The "app" dependency is passed in as "App"
-      Shark.router = Shark.initialize()
       window.Shark = Shark
+      Shark.router = Shark.initialize()
 )

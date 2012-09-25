@@ -1,0 +1,1 @@
+define( ['/lib/jquery/jquery.js'], () -> jQuery )

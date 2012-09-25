@@ -9,4 +9,8 @@
 	}
 </script>
 
-<script data-main="/scripts/backbone-schedule/main" src="/scripts/lib/require/require.js"></script>
+<%if ( built ){ %>
+	<script data-main="/scripts/backbone-schedule/build.main.js" src="/scripts/lib/require/require.js"></script>
+<%}else{%>
+	<script data-main="/scripts/backbone-schedule/main" src="/scripts/lib/require/require.js"></script>
+<%}%>
