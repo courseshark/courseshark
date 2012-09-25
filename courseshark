@@ -115,7 +115,9 @@ then
 			out=./public/scripts/backbone-schedule/build.main.js \
 				paths.jQuery=./lib/jquery/jquery.req \
 				paths.Underscore=./lib/underscore/underscore.req \
-				paths.Backbone=./lib/backbone/backbone.req
+				paths.Backbone=./lib/backbone/backbone.req \
+				paths.requireLib=../lib/require/require \
+				include=requireLib;
 
 	 	nodemon ./app.js;
 	)
