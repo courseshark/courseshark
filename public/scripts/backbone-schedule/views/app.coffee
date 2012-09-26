@@ -7,6 +7,7 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/index.ejs'], ($, _, 
 		initialize: ->
 			_.bindAll @
 			
+			# Compile the template for future use
 			@template = _.template(templateText)
 
 			## For full height adjustments
@@ -40,7 +41,10 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/index.ejs'], ($, _, 
 		# Actually readjusts the height of the view
 		heightAdjust: ->
 			# Window height minus top position of this element 
-			newHeight = @$window.height() - @$el.position().top
+			newHeight = @$window.height() - 
+									@$el.position().top - 
+									parseInt(@$el.css('padding-top'),10) -
+									parseInt(@$el.css('padding-bottom'),10) 
 			@$el.height newHeight
 			@ticking = false
 
