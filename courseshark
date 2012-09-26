@@ -107,17 +107,18 @@ then
 	echo "startting with nodemon $RESET";
 	(
 		export PATH=$NEW_PATH;
-		coffee --compile ./public/scripts/backbone-schedule/;
+
+		#coffee --compile ./public/scripts/backbone-schedule/;
 		
-		r.js -o \
-			baseUrl=./public/scripts/backbone-schedule \
-			name=main \
-			out=./public/scripts/backbone-schedule/build.main.js \
-				paths.jQuery=./lib/jquery/jquery.req \
-				paths.Underscore=./lib/underscore/underscore.req \
-				paths.Backbone=./lib/backbone/backbone.req \
-				paths.requireLib=../lib/require/require \
-				include=requireLib;
+		#r.js -o \
+		#	baseUrl=./public/scripts/backbone-schedule \
+		#	name=main \
+		#	out=./public/scripts/backbone-schedule/build.main.js \
+		#		paths.jQuery=./lib/jquery/jquery.req \
+		#		paths.Underscore=./lib/underscore/underscore.req \
+		#		paths.Backbone=./lib/backbone/backbone.req \
+		#		paths.requireLib=../lib/require/require \
+		#		include=requireLib;
 
 	 	nodemon ./app.js;
 	)
