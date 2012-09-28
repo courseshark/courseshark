@@ -3,7 +3,7 @@
 #	CourseShark run file
 #
 #
-NODE_VER="v0.6.19";
+NODE_VER="v0.8.11";
 
 
 CS_DIR=`pwd`;
@@ -27,6 +27,7 @@ RESET="$(tput sgr0)";
 
 function INSTALL {
 	echo "Installing nodejs $NODE_VER";
+	return;
 	cd /tmp;
 	if [ -d "/tmp/node" ]
 	then
@@ -52,6 +53,22 @@ function INSTALL {
 }
 
 
+CURRENT_NODE_VERSION="$(export PATH=$NEW_PATH; node -v)";
+
+if [ $CURRENT_NODE_VERSION != $NODE_VER ]
+then
+	NEW_PATH=$PATH
+	CURRENT_NODE_VERSION="$(node -v)";
+	if [ $CURRENT_NODE_VERSION != $NODE_VER ]
+	then
+		echo $RED;
+		echo "Wrong version of node installed!"
+		echo $RESET;
+		INSTALL;
+	fi
+fi
+
+
 if [ "$1" == "install" ]
 then
 	INSTALL;
@@ -68,15 +85,6 @@ then
  exit;
 fi
 
-CURRENT_NODE_VERSION="$(export PATH=$NEW_PATH; node -v)";
-
-if [ $CURRENT_NODE_VERSION != $NODE_VER ]
-then
-	echo $RED;
-	echo "Wrong version of node installed!"
-	echo $RESET;
-	INSTALL;
-fi
 
 
 if [ -f $CUSTOM_NODE ]
