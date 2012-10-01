@@ -79,7 +79,7 @@ if [ "$1" == "deps" ]
 then 
  (
 		export PATH=$NEW_PATH;
-  	npm install -g requirejs forever nodemon;
+  	#npm install -g requirejs forever nodemon;
 		npm install;
  )
  exit;
