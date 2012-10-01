@@ -1,5 +1,18 @@
-<div class="container"></div>
+<div id="app-container"></div>
 
+
+<script>
+window.requestAnimFrame = (function(){
+	return  window.requestAnimationFrame || 
+	  window.webkitRequestAnimationFrame || 
+	  window.mozRequestAnimationFrame    || 
+	  window.oRequestAnimationFrame      || 
+	  window.msRequestAnimationFrame     || 
+	  function( callback ){
+	    window.setTimeout(callback, 1000 / 60);
+	  };
+})();
+</script>
 <script>
 	window.CS = {
 			loggedIn: "<%=loggedIn%>"
@@ -8,7 +21,6 @@
 		, baseDir: '/s/'
 	}
 </script>
-
 <%if ( built ){ %>
 	<script src="/scripts/backbone-schedule/build.main.js"></script>
 <%}else{%>
