@@ -1,22 +1,21 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'text!/tmpl/kayak/index.ejs',
-        'text!/tmpl/kayak/section.ejs'], ($,_, Backbone, indexTemplate, sectionTemplate) ->
+        'text!/tmpl/kayak/list.ejs',
+        'text!/tmpl/kayak/section.ejs'], ($,_, Backbone, listTemplate, sectionTemplate) ->
 
   class kayakView extends Backbone.View
 
     initialize: ->
       _.bindAll @
 
-      @indexTemplate = _.template(indexTemplate)
+      @listTemplate = _.template(listTemplate)
       @sectionTemplate = _.template(sectionTemplate)
-      console.log("laksdjflkajsdf")
+
       @render();
 
     render: ->
-      console.log(@$el)
-      @$el.html @indexTemplate()
+      @$el.html @sectionTemplate()
 
   kayakView
 )
