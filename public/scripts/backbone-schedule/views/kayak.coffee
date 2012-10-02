@@ -15,7 +15,7 @@ define(['jQuery',
       @render();
 
     render: ->
-      @$el.html @sectionTemplate(prof: "John T. Stasko")
+      @$el.html @sectionTemplate(prof: "John T. Stasko", seats: "2/100", section_id: "84571: Section K")
 
   kayakView
 )
