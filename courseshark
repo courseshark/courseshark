@@ -3,7 +3,7 @@
 #	CourseShark run file
 #
 #
-NODE_VER="v0.8.11";
+NODE_VER="v0.6.19";
 
 
 CS_DIR=`pwd`;
@@ -112,12 +112,12 @@ fi
 if [ "$1" == "nodemon" ]
 then
 	echo $BLUE
-	echo "startting with nodemon $RESET";
+	echo "starting with nodemon $RESET";
 	(
 		export PATH=$NEW_PATH;
 
 		#coffee --compile ./public/scripts/backbone-schedule/;
-		
+
 		#r.js -o \
 		#	baseUrl=./public/scripts/backbone-schedule \
 		#	name=main \
