@@ -15,7 +15,7 @@ define(['jQuery',
       @render();
 
     render: ->
-      @$el.html @sectionTemplate()
+      @$el.html @sectionTemplate(prof: "John T. Stasko")
 
   kayakView
 )
