@@ -1,34 +1,39 @@
 <div class="container full-height hide-overflow">
 	<div class="row full-height">
 		<div class="span16 full-height">
-			<!-- Contains the overlayed panels -->
-			<div id="right-two-panels" class="full-height">
-				<!-- Sliding pane -->
-				<div id="slide-panel" class="row full-height">
-					<div id="filter-frame" class="span8 full-height">
-						filter
-						<!-- Filter view goes here -->
+			<div class="row full-height">
+				<!-- Contains the overlayed panels -->
+				<div id="right-two-panels" class="span16 full-height">
+					<!-- Sliding pane -->
+					<div id="slide-panel" class="row full-height ">
+						<div id="slide-container" class="span8 full-height panel">
+							<div class="row full-height">
+								<!-- Filter view goes here -->
+								<div id="filter-frame" class="span8 full-height"><button id="show-results">Results</button></div>
+								<!-- Results view goes here -->
+								<div id="results-frame" class="span8 full-height hidden"></div>
+								<!-- Slider button-->
+								<div id="slide-panel-button" class="open"></div>
+							</div>
+						</div>
 					</div>
-					<div id="results-frame" class="span8 full-height">
-						results
-						<!-- Results view goes here -->
-					</div>
-					<div id="slide-panel-button" class="open"></div>
-				</div>
 
-				<!-- MaxiCal -->
-				<div id="max-cal-container" class="row full-height">
-					<div id="max-cal-frame" class="span16 full-height">
-						MaxiCal goes here!
+					<!-- MaxiCal -->
+					<div id="max-cal-container" class="row full-height">
 						<!-- MaxiCal view goes here -->
+						<div id="max-cal-frame" class="span16 full-height panel hidden"></div>
 					</div>
+
+					<!-- Tutorial Frame -->
+					<div id="tutorial-frame" class="full-height offset8 span8"><h1>Tutorial Text</h1></div>
+
 				</div>
 			</div>
 		</div>
 
 		<!-- Schedule information panel -->
 		<div id="schedule-frame" class="span8 full-height">
-			Schedule
+			<h1>Schedule</h1>
 			<!-- Schedule view goes here -->
 		</div>
 	</div>

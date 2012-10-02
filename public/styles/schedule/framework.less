@@ -2,15 +2,27 @@ body{
 	overflow-y: hidden;
 	overflow-x: auto;
 	padding-top: 53px;
+	background: #f4f4f4 url('/images/backbone/bg-shard.png') repeat center center;
+
 }
 
 .full-height{
 	height: 100%;
 }
 .hide-overflow{
-	overflow: hidden;
 }
-
+.panel{
+	background: #fff;
+	border-radius: 4px;
+	box-shadow: 0 0 6px rgba(0,0,0,.7);
+	h1{
+		margin: 0;
+		font-size: 14px;
+		font-weight: bold;
+		line-height: 150%;
+		color: #3FA9F5;
+	}
+}
 
 #app-container{
 	margin: auto;
@@ -23,13 +35,20 @@ body{
 }
 
 #main-container{
-	background: #ffe7cf;
 	padding: 0 0 13px;
 }
 
 //// Panel styling
 #schedule-frame{
-	background: rgba(0,0,0,.2);
+	.panel;
+}
+
+#tutorial-frame{
+	position: absolute;
+	top:0;
+	right:0;
+	background: red;
+	z-index: 350;
 }
 
 #right-two-panels{
@@ -41,13 +60,12 @@ body{
 		top: 0;
 
 		#max-cal-frame{
-			background: rgba(0,0,0,.3);
 		}
 	}
 
 	#slide-panel{
 		&.closed{
-			position: relative;
+			position: absolute;
 			left: -100%;
 		}
 		z-index: 400;
@@ -61,14 +79,14 @@ body{
 		-moz-transition: left @time;
 		-o-transition: left @time;
 		transition: left @time;
-		
+
 
 		#filter-frame{
-			background: rgba(0,0,255,.2);
 		}
 
 		#results-frame{
-			background: rgba(0,0,255,.2);
+			border-left: 1px solid grey;
+			margin-left: -1px;
 		}
 
 		// Slider Button
