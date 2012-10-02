@@ -3,9 +3,23 @@ body{
 	overflow-x: auto;
 	padding-top: 53px;
 }
+
+.full-height{
+	height: 100%;
+}
+.hide-overflow{
+	overflow: hidden;
+}
+
+
 #app-container{
 	margin: auto;
-	min-width: 500px;
+}
+
+#main-nav{
+	.nav{
+		margin-bottom: 5px;
+	}
 }
 
 #main-container{
@@ -13,39 +27,42 @@ body{
 	padding: 0 0 13px;
 }
 
-.full-height{
-	height: 100%;
+//// Panel styling
+#schedule-frame{
+	background: rgba(0,0,0,.2);
 }
 
 #right-two-panels{
 	position: relative;
 
-	#max-cal{
+	#max-cal-container{
 		z-index: 300;
 		position: absolute;
 		top: 0;
 
-		#maxical-frame{
+		#max-cal-frame{
 			background: rgba(0,0,0,.3);
 		}
 	}
 
-	#slide-frame{
+	#slide-panel{
 		&.closed{
 			position: relative;
 			left: -100%;
 		}
-
-		@time: 500ms;
-		-webkit-transition: all @time; /* Safari and Chrome */
-		-moz-transition: all @time; /* Firefox 4 */
-		-o-transition: all @time; /* Opera */
-		transition: all @time;
-
 		z-index: 400;
 		position: absolute;
 		top: 0;
 		color: white;
+
+		// Animation
+		@time: 500ms;
+		-webkit-transition: left @time;
+		-moz-transition: left @time;
+		-o-transition: left @time;
+		transition: left @time;
+		
+
 		#filter-frame{
 			background: rgba(0,0,255,.2);
 		}
@@ -54,7 +71,8 @@ body{
 			background: rgba(0,0,255,.2);
 		}
 
-		#slide-frame-button{
+		// Slider Button
+		#slide-panel-button{
 			&:before{
 				content: ">>";
 				background: #ccc;
@@ -67,14 +85,10 @@ body{
 				color: black;
 				padding: 2px;
 			}
-			
 			position: absolute;
 			top: 0;
 			right: 5px;
 			width: 0;
 		}
 	}
-}
-#schedule-view{
-	background: rgba(0,0,0,.2);
 }

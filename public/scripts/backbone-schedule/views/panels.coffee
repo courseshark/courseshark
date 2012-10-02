@@ -29,12 +29,12 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _,
 
 
 		events:
-			'click #slide-frame-button': 'toggleSlidePanel'
+			'click #slide-panel-button': 'toggleSlidePanel'
 
 		toggleSlidePanel: ->
 			console.log 'here'
-			($ '#slide-frame-button').toggleClass 'open'
-			($ '#slide-frame').toggleClass 'closed'
+			($ '#slide-panel-button').toggleClass 'open'
+			($ '#slide-panel').toggleClass 'closed'
 
 
 
