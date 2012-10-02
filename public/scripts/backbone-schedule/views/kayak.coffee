@@ -14,6 +14,20 @@ define(['jQuery',
 
       @render();
 
+    events:
+      'click .expander' : 'expand'
+      'click .add' : 'add'
+
+    expand: ->
+      target = ($ event.target)
+      target.parent().toggleClass('expanded')
+      target.parent().children('.details').toggle()
+      target.children('i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up')
+
+    add: ->
+      target = ($ event.target)
+      target.toggleClass('added')
+
     render: ->
       @$el.html @sectionTemplate(prof: "John T. Stasko", seats: "2/100", section_id: "84571: Section K")
 
