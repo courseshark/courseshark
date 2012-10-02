@@ -18,7 +18,6 @@ body{
 }
 
 #right-two-panels{
-	background: rgba(0,0,0,.1);
 	position: relative;
 
 	#max-cal{
@@ -32,6 +31,17 @@ body{
 	}
 
 	#slide-frame{
+		&.closed{
+			position: relative;
+			left: -100%;
+		}
+
+		@time: 500ms;
+		-webkit-transition: all @time; /* Safari and Chrome */
+		-moz-transition: all @time; /* Firefox 4 */
+		-o-transition: all @time; /* Opera */
+		transition: all @time;
+
 		z-index: 400;
 		position: absolute;
 		top: 0;
@@ -42,6 +52,26 @@ body{
 
 		#results-frame{
 			background: rgba(0,0,255,.2);
+		}
+
+		#slide-frame-button{
+			&:before{
+				content: ">>";
+				background: #ccc;
+				color: black;
+				padding: 2px;
+			}
+			&.open:before{
+				content: "<<";
+				background: #ccc;
+				color: black;
+				padding: 2px;
+			}
+			
+			position: absolute;
+			top: 0;
+			right: 5px;
+			width: 0;
 		}
 	}
 }

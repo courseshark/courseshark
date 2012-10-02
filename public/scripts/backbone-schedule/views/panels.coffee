@@ -26,6 +26,18 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _,
 		render: ->
 			@$el.html @template()
 
+
+
+		events:
+			'click #slide-frame-button': 'toggleSlidePanel'
+
+		toggleSlidePanel: ->
+			console.log 'here'
+			($ '#slide-frame-button').toggleClass 'open'
+			($ '#slide-frame').toggleClass 'closed'
+
+
+
 		# Is called every time the window resizes
 		resizeEvent: ->
 			# If we are already in a loop, dont call rAF
