@@ -20,8 +20,7 @@ define(['jQuery',
 
     expand: ->
       target = ($ event.target)
-      target.parent().toggleClass('expanded')
-      target.parent().children('.details').toggle()
+      target.parent().toggleClass('expanded').children('.details').toggle()
       target.children('i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up')
 
     add: ->
