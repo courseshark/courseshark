@@ -16,6 +16,4 @@ public/styles/master.css
 public/.DS_Store
 public/images/.DS_Store
 
-public/scripts/backbone-schedule/*.js
-
 public/styles/schedule/main.css
