@@ -1,11 +1,11 @@
 #Incude all the models here, then pass them back into the object
-define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _, Backbone, templateText) ->
+define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs', 'views/kayak'], ($, _, Backbone, templateText, kayakView) ->
 
 	class panelsView extends Backbone.View
 
 		initialize: ->
 			_.bindAll @
-			
+
 			# Compile the template for future use
 			@template = _.template(templateText)
 
@@ -24,7 +24,8 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _,
 
 		# Renders the actual view from the template
 		render: ->
-			@$el.html @template()
+			@$el.html $ @template()
+			@kayakView = new kayakView( el: (@$el.children '#test-frame')[0] )
 
 		# Is called every time the window resizes
 		resizeEvent: ->
@@ -35,12 +36,11 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _,
 			else
 				return
 
-		
 		# Actually readjusts the height of the view
 		heightAdjust: ->
-			# Window height minus top position of this element 
-			newHeight = @$window.height() - 
-									@$el.position().top - 
+			# Window height minus top position of this element
+			newHeight = @$window.height() -
+									@$el.position().top -
 									parseInt(@$el.css('padding-top'),10) -
 									parseInt(@$el.css('padding-bottom'),10)
 			@$el.height newHeight

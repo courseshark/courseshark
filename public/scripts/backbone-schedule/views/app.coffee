@@ -2,7 +2,7 @@
 define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/index.ejs', 'views/nav', 'views/panels'], ($, _, Backbone, templateText, navView, panelsView) ->
 
 	class appView extends Backbone.View
-		el: $ '#test-frame'
+		el: $ '#app-container'
 
 		initialize: ->
 			_.bindAll @
