@@ -1,5 +1,5 @@
 #Incude all the models here, then pass them back into the object
-define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs', 'views/kayak'], ($, _, Backbone, templateText, kayakView) ->
+define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs', 'views/results'], ($, _, Backbone, templateText, resultsView) ->
 
 	class panelsView extends Backbone.View
 
@@ -25,7 +25,7 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs', 'views/
 		# Renders the actual view from the template
 		render: ->
 			@$el.html $ @template()
-			@kayakView = new kayakView( el: (@$el.find '#tutorial-frame')[0] )
+			@resultsView = new resultsView( el: (@$el.find '#tutorial-frame')[0] )
 
 
 		events:
