@@ -6,7 +6,7 @@ define(['jQuery',
 
     defaults:
       number: 123
-      info: 'Here is some info about the course? I guess?'
+      info: 'Info'
       type: 'Type'
       name: 'Name'
       course: 'Course'

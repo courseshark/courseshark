@@ -27,10 +27,14 @@ define(['jQuery',
     render: ->
       params =
         prof: @model.instructor
-        seats: @model.seatsAvailable + "/" + @model.seatsTotal
-        section_id: @model.number + ": Section " + @model.info
+        seats: @model.seatsAvailable + '/' + @model.seatsTotal
+        section_id: @model.number + ': Section ' + @model.info
         hours: @model.credits
       @$el.html @sectionTemplate(params)
+      console.log @model.timeslots
+      _.each @model.timeslots, (timeslot) =>
+        _.each timeslot.days, (day) =>
+          @$el.find('#' + day).addClass('selected')
       @
 
   sectionView
