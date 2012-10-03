@@ -28,6 +28,7 @@ define(['jQuery',
       target.toggleClass('added')
 
     render: ->
+      console.log(@$el);
       @$el.html @sectionTemplate(prof: "John T. Stasko", seats: "2/100", section_id: "84571: Section K")
 
   kayakView

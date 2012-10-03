@@ -25,7 +25,24 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs', 'views/
 		# Renders the actual view from the template
 		render: ->
 			@$el.html $ @template()
-			@kayakView = new kayakView( el: (@$el.children '#test-frame')[0] )
+			@kayakView = new kayakView( el: (@$el.find '#tutorial-frame')[0] )
+
+
+		events:
+			'click #slide-panel-button': 'toggleSlidePanel'
+			'click #show-results': 'showResults'
+
+
+		showResults: ->
+			($ '#results-frame').toggleClass 'hidden'
+			($ '#slide-container').toggleClass('span16').toggleClass('span8')
+			($ '#tutorial-frame').addClass 'hidden'
+
+		toggleSlidePanel: ->
+			($ '#slide-panel-button').toggleClass 'open'
+			($ '#slide-panel').toggleClass 'closed'
+			($ '#max-cal-frame').toggleClass 'hidden'
+
 
 		# Is called every time the window resizes
 		resizeEvent: ->
