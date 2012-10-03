@@ -1,11 +1,11 @@
 @sam-grey: #8a949e;
 
 .kayak-section{
+  padding: 8px;
   transition: height .5s ease-in-out;
   -webkit-transition: height .5s ease-in-out;
   -webkit-box-shadow: -2px 2px 3px 0px #CCC;
   position: relative;
-  height: 100px;
   margin: 15px;
   overflow: hidden;
   color: @sam-grey;
@@ -14,32 +14,16 @@
   background-color: white;
   background-image:  -webkit-linear-gradient(top,#FFF,#E5E5E5);
 
-  &.expanded{
-    height: 230px;
-  }
-
   .prof{
-    position: absolute;
-    top: 10px;
-    left: 20px;
   }
 
   .seats{
-    position: absolute;
-    top: 10px;
-    right: 20px;
   }
 
   .section-id{
-    position: absolute;
-    top: 35px;
-    left: 20px;
   }
 
   .add{
-    position: absolute;
-    top: 40px;
-    right: 20px;
     width: 35px;
     height: 30px;
     border: solid 1px @sam-grey;
@@ -64,14 +48,10 @@
   }
 
   .days{
-    position: absolute;
-    top:60px;
-    left:20px;
     line-height: 100%;
 
     .day{
-      float: left;
-      margin: 0px 20px 0px 0px;
+      text-align: center;
 
       &.selected{
         font-weight: bold;
@@ -81,10 +61,9 @@
   }
 
   .expander{
-    position: absolute;
-    width: 100%;
-    bottom: 0px;
     text-align: center;
+    border-radius: 20px;
+    margin-bottom: -20px;
 
     &:hover{
       background-color: rgba(0,0,0,.05);
@@ -95,15 +74,10 @@
     display: none;
 
     .description{
-      position: absolute;
-      top: 100px;
-      left: 20px
     }
 
     .hours{
-      position: absolute;
-      top: 195px;
-      left: 20px;
+      margin-top: 5px;
     }
   }
 

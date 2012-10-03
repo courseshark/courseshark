@@ -20,7 +20,7 @@ define(['jQuery',
 
     expand: ->
       target = ($ event.target)
-      target.parent().toggleClass('expanded').children('.details').toggle()
+      target.parent().parent().find('.details').slideToggle()
       target.children('i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up')
 
     add: ->
@@ -29,7 +29,7 @@ define(['jQuery',
 
     render: ->
       console.log(@$el);
-      @$el.html @sectionTemplate(prof: "John T. Stasko", seats: "2/100", section_id: "84571: Section K")
+      @$el.append @sectionTemplate(prof: "John T. Stasko", seats: "2/100", section_id: "84571: Section K") for i in [1..3]
 
   kayakView
 )
