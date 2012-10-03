@@ -1,21 +1,23 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'views/section'
-        'text!/tmpl/results/results.ejs'], ($,_, Backbone, sectionView, resultsTemplate) ->
+        'collections/sections'
+        'views/section'], ($,_, Backbone, Sections, sectionView) ->
 
   class resultsView extends Backbone.View
 
     initialize: ->
       _.bindAll @
 
-      @resultsTemplate = _.template(resultsTemplate)
-
-      @render();
+      @sections = new Sections
+      @sections.fetch
+        success: (model, response) =>
+          @render();
 
     render: ->
-      @$el.html @resultsTemplate()
-      @sectionView = new sectionView( el: (@$el.find '#sections-frame')[0] )
+      console.log(@sections.models[0])
+      _.each @sections.models, (section) =>
+         @$el.append new sectionView(model: section.attributes).render().el
 
   resultsView
 )

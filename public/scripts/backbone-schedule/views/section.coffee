@@ -1,7 +1,8 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'text!/tmpl/results/section.ejs'], ($,_, Backbone, sectionTemplate) ->
+        'collections/sections'
+        'text!/tmpl/results/section.ejs'], ($,_, Backbone, Sections, sectionTemplate) ->
 
   class sectionView extends Backbone.View
 
@@ -24,7 +25,13 @@ define(['jQuery',
       @$el.find('.add').toggleClass('added')
 
     render: ->
-      @$el.html @sectionTemplate(prof: "John T. Stasko", seats: "2/100", section_id: "84571: Section K")
+      params =
+        prof: @model.instructor
+        seats: @model.seatsAvailable + "/" + @model.seatsTotal
+        section_id: @model.number + ": Section " + @model.info
+        hours: @model.credits
+      @$el.html @sectionTemplate(params)
+      @
 
   sectionView
 )
