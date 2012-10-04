@@ -10,12 +10,12 @@ define(['jQuery',
       _.bindAll @
 
       @sections = new Sections
+      # Gets sections based on API endpoint specified in collection
       @sections.fetch
         success: (model, response) =>
           @render();
 
     render: ->
-      console.log(@sections.models)
       _.each @sections.models, (section) =>
          @$el.append new sectionView(model: section.attributes).render().el
 

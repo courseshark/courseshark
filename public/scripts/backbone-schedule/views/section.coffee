@@ -31,10 +31,11 @@ define(['jQuery',
         section_id: @model.number + ': Section ' + @model.info
         hours: @model.credits
       @$el.html @sectionTemplate(params)
+      # Color/bold the correct day letters
       _.each @model.timeslots, (timeslot) =>
         _.each timeslot.days, (day) =>
           @$el.find('#' + day).addClass('selected')
-      @
+      @ # Return the section view to be added by the results view
 
   sectionView
 )
