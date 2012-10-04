@@ -2,36 +2,33 @@
 <script src="/socket.io/socket.io.js"></script>
 
 <%if ( app.settings.env === 'development' ){ %>
-	<% if (true){ %>
-	<script src="/scripts/lib/jquery.min.js"></script>
-	<script src="/scripts/lib/jquery-ui.min.js"></script>
+
+	<script src="/scripts/lib/jquery/jquery.js"></script>
+	<script src="/scripts/lib/jquery/jquery-ui.min.js"></script>
 	<script>google.load('payments','1.0',{'packages':['sandbox_config']});</script>
 	<!-- Custom Scripts -->
-	<script type="text/javascript" src="/scripts/modernizr.js"></script>
-	<script type="text/javascript" src="/scripts/master.js"></script>
-	<script type="text/javascript" src="/scripts/dialog.js"></script>
-	<script type="text/javascript" src="/scripts/micro-template.js"></script>
-	<script type="text/javascript" src="/scripts/schedule.js"></script>
-	<script type="text/javascript" src="/scripts/social.js"></script>
-	<script type="text/javascript" src="/scripts/notification.js"></script>
-	<script type="text/javascript" src="/scripts/jquery.base64.min.js"></script>
-	<script type="text/javascript" src="/scripts/friendsSearch.js"></script>
-	<script type="text/javascript" src="/scripts/dateFormat.js"></script>
+	<script type="text/javascript" src="/scripts/launch-schedule/modernizr.js"></script>
+	<script type="text/javascript" src="/scripts/launch-schedule/master.js"></script>
+	<script type="text/javascript" src="/scripts/launch-schedule/dialog.js"></script>
+	<script type="text/javascript" src="/scripts/launch-schedule/micro-template.js"></script>
+	<script type="text/javascript" src="/scripts/launch-schedule/schedule.js"></script>
+	<script type="text/javascript" src="/scripts/launch-schedule/social.js"></script>
+	<script type="text/javascript" src="/scripts/launch-schedule/notification.js"></script>
+	<script type="text/javascript" src="/scripts/launch-schedule/jquery.base64.min.js"></script>
+	<script type="text/javascript" src="/scripts/launch-schedule/friendsSearch.js"></script>
+	<script type="text/javascript" src="/scripts/launch-schedule/dateFormat.js"></script>
 	<!-- Bootstrap javascripts -->
-	<script src="/scripts/lib/bootstrap-transition.js"></script>
-	<script src="/scripts/lib/bootstrap-modal.js"></script>
-	<script src="/scripts/lib/bootstrap-dropdown.js"></script>
-	<script src="/scripts/lib/bootstrap-collapse.js"></script>
-	<script src="/scripts/lib/bootstrap-tooltip.js"></script>
-	<script src="/scripts/lib/bootstrap-popover.js"></script>
-	<script src="/scripts/lib/bootstrap-tab.js"></script>
+	<script src="/scripts/lib/bootstrap/bootstrap-transition.js"></script>
+	<script src="/scripts/lib/bootstrap/bootstrap-modal.js"></script>
+	<script src="/scripts/lib/bootstrap/bootstrap-dropdown.js"></script>
+	<script src="/scripts/lib/bootstrap/bootstrap-collapse.js"></script>
+	<script src="/scripts/lib/bootstrap/bootstrap-tooltip.js"></script>
+	<script src="/scripts/lib/bootstrap/bootstrap-popover.js"></script>
+	<script src="/scripts/lib/bootstrap/bootstrap-tab.js"></script>
 
 
-	<script src="/scripts/lib/select2.min.js"></script>
+	<script src="/scripts/lib/select2/select2.min.js"></script>
 
-	<%}else{%>
-	<script src="/browserify.js"></script>
-	<%}%>
 <% } else {%>
 	<script src="/scripts/<%-revision%>-courseshark.js"></script>
 	<script>google.load('payments', '1.0', { 'packages': ['production_config'] });</script>

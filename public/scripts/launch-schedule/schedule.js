@@ -267,7 +267,7 @@ Schedule.prototype.updateCRN = function(){
 Schedule.prototype.testConflicts = function(section){
 	if ( Modernizr.webworkers ) {
 		if ( !conflict_worker ){
-			conflict_worker = new Worker('/scripts/workers/schedule_conflict.js');
+			conflict_worker = new Worker('/scripts/launch-schedule/workers/schedule_conflict.js');
 			conflict_worker.onmessage = function(event){
 				var res = JSON.parse(event.data);
 				if(res.conflicts && res.section){
