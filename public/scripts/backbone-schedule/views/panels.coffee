@@ -25,7 +25,7 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs', 'views/
 		# Renders the actual view from the template
 		render: ->
 			@$el.html $ @template()
-			@resultsView = new resultsView( el: (@$el.find '#tutorial-frame')[0] )
+			@resultsView = new resultsView( el: (@$el.find '#results-frame')[0] )
 
 
 		events:
