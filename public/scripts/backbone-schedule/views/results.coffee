@@ -15,7 +15,7 @@ define(['jQuery',
           @render();
 
     render: ->
-      console.log(@sections.models[0])
+      console.log(@sections.models)
       _.each @sections.models, (section) =>
          @$el.append new sectionView(model: section.attributes).render().el
 

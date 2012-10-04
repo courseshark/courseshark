@@ -1,7 +1,7 @@
 @sam-grey: #8a949e;
 
 .results-section{
-  padding: 8px;
+  padding: 8px 8px 0px 8px;
   transition: height .5s ease-in-out;
   -webkit-transition: height .5s ease-in-out;
   -webkit-box-shadow: -2px 2px 3px 0px #CCC;
@@ -13,6 +13,10 @@
   -webkit-border-radius: 3px;
   background-color: white;
   background-image:  -webkit-linear-gradient(top,#FFF,#E5E5E5);
+
+  div{
+    min-height: 20px !important;
+  }
 
   .prof{
   }
@@ -62,8 +66,8 @@
 
   .expander{
     text-align: center;
-    border-radius: 20px;
-    margin-bottom: -20px;
+    position: absolute;
+    left: 0;
 
     &:hover{
       background-color: rgba(0,0,0,.05);
