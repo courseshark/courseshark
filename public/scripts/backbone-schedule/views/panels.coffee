@@ -1,5 +1,5 @@
 #Incude all the models here, then pass them back into the object
-define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _, Backbone, templateText) ->
+define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs', 'views/filter'], ($, _, Backbone, templateText, filterView) ->
 
 	class panelsView extends Backbone.View
 
@@ -25,7 +25,7 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _,
 		# Renders the actual view from the template
 		render: ->
 			@$el.html @template()
-
+			@filterView = new filterView( el: (@$el.find '#filter-frame')[0] )
 
 
 		events:
