@@ -2,7 +2,7 @@
 
 # Require the router here to help route urls
 define(['jQuery','Underscore','Backbone', 'router', 'models', 'views', 'collections'], ($, _, Backbone, Router, models, views, collections) ->
-	
+
 	#All the router's initialize function
 	initialize = () ->
 		Router.initialize @
