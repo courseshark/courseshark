@@ -1,6 +1,8 @@
-@sam-grey: #8a949e;
-
 .results-section{
+  @sam-grey: #8a949e;
+  @result-gradient-start: white;
+  @result-gradient-end:  #E5E5E5;
+
   padding: 8px 8px 8px 8px;
   transition: height .5s ease-in-out;
   -webkit-box-shadow: -2px 2px 3px 0px #CCC;
@@ -12,11 +14,11 @@
   border: solid 1px @sam-grey;
   border-radius: 3px;
   background-color: white;
-  background-image: -webkit-linear-gradient(top,#FFF,#E5E5E5);
-  background-image: -moz-linear-gradient(top,#FFF,#E5E5E5);
-  background-image: -o-linear-gradient(top,#FFF,#E5E5E5);
-  background-image: -ms-linear-gradient(top,#FFF,#E5E5E5);
-  background-image: linear-gradient(top,#FFF,#E5E5E5);
+  background-image: -webkit-linear-gradient(top, @result-gradient-start, @result-gradient-end);
+  background-image: -moz-linear-gradient(top, @result-gradient-start, @result-gradient-end);
+  background-image: -o-linear-gradient(top, @result-gradient-start, @result-gradient-end);
+  background-image: -ms-linear-gradient(top, @result-gradient-start, @result-gradient-end);
+  background-image: linear-gradient(top, @result-gradient-start, @result-gradient-end);
 
   .row-fluid div{
     min-height: 20px;
@@ -32,16 +34,19 @@
   }
 
   .add{
+    @add-gradient-start: white;
+    @add-gradient-end:  #E5E5E5;
+
     width: 35px;
     height: 30px;
     border: solid 1px @sam-grey;
     border-radius: 3px;
     background-color: white;
-    background-image: -webkit-linear-gradient(top,#FFF,#E5E5E5);
-    background-image: -moz-linear-gradient(top,#FFF,#E5E5E5);
-    background-image: -o-linear-gradient(top,#FFF,#E5E5E5);
-    background-image: -ms-linear-gradient(top,#FFF,#E5E5E5);
-    background-image: linear-gradient(top,#FFF,#E5E5E5);
+    background-image: -webkit-linear-gradient(top, @add-gradient-start, @add-gradient-end);
+    background-image: -moz-linear-gradient(top, @add-gradient-start, @add-gradient-end);
+    background-image: -o-linear-gradient(top, @add-gradient-start, @add-gradient-end);
+    background-image: -ms-linear-gradient(top, @add-gradient-start, @add-gradient-end);
+    background-image: linear-gradient(top, @add-gradient-start, @add-gradient-end);
     line-height: 20px;
     text-align: center;
 
@@ -50,12 +55,15 @@
     }
 
     &.added{
+      @added-gradient-start: red;
+      @added-gradient-end: #E50505;
+
       background-color: red;
-      background-image: -webkit-linear-gradient(top,red,#E50505);
-      background-image: -moz-linear-gradient(top,red,#E50505);
-      background-image: -o-linear-gradient(top,red,#E50505);
-      background-image: -ms-linear-gradient(top,red,#E50505);
-      background-image: linear-gradient(top,red,#E50505);
+      background-image: -webkit-linear-gradient(top, @added-gradient-start, @added-gradient-end);
+      background-image: -moz-linear-gradient(top, @added-gradient-start, @added-gradient-end);
+      background-image: -o-linear-gradient(top, @added-gradient-start, @added-gradient-end);
+      background-image: -ms-linear-gradient(top, @added-gradient-start, @added-gradient-end);
+      background-image: linear-gradient(top, @added-gradient-start, @added-gradient-end);
 
       &:before{
         content: '-';
