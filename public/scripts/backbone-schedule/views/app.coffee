@@ -9,16 +9,16 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/index.ejs', 'views/n
 
 			# Compile the template for future use
 			@template = _.template(templateText)
-			
+
 			## Render
 			@render()	# Render out the view
 
 		# Renders the actual view from the template
+
 		render: ->
 			@$el.html $ @template()
 			@navView = new navView( el: (@$el.children '#main-nav')[0] )
 			@panelsView = new panelsView( el: (@$el.children '#main-container')[0] )
-
 
 	# Whatever is returned here will be usable by other modules
 	appView

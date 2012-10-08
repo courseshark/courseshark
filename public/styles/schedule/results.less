@@ -1,0 +1,112 @@
+.results-section{
+  @sam-grey: #8a949e;
+  @result-gradient-start: white;
+  @result-gradient-end:  #E5E5E5;
+
+  padding: 8px 8px 8px 8px;
+  transition: height .5s ease-in-out;
+  -webkit-box-shadow: -2px 2px 3px 0px #CCC;
+  box-shadow: -2px 2px 3px 0px #CCC;
+  position: relative;
+  margin: 15px;
+  overflow: hidden;
+  color: @sam-grey;
+  border: solid 1px @sam-grey;
+  border-radius: 3px;
+  background-color: white;
+  background-image: -webkit-linear-gradient(top, @result-gradient-start, @result-gradient-end);
+  background-image: -moz-linear-gradient(top, @result-gradient-start, @result-gradient-end);
+  background-image: -o-linear-gradient(top, @result-gradient-start, @result-gradient-end);
+  background-image: -ms-linear-gradient(top, @result-gradient-start, @result-gradient-end);
+  background-image: linear-gradient(top, @result-gradient-start, @result-gradient-end);
+
+  .row-fluid div{
+    min-height: 20px;
+  }
+
+  .prof{
+  }
+
+  .seats{
+  }
+
+  .section-id{
+  }
+
+  .add{
+    @add-gradient-start: white;
+    @add-gradient-end:  #E5E5E5;
+
+    width: 35px;
+    height: 30px;
+    border: solid 1px @sam-grey;
+    border-radius: 3px;
+    background-color: white;
+    background-image: -webkit-linear-gradient(top, @add-gradient-start, @add-gradient-end);
+    background-image: -moz-linear-gradient(top, @add-gradient-start, @add-gradient-end);
+    background-image: -o-linear-gradient(top, @add-gradient-start, @add-gradient-end);
+    background-image: -ms-linear-gradient(top, @add-gradient-start, @add-gradient-end);
+    background-image: linear-gradient(top, @add-gradient-start, @add-gradient-end);
+    line-height: 20px;
+    text-align: center;
+
+    &:before{
+      content: '+';
+    }
+
+    &.added{
+      @added-gradient-start: red;
+      @added-gradient-end: #E50505;
+
+      background-color: red;
+      background-image: -webkit-linear-gradient(top, @added-gradient-start, @added-gradient-end);
+      background-image: -moz-linear-gradient(top, @added-gradient-start, @added-gradient-end);
+      background-image: -o-linear-gradient(top, @added-gradient-start, @added-gradient-end);
+      background-image: -ms-linear-gradient(top, @added-gradient-start, @added-gradient-end);
+      background-image: linear-gradient(top, @added-gradient-start, @added-gradient-end);
+
+      &:before{
+        content: '-';
+      }
+    }
+  }
+
+  .days{
+    line-height: 100%;
+
+    .day{
+      text-align: center;
+
+      &.selected{
+        font-weight: bold;
+        color: blue;
+      }
+    }
+  }
+
+  .expander{
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    min-height: 5px !important;
+    line-height: 0px;
+
+    &:hover{
+      background-color: rgba(0,0,0,.05);
+      cursor: pointer;
+    }
+  }
+
+  .details{
+    display: none;
+
+    .description{
+    }
+
+    .hours{
+      margin-top: 5px;
+    }
+  }
+
+}
