@@ -12,10 +12,19 @@ define(['jQuery',
 
 			@render();
 
+		slide: ->
+			@$el.find('.slider').slider
+					range:	true,
+					min:		0,
+					max:		24,
+					values:	[0, 24]
+					slide: (event, ui) ->
+						#blah
+
 		render: ->
 			params =
 				search: 'Find a class'
-				adv_search: 'Advanced search'
+				adv_search: 'Advanced search'	
 			@$el.append @filterTemplate(params)
 			@
 
