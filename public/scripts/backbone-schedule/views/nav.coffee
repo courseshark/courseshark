@@ -5,20 +5,18 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/nav.ejs'], ($, _, Ba
 
 		initialize: ->
 			_.bindAll @
-			
+
 			# Compile the template for future use
 			@template = _.template(templateText)
 
 			# Render call
 			@render();
 
-
 		events:
 			'click #save' : 'save'
 
 		save: ->
 			console.log 'save clicked -- probably call router'
-
 
 		# Renders the actual view from the template
 		render: ->

@@ -1,5 +1,5 @@
 #Incude all the models here, then pass them back into the object
-define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _, Backbone, templateText) ->
+define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs', 'views/results'], ($, _, Backbone, templateText, resultsView) ->
 
 	class panelsView extends Backbone.View
 
@@ -24,8 +24,8 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _,
 
 		# Renders the actual view from the template
 		render: ->
-			@$el.html @template()
-
+			@$el.html $ @template()
+			@resultsView = new resultsView( el: (@$el.find '#results-frame')[0] )
 
 
 		events:
@@ -44,7 +44,6 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _,
 			($ '#max-cal-frame').toggleClass 'hidden'
 
 
-
 		# Is called every time the window resizes
 		resizeEvent: ->
 			# If we are already in a loop, dont call rAF
@@ -53,7 +52,6 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _,
 				requestAnimFrame @heightAdjust
 			else
 				return
-
 
 		# Actually readjusts the height of the view
 		heightAdjust: ->

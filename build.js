@@ -1,5 +1,5 @@
 var fs = require('fs');
-	
+
 exports.build = function(app){
 	buildApplication(app)
 }
@@ -9,7 +9,7 @@ function buildApplication(app){
     , mjs
     , foundCSS=false
     , foundJS=false
-    
+
   if ( app.settings.env == 'development' ){
     return;
   }
