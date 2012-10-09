@@ -4,8 +4,6 @@ var spanNumbers = function(n){
 
 exports = module.exports = function(app){
 
-	//var notification_io = app.io.of('/notifications')
-
 	app.get('/watcher', function(req, res){
 		Notification.find().count().exec(function(err, total){
 			Notification.find({deleted: false, hidden:false}).count().exec(function(err, active){
@@ -262,69 +260,4 @@ exports = module.exports = function(app){
 		})
 	})
 
-	/*
-	notification_io.on('connection', function (socket) {
-		note = {}
-		function transact(orderId){
-			Credit.findOne({orderId: orderId}, function(err, credit){
-				if( err || !credit ){
-					socket.emit('error', 'usingCredit')
-					return;
-				}
-				if ( credit.used===false ){
-					note.save(function(err){
-						if (err){
-							socket.emit('error', err)
-						}else{
-							credit.used = true
-							credit.usedOn = Date.now()
-							credit.item = note._id
-							credit.save(function(err){
-								if ( !err ){
-									socket.emit('activated', note)
-								}else{
-									socket.emit('error', err)
-								}
-							})
-						}
-					})
-				}else{
-					socket.emit('error', 'usingCredit')
-				}
-			})
-		}
-
-		socket.on('create', function(data){
-			note = new Notification(data);
-			Credit.findOne({user: data.user, used: false}, function(err, credit){
-				if ( err ){
-					socket.emit('error', err)
-				}
-				if ( !credit ){
-					var jwt = require('jwt-simple')
-						, time = Math.round((new Date()).getTime()/1000)
-						,	payload = { iss: app.config.google.iss
-												,	aud: 'Google'
-												,	typ: 'google/payments/inapp/item/v1'
-												,	exp: time + 3600 // 1 hour
-												,	iat: time
-												,	request: {name: 'Seat Watcher'
-																	, description: 'Notification when a spot opens up in a class.'
-																	,	price: 1.99
-																	, currencyCode: 'USD'
-																	,	sellerData: 'userId:'+note.user+';'
-																	}
-												}
-					token = jwt.encode(payload, app.config.google.sellerSecret)
-					socket.emit('payment_needed', {token:token});
-					return;
-				}
-				// We have a credit
-				transact(credit.orderId)
-			})
-			
-		})
-		socket.on('paid', transact)
-	});
-	*/
 }
