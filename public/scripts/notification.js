@@ -39,6 +39,7 @@ Notifications.prototype.load = function(){
 		,	dataType: 'json'
 		, success: function(notifications){
 				self.notifications = notifications;
+				self.show();
 			}
 	})
 	return this;
