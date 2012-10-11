@@ -3,7 +3,6 @@ var spanNumbers = function(n){
 }
 
 exports = module.exports = function(app){
-	var notification_io = app.io.of('/notifications')
 
 	app.get('/watcher', function(req, res){
 		Notification.find().count().exec(function(err, total){
@@ -55,6 +54,37 @@ exports = module.exports = function(app){
 		})
 	})
 
+	app.delete('/notifications/:notificationId.:format?', requireLogin, function(req, res){
+		Notification.findOne({user: req.user, _id:req.params.notificationId}, function(err, notification){
+			if (err||!notification){
+				if ( req.params.format == 'json' ){
+					res.json(false);
+				}else{
+					res.send(404);
+				}
+			}else{
+				notification.hidden = true;
+				notification.deleted = true;
+				notification.save(function(err){
+					if ( req.params.format == 'json' ){
+						res.json(err||true);
+					}else{
+						res.redirect('back')
+					}
+				});
+			}
+		})
+	})
+
+	app.post('/notifications', requireLogin, function(req, res){
+		note = new Notification(req.body.notification);
+		note.user = req.user;
+		note.save(function(err){
+			res.json(err||true);
+		})
+	})
+
+/*
 	app.post('/notifications/purchase/post-back', function(req, res){
 		var jwt = req.body.jwt
 			,	transaction = require('jwt-simple').decode(jwt, app.config.google.sellerSecret)
@@ -75,7 +105,7 @@ exports = module.exports = function(app){
 			res.json(transaction.response.orderId)
 		})
 	})
-
+*/
 
 
 	app.get('/notification/cancel/:userId/:notificationId/:sectionId.:format?', function(req, res){
@@ -230,67 +260,4 @@ exports = module.exports = function(app){
 		})
 	})
 
-	notification_io.on('connection', function (socket) {
-		note = {}
-		function transact(orderId){
-			Credit.findOne({orderId: orderId}, function(err, credit){
-				if( err || !credit ){
-					socket.emit('error', 'usingCredit')
-					return;
-				}
-				if ( credit.used===false ){
-					note.save(function(err){
-						if (err){
-							socket.emit('error', err)
-						}else{
-							credit.used = true
-							credit.usedOn = Date.now()
-							credit.item = note._id
-							credit.save(function(err){
-								if ( !err ){
-									socket.emit('activated', note)
-								}else{
-									socket.emit('error', err)
-								}
-							})
-						}
-					})
-				}else{
-					socket.emit('error', 'usingCredit')
-				}
-			})
-		}
-
-		socket.on('create', function(data){
-			note = new Notification(data);
-			Credit.findOne({user: data.user, used: false}, function(err, credit){
-				if ( err ){
-					socket.emit('error', err)
-				}
-				if ( !credit ){
-					var jwt = require('jwt-simple')
-						, time = Math.round((new Date()).getTime()/1000)
-						,	payload = { iss: app.config.google.iss
-												,	aud: 'Google'
-												,	typ: 'google/payments/inapp/item/v1'
-												,	exp: time + 3600 // 1 hour
-												,	iat: time
-												,	request: {name: 'Seat Watcher'
-																	, description: 'Notification when a spot opens up in a class.'
-																	,	price: 1.99
-																	, currencyCode: 'USD'
-																	,	sellerData: 'userId:'+note.user+';'
-																	}
-												}
-					token = jwt.encode(payload, app.config.google.sellerSecret)
-					socket.emit('payment_needed', {token:token});
-					return;
-				}
-				// We have a credit
-				transact(credit.orderId)
-			})
-			
-		})
-		socket.on('paid', transact)
-	});
 }
