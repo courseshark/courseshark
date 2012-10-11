@@ -14,17 +14,35 @@ exports = module.exports = function(app){
 			query.school = req.school._id;
 
 			preformSearch(query, function(result){
-				res.json(result);
+				res.json({
+							sections: result.sections.length,
+							courses: result.courses.length,
+							departments: result.departments.length
+						})
 			});
 		}
 	});
+
+	app.get('/build-search', function(req, res){
+		res.send(200);
+		var natural = require('natural')
+			,	_ = require('underscore');
+		natural.LancasterStemmer.attach();
+		Department.find({}, function(err, allDepartments){
+			_.each(allDepartments, function(department){
+				department._terms = (department.abbr + " " + department.name).tokenizeAndStem()
+				department.save();
+			})
+		})
+
+	})
 
 
 	preformSearch = function(query, next){
 		findDepartments(query, function(departments){
 			findCourses(query, function(courses){
 				findSections(query, function(sections){
-					next(sections);
+					next({departments: departments, courses: courses, sections: sections});
 				});
 			});
 		});
@@ -38,7 +56,7 @@ exports = module.exports = function(app){
 	};
 
 	findCourses = function(query, next){
-		Course.find().or([{'name':query.re},{'number':query.re},{'department':{$in: query.department_ids}}]).populate('department').exec(function(err, courses) {
+		Course.find().or([{'name':query.re},{'number':query.re}/*,{'department':{$in: query.department_ids}}*/]).populate('department').exec(function(err, courses) {
 			foundCourses = [];
 			for( var i=0,_len=courses.length;i<_len;i++){
 				if ( courses[i].department.school.toString() == query.school.toString() ){
@@ -52,7 +70,7 @@ exports = module.exports = function(app){
 
 	findSections = function(query, next){
 		console.log(query);
-		Section.find().or([{'name':query.re},{'instructor':query.re},{'course':{$in: query.course_ids}}]).exec(function(err, sections) {
+		Section.find().or([{'name':query.re},{'instructor':query.re}/*,{'course':{$in: query.course_ids}}*/]).exec(function(err, sections) {
 			if (err){console.log(err);}
 			if ( sections ){
 				query.section_ids = sections.map(function(s){return s._id;});
