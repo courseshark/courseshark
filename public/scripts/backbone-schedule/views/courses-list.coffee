@@ -14,8 +14,10 @@ define(['jQuery',
       @render();
 
     render: ->
-      console.log(@$el)
       @$el.html $ @coursesListTemplate()
+      list = @$el.find('#course-list-content')
+      model = {crn: "88607", name: "CS 1331"}
+      list.append new courseView(model: model).render().el
 
   coursesListView
 )
