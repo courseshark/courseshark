@@ -2,45 +2,92 @@
 	<div class="row-fluid">
 		<div class="span24">
 			<div class="search">
-				<h1><%= search %></h1>
+				<h1>Find a class</h1>
 				<input type="text" id="search" name="search"/>
 			</div>
 		</div>
 		<div class="advanced-search">
-			<h1><%= adv_search %></h1>
+			<h1>Advanced search</h1>
 		</div>
 	</div>
 	<div class="attribute">
-		<div class="row-fluid">	
-			<h5>day of week</h5>
-			<div class="days span24">
-				<div class="day span2" id="monday">
-					<label for="m">m</label>
-					<input class="daybox" type="checkbox" name="day" id="monday" value="m"/>
+		<div class="row-fluid" >
+			<fieldset>
+				<legend>seats</legend>
+				<div class="row-fluid">
+						<div class="seats span24">
+							<div class="span2"/>
+							<div class="span2">
+								<input type="checkbox" name="seats" id="available" value="available">
+							</div>
+							<div class="span2">
+								<label for="available">available</label>
+							</div>
+						</div>
 				</div>
-				<div class="day span2" id="tuesday">
-					<label for="t">t</label>
-					<input class="daybox" type="checkbox" name="day" id="tuesday" value="t"/>
+				<div class="row-fluid">
+						<div class="seats span24">
+							<div class="span2"/>
+							<div class="span2">
+								<input type="checkbox" name="seats" id="wait" value="wait">
+							</div>
+							<div class="span2">
+								<label for="wait">waitlist</label>
+							</div>
+						</div>
 				</div>
-				<div class="day span2" id="wednesday">
-					<label for="w">w</label>
-					<input class="daybox" type="checkbox" name="day" id="wednesday" value="w"/>
+				<div class="row-fluid">
+						<div class="seats span24">
+							<div class="span2"/>
+							<div class="span2">
+								<input type="checkbox" name="seats" id="full" value="full">
+							</div>
+							<div class="span2">
+								<label for="full">full</label>
+							</div>
+						</div>
 				</div>
-				<div class="day span2" id="thursday">
-					<label for="th">th</label>
-					<input class="daybox" type="checkbox" name="day" id="thursday" value="th"/>
-				</div>
-				<div class="day span2" id="friday">
-					<label for="f">f</label>
-					<input class="daybox" type="checkbox" name="day" id="friday" value="f"/>
-				</div>
-			</div>
+			</fieldset>
 		</div>
 	</div>
-	<div class="row-fluid">
-		<div class="attribute">
-			<h5>time</h5>
-			<div class="slider"></div>
+	<div class="attribute">
+		<div class="row-fluid">
+			<fieldset>
+				<legend>day of week</legend>
+						<div class="days span24">
+							<div class="span1"/>
+							<div class="day span4" id="monday">
+								<label for="m">m</label>
+								<input class="daybox" type="checkbox" name="day" id="monday" value="m"/>
+							</div>
+							<div class="day span4" id="tuesday">
+								<label for="t">t</label>
+								<input class="daybox" type="checkbox" name="day" id="tuesday" value="t"/>
+							</div>
+							<div class="day span4" id="wednesday">
+								<label for="w">w</label>
+								<input class="daybox" type="checkbox" name="day" id="wednesday" value="w"/>
+							</div>
+							<div class="day span4" id="thursday">
+								<label for="th">th</label>
+								<input class="daybox" type="checkbox" name="day" id="thursday" value="th"/>
+							</div>
+							<div class="day span4" id="friday">
+								<label for="f">f</label>
+								<input class="daybox" type="checkbox" name="day" id="friday" value="f"/>
+							</div>
+							<div class="span1"/>
+						</div>
+			</fieldset>
+		</div>
+	</div>
+	<div class="attribute">	
+		<div class="row-fluid">
+			<fieldset>
+				<legend>time</legend>
+				<div class="time">#:## - #:##</div>
+				<div class="slider"></div>
+			</fieldset>
 		</div>
 	</div>
 </div>

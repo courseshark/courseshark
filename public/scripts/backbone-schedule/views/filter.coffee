@@ -19,6 +19,7 @@ define(['jQuery',
 			$slider = @$el.find('.slider')
 			value = $slider.slider('values')
 			console.log 'yay jquery-ui is working!', value
+			minMin = parseInt( (value[0] - 12 * minHour) * 5 )
 
 		render: ->
 			params =
