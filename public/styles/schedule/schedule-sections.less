@@ -1,0 +1,30 @@
+.schedule-sections-list{
+
+  .title-bar{
+    @title-gradient-top: #51aef7;
+    @title-gradient-bottom: #2c7bb8;
+
+    background-color: #3fa9f5;
+    //TODO: prefix
+    background-image: -webkit-linear-gradient(top, @title-gradient-top, @title-gradient-bottom);
+    height: 30px;
+    color: white;
+    text-shadow: black 0.1em 0.1em 0.2em;
+    font-size: 14px;
+    padding-left: 15px;
+    line-height: 30px;
+  }
+
+  .list{
+    background-color: #ecf2f7;
+    height: 200px;
+    border-bottom: solid 1px #b3b4b5;
+    overflow-y: auto;
+
+    .schedule-section{
+      color: #78aace;
+      border-bottom: 1px solid #BBB;
+      line-height: 30px;
+    }
+  }
+}

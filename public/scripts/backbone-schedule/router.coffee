@@ -1,16 +1,17 @@
 define(
   [
-    'jQuery','Underscore','Backbone'#,
+    'jQuery','Underscore','Backbone', 'models/schedule'#,
     # Include the views that need to be loaded for the router to use
     #'views/projects/list',
     #'views/users/list'
   ],
-  ($, _, Backbone) ->
+  ($, _, Backbone, Schedule) ->
 
     SharkRouter = Backbone.Router.extend(
 
       initialize: (Shark) ->
         @Shark = Shark
+        Shark.schedule = new Schedule
         # Router Initilalized
 
       routes:
