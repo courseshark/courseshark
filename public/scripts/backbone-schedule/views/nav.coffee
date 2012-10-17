@@ -29,6 +29,7 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/nav.ejs'], ($, _, Ba
 
 		new: ->
 			console.log 'new clicked'
+			@$el.find('#new').show()
 
 		print: ->
 			console.log 'print clicked'
