@@ -23,6 +23,9 @@ define(['jQuery',
 
     add: ->
       @$el.find('.add').toggleClass('added')
+      console.log(Shark.schedule.get("courses"))
+      Shark.schedule.get("courses").add(@model)
+      console.log(Shark.schedule.get("courses"))
 
     render: ->
       params =

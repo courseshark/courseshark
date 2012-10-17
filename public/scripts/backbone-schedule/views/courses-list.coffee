@@ -9,6 +9,9 @@ define(['jQuery',
     initialize: ->
       _.bindAll @
 
+      @collection.bind "add", =>
+        @render();
+
       @coursesListTemplate = _.template(coursesListTemplate)
 
       @render();
@@ -16,8 +19,10 @@ define(['jQuery',
     render: ->
       @$el.html $ @coursesListTemplate()
       list = @$el.find('#course-list-content')
-      model = {crn: "88607", name: "CS 1331"}
-      list.append new courseView(model: model).render().el
+      newList = $("<span><span>")
+      _.each @collection.models, (course) =>
+        newList.append new courseView(model: course.attributes).render().el
+      list.html newList
 
   coursesListView
 )

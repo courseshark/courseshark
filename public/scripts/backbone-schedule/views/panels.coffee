@@ -26,7 +26,7 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs', 'views/
 		render: ->
 			@$el.html $ @template()
 			@resultsView = new resultsView( el: (@$el.find '#results-frame')[0] )
-			@coursesView = new coursesView( el: (@$el.find '#schedule-frame')[0] )
+			@coursesView = new coursesView( el: (@$el.find '#schedule-frame')[0] , collection: Shark.schedule.get("courses"))
 
 
 		events:

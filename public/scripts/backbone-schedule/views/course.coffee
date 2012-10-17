@@ -1,7 +1,8 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'text!/tmpl/courses/course.ejs'], ($,_, Backbone, courseTemplate) ->
+        'text!/tmpl/courses/course.ejs',
+        'models/schedule'], ($,_, Backbone, courseTemplate, Schedule) ->
 
   class coursesListView extends Backbone.View
 
@@ -13,7 +14,7 @@ define(['jQuery',
       @render();
 
     render: ->
-      text = @model.crn + ": " + @model.name
+      text = @model.number + ": " + @model.name.split(' #')[0]
       @$el.html @courseTemplate(course: text)
       @
 

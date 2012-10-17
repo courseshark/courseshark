@@ -10,6 +10,7 @@ define(['jQuery',
       _.bindAll @
 
       @sections = new Sections
+      @sections.url = "/term/4ffd2365668b5416035b1361/sections/4ffd2367668b5416035b1a81"
       # Gets sections based on API endpoint specified in collection
       @sections.fetch
         success: (model, response) =>
