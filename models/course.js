@@ -11,9 +11,11 @@ exports.boot = module.exports.boot = function (app){
 CourseSchema = new Schema({
 		name: { type: String }
 	,	terms: [{ type: Schema.ObjectId, ref: 'Term' }]
+	, school: { type: Schema.ObjectId, ref: 'School', index: true }
 	,	department: { type: Schema.ObjectId, ref: 'Department' }
 	,	number: { type: String, index: true }
 	, sections: [{ type: Schema.ObjectId, ref: 'Section' }]
+	, _tokens: []
 });
 
 CourseSchema.virtual('id')

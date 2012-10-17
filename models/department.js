@@ -12,7 +12,7 @@ DepartmentSchema = new Schema({
 		name: { type: String }
 	,	abbr: { type: String }
 	, school: { type: Schema.ObjectId, ref: 'School' }
-	, _terms: []
+	, _tokens: []
 });
 
 DepartmentSchema.virtual('id')
