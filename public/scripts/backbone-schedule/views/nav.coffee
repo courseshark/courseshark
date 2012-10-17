@@ -14,10 +14,30 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/nav.ejs'], ($, _, Ba
 
 
 		events:
-			'click #save' : 'save'
+			'click #save-button' : 'save'
+			'click #load-button' : 'load'
+			'click #new-button' : 'new'
+			'click #print-button' : 'print'
+			'click #link-button' : 'link'
+			'click #ical-button' : 'ical'
 
 		save: ->
 			console.log 'save clicked -- probably call router'
+
+		load: ->
+			console.log 'load clicked'
+
+		new: ->
+			console.log 'new clicked'
+
+		print: ->
+			console.log 'print clicked'
+
+		link: ->
+			console.log 'share link clicked'
+
+		ical: ->
+			console.log 'ical clicked'
 
 
 		# Renders the actual view from the template
