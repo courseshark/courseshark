@@ -18,7 +18,7 @@ define(['jQuery',
 
     render: ->
       _.each @sections.models, (section) =>
-         @$el.append new sectionView(model: section.attributes).render().el
+         @$el.append new sectionView(model: section).render().el
 
   resultsView
 )

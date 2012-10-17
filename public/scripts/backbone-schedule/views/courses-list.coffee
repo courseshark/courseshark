@@ -12,6 +12,9 @@ define(['jQuery',
       @collection.bind "add", =>
         @render();
 
+      @collection.bind "remove", =>
+        @render();
+
       @coursesListTemplate = _.template(coursesListTemplate)
 
       @render();
