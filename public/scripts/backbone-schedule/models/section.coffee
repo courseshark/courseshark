@@ -1,6 +1,6 @@
 define(['jQuery',
         'Underscore',
-        'Backbone'], ($,_, Backbone, sectionTemplate) ->
+        'Backbone'], ($,_, Backbone) ->
 
   class Section extends Backbone.Model
 
