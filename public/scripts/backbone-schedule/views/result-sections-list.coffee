@@ -1,15 +1,15 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'collections/sections'
-        'views/section'], ($,_, Backbone, Sections, sectionView) ->
+        'collections/result-sections'
+        'views/result-section'], ($,_, Backbone, ResultSections, ResultSectionView) ->
 
-  class resultsView extends Backbone.View
+  class ResultSectionsListView extends Backbone.View
 
     initialize: ->
       _.bindAll @
 
-      @sections = new Sections
+      @sections = new ResultSections
       @sections.url = "/term/4ffd2365668b5416035b1361/sections/4ffd2367668b5416035b1a81"
       # Gets sections based on API endpoint specified in collection
       @sections.fetch
@@ -18,7 +18,7 @@ define(['jQuery',
 
     render: ->
       _.each @sections.models, (section) =>
-         @$el.append new sectionView(model: section).render().el
+        @$el.append new ResultSectionView(model: section).render().el
 
-  resultsView
+  ResultSectionsListView
 )

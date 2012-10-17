@@ -3,7 +3,7 @@ define(['jQuery',
         'Backbone',
         'models/section'], ($,_, Backbone, Section) ->
 
-  class Courses extends Backbone.Collection
+  class ScheduleSections extends Backbone.Collection
 
     model: Section
 
@@ -13,5 +13,5 @@ define(['jQuery',
     #   section.attributes.info
 
 
-  Courses
+  ScheduleSections
 )

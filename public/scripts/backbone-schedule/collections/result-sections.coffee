@@ -3,7 +3,7 @@ define(['jQuery',
         'Backbone',
         'models/section'], ($,_, Backbone, Section) ->
 
-  class Sections extends Backbone.Collection
+  class ResultSections extends Backbone.Collection
 
     model: Section
 
@@ -12,6 +12,5 @@ define(['jQuery',
       # Sort the sections based on section letter/number
       section.attributes.info
 
-
-  Sections
+  ResultSections
 )

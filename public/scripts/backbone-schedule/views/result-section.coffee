@@ -1,15 +1,15 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'collections/sections'
-        'text!/tmpl/results/section.ejs'], ($,_, Backbone, Sections, sectionTemplate) ->
+        'collections/result-sections'
+        'text!/tmpl/results/results-section.ejs'], ($,_, Backbone, ResultsSections, resultsSectionTemplate) ->
 
-  class sectionView extends Backbone.View
+  class ResultSectionView extends Backbone.View
 
     initialize: ->
       _.bindAll @
 
-      @sectionTemplate = _.template(sectionTemplate)
+      @resultsSectionTemplate = _.template(resultsSectionTemplate)
 
       @render();
 
@@ -23,7 +23,7 @@ define(['jQuery',
 
     add: ->
       @$el.find('.add').toggleClass('added')
-      collection = Shark.schedule.get("courses")
+      collection = Shark.schedule.get("sections")
       if _.contains(collection.models, @model)
         collection.remove(@model)
       else
@@ -36,12 +36,12 @@ define(['jQuery',
         seats: model.seatsAvailable + '/' + model.seatsTotal
         section_id: model.number + ': Section ' + model.info
         hours: model.credits
-      @$el.html @sectionTemplate(params)
+      @$el.html @resultsSectionTemplate(params)
       # Color/bold the correct day letters
       _.each model.timeslots, (timeslot) =>
         _.each timeslot.days, (day) =>
           @$el.find('#' + day).addClass('selected')
       @ # Return the section view to be added by the results view
 
-  sectionView
+  ResultSectionView
 )

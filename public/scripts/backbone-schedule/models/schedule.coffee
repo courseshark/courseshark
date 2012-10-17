@@ -1,13 +1,13 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'collections/courses'], ($,_, Backbone, Courses) ->
+        'collections/schedule-sections'], ($,_, Backbone, ScheduleSections) ->
 
   class Schedule extends Backbone.Model
 
     defaults:
       name: "Name"
-      courses: new Courses
+      sections: new ScheduleSections
 
   Schedule
 )
