@@ -608,7 +608,7 @@ function addCourseToList(course, selectedSection){
 					if ( section.info.length >= 2 ){
 						for( var j=0; j<len; j++ ){
 							if ( !sections[j] || !sections[j]._id ){continue;}
-							if ( sections[j]._id != section.id && sections[j].info == section.info.substr(0,1) && section.timeslots[0].type.toLowerCase() != "lecture"){
+							if ( sections[j]._id != section.id && sections[j].info == section.info.substr(0,1) && section.timeslots.length && section.timeslots[0].type.toLowerCase() != "lecture"){
 								if ( typeof sections[j]["children"] === "undefined" ){
 									sections[j]["children"] = [section]
 								}else{
