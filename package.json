@@ -16,7 +16,7 @@
 		, "connect-mongodb" : "git://github.com/masylum/connect-mongodb.git#master"
 		, "cron": "1.0.0"
 		, "ejs": "0.8.0"
-		, "everyauth" : "0.2.32"
+		, "everyauth" : "0.3.1"
 		, "express": "2.5.11"
 		, "express-messages-bootstrap" : "0.1.0"
 		, "ezcrypto" : "0.0.3"
