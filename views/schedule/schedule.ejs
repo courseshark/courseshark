@@ -40,7 +40,7 @@
 	<script type="text/plain" id="template-event-listing-tbd">
 		<div rel="section-timeslot" class="tbd-listing option <$=section.id$>" id="<$=section.id$>-<$=t$>" style="border-color:<$=section.color_dark$>; background-color:<$=section.color$>;" data-original-title="<$=section.department.abbr$> <$=section.course.number$>  [<$=section.number$>]">
 			<div class="tbd-listing-head" style="background-color:<$=section.color_dark$>">
-				<$=section.department.abbr$> <$=section.course.number$> <$=(section.type!='None'?section.type+' ':'')$> <small>[<$=section.number$>]</small>
+				<$=section.department.abbr$> <$=section.course.number$> <$=(section.type!='None'&&section.type?section.type+' ':'')$> <small>[<$=section.number$>]</small>
 			</div>
 			<div>
 				<$=(section.instructor?((section.instructor.last_name=='None')?'Staff':section.instructor.last_name):'None')$>
@@ -160,7 +160,7 @@ END:VCALENDAR
 	      </ul>
 			</div>
 		</div>
-	</div>	
+	</div>
 	<% } %>
 	<div class="container">
 		<div class="row">
@@ -197,11 +197,9 @@ END:VCALENDAR
 				<!-- Containers for the Classes added to the Schedule -->
 				</div>
 			</div>
-			
 			<div id="schedule-container" class="span7">
 				<%- partial('calendars/week') %>
 			</div>
-
 			<div id="right-bar" class="span2 hidden-phone">
 				<div id="quick-share" class="row-fluid">
 					<div class="span12">
@@ -214,8 +212,6 @@ END:VCALENDAR
 					</div>
 				</div>
 			</div>
-
-			
 		</div>
 	</div>
 
@@ -291,11 +287,11 @@ $(document).ready(function() {
 		if ( typeahead.shown ){
 			$thing.typeahead('hide')
 		}else{
-			$thing.typeahead('showOptions')	
+			$thing.typeahead('showOptions')
 		}
 	})
 	_gaq = _gaq || {};
-		
+
 	var saveToggle;
 	$('#save-button').click(function(){
 
@@ -316,7 +312,7 @@ $(document).ready(function() {
 			return false;
 		<% } %>
 	});
-	
+
 	$('#load-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Load']);
 		<% if ( loggedIn ){ %>
@@ -326,24 +322,24 @@ $(document).ready(function() {
 		<% } %>
 		show_load_dialog();
 	});
-	
+
 	$('#new-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'New']);
 		show_new_dialog();
 	});
-	
+
 	$('#print-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Print']);
 		mixpanel.track('Print Schedule', {from: 'Menu'});
 		window.print();
 	});
-	
+
 	$('#ical-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'iCal']);
 		mixpanel.track('Export Schedule', {from: 'Menu'});
 		$('#ical-button').attr('href', schedule.createCal()).attr('download', schedule.name);
 	});
-	
+
 	$('#link-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Link']);
 		mixpanel.track('Generate Share Link', {from: 'Menu'});
@@ -373,7 +369,7 @@ $(document).ready(function() {
 					url:'/recruiter-share-invite'
 				,	dataType: 'text'
 				,	success: function(d){
-						$login.popover({animation: true, 
+						$login.popover({animation: true,
 												placement:'bottom'
 											, delay: 100
 											, trigger:'hover'
@@ -388,6 +384,5 @@ $(document).ready(function() {
 		mixpanel.track("Asked to Share with Recruiters");
 		openDialog('/share-with-recruiters');
 	<%}%>
-	
 });
 </script>

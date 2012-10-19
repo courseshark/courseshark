@@ -608,7 +608,7 @@ function addCourseToList(course, selectedSection){
 					if ( section.info.length >= 2 ){
 						for( var j=0; j<len; j++ ){
 							if ( !sections[j] || !sections[j]._id ){continue;}
-							if ( sections[j]._id != section.id && sections[j].info == section.info.substr(0,1) && section.timeslots.length && section.timeslots[0].type.toLowerCase() != "lecture"){
+							if ( sections[j]._id != section.id && sections[j].info == section.info.substr(0,1) && (!section.timeslots.length || section.timeslots[0].type.toLowerCase() != "lecture") ){
 								if ( typeof sections[j]["children"] === "undefined" ){
 									sections[j]["children"] = [section]
 								}else{
@@ -650,25 +650,39 @@ function addSectionToCourseList($container, section, selectedSection){
 	else if ( section.timeslots[0].day === 'TBA' || section.timeslots[0].day === null){
 		tbd_class = true;
 	}
+	else if ( section.timeslots[0].days.length == 1 && section.timeslots[0].days[0] === "online"){
+		tbd_class = true;
+		section.instructor = "Online";
+		section.location = "Online";
+	}
+
+	if ( section.instructor === "" ){
+		section.instructor = "TBA";
+	}
 
 	section.tbd_class = tbd_class;
-	
+
 	sstemplate = $('#template-section-selector').html();
 	if ( section.timeslots.length===0 ){
 		section.instructor = 'TBA'
 	}else{
 		//section.instructor = section.timeslots[0].instructor.trim().split(' ').splice(-1,1).join('')
 	}
+
+	if ( section.instructor === 'TBA' || section.instructor === 'Online' ){
+		section.instructor = '<i>'+section.instructor+'</i>';
+	}
+
 	section.friends = []
 	section_selector = window.tmpl(sstemplate, {section: section, child: false});
 
 	$sectionOption = $(section_selector).appendTo($container).data('section', section);
-	
+
 	if ( section.id === selectedSection ){
 		$sectionOption.addClass('selected').data('selected', true);
 		schedule.testConflicts(section);
 	}
-	
+
 	if ( !selectedSection ){
 		loadSeatData(section.id);
 	}
