@@ -643,17 +643,23 @@ function addCourseToList(course, selectedSection){
 
 
 function addSectionToCourseList($container, section, selectedSection){
-	var tbd_class = false;
-	if ( section.timeslots[0] === undefined ){
+	var tbd_class = false
+		, ts0 = section.timeslots[0];
+	if ( !ts0 || typeof ts0 === "undefined" ){
 		tbd_class = true;
 	}
-	else if ( section.timeslots[0].day === 'TBA' || section.timeslots[0].day === null){
+	else if ( ts0.day === 'TBA' || ts0.day === null){
 		tbd_class = true;
 	}
-	else if ( section.timeslots[0].days.length == 1 && section.timeslots[0].days[0] === "online"){
+	else if ( ts0.days.length == 1 && ts0.days[0] === "online" ){
 		tbd_class = true;
 		section.instructor = "Online";
 		section.location = "Online";
+	}
+	else if ( ts0.days.length === 0 && ts0.location.match(/INTE?RNET/i) ){
+		tbd_class = true;
+		section.instructor = section.instructor || "Online";
+		section.location = section.location || "Online";
 	}
 
 	if ( section.instructor === "" ){
