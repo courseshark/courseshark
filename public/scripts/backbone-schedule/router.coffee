@@ -1,11 +1,11 @@
 define(
   [
-    'jQuery','Underscore','Backbone', 'models/schedule'#,
+    'jQuery','Underscore','Backbone', 'models/schedule', 'models/session'#,
     # Include the views that need to be loaded for the router to use
     #'views/projects/list',
     #'views/users/list'
   ],
-  ($, _, Backbone, Schedule) ->
+  ($, _, Backbone, Schedule, Session) ->
 
 
     $.ajaxSetup statusCode:
@@ -24,9 +24,9 @@ define(
         # Router Initilalized
 
       routes:
-        '/s/' : 'landingPage'
         ''  : 'landingPage'
         '/' : 'landingPage'
+        '/s/' : 'landingPage'
 
         ':action':                   'defaultAction',
         ':controller/:action':       'defaultAction',
@@ -44,6 +44,7 @@ define(
     )
     initialize = (Shark) ->
       router = new SharkRouter(Shark)
+      Shark.session = new Session(CS.auth)
       Backbone.history.start pushState: true, root: CS.baseDir||''
       router
 

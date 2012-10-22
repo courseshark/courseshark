@@ -12,7 +12,7 @@ define(['jQuery',
       @load()
 
     authenticated: ->
-      Boolean(@get("access_token"))
+      !!@get("access_token")
 
     save: (auth_hash)->
       $.cookie('user_id', auth_hash.id)

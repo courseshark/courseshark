@@ -6,6 +6,7 @@ require.config(
     Underscore: '/scripts/lib/underscore/underscore.req'
     Backbone: '/scripts/lib/backbone/backbone.req'
     jQueryUI: '/scripts/lib/jquery/jquery-ui.req'
+    jQueryCookie: '/scripts/lib/jquery/jquery-cookie.req'
 
   shim:
     jQuery:
@@ -20,6 +21,9 @@ require.config(
     jQueryUI:
       deps: ['jQuery']
       exports: 'jQueryUI'
+    jQueryCookie:
+      deps: ['jQuery']
+      exports: 'jQueryCookie'
 )
 
 require(
@@ -28,7 +32,8 @@ require(
     'jQuery',
     'Underscore',
     'Backbone',
-    'jQueryUI'
+    'jQueryUI',
+    'jQueryCookie'
   ], (Shark) ->
       #The "app" dependency is passed in as "App"
       window.Shark = Shark
