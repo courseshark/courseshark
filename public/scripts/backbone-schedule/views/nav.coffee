@@ -24,7 +24,8 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/nav.ejs'], ($, _, Ba
 			console.log 'save clicked -- probably call router'
 
 		load: ->
-			console.log 'load clicked'
+			return Shark.session.authorize() if !Shark.session.authenticated()
+			console.log 'logged in can save'
 
 		new: ->
 			console.log 'new clicked'

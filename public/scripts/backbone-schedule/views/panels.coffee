@@ -47,9 +47,10 @@ define(['jQuery',
 			($ '#tutorial-frame').addClass 'hidden'
 
 		toggleSlidePanel: ->
+			return if ( $ '#results-frame').hasClass 'hidden'
 			($ '#slide-panel-button').toggleClass 'open'
 			($ '#slide-panel').toggleClass 'closed'
-			($ '#max-cal-frame').toggleClass 'hidden'
+			($ '#max-cal-frame').removeClass 'hidden'
 
 
 		# Is called every time the window resizes
