@@ -22,7 +22,6 @@ define(['jQuery',
       @set
         user_id: $.cookie('user_id')
         access_token: $.cookie('access_token')
+
   Session
 )
-
-App.Models.
