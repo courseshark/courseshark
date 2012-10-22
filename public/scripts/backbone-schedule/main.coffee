@@ -7,6 +7,7 @@ require.config(
     Backbone: '/scripts/lib/backbone/backbone.req'
     jQueryUI: '/scripts/lib/jquery/jquery-ui.req'
     jQueryCookie: '/scripts/lib/jquery/jquery-cookie.req'
+    Bootstrap: '/scripts/lib/bootstrap/bootstrap.req'
 
   shim:
     jQuery:
@@ -24,6 +25,9 @@ require.config(
     jQueryCookie:
       deps: ['jQuery']
       exports: 'jQueryCookie'
+    Bootstrap:
+      deps: ['jQuery']
+      exports: 'Bootstrap'
 )
 
 require(
@@ -34,6 +38,7 @@ require(
     'Backbone',
     'jQueryUI',
     'jQueryCookie'
+    'Bootstrap'
   ], (Shark) ->
       #The "app" dependency is passed in as "App"
       window.Shark = Shark
