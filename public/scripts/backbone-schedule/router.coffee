@@ -7,6 +7,15 @@ define(
   ],
   ($, _, Backbone, Schedule) ->
 
+
+    $.ajaxSetup statusCode:
+                  401: () ->
+                    # Redirect to the login
+                    window.location.replace('#login');
+                  403: () ->
+                    # Access denied
+                    window.location.replace('#denied');
+
     SharkRouter = Backbone.Router.extend(
 
       initialize: (Shark) ->
@@ -25,12 +34,13 @@ define(
 
 
       landingPage: () =>
-        console.log "Welcome to the landing page"
+        console.log "Initilalized"
         @Shark.currentView = new @Shark.views.appView()
 
       defaultAction: (actions) ->
         @navigate '/' if actions is 's'
         console.log 'No route', actions
+        @navigate '/'
     )
     initialize = (Shark) ->
       router = new SharkRouter(Shark)
