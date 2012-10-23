@@ -417,6 +417,7 @@ function init(passed){
 		if ( schedule && scheduleVersion == window.serverScheduleVersion ){
 			schedule = Schedule.fromObj(schedule);
 			term = schedule.term;
+			term.id = term.id||term._id;
 			if ( schedule.school != window.school ){
 				removeItem("primary-schedule");
 				init();
@@ -431,7 +432,8 @@ function init(passed){
 				dataType:'json',
 				success: function(sc){
 						schedule = Schedule.fromObj(sc);
-						term = schedule.term
+						term = schedule.term;
+						term.id = term.id||term._id;
 						schedule.show();
 						storeObject("primary-schedule", schedule);
 						storeObject("schedule-version", window.serverScheduleVersion);
