@@ -7,21 +7,14 @@ define(['jQuery',
     defaults:
       access_token: null
       user_id: null
+      user: null
 
     initalize: ->
       @load()
 
     authenticated: ->
-      !!@get("access_token")
+      !!@get("access_token") and !!@get("user")
 
-    save: (auth_hash)->
-      $.cookie('user_id', auth_hash.id)
-      $.cookie('access_token', auth_hash.access_token)
-
-    load: ->
-      @set
-        user_id: $.cookie('user_id')
-        access_token: $.cookie('access_token')
 
   Session
 )
