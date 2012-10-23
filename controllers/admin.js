@@ -99,14 +99,13 @@ exports = module.exports = function(app){
 	})
 
 	app.get('/admin/links', requireAdmin, function(req, res){
-		Link.find(req.query.link).populate('user').exec(function(err, links){
+		var q = req.query.link || {visits:{$gt:0}};
+		Link.find(q).populate('user').exec(function(err, links){
 			res.render('admin/links/index', {links: links, layout:'../layout.ejs'});
 		})
 	})
 	app.post('/admin/links', requireAdmin, function(req, res){
-		console.log(req.body)
 		link = new Link(req.body.link)
-		console.log(link)
 		link.save()
 		res.redirect('/links')
 	})
