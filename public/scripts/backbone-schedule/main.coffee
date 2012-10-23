@@ -40,7 +40,7 @@ require(
     'jQueryCookie'
     'Bootstrap'
   ], (Shark) ->
-      #The "app" dependency is passed in as "App"
+      #The "app" dependency is passed in as "Shark"
       window.Shark = Shark
       Shark.router = Shark.initialize()
 )
