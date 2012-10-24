@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<a href="#" class="close" data-dismiss="modal">&times;</a>
+	<a href="#" class="close">&times;</a>
 	<h3>Login <small>to Course<strong>Shark</strong><small></h3>
 </div>
 
@@ -18,8 +18,8 @@
 			<div class="control-group" id="login-password-control">
 				<label class="control-label" for="password">Password</label>
 	      <div class="controls">
-					<input type="password" name="password" tabindex="2" id="password"  onKeyUp="if(event.keyCode===13){login_submit();}" placeholder="Password" class="span4">
-					<p class="help-inline"><a id="login-forgot-password" onClick="openDialog('/forgot-password');" data-dismiss="modal">Forgot?</a></p>
+					<input type="password" name="password" tabindex="2" id="password" <% if( !noJs ){%> onKeyUp="if(event.keyCode===13){login_submit();}"<%}%> placeholder="Password" class="span4">
+					<p class="help-inline"><a id="login-forgot-password"<% if( !noJs ){%> data-dismiss="modal" onClick="openDialog('/forgot-password');"<%}%>>Forgot?</a></p>
 					<p class="help-inline" for="password"></p>
 				</div>
 				<div class="controls">
@@ -38,12 +38,12 @@
 		</fieldset>
 	</form>
 	<div class="bottom">
-		<p>Don't have an account? <a class="auth-register" data-dismiss="modal" onClick="openDialog('/signup');">Create one</a></p>
+		<p>Don't have an account? <a class="auth-register" <% if( !noJs ){%>data-dismiss="modal" onClick="openDialog('/signup');"<%}%>>Create one</a></p>
 	</div>
 </div>
 
 <div class="modal-footer">
-	<a href="#" class="btn btn-primary" onClick="login_submit()">Login</a>
+	<a href="#" class="btn btn-primary"<% if( !noJs ){%> onClick="login_submit()"<%}%>>Login</a>
 	<a href="#" class="btn" data-dismiss="modal">Close</a>
 </div>
 

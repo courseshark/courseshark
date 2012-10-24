@@ -28,14 +28,25 @@ define(
         '/' : 'landingPage'
         '/s/' : 'landingPage'
 
+        'login': 'login',
+
         ':action':                   'defaultAction',
         ':controller/:action':       'defaultAction',
         ':controller/:action/:vid':  'defaultAction',
 
 
       landingPage: () =>
-        console.log "Initilalized"
         @Shark.currentView = new @Shark.views.appView()
+
+
+      login: () ->
+        if !Shark.session.authenticated()
+          Shark.session.login()
+        else
+          @navigate '/s/', true
+
+        
+
 
       defaultAction: (actions) ->
         @navigate '/' if actions is 's'

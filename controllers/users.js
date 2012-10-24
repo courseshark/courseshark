@@ -14,9 +14,9 @@ exports = module.exports = function(app){
 
 
 	// home
-	app.get('/login', function(req, res){
-		if ( req.headers['x-requested-with'] === 'XMLHttpRequest' ){
-			res.render('dialogs/login');
+	app.get('/login.:format?', function(req, res){
+		if ( req.headers['x-requested-with'] === 'XMLHttpRequest' || req.params.format === "tmpl"){
+			res.render('dialogs/login', {noJs: true});
 		}else{
 			res.render('user/login')
 		}

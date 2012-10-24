@@ -1,6 +1,7 @@
 define(['jQuery',
         'Underscore',
-        'Backbone'], ($,_, Backbone) ->
+        'Backbone'
+        'views/auth'], ($,_, Backbone, AuthLoginView) ->
 
   class Session extends Backbone.Model
 
@@ -14,6 +15,9 @@ define(['jQuery',
 
     authenticated: ->
       !!@get("access_token") and !!@get("user")
+
+    login: ->
+      @loginView = new AuthLoginView()
 
 
   Session
