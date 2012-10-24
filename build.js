@@ -80,6 +80,7 @@ function compileJS(app){
                   "social.js",
                   "jquery.base64.min.js",
                   "dateFormat.js",
+                  "lib/bootstrap-alert.js",
                   "lib/bootstrap-transition.js",
                   "lib/bootstrap-modal.js",
                   "lib/bootstrap-dropdown.js",
