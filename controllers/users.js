@@ -16,6 +16,7 @@ exports = module.exports = function(app){
 	// home
 	app.get('/login.:format?', function(req, res){
 		if ( req.headers['x-requested-with'] === 'XMLHttpRequest' || req.params.format === "tmpl"){
+			req.session.redirectTo=req.headers.referer||'/';
 			res.render('dialogs/login', {noJs: true});
 		}else{
 			res.render('user/login')
@@ -25,12 +26,14 @@ exports = module.exports = function(app){
 	app.post('/login.:format?', function(req, res){
 		User.findOne({ $or: [{ email: req.body.user.email }, { firstName: req.body.user.email }] }, function(err, user){
 			if ( user && user.authenticate(req.body.user.password) ){
-				auth = {}
-				auth.userId = auth.userId || user.id
-				auth.loggedIn = true
-				req.session.auth = auth
-				req.user = user
-				req.session.save()
+				auth = {};
+				auth.userId = auth.userId || user.id;
+				auth.loggedIn = true;
+				req.session.auth = auth;
+				req.user = user;
+				delete req.session.redirectTo;
+				req.session.save();
+
 				if ( req.params.format === 'json' || req.headers['x-requested-with'] === 'XMLHttpRequest' ){
 					res.json({ success: true, redirect: '/' });
 					app.mixpanel.track('Logged In', {method: 'password', distinct_id: req.session.distinctId});
