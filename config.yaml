@@ -18,6 +18,11 @@ development:
   twitter:
     consumerKey: "2VXunkP9ckmX9T4E4BZf7g"
     consumerSecret: "x7usGWdcun7BwW7g1kyMoMQZ73QQ7Q1U0FpBQKhZtPs"
+  linkedin:
+    customerKey: "2blv3t7s02qr"
+    customerSecret: "skzve93kCBgG8CpM"
+    oauthUserToken: "1e7e8f08-6ed8-4b6c-b95d-723819e44bcb"
+    oauthUserSecret: "92161170-ff52-426e-b15a-b26b783fc8ec"
   twilio:
     sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
@@ -50,6 +55,11 @@ staging:
   twitter:
     consumerKey: "2VXunkP9ckmX9T4E4BZf7g"
     consumerSecret: "x7usGWdcun7BwW7g1kyMoMQZ73QQ7Q1U0FpBQKhZtPs"
+  linkedin:
+    customerKey: "2blv3t7s02qr"
+    customerSecret: "skzve93kCBgG8CpM"
+    oauthUserToken: "1e7e8f08-6ed8-4b6c-b95d-723819e44bcb"
+    oauthUserSecret: "92161170-ff52-426e-b15a-b26b783fc8ec"
   twilio:
     sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
@@ -82,6 +92,11 @@ production:
   twitter:
     consumerKey: "2VXunkP9ckmX9T4E4BZf7g"
     consumerSecret: "x7usGWdcun7BwW7g1kyMoMQZ73QQ7Q1U0FpBQKhZtPs"
+  linkedin:
+    customerKey: "2blv3t7s02qr"
+    customerSecret: "skzve93kCBgG8CpM"
+    oauthUserToken: "1e7e8f08-6ed8-4b6c-b95d-723819e44bcb"
+    oauthUserSecret: "92161170-ff52-426e-b15a-b26b783fc8ec"
   twilio:
     sid: "ACb5ed6bcd9e0540f4ae04550bb3303ef2"
     authToken: "0ab34e20a1a7f9a6855ffe32001c3e4c"
