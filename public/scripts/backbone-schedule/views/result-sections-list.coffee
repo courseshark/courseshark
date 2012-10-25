@@ -15,11 +15,11 @@ define(['jQuery',
       Shark.resultSections = @sections
       
 
-      @sections.bind 'update', () => @render 'update'
-      @sections.bind 'change', () => @render 'change'
-      @sections.bind 'add', () => @render 'add'
-      @sections.bind 'remove', () => @render 'remove'
-      @sections.bind 'reset', () => @render 'reset'
+      @sections.bind 'update',  () => @render 'update'
+      @sections.bind 'change',  () => @render 'change'
+      @sections.bind 'add',     () => @render 'add'
+      @sections.bind 'remove',  () => @render 'remove'
+      @sections.bind 'reset',   () => @render 'reset'
 
       @sections.url = "/term/4ffd2365668b5416035b1361/sections/4ffd2367668b5416035b1a81"
       # Gets sections based on API endpoint specified in collection
@@ -28,7 +28,6 @@ define(['jQuery',
           @render();
 
     render: ->
-      console.log arguments
       @$el.html @template()
       _.each @sections.models, (section) =>
         @$el.append new ResultSectionView(model: section).render().el
