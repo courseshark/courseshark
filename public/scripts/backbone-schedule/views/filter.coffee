@@ -27,6 +27,7 @@ define(['jQuery',
 
 		preformSearch: ->
 			@showResultsFrame() if not Shark.showingResults
+			Shark.resultSections.search ($ '#search-field')
 			console.log 'searching now'
 
 		slideUpdate: ->
