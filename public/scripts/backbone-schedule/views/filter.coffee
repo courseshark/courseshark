@@ -9,11 +9,25 @@ define(['jQuery',
 			_.bindAll @
 
 			@filterTemplate = _.template(filterTemplate)
-
 			@render();
 
 		events:
 			'slide .slider': 'slideUpdate'
+			'click #search-send': 'preformSearch'
+			'keyup #search-field': 'searchTypeing'
+
+		showResultsFrame: ->
+			Shark.showingResults = true
+			($ '#results-frame').toggleClass 'hidden'
+			($ '#slide-container').toggleClass('span16').toggleClass('span8')
+			($ '#tutorial-frame').addClass 'hidden'
+
+		searchTypeing: (event) ->
+			@preformSearch() if event.keyCode == 13
+
+		preformSearch: ->
+			@showResultsFrame() if not Shark.showingResults
+			console.log 'searching now'
 
 		slideUpdate: ->
 			@$slider = @$el.find('.slider') if not @$slider

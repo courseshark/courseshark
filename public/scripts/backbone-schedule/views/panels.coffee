@@ -38,13 +38,6 @@ define(['jQuery',
 
 		events:
 			'click #slide-panel-button': 'toggleSlidePanel'
-			'click #show-results': 'showResults'
-
-
-		showResults: ->
-			($ '#results-frame').toggleClass 'hidden'
-			($ '#slide-container').toggleClass('span16').toggleClass('span8')
-			($ '#tutorial-frame').addClass 'hidden'
 
 		toggleSlidePanel: ->
 			return if ( $ '#results-frame').hasClass 'hidden'
