@@ -4,6 +4,9 @@
 
 	<script src="/scripts/lib/jquery/jquery.js"></script>
 	<script src="/scripts/lib/jquery/jquery-ui.min.js"></script>
+	<script>
+	$('#nav-login').bind('click', function(){openDialog('/login');})
+	</script>
 	<script>google.load('payments','1.0',{'packages':['sandbox_config']});</script>
 	<!-- Custom Scripts -->
 	<script type="text/javascript" src="/scripts/launch-schedule/modernizr.js"></script>
@@ -17,16 +20,7 @@
 	<script type="text/javascript" src="/scripts/launch-schedule/friendsSearch.js"></script>
 	<script type="text/javascript" src="/scripts/launch-schedule/dateFormat.js"></script>
 	<!-- Bootstrap javascripts -->
-	<script src="/scripts/lib/bootstrap/bootstrap-transition.js"></script>
-	<script src="/scripts/lib/bootstrap/bootstrap-modal.js"></script>
-	<script src="/scripts/lib/bootstrap/bootstrap-dropdown.js"></script>
-	<script src="/scripts/lib/bootstrap/bootstrap-collapse.js"></script>
-	<script src="/scripts/lib/bootstrap/bootstrap-tooltip.js"></script>
-	<script src="/scripts/lib/bootstrap/bootstrap-popover.js"></script>
-	<script src="/scripts/lib/bootstrap/bootstrap-tab.js"></script>
-
-
-	<script src="/scripts/lib/select2/select2.min.js"></script>
+	<script src="/scripts/lib/bootstrap/bootstrap.js"></script>
 
 <% } else {%>
 	<script src="/scripts/<%-revision%>-courseshark.js"></script>
@@ -67,5 +61,4 @@
 		uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/tIb1gzaiG6zO90NjfnA.js';
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
 	})();
-
 </script>

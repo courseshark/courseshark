@@ -13,10 +13,32 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/nav.ejs'], ($, _, Ba
 			@render();
 
 		events:
-			'click #save' : 'save'
+			'click #save-button' : 'save'
+			'click #load-button' : 'load'
+			'click #new-button' : 'new'
+			'click #print-button' : 'print'
+			'click #link-button' : 'link'
+			'click #ical-button' : 'ical'
 
 		save: ->
 			console.log 'save clicked -- probably call router'
+
+		load: ->
+			return Shark.session.authorize() if !Shark.session.authenticated()
+			console.log 'logged in can save'
+
+		new: ->
+			console.log 'new clicked'
+			@$el.find('#new').modal('show');
+
+		print: ->
+			console.log 'print clicked'
+
+		link: ->
+			console.log 'share link clicked'
+
+		ical: ->
+			console.log 'ical clicked'
 
 		# Renders the actual view from the template
 		render: ->

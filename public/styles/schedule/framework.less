@@ -14,7 +14,7 @@ body{
 .panel{
 	background: #fff;
 	border-radius: 4px;
-	box-shadow: 0 0 6px rgba(0,0,0,.7);
+	//box-shadow: 0 0 6px rgba(0,0,0,.7);
 	h1{
 		margin: 0;
 		font-size: 14px;
@@ -47,13 +47,14 @@ body{
 	position: absolute;
 	top:0;
 	right:0;
-	background: white;
+	background: url('/images/backbone/tutorial.png') 0px 10px no-repeat;
+	background-size: contain;
 	z-index: 350;
 }
 
 #right-two-panels{
 	position: relative;
-
+	overflow-x: hidden;
 	#max-cal-container{
 		z-index: 300;
 		position: absolute;
@@ -82,32 +83,34 @@ body{
 
 
 		#filter-frame{
+			overflow-y: auto;
 		}
 
 		#results-frame{
 			border-left: 1px solid grey;
 			margin-left: -1px;
 			overflow-y: auto;
-		}
 
-		// Slider Button
-		#slide-panel-button{
-			&:before{
-				content: ">>";
+			// Slider Button
+			#slide-panel-button{
+				&:before{
+					content: "»";
+				}
+				&.open:before{
+					content: "«";
+				}
 				background: #ccc;
 				color: black;
 				padding: 2px;
+				position: absolute;
+				top: 0;
+				right: -10px;
+				width: 10px;
+				font-size: 30px;
+				&.open{
+					right: 0px;
+				}
 			}
-			&.open:before{
-				content: "<<";
-				background: #ccc;
-				color: black;
-				padding: 2px;
-			}
-			position: absolute;
-			top: 0;
-			right: 5px;
-			width: 0;
 		}
 	}
 }

@@ -73,13 +73,14 @@ exports = module.exports = function(app){
 	})
 	app.get('/schedule/load', requireSchool, function(req, res){
 		function returnNew(){
-			var schedule = new Schedule()
+			var schedule = new Schedule().toObject()
 				,	termId = req.school['currentTerm'] ? req.school.currentTerm._id : req.school.terms[req.school.terms.length-1]
 
-			schedule.school = req.school._id
+			schedule.school = req.school._id;
+			delete schedule._id;
 			Term.findOne({_id: termId}, function(err, term){
-				schedule.term = term
-				res.json(schedule)
+				schedule.term = term;
+				res.json(schedule);
 			})
 		}
 		if (req.loggedIn && req.user.schedule !== undefined ){
