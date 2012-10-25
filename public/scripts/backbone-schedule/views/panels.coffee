@@ -4,7 +4,8 @@ define(['jQuery',
   'Backbone',
    'text!/tmpl/app/panels.ejs',
     'views/result-sections-list',
-     'views/schedule-sections-list'], ($, _, Backbone, templateText, ResultsSectionsListView, ScheduleSectionsListView) ->
+     'views/schedule-sections-list',
+      'views/filter'], ($, _, Backbone, templateText, ResultsSectionsListView, ScheduleSectionsListView, filterView) ->
 
 	class panelsView extends Backbone.View
 
@@ -32,6 +33,7 @@ define(['jQuery',
 			@$el.html $ @template()
 			@resultsView = new ResultsSectionsListView( el: (@$el.find '#results-frame')[0] )
 			@coursesView = new ScheduleSectionsListView( el: (@$el.find '#schedule-frame')[0] , collection: Shark.schedule.get("sections"))
+			@filterView = new filterView( el: (@$el.find '#filter-frame')[0] )
 
 
 		events:
@@ -45,9 +47,10 @@ define(['jQuery',
 			($ '#tutorial-frame').addClass 'hidden'
 
 		toggleSlidePanel: ->
+			return if ( $ '#results-frame').hasClass 'hidden'
 			($ '#slide-panel-button').toggleClass 'open'
 			($ '#slide-panel').toggleClass 'closed'
-			($ '#max-cal-frame').toggleClass 'hidden'
+			($ '#max-cal-frame').removeClass 'hidden'
 
 
 		# Is called every time the window resizes
