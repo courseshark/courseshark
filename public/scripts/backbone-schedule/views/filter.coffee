@@ -16,10 +16,9 @@ define(['jQuery',
 			'slide .slider': 'slideUpdate'
 
 		slideUpdate: ->
-			$slider = @$el.find('.slider')
-			value = $slider.slider('values')
-			console.log 'yay jquery-ui is working!', value
-			# @$el.formatTime(value)
+			@$slider = @$el.find('.slider') if not @$slider
+			@$sliderTime = @$el.find('.time') if not @$sliderTime
+			value = @$slider.slider('values')
 			minHour = parseInt( (value[0] / 12) % 24)
 			minMin = parseInt( (value[0] - 12 * minHour) * 5 )
 			maxHour = parseInt( (value[1] / 12) % 24)
@@ -44,17 +43,17 @@ define(['jQuery',
 				minHour = 12
 			if maxHour == 0
 				maxHour = 12
-			@$el.find('.time').text minHour + ':' + minMin + ' - ' + maxHour + ':' + maxMin
+			@$sliderTime.text minHour + ':' + minMin + ' - ' + maxHour + ':' + maxMin
 
 		render: ->
 			@$el.append @filterTemplate()
 			# 5-minute increments [0 - 24*60/5 == 0-288]         range starts at 7am - 7pm
-			@$el.find('.slider').slider
+			(@$slider = @$el.find('.slider')).slider
 				range: true
 				min: 72
 				max: 276 
 				values: [84, 228]
-			@$el.find('.time').text "7:00 am - 7:00 pm"
+			@slideUpdate()
 
 	filterView
 )
