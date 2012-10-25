@@ -1,0 +1,1 @@
+define( ['/scripts/lib/bootstrap/bootstrap.js'], () -> {} )

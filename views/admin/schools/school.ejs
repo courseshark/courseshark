@@ -13,8 +13,8 @@
 				</tr>
 			</thead>
 			<tbody>
-		<% if (school.terms.length) { %>
-    	<% school.terms.forEach(function(term){ %>
+		<% if (terms.length) { %>
+    	<% terms.forEach(function(term){ %>
 				<tr data-term="<%=term._id%>">
 					<td><%=term._id%></td>
 					<td><a href="/terms/<%=term._id%>"><%=term.name%></a></td>

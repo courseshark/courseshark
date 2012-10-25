@@ -417,6 +417,7 @@ function init(passed){
 		if ( schedule && scheduleVersion == window.serverScheduleVersion ){
 			schedule = Schedule.fromObj(schedule);
 			term = schedule.term;
+			term.id = term.id||term._id;
 			if ( schedule.school != window.school ){
 				removeItem("primary-schedule");
 				init();
@@ -431,7 +432,8 @@ function init(passed){
 				dataType:'json',
 				success: function(sc){
 						schedule = Schedule.fromObj(sc);
-						term = schedule.term
+						term = schedule.term;
+						term.id = term.id||term._id;
 						schedule.show();
 						storeObject("primary-schedule", schedule);
 						storeObject("schedule-version", window.serverScheduleVersion);
@@ -608,7 +610,7 @@ function addCourseToList(course, selectedSection){
 					if ( section.info.length >= 2 ){
 						for( var j=0; j<len; j++ ){
 							if ( !sections[j] || !sections[j]._id ){continue;}
-							if ( sections[j]._id != section.id && sections[j].info == section.info.substr(0,1) && section.timeslots[0].type.toLowerCase() != "lecture"){
+							if ( sections[j]._id != section.id && sections[j].info == section.info.substr(0,1) && (!section.timeslots.length || section.timeslots[0].type.toLowerCase() != "lecture") ){
 								if ( typeof sections[j]["children"] === "undefined" ){
 									sections[j]["children"] = [section]
 								}else{
@@ -643,32 +645,52 @@ function addCourseToList(course, selectedSection){
 
 
 function addSectionToCourseList($container, section, selectedSection){
-	var tbd_class = false;
-	if ( section.timeslots[0] === undefined ){
+	var tbd_class = false
+		, ts0 = section.timeslots[0];
+	if ( !ts0 || typeof ts0 === "undefined" ){
 		tbd_class = true;
 	}
-	else if ( section.timeslots[0].day === 'TBA' || section.timeslots[0].day === null){
+	else if ( ts0.day === 'TBA' || ts0.day === null){
 		tbd_class = true;
+	}
+	else if ( ts0.days.length == 1 && ts0.days[0] === "online" ){
+		tbd_class = true;
+		section.instructor = "Online";
+		section.location = "Online";
+	}
+	else if ( ts0.days.length === 0 && ts0.location.match(/INTE?RNET/i) ){
+		tbd_class = true;
+		section.instructor = section.instructor || "Online";
+		section.location = section.location || "Online";
+	}
+
+	if ( section.instructor === "" ){
+		section.instructor = "TBA";
 	}
 
 	section.tbd_class = tbd_class;
-	
+
 	sstemplate = $('#template-section-selector').html();
 	if ( section.timeslots.length===0 ){
 		section.instructor = 'TBA'
 	}else{
 		//section.instructor = section.timeslots[0].instructor.trim().split(' ').splice(-1,1).join('')
 	}
+
+	if ( section.instructor === 'TBA' || section.instructor === 'Online' ){
+		section.instructor = '<i>'+section.instructor+'</i>';
+	}
+
 	section.friends = []
 	section_selector = window.tmpl(sstemplate, {section: section, child: false});
 
 	$sectionOption = $(section_selector).appendTo($container).data('section', section);
-	
+
 	if ( section.id === selectedSection ){
 		$sectionOption.addClass('selected').data('selected', true);
 		schedule.testConflicts(section);
 	}
-	
+
 	if ( !selectedSection ){
 		loadSeatData(section.id);
 	}

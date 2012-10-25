@@ -15,7 +15,14 @@ window.requestAnimFrame = (function(){
 </script>
 <script>
 	window.CS = {
-			loggedIn: "<%=loggedIn%>"
+
+			auth: {
+				<%if (loggedIn){%>
+					user_id: "<%=user.id%>"
+				,	access_token: "<%=authToken%>"
+				,	user: <%-JSON.stringify(user)%>
+				<%}%>
+			}
 		,	school: "<%= school %>"
 		,	serverScheduleVersion: "<%= revision %>"
 		, baseDir: '/s/'

@@ -1,10 +1,23 @@
 <div class="container">
 	<ul class="nav nav-pills">
-	  <li><a href="#" id="save-button" ><i class="icon-tag"></i> Save</a></li>
+		<!-- SAVE -->
+		<li><a href="#" id="save-button" ><i class="icon-tag"></i> Save</a></li>
+		<!-- LOAD -->
 		<li><a href="#" id="load-button" ><i class="icon-folder-open"></i> Load</a></li>
-		<li><a href="#" id="new-button"  ><i class="icon-file"></i> New</a></li>
+		<!-- NEW -->
+		<li><a href="#" id="new-button" data-toggle="modal" class="nav-btn btn"><i class="icon-file"></i> New</a></li>
+		<div id="new" class="modal hide fade in">
+			<div class="modal-footer">
+			  <a href="#" class="btn btn-success">YAY!</a>
+              <a href="#" class="btn" data-dismiss="modal">Close</a>
+			</div>
+		</div>
+
+		<!-- PRINT -->
 		<li><a href="#"	id="print-button"><i class="icon-print"></i> Print</a></li>
-    <li><a href="#" id="link-button" ><i class="icon-share"></i> Share Link</a></li>
+		<!-- LINK -->
+		<li><a href="#" id="link-button" ><i class="icon-share"></i> Share Link</a></li>
+		<!-- ICAL -->
 		<li><a href="#" id="ical-button" ><i class="icon-download-alt"></i> Export .ics</a></li>
 	</ul>
 </div>
