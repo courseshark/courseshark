@@ -13,6 +13,12 @@ define(['jQuery',
       @template = _.template resultCourseTemplate
       @render()
 
+    events:
+      'click .results-course': 'toggleSections'
+
+    toggleSections: ->
+      console.log 'toggle',@model.get('sections').length,'sections'
+
     render: ->
       params =
         name: @model.get 'name'

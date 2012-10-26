@@ -9,7 +9,24 @@
 @added-gradient-start: @red;
 @added-gradient-end: @dark-red;
 
+#course-results{
+  margin-top: -15px;
+  padding-top: 10px;
 
+  @time: 0.3s;
+  @easing: ease-in;
+  -webkit-transition: all @time @easing;
+  -moz-transition: all @time @easing;
+  transition: all @time @easing;
+
+  -webkit-filter: blur(0px);
+  filter: blur(5px);
+
+  &.loading{
+    -webkit-filter: blur(3px);
+    filter: blur(5px);
+  }
+}
 
 .results-course, .results-section{
   background-color: white;
