@@ -19,7 +19,6 @@ define(['jQuery',
       @render()
 
     render: (eventName) ->
-      console.log 'rendering results b/c of',eventName,'event' if eventName
       @$el.html @template()
 
       @$courses = @$el.find('#course-results')

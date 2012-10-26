@@ -1,7 +1,8 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'collections/result-courses'], ($,_, Backbone, ResultCourses) ->
+        'collections/result-courses'
+        'collections/result-sections'], ($,_, Backbone, ResultCourses, ResultSections) ->
 
   class SearchResults extends Backbone.Model
 
@@ -27,9 +28,11 @@ define(['jQuery',
     	# Turn the array of passed courses, into a ResultCourses collection
     	# Also map rank into the object as a property
     	response.courses = new ResultCourses response.courses.map (c) ->
-    		c.object.rank=c.rank
-    		c.object
-    	response
+        c.object.rank=c.rank
+        c.object.sections = new ResultSections c.object.sections
+        c.object
+    	
+      response
 
  
   SearchResults

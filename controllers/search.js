@@ -10,13 +10,13 @@ exports = module.exports = function(app){
 		res.send(200);
 		Department.find({}, function(err, allDepartments){
 			_.each(allDepartments, function(department){
-				department._tokens = natural.LancasterStemmer.tokenizeAndStem(department.abbr + " " + department.name)
+				department._tokens = natural.PorterStemmer.tokenizeAndStem(department.abbr + " " + department.name)
 				department.save();
 			})
 		})
 		Course.find({}).populate('department').exec(function(err, allCourses){
 			_.each(allCourses, function(course){
-				course._tokens = natural.LancasterStemmer.tokenizeAndStem([course.department.abbr,course.number,course.name].join(' '))
+				course._tokens = natural.PorterStemmer.tokenizeAndStem([course.department.abbr,course.number,course.name].join(' '))
 				course.departmentAbbr = course.department.abbr;
 				Term.find({_id: {$in: course.terms}}).exec(function(err, terms){
 					for(var i=0;i<terms.length;i++){
@@ -35,6 +35,8 @@ exports = module.exports = function(app){
 			,	EventEmitter = require("events").EventEmitter
 			,	emitter = new EventEmitter()
 
+		query.term = ObjectId(req.query.t) || req.school.currentTerm?req.school.currentTerm._id:null
+
 		emitter.toDo = 0;
 
 		searchResults = {departments: null, courses: null, sections: null};
@@ -49,9 +51,8 @@ exports = module.exports = function(app){
 		// Find Courses
 		emitter.toDo++;
 		termQuery = query;
-		if ( req.query.t ) { termQuery.query.terms = ObjectId("4ffd25a2668b5416035b5850") }
-			console.log(termQuery.query)
-		searcher.searchCollection(Course, termQuery, {returnObjects: true, populate:[]}, function(err, results){
+		if ( req.query.t ) { termQuery.query.terms = ObjectId(req.query.t) }
+		searcher.searchCollection(Course, termQuery, {returnObjects: true, pullSections:true}, function(err, results){
 			searchResults.courses = results;
 			emitter.emit('-');
 		})
