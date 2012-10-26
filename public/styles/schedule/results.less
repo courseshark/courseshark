@@ -9,9 +9,10 @@
 @added-gradient-start: @red;
 @added-gradient-end: @dark-red;
 
-.results-section{
 
-  padding: 8px 8px 8px 8px;
+
+.results-course, .results-section{
+  padding: 8px;
   transition: height .5s ease-in-out;
   -webkit-box-shadow: -2px 2px 3px 0px #CCC;
   box-shadow: -2px 2px 3px 0px #CCC;
@@ -23,6 +24,18 @@
   border-radius: 3px;
   background-color: white;
   .background-gradient-linear(@result-gradient-start, @result-gradient-end);
+  .row-fluid div{
+    min-height: 20px;
+  }
+}
+
+.results-course{
+  .background-gradient-linear(@orange, lighten(@orange,5%));
+  color: darken(@orange, 80%);
+}
+
+
+.results-section{
 
   .row-fluid div{
     min-height: 20px;

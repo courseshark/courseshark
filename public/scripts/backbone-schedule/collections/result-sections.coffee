@@ -12,8 +12,5 @@ define(['jQuery',
       # Sort the sections based on section letter/number
       section.attributes.info
 
-    search: ($field) ->
-      console.log 'searching', $field.val()
-
   ResultSections
 )

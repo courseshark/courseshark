@@ -3,9 +3,9 @@ define(['jQuery',
  'Underscore',
   'Backbone',
    'text!/tmpl/app/panels.ejs',
-    'views/result-sections-list',
+    'views/result-list',
      'views/schedule-sections-list',
-      'views/filter'], ($, _, Backbone, templateText, ResultsSectionsListView, ScheduleSectionsListView, filterView) ->
+      'views/filter'], ($, _, Backbone, templateText, ResultListView, ScheduleSectionsListView, filterView) ->
 
 	class panelsView extends Backbone.View
 
@@ -31,7 +31,7 @@ define(['jQuery',
 		# Renders the actual view from the template
 		render: ->
 			@$el.html $ @template()
-			@resultsView = new ResultsSectionsListView( el: (@$el.find '#results-frame')[0] )
+			@resultsView = new ResultListView( el: (@$el.find '#results-frame')[0] )
 			@coursesView = new ScheduleSectionsListView( el: (@$el.find '#schedule-frame')[0] , collection: Shark.schedule.get("sections"))
 			@filterView = new filterView( el: (@$el.find '#filter-frame')[0] )
 

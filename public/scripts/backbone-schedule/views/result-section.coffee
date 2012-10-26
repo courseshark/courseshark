@@ -2,7 +2,7 @@ define(['jQuery',
         'Underscore',
         'Backbone',
         'collections/result-sections'
-        'text!/tmpl/results/results-section.ejs'], ($,_, Backbone, ResultsSections, resultsSectionTemplate) ->
+        'text!/tmpl/results/result-section.ejs'], ($,_, Backbone, ResultsSections, resultsSectionTemplate) ->
 
   class ResultSectionView extends Backbone.View
 

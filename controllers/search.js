@@ -3,29 +3,6 @@ var natural = require('natural')
 			,	searcher = require('../lib/search')
 
 exports = module.exports = function(app){
-	// Home
-	app.get('/search', requireSchool, function(req, res){
-		req.query.q.school = req.school.id||req.school;
-		if ( !req.query.q ){
-			res.redirect('/s/');
-		}else{
-
-			query = req.query.q;
-			if ( typeof query === 'string' ){
-				query = {search: query};
-			}
-			query.re = new RegExp(query.search, 'i');
-			query.school = req.school._id;
-
-			preformSearch(query, function(result){
-				res.json({
-							sections: result.sections.length,
-							courses: result.courses.length,
-							departments: result.departments.length
-						})
-			});
-		}
-	});
 
 	app.get('/build-search', function(req, res){
 		res.send(200);
@@ -35,9 +12,10 @@ exports = module.exports = function(app){
 				department.save();
 			})
 		})
-		Course.find({}, function(err, allCourses){
+		Course.find({}).populate('department').exec(function(err, allCourses){
 			_.each(allCourses, function(course){
-				course._tokens = natural.LancasterStemmer.tokenizeAndStem(course.number + " " + course.name)
+				course._tokens = natural.LancasterStemmer.tokenizeAndStem([course.department.abbr,course.number,course.name].join(' '))
+				course.departmentAbbr = course.department.abbr;
 				Term.find({_id: {$in: course.terms}}).exec(function(err, terms){
 					for(var i=0;i<terms.length;i++){
 						course.school = terms[i].school;
@@ -49,7 +27,7 @@ exports = module.exports = function(app){
 	})
 
 
-	app.get('/mr-search', requireSchool, function(req, res){
+	app.get('/search', requireSchool, function(req, res){
 		var school = req.school._id||req.school
 			,	query = {query:{school:school}, string: req.query.q}
 			,	EventEmitter = require("events").EventEmitter
@@ -68,7 +46,7 @@ exports = module.exports = function(app){
 
 		// Find Courses
 		emitter.toDo++;
-		searcher.searchCollection(Course, query, {returnObjects: true}, function(err, results){
+		searcher.searchCollection(Course, query, {returnObjects: true, populate:[]}, function(err, results){
 			searchResults.courses = results;
 			emitter.emit('-');
 		})
