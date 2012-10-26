@@ -12,18 +12,21 @@
 
 
 .results-course, .results-section{
-  padding: 8px;
-  transition: height .5s ease-in-out;
-  -webkit-box-shadow: -2px 2px 3px 0px #CCC;
-  box-shadow: -2px 2px 3px 0px #CCC;
-  position: relative;
-  margin: 15px;
-  overflow: hidden;
-  color: @text-grey;
-  border: solid 1px @text-grey;
-  border-radius: 3px;
   background-color: white;
   .background-gradient-linear(@result-gradient-start, @result-gradient-end);
+  border-radius: 3px;
+  border: solid 1px @text-grey;
+  -webkit-box-shadow: -2px 2px 3px 0px #CCC;
+  box-shadow: -2px 2px 3px 0px #CCC;
+  color: @text-grey;
+  cursor: pointer;
+  margin: 15px;
+  overflow: hidden;
+  padding: 8px;
+  position: relative;
+  -webkit-transition: height .5s ease-in-out;
+  -moz-transition: height .5s ease-in-out;
+  transition: height .5s ease-in-out;
   .row-fluid div{
     min-height: 20px;
   }

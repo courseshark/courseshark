@@ -18,7 +18,7 @@ define(['jQuery',
     	# apply any search filters that must be sent to server
     	#
 
-    	@url = '/search?q='+$searchField.val()
+    	@url = '/search?q='+$searchField.val()+'&t='+Shark.school.get('currentTerm').get('_id')
 
     	@fetch()
 
