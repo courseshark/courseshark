@@ -39,6 +39,9 @@ define(['jQuery',
 		events:
 			'click #slide-panel-button': 'toggleSlidePanel'
 
+		focusOnSearch: ->
+			@filterView.focusOnSearch()
+
 		toggleSlidePanel: ->
 			return if ( $ '#results-frame').hasClass 'hidden'
 			($ '#slide-panel-button').toggleClass 'open'

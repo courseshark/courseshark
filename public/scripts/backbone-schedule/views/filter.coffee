@@ -16,6 +16,10 @@ define(['jQuery',
 			'click #search-send': 'preformSearch'
 			'keyup #search-field': 'searchTypeing'
 
+		
+		focusOnSearch: ->
+			($ '#search-field').focus()
+
 		showResultsFrame: ->
 			Shark.showingResults = true
 			($ '#results-frame').toggleClass 'hidden'
