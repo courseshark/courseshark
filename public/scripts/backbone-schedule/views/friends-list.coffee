@@ -13,7 +13,6 @@ define(['jQuery',
       @render();
 
     render: ->
-      console.log(@$el)
       @$el.html $ @friendsListTemplate()
 
   FriendsListView
