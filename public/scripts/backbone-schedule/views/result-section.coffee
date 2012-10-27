@@ -8,11 +8,8 @@ define(['jQuery',
 
     initialize: ->
       _.bindAll @
-
       @resultsSectionTemplate = _.template(resultsSectionTemplate)
-
-      @render();
-
+      
     events:
       'click .expander' : 'expand'
       'click .add' : 'add'
@@ -30,17 +27,20 @@ define(['jQuery',
         collection.add(@model)
 
     render: ->
-      model = @model.attributes
       params =
-        prof: model.instructor
-        seats: model.seatsAvailable + '/' + model.seatsTotal
-        section_id: model.number + ': Section ' + model.info
-        hours: model.credits
+        prof: @model.get('instructor')
+        seats: @model.get('seatsAvailable') + '/' + @model.get('seatsTotal')
+        section_id: @model.get('number') + ': Section ' + @model.get('info')
+        hours: @model.get('credits')
       @$el.html @resultsSectionTemplate(params)
       # Color/bold the correct day letters
-      _.each model.timeslots, (timeslot) =>
+      _.each @model.get('timeslots'), (timeslot) =>
         _.each timeslot.days, (day) =>
           @$el.find('#' + day).addClass('selected')
+
+      # Mark added if it is in the schedule?
+      if _.contains(Shark.schedule.get('sections').models, @model)
+        @$el.find('.add').toggleClass('added')
       @ # Return the section view to be added by the results view
 
   ResultSectionView

@@ -34,24 +34,28 @@
   border-radius: 3px;
   border: solid 1px @text-grey;
   -webkit-box-shadow: -2px 2px 3px 0px #CCC;
-  box-shadow: -2px 2px 3px 0px #CCC;
+  box-shadow: 0px 0px 3px 0px #CCC;
   color: @text-grey;
   cursor: pointer;
-  margin: 15px;
   overflow: hidden;
   padding: 8px;
+  margin: 15px 0;
   position: relative;
-  -webkit-transition: height .5s ease-in-out;
-  -moz-transition: height .5s ease-in-out;
-  transition: height .5s ease-in-out;
   .row-fluid div{
     min-height: 20px;
   }
 }
 
 .results-course{
-  .background-gradient-linear(@orange, lighten(@orange,5%));
+  .background-gradient-linear(lighten(@result-gradient-start, 5%), lighten(@result-gradient-end, 5%));
+
+  -webkit-box-shadow: none;
+  box-shadow: none;
   color: darken(@orange, 80%);
+  margin: 15px;
+  .sections-container{
+    display: none;
+  }
 }
 
 

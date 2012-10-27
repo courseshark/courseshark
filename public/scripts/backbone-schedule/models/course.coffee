@@ -4,8 +4,9 @@ define(['jQuery',
 
   class Course extends Backbone.Model
 
-  	default:
+  	defaults:
   		rank: 0
+  		visible: true
   
   Course
 )

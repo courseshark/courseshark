@@ -20,7 +20,17 @@ define(['jQuery',
     	#
       @trigger 'search:start'
       @url = '/search?q='+$searchField.val()+'&t='+Shark.school.get('currentTerm').get('_id')
+      @set 'query', $searchField.val()
       @fetch success: () =>
+        # Itterate over results to clean them up / prep them
+        @get('courses').each (course) ->
+          course.get('sections').each (section,i) ->
+            # Add reference back to course into section
+            section.set('course', course)
+            # If it exists in the schedule object, replace it with the schedule's version
+            if (list=Shark.schedule.get('sections').where({_id: section.get('_id')})).length
+              course.attributes.sections.models[i] = list[0]
+        # Anouce that the searchis complete
         @trigger 'search:complete'
 
 
@@ -34,7 +44,6 @@ define(['jQuery',
         c.object.sections = new ResultSections c.object.sections
         #Return the new object piece of the {object: [course], rank: [number]} object 
         c.object
-    	
       response
 
  

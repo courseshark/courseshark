@@ -1,8 +1,9 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'models/course'
-        'text!/tmpl/results/result-course.ejs'], ($,_, Backbone, Course, resultCourseTemplate) ->
+        'models/course',
+        'views/result-section'
+        'text!/tmpl/results/result-course.ejs'], ($,_, Backbone, Course, ResultSectionView, resultCourseTemplate) ->
 
   class ResultCourseView extends Backbone.View
 
@@ -11,13 +12,30 @@ define(['jQuery',
     initialize: ->
       _.bindAll @
       @template = _.template resultCourseTemplate
+      @renderedSections = false
+      @showingSections = false
       @render()
 
     events:
-      'click .results-course': 'toggleSections'
+      'click .course-info-row': 'toggleSections'
 
     toggleSections: ->
-      console.log 'toggle',@model.get('sections').length,'sections'
+      #Render the sections if we havn't, then show them
+      @renderSections() if not @renderedSections
+      if @showingSections
+        @$sectionContainer.slideUp duration: 100
+        @showingSections = !@showingSections
+      else
+        @$sectionContainer.slideDown duration: 100
+        @showingSections = !@showingSections
+
+
+    renderSections: ->
+      @$sections.empty()
+      # Itterate over sections rendering their views
+      @model.get('sections').each (section) =>
+        if section.get('visible')
+          @$sections.append (new ResultSectionView (model: section)).render().el
 
     render: ->
       params =
@@ -25,6 +43,10 @@ define(['jQuery',
         departmentAbbr: @model.get('departmentAbbr')
         number: @model.get 'number'
       @$el.html @template params
+
+      # Find pieces for later reference
+      @$sectionContainer = @$el.find('.sections-container')
+      @$sections = @$el.find('.sections-list')
       @ # Return the section view to be added by the results view
 
   ResultCourseView

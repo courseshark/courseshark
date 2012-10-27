@@ -40,7 +40,8 @@ define(['jQuery',
       @$courses.empty()
       # Draw the courses into the course result container
       @searchResults.get('courses').each (course) =>
-        @$courses.append new ResultsCourseView(model: course).render().el
+        if course.get('visible')
+          @$courses.append new ResultsCourseView(model: course).render().el
 
   ResultListView
 )
