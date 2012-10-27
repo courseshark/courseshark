@@ -21,10 +21,13 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/nav.ejs'], ($, _, Ba
 			'click #ical-button' : 'ical'
 
 		save: ->
+			@$el.find('#save').modal('show');
 			console.log 'save clicked -- probably call router'
 
 		load: ->
-			return Shark.session.authorize() if !Shark.session.authenticated()
+			# TODO: uncomment this
+			# return Shark.session.authorize() if !Shark.session.authenticated()
+			@$el.find('#load').modal('show');
 			console.log 'logged in can save'
 
 		new: ->
