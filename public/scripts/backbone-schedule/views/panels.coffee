@@ -3,10 +3,10 @@ define(['jQuery',
  'Underscore',
  'Backbone',
  'text!/tmpl/app/panels.ejs',
- 'views/result-sections-list',
+ 'views/result-list',
  'views/schedule-sections-list',
  'views/filter',
- 'views/friends-list'], ($, _, Backbone, templateText, ResultsSectionsListView, ScheduleSectionsListView, filterView, FriendsListView) ->
+ 'views/friends-list'], ($, _, Backbone, templateText, ResultListView, ScheduleSectionsListView, filterView, FriendsListView) ->
 
 	class panelsView extends Backbone.View
 
@@ -32,7 +32,7 @@ define(['jQuery',
 		# Renders the actual view from the template
 		render: ->
 			@$el.html $ @template()
-			@resultsView = new ResultsSectionsListView( el: (@$el.find '#results-frame')[0] )
+			@resultsView = new ResultListView( el: (@$el.find '#results-frame')[0] )
 			@coursesView = new ScheduleSectionsListView( el: (@$el.find '#courses-frame')[0] , collection: Shark.schedule.get("sections"))
 			@filterView = new filterView( el: (@$el.find '#filter-frame')[0] )
 			@friendsView = new FriendsListView( el: (@$el.find '#friends-frame')[0] )
@@ -40,13 +40,9 @@ define(['jQuery',
 
 		events:
 			'click #slide-panel-button': 'toggleSlidePanel'
-			'click #show-results': 'showResults'
 
-
-		showResults: ->
-			($ '#results-frame').toggleClass 'hidden'
-			($ '#slide-container').toggleClass('span16').toggleClass('span8')
-			($ '#tutorial-frame').addClass 'hidden'
+		focusOnSearch: ->
+			@filterView.focusOnSearch()
 
 		toggleSlidePanel: ->
 			return if ( $ '#results-frame').hasClass 'hidden'

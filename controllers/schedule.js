@@ -18,7 +18,6 @@ exports = module.exports = function(app){
 		res.render('schedule/schedule', {school: req.school._id, layout: 'app-layout.ejs', built: app.settings.env!="development"});
 	})
 
-
 	app.get('/launch-schedule', requireSchool, function(req, res){
 		Department.find({school:req.school._id}, {abbr:1, name:1}, {sort:{abbr:1}}, function(err, departments){
 			res.render('schedule/launch-schedule', {departments: departments, link: false, school: req.school._id, noJS: true});
@@ -39,7 +38,6 @@ exports = module.exports = function(app){
 				scheduleLink.schedule.term = scheduleLink.schedule.term['_id']?scheduleLink.schedule.term['_id']:scheduleLink.schedule.term
 				Term.findOne({_id: scheduleLink.schedule.term}, function(err, term){
 					scheduleLink.schedule.term = term;
-					
 
 					// Correct for timezone issue by re-finding the sections in the schedule
 					sectionIds = schedule.sections.map(function(s){return s._id});
@@ -196,12 +194,16 @@ exports = module.exports = function(app){
 	* Components
 	*
 	**/
+	app.get('/school', requireSchool, function(req, res){
+		res.json(req.school);
+	})
+
 	app.get('/schedule/terms', requireSchool, function(req, res){
 		Term.find({school: req.school}, function(err, terms){
 			res.json(terms)
 		})
 	})
-		app.get('/school/departments', requireSchool, function(req, res){
+	app.get('/school/departments', requireSchool, function(req, res){
 		Department.find({school: req.school}, {}, {sort:{abbr:1}}, function(err, departments){
 			res.json(departments)
 		})

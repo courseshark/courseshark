@@ -2,11 +2,11 @@ define(['jQuery',
         'Underscore',
         'Backbone'], ($,_, Backbone) ->
 
-  class Section extends Backbone.Model
-  	defaults:
-  		visible: true
-  		seatsAvailable: '--'
-  		seatsTotal: '--'
+  class Course extends Backbone.Model
 
-  Section
+  	defaults:
+  		rank: 0
+  		visible: true
+  
+  Course
 )
