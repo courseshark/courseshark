@@ -23,8 +23,6 @@ define(['jQuery',
       @$el.find('i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up')
 
     add: ->
-      # console.log(Shark.schedulesList.models['0'].attributes.sections.length)
-      # @$el.find('.add').toggleClass('added')
       if Shark.schedule.contains(@model)
         Shark.schedule.removeSection(@model)
       else
