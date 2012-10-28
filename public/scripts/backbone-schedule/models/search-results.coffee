@@ -18,6 +18,7 @@ define(['jQuery',
     	#
     	# apply any search filters that must be sent to server
     	#
+      @trigger 'search:error', 'Must enter a query' if not $searchField.val()
       @trigger 'search:start'
       @url = '/search?q='+$searchField.val()+'&t='+Shark.school.get('currentTerm').get('_id')
       @set 'query', $searchField.val()
