@@ -17,6 +17,12 @@ define(['jQuery',
         clone.addSection(section)
       clone
 
+    loadSections: (importSections)=>
+      sections = @.get('sections')
+      sections.reset()
+      _.each importSections.models, (section)=>
+        @.addSection(section)
+
     addSection: (section) =>
       @.get('sections').push (section)
       @.trigger('change')

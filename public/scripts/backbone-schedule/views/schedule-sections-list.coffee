@@ -18,7 +18,6 @@ define(['jQuery',
       @render();
 
     render: ->
-      console.log('sslv render')
       collection = @collection.get('sections')
       @$el.html $ @scheduleSectionsListTemplate(name: Shark.schedule.get('name'))
       list = @$el.find('#schedule-sections-list-content')

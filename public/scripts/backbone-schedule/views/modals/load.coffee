@@ -16,7 +16,7 @@ define(['jQuery',
     load: ->
       loaded = Shark.schedulesList.getByCid(@$el.find('[name=loadlist]').val()[0])
       Shark.schedule.set('name', loaded.get('name'))
-      Shark.schedule.set('sections', loaded.get('sections'))
+      Shark.schedule.loadSections(loaded.get('sections'))
       Shark.schedule.trigger('change')
       $('#load').modal('hide')
 
