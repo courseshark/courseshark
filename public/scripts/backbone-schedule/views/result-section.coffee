@@ -8,8 +8,12 @@ define(['jQuery',
 
     initialize: ->
       _.bindAll @
+
+      Shark.schedule.bind "change", =>
+        @render();
+
       @resultsSectionTemplate = _.template(resultsSectionTemplate)
-      
+
     events:
       'click .expander' : 'expand'
       'click .add' : 'add'
@@ -19,12 +23,11 @@ define(['jQuery',
       @$el.find('i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up')
 
     add: ->
-      @$el.find('.add').toggleClass('added')
-      collection = Shark.schedule.get("sections")
-      if _.contains(collection.models, @model)
-        collection.remove(@model)
+      if Shark.schedule.contains(@model)
+        Shark.schedule.removeSection(@model)
       else
-        collection.add(@model)
+        Shark.schedule.addSection(@model)
+      @render()
 
     render: ->
       params =
@@ -40,7 +43,7 @@ define(['jQuery',
 
       # Mark added if it is in the schedule?
       if _.contains(Shark.schedule.get('sections').models, @model)
-        @$el.find('.add').toggleClass('added')
+        @$el.find('.add').addClass('added')
       @ # Return the section view to be added by the results view
 
   ResultSectionView

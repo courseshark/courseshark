@@ -1,11 +1,12 @@
 #Incude all the models here, then pass them back into the object
 define(['jQuery',
  'Underscore',
-  'Backbone',
-   'text!/tmpl/app/panels.ejs',
-    'views/result-list',
-     'views/schedule-sections-list',
-      'views/filter'], ($, _, Backbone, templateText, ResultListView, ScheduleSectionsListView, filterView) ->
+ 'Backbone',
+ 'text!/tmpl/app/panels.ejs',
+ 'views/result-list',
+ 'views/schedule-sections-list',
+ 'views/filter',
+ 'views/friends-list'], ($, _, Backbone, templateText, ResultListView, ScheduleSectionsListView, filterView, FriendsListView) ->
 
 	class panelsView extends Backbone.View
 
@@ -32,8 +33,9 @@ define(['jQuery',
 		render: ->
 			@$el.html $ @template()
 			@resultsView = new ResultListView( el: (@$el.find '#results-frame')[0] )
-			@coursesView = new ScheduleSectionsListView( el: (@$el.find '#schedule-frame')[0] , collection: Shark.schedule.get("sections"))
+			@coursesView = new ScheduleSectionsListView( el: (@$el.find '#courses-frame')[0])
 			@filterView = new filterView( el: (@$el.find '#filter-frame')[0] )
+			@friendsView = new FriendsListView( el: (@$el.find '#friends-frame')[0] )
 
 
 		events:

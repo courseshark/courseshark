@@ -1,11 +1,11 @@
 define(
   [
-    'jQuery','Underscore','Backbone', 'models/schedule', 'models/session'#,
+    'jQuery','Underscore','Backbone', 'models/schedule', 'collections/schedules', 'models/session'#,
     # Include the views that need to be loaded for the router to use
     #'views/projects/list',
     #'views/users/list'
   ],
-  ($, _, Backbone, Schedule, Session) ->
+  ($, _, Backbone, Schedule, Schedules, Session) ->
 
 
     $.ajaxSetup statusCode:
@@ -21,6 +21,7 @@ define(
       initialize: (Shark) ->
         @Shark = Shark
         Shark.schedule = new Schedule
+        Shark.schedulesList = new Schedules
         # Router Initilalized
 
       routes:
@@ -38,21 +39,18 @@ define(
       landingPage: () =>
         @Shark.currentView = new @Shark.views.appView()
 
-
       login: () ->
         if !Shark.session.authenticated()
           Shark.session.login()
         else
           @navigate '/s/', true
 
-        
-
-
       defaultAction: (actions) ->
         @navigate '/' if actions is 's'
         console.log 'No route', actions
         @navigate '/'
     )
+
     initialize = (Shark) ->
       router = new SharkRouter(Shark)
       Shark.session = new Session(CS.auth)
