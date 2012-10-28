@@ -1,5 +1,10 @@
 #Incude all the models here, then pass them back into the object
-define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/nav.ejs'], ($, _, Backbone, templateText) ->
+define(['jQuery',
+	'Underscore',
+	'Backbone',
+	'views/modals/save',
+	'views/modals/load',
+	'text!/tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, templateText) ->
 
 	class navView extends Backbone.View
 
@@ -22,12 +27,14 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/nav.ejs'], ($, _, Ba
 
 		save: ->
 			@$el.find('#save').modal('show');
+			@saveView = new SaveView( el: (@$el.find '#save')[0] )
 			console.log 'save clicked -- probably call router'
 
 		load: ->
 			# TODO: uncomment this
 			# return Shark.session.authorize() if !Shark.session.authenticated()
 			@$el.find('#load').modal('show');
+			@loadView = new LoadView( el: (@$el.find '#load')[0] )
 			console.log 'logged in can save'
 
 		new: ->

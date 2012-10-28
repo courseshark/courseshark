@@ -9,7 +9,7 @@ define(['jQuery',
     initialize: ->
       _.bindAll @
       @resultsSectionTemplate = _.template(resultsSectionTemplate)
-      
+
     events:
       'click .expander' : 'expand'
       'click .add' : 'add'
