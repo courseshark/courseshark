@@ -3,6 +3,10 @@ define(['jQuery',
         'Backbone'], ($,_, Backbone) ->
 
   class Section extends Backbone.Model
+  	defaults:
+  		visible: true
+  		seatsAvailable: '--'
+  		seatsTotal: '--'
 
   Section
 )

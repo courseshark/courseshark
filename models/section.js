@@ -30,6 +30,7 @@ SectionSchema = new Schema({
 	, timeslots: []
 	, deleted: { type: Boolean, 'default': false }
 	, updated: { type: Date, 'default': Date.now }
+	, _tokens: []
 }, {shardkey: {course: 1}});
 
 

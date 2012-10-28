@@ -1,24 +1,65 @@
-.results-section{
-  @sam-grey: #8a949e;
-  @result-gradient-start: white;
-  @result-gradient-end:  #E5E5E5;
+@import 'vars';
 
-  padding: 8px 8px 8px 8px;
-  transition: height .5s ease-in-out;
-  -webkit-box-shadow: -2px 2px 3px 0px #CCC;
-  box-shadow: -2px 2px 3px 0px #CCC;
-  position: relative;
-  margin: 15px;
-  overflow: hidden;
-  color: @sam-grey;
-  border: solid 1px @sam-grey;
-  border-radius: 3px;
+@result-gradient-start: @white;
+@result-gradient-end:  @light-grey;
+
+@add-gradient-start: @white;
+@add-gradient-end:  @light-grey;
+
+@added-gradient-start: @red;
+@added-gradient-end: @dark-red;
+
+#course-results{
+  margin-top: -15px;
+  padding-top: 10px;
+
+  @time: 0.3s;
+  @easing: ease-in;
+  -webkit-transition: all @time @easing;
+  -moz-transition: all @time @easing;
+  transition: all @time @easing;
+
+  -webkit-filter: blur(0px);
+  filter: blur(5px);
+
+  &.loading{
+    -webkit-filter: blur(3px);
+    filter: blur(5px);
+  }
+}
+
+.results-course, .results-section{
   background-color: white;
-  background-image: -webkit-linear-gradient(top, @result-gradient-start, @result-gradient-end);
-  background-image: -moz-linear-gradient(top, @result-gradient-start, @result-gradient-end);
-  background-image: -o-linear-gradient(top, @result-gradient-start, @result-gradient-end);
-  background-image: -ms-linear-gradient(top, @result-gradient-start, @result-gradient-end);
-  background-image: linear-gradient(top, @result-gradient-start, @result-gradient-end);
+  .background-gradient-linear(@result-gradient-start, @result-gradient-end);
+  border-radius: 3px;
+  border: solid 1px @text-grey;
+  -webkit-box-shadow: -2px 2px 3px 0px #CCC;
+  box-shadow: 0px 0px 3px 0px #CCC;
+  color: @text-grey;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 8px;
+  margin: 15px 0;
+  position: relative;
+  .row-fluid div{
+    min-height: 20px;
+  }
+}
+
+.results-course{
+  .background-gradient-linear(lighten(@result-gradient-start, 5%), lighten(@result-gradient-end, 5%));
+
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  color: darken(@orange, 80%);
+  margin: 15px;
+  .sections-container{
+    display: none;
+  }
+}
+
+
+.results-section{
 
   .row-fluid div{
     min-height: 20px;
@@ -34,19 +75,13 @@
   }
 
   .add{
-    @add-gradient-start: white;
-    @add-gradient-end:  #E5E5E5;
 
     width: 35px;
     height: 30px;
-    border: solid 1px @sam-grey;
+    border: solid 1px @text-grey;
     border-radius: 3px;
     background-color: white;
-    background-image: -webkit-linear-gradient(top, @add-gradient-start, @add-gradient-end);
-    background-image: -moz-linear-gradient(top, @add-gradient-start, @add-gradient-end);
-    background-image: -o-linear-gradient(top, @add-gradient-start, @add-gradient-end);
-    background-image: -ms-linear-gradient(top, @add-gradient-start, @add-gradient-end);
-    background-image: linear-gradient(top, @add-gradient-start, @add-gradient-end);
+    .background-gradient-linear(@add-gradient-start, @add-gradient-end);
     line-height: 20px;
     text-align: center;
 
@@ -55,16 +90,10 @@
     }
 
     &.added{
-      @added-gradient-start: red;
-      @added-gradient-end: #E50505;
-
       background-color: red;
-      background-image: -webkit-linear-gradient(top, @added-gradient-start, @added-gradient-end);
-      background-image: -moz-linear-gradient(top, @added-gradient-start, @added-gradient-end);
-      background-image: -o-linear-gradient(top, @added-gradient-start, @added-gradient-end);
-      background-image: -ms-linear-gradient(top, @added-gradient-start, @added-gradient-end);
-      background-image: linear-gradient(top, @added-gradient-start, @added-gradient-end);
-
+      .background-gradient-linear(@added-gradient-start, @added-gradient-end);
+      color: @white;
+      font-weight: 600;
       &:before{
         content: '-';
       }

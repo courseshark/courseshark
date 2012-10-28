@@ -14,6 +14,12 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/index.ejs', 'views/n
 			@render()	# Render out the view
 
 
+		events:
+			'click #tutorial-frame': 'focusOnSearch'
+
+
+		focusOnSearch: ->
+			@panelsView.focusOnSearch()
 
 		# Renders the actual view from the template
 		render: ->
