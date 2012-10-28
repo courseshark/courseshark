@@ -9,7 +9,7 @@ define(['jQuery',
     initialize: ->
       _.bindAll @
 
-      console.log(@collection)
+      # Figure out why collection wut?
       @collection.bind "change", =>
         @render();
 
@@ -20,8 +20,7 @@ define(['jQuery',
     render: ->
       console.log('sslv render')
       collection = @collection.get('sections')
-      console.log(collection)
-      @$el.html $ @scheduleSectionsListTemplate()
+      @$el.html $ @scheduleSectionsListTemplate(name: Shark.schedule.get('name'))
       list = @$el.find('#schedule-sections-list-content')
       newList = $("<span><span>")
       _.each collection.models, (scheduleSection) =>

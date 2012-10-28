@@ -6,11 +6,15 @@ define(['jQuery',
   class Schedule extends Backbone.Model
 
     defaults:
-      name: "Name"
+      name: ""
       sections: new ScheduleSections
 
     makeClone: =>
       clone = new Schedule
+      clone.set('name', @.get('name'))
+      clone.set('sections', new ScheduleSections)
+      _.each @.get('sections').models, (section) =>
+        clone.addSection(section)
       clone
 
     addSection: (section) =>
@@ -26,14 +30,6 @@ define(['jQuery',
         true
       else
         false
-
-    cloneSections: =>
-      sections = @.get('sections')
-      clone = new ScheduleSections
-      _.each sections, (section) =>
-        clone.push(section)
-      @.set('sections', clone)
-      console.log(@.get('sections'))
 
   Schedule
 )

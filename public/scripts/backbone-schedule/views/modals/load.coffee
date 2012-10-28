@@ -14,10 +14,10 @@ define(['jQuery',
       'click #do-load' : 'load'
 
     load: ->
-      console.log(Shark.schedule.get('name'))
-      Shark.schedule = Shark.schedulesList.getByCid(@$el.find('[name=loadlist]').val()[0])
-      console.log(Shark.schedule.get('name'))
-      Shark.schedule.change()
+      loaded = Shark.schedulesList.getByCid(@$el.find('[name=loadlist]').val()[0])
+      Shark.schedule.set('name', loaded.get('name'))
+      Shark.schedule.set('sections', loaded.get('sections'))
+      Shark.schedule.trigger('change')
       $('#load').modal('hide')
 
     render: ->

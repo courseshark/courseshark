@@ -22,6 +22,7 @@ define(['jQuery',
         Shark.schedulesList.remove found[0]
       clone = Shark.schedule.makeClone()
       Shark.schedulesList.push clone
+      $('#save').modal('hide')
 
     render: ->
       @$el.html @saveTemplate()

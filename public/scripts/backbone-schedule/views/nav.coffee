@@ -28,14 +28,12 @@ define(['jQuery',
 		save: ->
 			@$el.find('#save').modal('show');
 			@saveView = new SaveView( el: (@$el.find '#save')[0] )
-			console.log 'save clicked -- probably call router'
 
 		load: ->
 			# TODO: uncomment this
 			# return Shark.session.authorize() if !Shark.session.authenticated()
 			@$el.find('#load').modal('show');
 			@loadView = new LoadView( el: (@$el.find '#load')[0] )
-			console.log 'logged in can save'
 
 		new: ->
 			console.log 'new clicked'
