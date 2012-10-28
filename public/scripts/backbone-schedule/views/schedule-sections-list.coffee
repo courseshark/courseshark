@@ -9,10 +9,8 @@ define(['jQuery',
     initialize: ->
       _.bindAll @
 
-      @collection.bind "add", =>
-        @render();
-
-      @collection.bind "remove", =>
+      console.log(@collection)
+      @collection.bind "change", =>
         @render();
 
       @scheduleSectionsListTemplate = _.template(scheduleSectionsListTemplate)
@@ -20,10 +18,13 @@ define(['jQuery',
       @render();
 
     render: ->
+      console.log('sslv render')
+      collection = @collection.get('sections')
+      console.log(collection)
       @$el.html $ @scheduleSectionsListTemplate()
       list = @$el.find('#schedule-sections-list-content')
       newList = $("<span><span>")
-      _.each @collection.models, (scheduleSection) =>
+      _.each collection.models, (scheduleSection) =>
         newList.append new ScheduleSectionView(model: scheduleSection.attributes).render().el
       list.html newList
 

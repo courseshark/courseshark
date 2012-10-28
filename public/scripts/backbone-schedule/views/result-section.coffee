@@ -20,11 +20,11 @@ define(['jQuery',
 
     add: ->
       @$el.find('.add').toggleClass('added')
-      collection = Shark.schedule.get("sections")
-      if _.contains(collection.models, @model)
-        collection.remove(@model)
+      if Shark.schedule.contains(@model)
+        Shark.schedule.removeSection(@model)
       else
-        collection.add(@model)
+        Shark.schedule.addSection(@model)
+      Shark.schedule.change()
 
     render: ->
       params =

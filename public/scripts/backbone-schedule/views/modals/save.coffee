@@ -20,7 +20,8 @@ define(['jQuery',
 
       if found[0]
         Shark.schedulesList.remove found[0]
-      Shark.schedulesList.push Shark.schedule.clone()
+      clone = Shark.schedule.makeClone()
+      Shark.schedulesList.push clone
 
     render: ->
       @$el.html @saveTemplate()

@@ -14,17 +14,17 @@ define(['jQuery',
       'click #do-load' : 'load'
 
     load: ->
-      console.log("do load")
+      console.log(Shark.schedule.get('name'))
+      Shark.schedule = Shark.schedulesList.getByCid(@$el.find('[name=loadlist]').val()[0])
+      console.log(Shark.schedule.get('name'))
+      Shark.schedule.change()
+      $('#load').modal('hide')
 
     render: ->
-      console.log('render')
       @$el.html @loadTemplate()
       @list = @$el.find('[name=loadlist]')
-      console.log(Shark.schedulesList)
       _.each Shark.schedulesList.models, (schedule) =>
-        console.log(schedule)
-        @list.append $("<option />").val(schedule.id).text(schedule.get('name'))
-      # list.html options
+        @list.append $("<option />").val(schedule.cid).text(schedule.get('name'))
 
   LoadView
 )

@@ -33,7 +33,7 @@ define(['jQuery',
 		render: ->
 			@$el.html $ @template()
 			@resultsView = new ResultListView( el: (@$el.find '#results-frame')[0] )
-			@coursesView = new ScheduleSectionsListView( el: (@$el.find '#courses-frame')[0] , collection: Shark.schedule.get("sections"))
+			@coursesView = new ScheduleSectionsListView( el: (@$el.find '#courses-frame')[0] , collection: Shark.schedule)
 			@filterView = new filterView( el: (@$el.find '#filter-frame')[0] )
 			@friendsView = new FriendsListView( el: (@$el.find '#friends-frame')[0] )
 
