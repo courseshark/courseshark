@@ -20,8 +20,7 @@ define(['jQuery',
 
       if found[0]
         Shark.schedulesList.remove found[0]
-      clone = Shark.schedule.makeClone()
-      Shark.schedulesList.push clone
+      Shark.schedulesList.push Shark.schedule.makeClone()
       $('#save').modal('hide')
 
     render: ->

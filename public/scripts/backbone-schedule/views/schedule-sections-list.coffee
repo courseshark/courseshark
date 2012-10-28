@@ -9,8 +9,7 @@ define(['jQuery',
     initialize: ->
       _.bindAll @
 
-      # Figure out why collection wut?
-      @collection.bind "change", =>
+      Shark.schedule.bind "change", =>
         @render();
 
       @scheduleSectionsListTemplate = _.template(scheduleSectionsListTemplate)
@@ -18,8 +17,8 @@ define(['jQuery',
       @render();
 
     render: ->
-      collection = @collection.get('sections')
-      @$el.html $ @scheduleSectionsListTemplate(name: Shark.schedule.get('name'))
+      collection = Shark.schedule.get('sections')
+      @$el.html $ @scheduleSectionsListTemplate()
       list = @$el.find('#schedule-sections-list-content')
       newList = $("<span><span>")
       _.each collection.models, (scheduleSection) =>

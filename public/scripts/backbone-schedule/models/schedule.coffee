@@ -21,11 +21,12 @@ define(['jQuery',
       sections = @.get('sections')
       sections.reset()
       _.each importSections.models, (section)=>
-        @.addSection(section)
-
-    addSection: (section) =>
-      @.get('sections').push (section)
+        @.addSection(section, true)
       @.trigger('change')
+
+    addSection: (section, suppress=false) =>
+      @.get('sections').push (section)
+      @.trigger('change') unless suppress
 
     removeSection: (section) =>
       @.get('sections').remove (section)
