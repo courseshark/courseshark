@@ -31,8 +31,12 @@ define(['jQuery',
             # If it exists in the schedule object, replace it with the schedule's version
             if (list=Shark.schedule.get('sections').where({_id: section.get('_id')})).length
               course.attributes.sections.models[i] = list[0]
+        
         # Anouce that the searchis complete
         @trigger 'search:complete'
+
+        # Run the filters on the new results
+        Shark.filterResults()
 
 
     #Parse method is part of the fetch command

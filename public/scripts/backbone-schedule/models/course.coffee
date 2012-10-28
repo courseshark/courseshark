@@ -7,6 +7,10 @@ define(['jQuery',
   	defaults:
   		rank: 0
   		visible: true
+
+  	initialize: ()->
+  		@.get('sections').bind 'change:visible', (section) =>
+  			@.trigger 'change:section-visibility', section
   
   Course
 )

@@ -7,7 +7,7 @@ define(['jQuery',
     defaults:
       name: "Unnamed Filter"
 
-    initialize:
+    initialize: ->
     	@active = false
 
     # Logic section of the filter
@@ -25,6 +25,8 @@ define(['jQuery',
     			course.get('sections').map @filter
     			course.set('visible', false) if not (course.get('sections').where visible: true).length
 
+    viewChange: (values) ->
+      console.log values
 
   Filter
 )

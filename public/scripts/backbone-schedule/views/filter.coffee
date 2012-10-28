@@ -1,7 +1,9 @@
 define(['jQuery',
 	'Underscore',
 	'Backbone',
-	'text!/tmpl/app/filter.ejs'], ($, _, Backbone, filterTemplate) ->
+	'collections/filters',
+	'models/filters/days-filter',
+	'text!/tmpl/app/filter.ejs'], ($, _, Backbone, FilterCollection, DaysFilter, filterTemplate) ->
 
 	class filterView extends Backbone.View
 
@@ -9,14 +11,43 @@ define(['jQuery',
 			_.bindAll @
 
 			@filterTemplate = _.template(filterTemplate)
+
+			@filters = new FilterCollection()
+			@filters.add new DaysFilter()
+
+			@filters.bind 'change', () =>
+				@filterResults()
+
 			@render();
+
+			# Reference the filter call function globally
+			Shark.filterResults = @filterResults
 
 		events:
 			'slide .slider': 'slideUpdate'
 			'click #search-send': 'preformSearch'
 			'keyup #search-field': 'searchTypeing'
 
-		
+
+		# Filter the current search results
+		filterResults: ->
+			# Tell the results object we are startting the filter
+			Shark.searchResults.trigger 'filter:start'
+			# quick reference to the courses
+			courses = Shark.searchResults.get('courses')
+			# Reset the visibility of the courses / sections
+			courses.map (course) ->
+    		course.set('visible', true)
+    		course.get('sections').map (section) ->
+    			section.set('visible', true)
+    	
+    	# Apply each filter
+    	filter.apply(courses) for filter in @filters.models
+    	# Tell the results object we are done with filtering
+    	Shark.searchResults.trigger 'filter:complete'
+
+
+
 		focusOnSearch: ->
 			($ '#search-field').focus()
 
@@ -65,6 +96,9 @@ define(['jQuery',
 
 		render: ->
 			@$el.append @filterTemplate()
+			@$filtersContainer = @$el.find '.advanced-search-filters'
+			@filters.each (filter) =>
+				@$filtersContainer.append (new filter.view model: filter).render().el
 			# 5-minute increments [0 - 24*60/5 == 0-288]         range starts at 7am - 7pm
 			(@$slider = @$el.find('.slider')).slider
 				range: true

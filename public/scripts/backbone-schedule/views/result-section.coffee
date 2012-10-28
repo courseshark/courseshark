@@ -9,6 +9,12 @@ define(['jQuery',
     initialize: ->
       _.bindAll @
       @resultsSectionTemplate = _.template(resultsSectionTemplate)
+
+      @model.bind 'change:visible', (section, visible) =>
+        if not visible
+          @$el.hide()
+        else 
+          @$el.show()
       
     events:
       'click .expander' : 'expand'
