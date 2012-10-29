@@ -4,13 +4,13 @@ define(['jQuery',
 				'../../models/filter',
 				'../../views/filters/checkbox-filter'], ($,_, Backbone, FilterModel, CheckBoxFilterView) ->
 
-	class SeatsFilter extends FilterModel
+	class FriendsFilter extends FilterModel
 
 		defaults:
-			name: "Seats"
+			name: "Friends"
 			horizontal: false
-			options: ['available','waitlist','full']
-			values: [true, true, true]
+			options: ['friends','no friends']
+			values: [true, true]
 
 		initialize: ->
 			@active = false
@@ -22,16 +22,13 @@ define(['jQuery',
 			# Quickreference attributes
 			values = @.get 'values'
 			
-			seats = section.get 'seatsAvailable'
-			waitlist = section.get 'waitlistAvailable'
-			# Remove full classes
-			if seats <= 0 and not values[2]
+			hasFriends = (section.get 'friends').length
+			# Remove classes without friends
+			if hasFriends > 0 and not values[0]
 				section.set 'visible', false 
 				return
-			if ( seats > 0 or seats is '--' ) and not values[0]
-				section.set 'visible', false
-				return
-			if seats <= 0 and waitlist > 0 and not values[1]
+			# Only classes with friends
+			if hasFriends < 0 and not values[1]
 				section.set 'visible', false
 				return
 			
@@ -39,5 +36,5 @@ define(['jQuery',
 			@active = false in values
 			@.set 'values', values
 
-	SeatsFilter
+	FriendsFilter
 )
