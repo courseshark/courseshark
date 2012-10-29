@@ -2,9 +2,10 @@ define(['jQuery',
 	'Underscore',
 	'Backbone',
 	'collections/filters',
+	'models/filters/seats-filter',
 	'models/filters/days-filter',
 	'models/filters/time-filter',
-	'text!/tmpl/app/filter.ejs'], ($, _, Backbone, FilterCollection, DaysFilter, TimeFilter, filterTemplate) ->
+	'text!/tmpl/app/filter.ejs'], ($, _, Backbone, FilterCollection, SeatsFilter, DaysFilter, TimeFilter, filterTemplate) ->
 
 	class filterView extends Backbone.View
 
@@ -14,6 +15,7 @@ define(['jQuery',
 			@filterTemplate = _.template(filterTemplate)
 
 			@filters = new FilterCollection()
+			@filters.add new SeatsFilter()
 			@filters.add new DaysFilter()
 			@filters.add new TimeFilter()
 

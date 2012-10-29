@@ -14,14 +14,14 @@
 						<div class="span1"/>
 				</div>
 			<%} else {%>
-				<% for (var i=0,_len=options.length; i<_len; i++ ){ %>
+				<% for (var i=0,_len=options.length,enabled=values[0]; i<_len; i++,enabled=values[i]  ){ %>
 				<div class="row-fluid">
 					<div class="seats span24">
 						<div class="span2 offset2">
-							<input class="checkbox" type="checkbox" name="seats" id="wait" value="wait" checked>
+							<input class="checkbox" type="checkbox" name="<%=options[i]%>" id="checkbox-<%=name%>-<%=options[i]%>" value="<%=options[i]%>"<%=(enabled?' checked':'')%>/>
 						</div>
 						<div class="span20">
-							<label for="wait">waitlist</label>
+							<label for="checkbox-<%=name%>-<%=options[i]%>" title="<%=options[i]%>"><%=options[i]%></label>
 						</div>
 					</div>
 				</div>	
