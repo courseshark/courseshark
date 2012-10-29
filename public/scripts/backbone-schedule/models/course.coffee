@@ -7,7 +7,6 @@ define(['jQuery',
   	defaults:
   		rank: 0
   		visible: true
-
   
   Course
 )
