@@ -7,8 +7,8 @@
 						<div class="span1"/>
 						<% for (var i=0,_len=options.length,enabled=values[0]; i<_len; i++,enabled=values[i] ){ %>
 						<div class="option span4">
-							<label for="<%=options[i]%>"><%=options[i]%></label>
-							<input class="checkbox" type="checkbox" name="<%=name%>" value="<%=options[i]%>"<%=(enabled?' checked':'')%>/>
+							<label for="checkbox-<%=name%>-<%=options[i]%>"><%=options[i]%></label>
+							<input class="checkbox" type="checkbox" name="<%=name%>" id="checkbox-<%=name%>-<%=options[i]%>" value="<%=options[i]%>"<%=(enabled?' checked':'')%>/>
 						</div>
 						<%}%>
 						<div class="span1"/>
