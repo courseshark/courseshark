@@ -21,12 +21,6 @@ define(['jQuery',
 		initialize: ->
 			@active = true
 			@view = SliderFilterView
-			@mapper = 
-				monday: 'm'
-				tuesday: 't'
-				wednesday: 'w'
-				thursday: 'th'
-				friday: 'f'
 
 		updateText: (value) ->
 			step = 30
