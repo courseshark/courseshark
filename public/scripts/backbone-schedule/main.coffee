@@ -9,8 +9,6 @@ require.config(
     jQueryCookie: '/scripts/lib/jquery/jquery-cookie.req'
     Bootstrap: '/scripts/lib/bootstrap/bootstrap.req'
 
-  #baseUrl: '/scripts/backbone-schedule/'
-
   shim:
     jQuery:
       deps: []
