@@ -9,10 +9,7 @@ define(['jQuery',
     initialize: ->
       _.bindAll @
 
-      @collection.bind "add", =>
-        @render();
-
-      @collection.bind "remove", =>
+      Shark.schedule.bind "change", =>
         @render();
 
       @scheduleSectionsListTemplate = _.template(scheduleSectionsListTemplate)
@@ -20,10 +17,11 @@ define(['jQuery',
       @render();
 
     render: ->
+      collection = Shark.schedule.get('sections')
       @$el.html $ @scheduleSectionsListTemplate()
       list = @$el.find('#schedule-sections-list-content')
       newList = $("<span><span>")
-      _.each @collection.models, (scheduleSection) =>
+      _.each collection.models, (scheduleSection) =>
         newList.append new ScheduleSectionView(model: scheduleSection.attributes).render().el
       list.html newList
 
