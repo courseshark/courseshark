@@ -11,8 +11,6 @@ define(['jQuery',
 
       @scheduleSectionTemplate = _.template(scheduleSectionTemplate)
 
-      @render();
-
     render: ->
       text = @model.number + ": " + @model.name.split(' #')[0]
       @$el.html @scheduleSectionTemplate(course: text)

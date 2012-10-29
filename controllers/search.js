@@ -34,12 +34,16 @@ exports = module.exports = function(app){
 			,	query = {query:{school:school}, string: req.query.q}
 			,	EventEmitter = require("events").EventEmitter
 			,	emitter = new EventEmitter()
+			, searchResults = {departments: [], courses: [], sections: []};
 
+		if ( !req.query.q ){
+			res.json(searchResults);
+			return;
+		}
 		query.term = ObjectId(req.query.t) || req.school.currentTerm?req.school.currentTerm._id:null
 
 		emitter.toDo = 0;
 
-		searchResults = {departments: null, courses: null, sections: null};
 
 		// Find departments
 		emitter.toDo++;

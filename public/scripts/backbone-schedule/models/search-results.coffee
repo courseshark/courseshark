@@ -18,6 +18,7 @@ define(['jQuery',
     	#
     	# apply any search filters that must be sent to server
     	#
+      @trigger 'search:error', 'Must enter a query' if not $searchField.val()
       @trigger 'search:start'
       @url = '/search?q='+$searchField.val()+'&t='+Shark.school.get('currentTerm').get('_id')
       @set 'query', $searchField.val()
@@ -30,8 +31,12 @@ define(['jQuery',
             # If it exists in the schedule object, replace it with the schedule's version
             if (list=Shark.schedule.get('sections').where({_id: section.get('_id')})).length
               course.attributes.sections.models[i] = list[0]
+        
         # Anouce that the searchis complete
         @trigger 'search:complete'
+
+        # Run the filters on the new results
+        Shark.filterResults()
 
 
     #Parse method is part of the fetch command
