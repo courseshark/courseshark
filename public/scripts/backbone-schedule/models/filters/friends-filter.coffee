@@ -22,7 +22,7 @@ define(['jQuery',
 			# Quickreference attributes
 			values = @.get 'values'
 			
-			hasFriends = (section.get 'friends').length
+			hasFriends = (section.get 'friends')?.length
 			# Remove classes without friends
 			if hasFriends > 0 and not values[0]
 				section.set 'visible', false 
