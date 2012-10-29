@@ -71,7 +71,7 @@ define(['jQuery',
 
 		render: ->
 			@$el.append @filterTemplate()
-			@$filtersContainer = @$el.find '.advanced-search-filters'
+			@$filtersContainer = @$filtersContainer or @$el.find '.advanced-search-filters'
 			@filters.each (filter) =>
 				@$filtersContainer.append (new filter.view model: filter).render().el
 
