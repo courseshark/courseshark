@@ -29,12 +29,12 @@ define(
         '/' : 'landingPage'
         '/s/' : 'landingPage'
 
-        'login': 'login',
+        'login': 'login'
         'view':'view'
 
-        ':action':                   'defaultAction',
-        ':controller/:action':       'defaultAction',
-        ':controller/:action/:vid':  'defaultAction',
+        ':action':                   'defaultAction'
+        ':controller/:action':       'defaultAction'
+        ':controller/:action/:vid':  'defaultAction'
 
 
       landingPage: () =>
