@@ -1,9 +1,31 @@
-.weekly_calendar{
+@import "vars";
+
+.weekly-calendar-panel{
+	overflow-x: hidden
+}
+.weekly-calendar{
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	user-select: none;
 	cursor: default;
 	margin: .5em;
+}
+
+.wk-event-listing{
+	@time: 150ms;
+	@easing: ease-in;
+	opacity: 0.9;
+	-webkit-transition: all @time @easing;
+		 -moz-transition: all @time @easing;
+		   -o-transition: all @time @easing;
+		  -ms-transition: all @time @easing;
+		      transition: all @time @easing;
+	border: 1px solid @grey;
+	border-top: 5px solid; 
+
+	dl, div, .tbd-listing-head{
+		cursor:pointer;
+	}
 }
 
 .week-topheader{
@@ -90,11 +112,6 @@
 			overflow:hidden;
 			position:absolute;
 			font-size:13px;
-			&.friend{
-				color:@black;
-				left: 5% !important;
-				right: 0px !important;
-			}
 			dl{
 				width:100%;
 				border-left:1px solid;
