@@ -1,12 +1,19 @@
 define(['jQuery',
-        'Underscore',
-        'Backbone'], ($,_, Backbone) ->
+				'Underscore',
+				'Backbone'], ($,_, Backbone) ->
 
-  class Section extends Backbone.Model
-  	defaults:
-  		visible: true
-  		seatsAvailable: '--'
-  		seatsTotal: '--'
+	class Section extends Backbone.Model
+		defaults:
+			visible: true
+			seatsAvailable: '--'
+			seatsTotal: '--'
 
-  Section
+		rnd: (seed = Date.now()) ->
+			((seed*9301+49297) % 233280) / (233280.0)
+
+		color: (number = (@get 'number')) ->
+			h = (@rnd(number)*0x1000000<<0).toString(16)
+			'#' + (new Array(7-h.length)).join("0")+h
+
+	Section
 )

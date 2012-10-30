@@ -6,7 +6,8 @@ define(['jQuery',
  'views/result-list',
  'views/schedule-sections-list',
  'views/filter',
- 'views/friends-list'], ($, _, Backbone, templateText, ResultListView, ScheduleSectionsListView, filterView, FriendsListView) ->
+ 'views/calendar-max',
+ 'views/friends-list'], ($, _, Backbone, templateText, ResultListView, ScheduleSectionsListView, FilterView, CalendarMaxView, FriendsListView) ->
 
 	class panelsView extends Backbone.View
 
@@ -34,8 +35,9 @@ define(['jQuery',
 			@$el.html $ @template()
 			@resultsView = new ResultListView( el: (@$el.find '#results-frame')[0] )
 			@coursesView = new ScheduleSectionsListView( el: (@$el.find '#courses-frame')[0])
-			@filterView = new filterView( el: (@$el.find '#filter-frame')[0] )
+			@filterView = new FilterView( el: (@$el.find '#filter-frame')[0] )
 			@friendsView = new FriendsListView( el: (@$el.find '#friends-frame')[0] )
+			@maxiCal = new CalendarMaxView( model: Shark.schedule, el: (@$el.find '#max-cal-frame')[0] )
 
 
 		events:
@@ -44,8 +46,15 @@ define(['jQuery',
 		focusOnSearch: ->
 			@filterView.focusOnSearch()
 
+		showMaxCal: ->
+			Shark.showingResults = true
+			($ '#results-frame').toggleClass 'hidden'
+			($ '#slide-container').toggleClass('span16').toggleClass('span8')
+			($ '#tutorial-frame').addClass 'hidden'
+			@toggleSlidePanel()
+
 		toggleSlidePanel: ->
-			return if ( $ '#results-frame').hasClass 'hidden'
+			return if ($ '#results-frame').hasClass 'hidden'
 			($ '#slide-panel-button').toggleClass 'open'
 			($ '#slide-panel').toggleClass 'closed'
 			($ '#max-cal-frame').removeClass 'hidden'
