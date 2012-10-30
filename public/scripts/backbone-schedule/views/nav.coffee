@@ -30,6 +30,8 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/nav.ejs'], ($, _, Ba
 		new: ->
 			console.log 'new clicked'
 			@$el.find('#new').modal('show');
+			console.log Shark.terms
+			console.log @$el.find('.select-term')
 
 		print: ->
 			console.log 'print clicked'
