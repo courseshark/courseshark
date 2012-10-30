@@ -1,17 +1,21 @@
 #Incude all the models here, then pass them back into the object
-define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/nav.ejs'], ($, _, Backbone, templateText) ->
+define(['jQuery',
+	'Underscore',
+	'Backbone',
+	'views/modals/save',
+	'views/modals/load',
+	'text!/tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, templateText) ->
 
 	class navView extends Backbone.View
 
 		initialize: ->
 			_.bindAll @
-			
+
 			# Compile the template for future use
 			@template = _.template(templateText)
 
 			# Render call
 			@render();
-
 
 		events:
 			'click #save-button' : 'save'
@@ -22,10 +26,14 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/nav.ejs'], ($, _, Ba
 			'click #ical-button' : 'ical'
 
 		save: ->
-			console.log 'save clicked -- probably call router'
+			@$el.find('#save').modal('show');
+			@saveView = new SaveView( el: (@$el.find '#save')[0] )
 
 		load: ->
-			console.log 'load clicked'
+			# TODO: uncomment this
+			# return Shark.session.authorize() if !Shark.session.authenticated()
+			@$el.find('#load').modal('show');
+			@loadView = new LoadView( el: (@$el.find '#load')[0] )
 
 		new: ->
 			console.log 'new clicked'
@@ -41,7 +49,6 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/nav.ejs'], ($, _, Ba
 
 		ical: ->
 			console.log 'ical clicked'
-
 
 		# Renders the actual view from the template
 		render: ->

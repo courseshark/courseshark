@@ -67,6 +67,18 @@ function NODE_VERSION_CHECK {
 	fi
 }
 
+
+function SANITY_CHECK {
+	if [ $CHECK_VERSION == true ]
+	then
+		NODE_VERSION_CHECK;
+	else
+		echo $YELLOW;
+		echo "Skipping node version test"
+	fi
+}
+
+
 CHECK_VERSION=true;
 for var in "$@"
 do
@@ -76,13 +88,6 @@ do
 	fi
 done
 
-if [ $CHECK_VERSION == true ]
-then
-	NODE_VERSION_CHECK;
-else
-	echo $YELLOW;
-	echo "Skipping node version test"
-fi
 
 if [ "$1" == "install" ]
 then
@@ -91,7 +96,7 @@ then
 fi
 
 if [ "$1" == "deps" ]
-then 
+then
  (
 		export PATH=$NEW_PATH;
   	#npm install -g requirejs forever nodemon;
@@ -99,7 +104,6 @@ then
  )
  exit;
 fi
-
 
 
 if [ -f $CUSTOM_NODE ]
@@ -111,9 +115,9 @@ else
 	INSTALL;
 fi
 
-
 if [ "$1" == "seatwatcher" ]
 then
+	SANITY_CHECK;
 	echo $GREEN;
 	echo "Starting seatwatcher with forever";
 	(
@@ -126,13 +130,14 @@ fi
 
 if [ "$1" == "nodemon" ]
 then
+	SANITY_CHECK;
 	echo $BLUE
 	echo "starting with nodemon $RESET";
 	(
 		export PATH=$NEW_PATH;
 
 		#coffee --compile ./public/scripts/backbone-schedule/;
-		
+
 		#r.js -o \
 		#	baseUrl=./public/scripts/backbone-schedule \
 		#	name=main \
@@ -157,17 +162,33 @@ else
 				npm install forever -g
 			)
 		else
+			SANITY_CHECK;
 			echo $BLUE;
 			echo "startting with forever $RESET";
 			(
 				export PATH=$NEW_PATH;
 				shift 1;
-				forever $@;
+				echo $@;
+				forever $@ ./app.js;
 			)
 		fi
 	else
 		if [ "$1" == "start" ]
 		then
+			if [ $NODE_ENV == "development" ]
+			then
+				echo "";
+				echo "Starting :: $(tput setaf 4)Dev Environment";
+				echo "$(tput setaf 2)  * nodemon watching scripts";
+				echo "  * no node version check (running $(tput sgr0)$(tput setaf 3)$(export PATH=$NEW_PATH; node -v;)$(tput setaf 2))";
+				echo "$RESET";
+				(
+					export PATH=$NEW_PATH;
+					nodemon ./app.js;
+				)
+				exit;
+			fi
+			SANITY_CHECK;
 			echo $BLUE;
 			echo "startting with forever $RESET";
 			(
@@ -177,7 +198,7 @@ else
 			)
 		else
 			if [ "$1" == "stop" ]
-			then 
+			then
 				echo $RED;
 				echo "stopping $RESET";
 				(
@@ -185,6 +206,19 @@ else
 					forever stopall;
 				)
 			else
+				if [ $NODE_ENV == "development" ]
+				then
+					echo "";
+					echo "Starting :: $(tput setaf 4)Dev Environment";
+					echo "$(tput setaf 2)  * nodemon watching scripts";
+					echo "  * no node version check (running $(tput sgr0)$(tput setaf 3)$(export PATH=$NEW_PATH; node -v;)$(tput setaf 2))";
+					echo "$RESET";
+					(
+						export PATH=$NEW_PATH;
+						nodemon ./app.js;
+					)
+					exit;
+				fi
 				echo $YELLOW;
 				echo "restarting $RESET";
 				(

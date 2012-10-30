@@ -1,5 +1,12 @@
 #Incude all the models here, then pass them back into the object
-define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _, Backbone, templateText) ->
+define(['jQuery',
+ 'Underscore',
+ 'Backbone',
+ 'text!/tmpl/app/panels.ejs',
+ 'views/result-list',
+ 'views/schedule-sections-list',
+ 'views/filter',
+ 'views/friends-list'], ($, _, Backbone, templateText, ResultListView, ScheduleSectionsListView, filterView, FriendsListView) ->
 
 	class panelsView extends Backbone.View
 
@@ -24,25 +31,24 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _,
 
 		# Renders the actual view from the template
 		render: ->
-			@$el.html @template()
-
+			@$el.html $ @template()
+			@resultsView = new ResultListView( el: (@$el.find '#results-frame')[0] )
+			@coursesView = new ScheduleSectionsListView( el: (@$el.find '#courses-frame')[0])
+			@filterView = new filterView( el: (@$el.find '#filter-frame')[0] )
+			@friendsView = new FriendsListView( el: (@$el.find '#friends-frame')[0] )
 
 
 		events:
 			'click #slide-panel-button': 'toggleSlidePanel'
-			'click #show-results': 'showResults'
 
-
-		showResults: ->
-			($ '#results-frame').toggleClass 'hidden'
-			($ '#slide-container').toggleClass('span16').toggleClass('span8')
-			($ '#tutorial-frame').addClass 'hidden'
+		focusOnSearch: ->
+			@filterView.focusOnSearch()
 
 		toggleSlidePanel: ->
+			return if ( $ '#results-frame').hasClass 'hidden'
 			($ '#slide-panel-button').toggleClass 'open'
 			($ '#slide-panel').toggleClass 'closed'
-			($ '#max-cal-frame').toggleClass 'hidden'
-
+			($ '#max-cal-frame').removeClass 'hidden'
 
 
 		# Is called every time the window resizes
@@ -53,7 +59,6 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/panels.ejs'], ($, _,
 				requestAnimFrame @heightAdjust
 			else
 				return
-
 
 		# Actually readjusts the height of the view
 		heightAdjust: ->

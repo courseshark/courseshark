@@ -43,7 +43,7 @@ exports = module.exports = function(app){
 	})
 
 	app.get('/admin/schools', requireAdmin, function(req, res){
-		School.find({}).exec(function(err, schools){
+		School.find({}).sort({abbr:1}).exec(function(err, schools){
 			res.render('admin/schools/index', {schools: schools, layout:'../layout.ejs'});
 		})
 	})
@@ -73,9 +73,11 @@ exports = module.exports = function(app){
 		})
 	})
 	app.get('/admin/schools/:school', requireAdmin, function(req, res){
-		School.findOne({_id:req.params.school}).populate('terms').exec(function(err, school){
+		School.findOne({_id:req.params.school}).exec(function(err, school){
 			if ( !school ){ res.redirect('back'); }
-			res.render('admin/schools/school', {school: school, layout:'../layout.ejs'});
+			Term.find({school: school.id}).sort({number:-1}).exec(function(err, terms){
+				res.render('admin/schools/school', {school: school, terms: terms, layout:'../layout.ejs'});
+			})
 		})
 	})
 
@@ -99,14 +101,13 @@ exports = module.exports = function(app){
 	})
 
 	app.get('/admin/links', requireAdmin, function(req, res){
-		Link.find(req.query.link).populate('user').exec(function(err, links){
+		var q = req.query.link || {visits:{$gt:0}};
+		Link.find(q).populate('user').exec(function(err, links){
 			res.render('admin/links/index', {links: links, layout:'../layout.ejs'});
 		})
 	})
 	app.post('/admin/links', requireAdmin, function(req, res){
-		console.log(req.body)
 		link = new Link(req.body.link)
-		console.log(link)
 		link.save()
 		res.redirect('/links')
 	})

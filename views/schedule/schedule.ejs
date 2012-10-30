@@ -3,11 +3,11 @@
 
 <script>
 window.requestAnimFrame = (function(){
-	return  window.requestAnimationFrame || 
-	  window.webkitRequestAnimationFrame || 
-	  window.mozRequestAnimationFrame    || 
-	  window.oRequestAnimationFrame      || 
-	  window.msRequestAnimationFrame     || 
+	return  window.requestAnimationFrame ||
+	  window.webkitRequestAnimationFrame ||
+	  window.mozRequestAnimationFrame    ||
+	  window.oRequestAnimationFrame      ||
+	  window.msRequestAnimationFrame     ||
 	  function( callback ){
 	    window.setTimeout(callback, 1000 / 60);
 	  };
@@ -15,7 +15,14 @@ window.requestAnimFrame = (function(){
 </script>
 <script>
 	window.CS = {
-			loggedIn: "<%=loggedIn%>"
+
+			auth: {
+				<%if (loggedIn){%>
+					user_id: "<%=user.id%>"
+				,	access_token: "<%=authToken%>"
+				,	user: <%-JSON.stringify(user)%>
+				<%}%>
+			}
 		,	school: "<%= school %>"
 		,	serverScheduleVersion: "<%= revision %>"
 		, baseDir: '/s/'

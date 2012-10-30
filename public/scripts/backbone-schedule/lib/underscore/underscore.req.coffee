@@ -1,1 +1,0 @@
-define( ['/lib/underscore/_.js'], () -> _ )

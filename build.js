@@ -1,5 +1,5 @@
 var fs = require('fs');
-	
+
 exports.build = function(app){
 	buildApplication(app)
 }
@@ -9,7 +9,7 @@ function buildApplication(app){
     , mjs
     , foundCSS=false
     , foundJS=false
-    
+
   if ( app.settings.env == 'development' ){
     return;
   }
@@ -80,14 +80,7 @@ function compileJS(app){
                   "launch-schedule/social.js",
                   "launch-schedule/jquery.base64.min.js",
                   "launch-schedule/dateFormat.js",
-                  "lib/bootstrap/bootstrap-transition.js",
-                  "lib/bootstrap/bootstrap-modal.js",
-                  "lib/bootstrap/bootstrap-dropdown.js",
-                  "lib/bootstrap/bootstrap-collapse.js",
-                  "lib/bootstrap/bootstrap-tooltip.js",
-                  "lib/bootstrap/bootstrap-popover.js",
-                  "lib/select2/select2.min.js",
-                  "lib/bootstrap/bootstrap-tab.js"
+                  "lib/bootstrap/bootstrap.js"
                 ],
       origJS = "";
   
