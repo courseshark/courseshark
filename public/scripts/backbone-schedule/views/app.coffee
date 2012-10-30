@@ -30,6 +30,8 @@ define(['jQuery', 'Underscore', 'Backbone', 'text!/tmpl/app/index.ejs', 'views/n
 			#Bindings for outside pieces
 			($ '#nav-login').click () ->
 				Shark.session.login()
+			# Return self when done
+			@
 
 
 
