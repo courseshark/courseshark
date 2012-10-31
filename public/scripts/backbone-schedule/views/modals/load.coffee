@@ -7,7 +7,7 @@ define(['jQuery',
 
     initialize: ->
       _.bindAll @
-      @loadTemplate = _.template(loadTemplate)
+      @loadTemplate = _.template loadTemplate 
       @render()
 
     events:
@@ -18,11 +18,11 @@ define(['jQuery',
       Shark.schedule.set('name', loaded.get('name'))
       Shark.schedule.loadSections(loaded.get('sections'))
       Shark.schedule.trigger('change')
-      $('#load').modal('hide')
+      @$el.modal 'hide'
 
     render: ->
       @$el.html @loadTemplate()
-      @list = @$el.find('[name=loadlist]')
+      @list = @$el.find '[name=loadlist]' 
       _.each Shark.schedulesList.models, (schedule) =>
         @list.append $("<option />").val(schedule.cid).text(schedule.get('name'))
 
