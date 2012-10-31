@@ -36,7 +36,7 @@ define(['jQuery',
 
 		# Filter the current search results
 		filterResults: ->
-			# Tell the results object we are startting the filter
+			# Tell the results object we are starting the filter
 			Shark.searchResults.trigger 'filter:start'
 			# quick reference to the courses
 			courses = Shark.searchResults.get('courses')
