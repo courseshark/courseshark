@@ -8,7 +8,7 @@ define(['jQuery',
 
     initialize: ->
       _.bindAll @
-      @newTemplate = _.template(newTemplate)
+      @newTemplate = _.template newTemplate
       @render()
 
     events:
@@ -16,15 +16,20 @@ define(['jQuery',
 
     new: ->
       Shark.schedule = new Schedule
-      Shark.term = Shark.terms.where( {_id: $('#term-list option:selected').val()} )[0]
-      $('#new').modal('hide')
+      $options = @$el.find '#term-list'
+      # Select the term chosen, defaulting to the current Term if none checked
+      Shark.term = Shark.terms.where( _id: $options.val() )[0] or Shark.school.get 'currentTerm'
+      # Close the modal
+      @$el.modal 'hide'
 
     render: ->
       @$el.html @newTemplate()
+      $list = @$el.find '#term-list'
       Shark.terms.each (term) =>
-        term_text = term.get('name')
-        term_text = term_text.charAt(0).toUpperCase() + term_text.slice(1)
-        @$el.find('#term-list').append $('<option />').val(term.get('_id')).text(term_text)
+        termText = term.get 'name'
+        termText = termText.charAt(0).toUpperCase() + termText.slice 1
+        termId = term.get '_id'
+        $list.append $('<option/>').val(termId).text(termText)
 
   NewView
 )
