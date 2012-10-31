@@ -26,7 +26,7 @@ define(['jQuery',
 
       @render()
 
-    # Reder the basic container
+    # Render the basic container
     render: ->
       @$el.html $ @scheduleSectionsListTemplate()
       @$list = @$el.find('#schedule-sections-list-content') if not @$list

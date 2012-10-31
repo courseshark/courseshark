@@ -18,9 +18,9 @@ define(['jQuery',
       @model.bind 'change:visible', (section, visible) =>
         if not visible
           @$el.hide()
-        else 
+        else
           @$el.show()
-      
+
     events:
       'click .expander' : 'expand'
       'click .add' : 'add'
@@ -49,7 +49,7 @@ define(['jQuery',
         Shark.schedule.removeSection(@model)
       else
         Shark.schedule.addSection(@model)
-      #@render()
+
 
     render: ->
       params =
