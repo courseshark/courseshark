@@ -1,23 +1,29 @@
 define(['jQuery',
-	'Underscore',
-	'Backbone',
-	'text!/tmpl/modals/new.ejs'], ($, _, Backbone, newTemplate) ->
+  'Underscore',
+  'Backbone',
+  'models/schedule'
+  'text!/tmpl/modals/new.ejs'], ($, _, Backbone, Schedule, newTemplate) ->
 
-	class NewView extends Backbone.View
+  class NewView extends Backbone.View
 
-		initialize: ->
-			_.bindAll @
-			@newTemplate = _.template(newTemplate)
-			@render()
+    initialize: ->
+      _.bindAll @
+      @newTemplate = _.template(newTemplate)
+      @render()
 
-		events:
-			'click #do-new' : 'new'
+    events:
+      'click #do-new' : 'new'
 
-		new: ->
-			console.log 'blah'
+    new: ->
+      Shark.schedule = new Schedule
+      $('#new').modal('hide')
 
-		render: ->
-			@$el.html @newTemplate()
+    render: ->
+      @$el.html @newTemplate()
+      Shark.terms.each (term) =>
+        term_text = term.get('name')
+        term_text = term_text.charAt(0).toUpperCase() + term_text.slice(1)
+        @$el.find('#term-list').append $('<option />').val(term.get('_id')).text(term_text)
 
-	NewView
+  NewView
 )
