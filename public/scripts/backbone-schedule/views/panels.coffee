@@ -7,7 +7,8 @@ define(['jQuery',
  'views/schedule-sections-list',
  'views/filter',
  'views/calendar-max',
- 'views/friends-list'], ($, _, Backbone, templateText, ResultListView, ScheduleSectionsListView, FilterView, CalendarMaxView, FriendsListView) ->
+ 'views/calendar-mini',
+ 'views/friends-list'], ($, _, Backbone, templateText, ResultListView, ScheduleSectionsListView, FilterView, CalendarMaxView, CalendarMiniView, FriendsListView) ->
 
 	class panelsView extends Backbone.View
 
@@ -38,6 +39,7 @@ define(['jQuery',
 			@filterView = new FilterView( el: (@$el.find '#filter-frame')[0] )
 			@friendsView = new FriendsListView( el: (@$el.find '#friends-frame')[0] )
 			@maxiCal = new CalendarMaxView( model: Shark.schedule, el: (@$el.find '#max-cal-frame')[0] )
+			@miniCal = new CalendarMiniView( model: Shark.schedule, el: (@$el.find '#mini-cal-frame')[0] )
 
 
 		events:

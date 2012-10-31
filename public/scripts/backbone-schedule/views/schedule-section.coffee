@@ -8,12 +8,13 @@ define(['jQuery',
 
     initialize: ->
       _.bindAll @
-
       @scheduleSectionTemplate = _.template(scheduleSectionTemplate)
+      @render()
 
     render: ->
-      text = @model.number + ": " + @model.name.split(' #')[0]
-      @$el.html @scheduleSectionTemplate(course: text)
+      number = @model.get 'number'
+      name = @model.get('name').split(' #')[0]
+      @$el.html @scheduleSectionTemplate(number: number, name: name)
       @
 
   ScheduleSectionView
