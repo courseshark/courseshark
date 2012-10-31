@@ -4,7 +4,8 @@ define(['jQuery',
 	'Backbone',
 	'views/modals/save',
 	'views/modals/load',
-	'text!/tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, templateText) ->
+	'views/modals/new'
+	'text!/tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, NewView, templateText) ->
 
 	class navView extends Backbone.View
 
@@ -36,8 +37,8 @@ define(['jQuery',
 			@loadView = new LoadView( el: (@$el.find '#load')[0] )
 
 		new: ->
-			console.log 'new clicked'
 			@$el.find('#new').modal('show');
+			@newView = new NewView( el: (@$el.find '#new')[0])
 
 		print: ->
 			console.log 'print clicked'

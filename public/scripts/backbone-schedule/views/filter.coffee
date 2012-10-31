@@ -24,7 +24,7 @@ define(['jQuery',
 			@filters.bind 'change', () =>
 				@filterResults()
 
-			@render();
+			@render()
 
 			# Reference the filter call function globally
 			Shark.filterResults = @filterResults
