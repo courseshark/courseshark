@@ -17,9 +17,26 @@ define(['jQuery',
       # Render call
       @render()
 
+
+    setTemp: (temp) ->
+      @temp = temp
+      if @$els.length
+        _.each @$els, ($el) ->
+          console.log $el
+          if temp
+            $el.addClass('temp')
+          else
+            $el.removeClass('temp')
+
+
     # Renders the actual view from the template
     render: ->
       
+      if @$els.length
+        _.each @$els, ($el) ->
+          $el.show()
+        return
+
       # Hour scale in px
       scale = 10
             
@@ -54,7 +71,7 @@ define(['jQuery',
     # Remove the section
     remove: ->
       _.each @$els, ($el) ->
-        $el.remove()
+        $el.hide()
 
   # Whatever is returned here will be usable by other modules
   CalendarMiniSection

@@ -2,7 +2,8 @@ define(['jQuery',
         'Underscore',
         'Backbone',
         'collections/result-sections'
-        'text!/tmpl/results/result-section.ejs'], ($,_, Backbone, ResultsSections, resultsSectionTemplate) ->
+        'views/calendar-mini-section'
+        'text!/tmpl/results/result-section.ejs'], ($,_, Backbone, ResultsSections, CalendarMiniSectionView, resultsSectionTemplate) ->
 
   class ResultSectionView extends Backbone.View
 
@@ -23,6 +24,21 @@ define(['jQuery',
     events:
       'click .expander' : 'expand'
       'click .add' : 'add'
+      'mouseenter .results-section'   : 'hoverOn'
+      'mouseleave .results-section'   : 'hoverOff'
+
+
+    hoverOn: ->
+      if not @model.miniCalView
+        @model.miniCalView = new CalendarMiniSectionView model: @model 
+      else
+        @model.miniCalView.render()
+
+      @model.miniCalView.setTemp true unless @model.miniCalView.temp is false
+    hoverOff: ->
+      @model.miniCalView.remove() if @model.miniCalView.temp
+
+
 
     expand: ->
       @$el.find('.details').slideToggle()
@@ -33,7 +49,7 @@ define(['jQuery',
         Shark.schedule.removeSection(@model)
       else
         Shark.schedule.addSection(@model)
-      @render()
+      #@render()
 
     render: ->
       params =

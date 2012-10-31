@@ -3,7 +3,7 @@ define(['jQuery',
   'Underscore',
   'Backbone',
   'views/calendar-mini-section',
-  'text!/tmpl/schedule/calendar-mini.ejs'], ($, _, Backbone, CalendarSectionView, templateText) ->
+  'text!/tmpl/schedule/calendar-mini.ejs'], ($, _, Backbone, CalendarMiniSectionView, templateText) ->
 
   class CalendarMini extends Backbone.View
 
@@ -14,10 +14,15 @@ define(['jQuery',
       @template = _.template(templateText)
 
       @model.get('sections').bind 'add', (section) =>
-        section.miniCalView = new CalendarSectionView model: section
+        if not section.miniCalView
+          section.miniCalView = new CalendarMiniSectionView model: section
+        else
+          section.miniCalView.render()
+        section.miniCalView.setTemp false
 
       @model.get('sections').bind 'remove', (section) =>
         section.miniCalView.remove()
+        section.miniCalView.setTemp true
 
       # Render call
       @render();
