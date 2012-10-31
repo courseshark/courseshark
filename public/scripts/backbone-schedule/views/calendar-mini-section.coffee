@@ -22,7 +22,6 @@ define(['jQuery',
       @temp = temp
       if @$els.length
         _.each @$els, ($el) ->
-          console.log $el
           if temp
             $el.addClass('temp')
           else
