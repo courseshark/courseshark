@@ -14,7 +14,12 @@ define(['jQuery',
       @template = _.template resultCourseTemplate
       @renderedSections = false
       @showingSections = false
-      @render()
+
+      @model.bind 'change:visible', (section, visible) =>
+        if not visible
+          @$el.hide()
+        else 
+          @$el.show()
 
     events:
       'click .course-info-row': 'toggleSections'
@@ -34,8 +39,7 @@ define(['jQuery',
       @$sections.empty()
       # Itterate over sections rendering their views
       @model.get('sections').each (section) =>
-        if section.get('visible')
-          @$sections.append (new ResultSectionView (model: section)).render().el
+        @$sections.append (new ResultSectionView (model: section)).render().el
 
     render: ->
       params =
