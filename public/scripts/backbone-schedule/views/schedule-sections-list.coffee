@@ -8,22 +8,28 @@ define(['jQuery',
 
     initialize: ->
       _.bindAll @
-
-      Shark.schedule.bind "change", =>
-        @render();
-
       @scheduleSectionsListTemplate = _.template(scheduleSectionsListTemplate)
 
-      @render();
+      # Add the newly created section into the list
+      Shark.schedule.get('sections').bind 'add', (section) =>
+        if not section.listView
+          section.listView = new ScheduleSectionView model: section
+        @$list.append section.listView.el
 
+      # Delete a removed section from the list
+      Shark.schedule.get('sections').bind 'remove', (section) =>
+        section.listView.remove()
+
+      # Empty the list on reset ( triggered on load )
+      Shark.schedule.get('sections').bind 'reset', () =>
+        @$list.empty()
+
+      @render()
+
+    # Reder the basic container
     render: ->
-      collection = Shark.schedule.get('sections')
       @$el.html $ @scheduleSectionsListTemplate()
-      list = @$el.find('#schedule-sections-list-content')
-      newList = $("<span><span>")
-      _.each collection.models, (scheduleSection) =>
-        newList.append new ScheduleSectionView(model: scheduleSection.attributes).render().el
-      list.html newList
+      @$list = @$el.find('#schedule-sections-list-content') if not @$list
 
   ScheduleSectionsListView
 )
