@@ -29,15 +29,19 @@ define(
         '/' : 'landingPage'
         '/s/' : 'landingPage'
 
-        'login': 'login',
+        'login': 'login'
+        'view':'view'
 
-        ':action':                   'defaultAction',
-        ':controller/:action':       'defaultAction',
-        ':controller/:action/:vid':  'defaultAction',
+        ':action':                   'defaultAction'
+        ':controller/:action':       'defaultAction'
+        ':controller/:action/:vid':  'defaultAction'
 
 
       landingPage: () =>
         @Shark.currentView = new @Shark.views.appView()
+
+      view: () =>
+        @Shark.currentView = new @Shark.views.appView().panelsView.showMaxCal()
 
       login: () ->
         if !Shark.session.authenticated()

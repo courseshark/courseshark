@@ -1,0 +1,62 @@
+<div class="row-fluid full-height weekly-calendar-panel">
+	<div class="span24">
+		<div id="weekly-calendar">
+			<!-- Create the top header of the calendar -->
+			<table class="week-topheader" cellspacing=0>
+				<tr id="wk-daynames">
+					<td id="col-spacer"></td>
+					<td class="wk-dattitle" id="col-monday">Monday</div>
+					<td class="wk-dattitle" id="col-tuesday">Tuesday</div>
+					<td class="wk-dattitle" id="col-wednesday">Wednesday</div>
+					<td class="wk-dattitle" id="col-thursday">Thursday</div>
+					<td class="wk-dattitle" id="col-friday">Friday</div>
+				</tr>
+				<tr id="wk-tbd-row">
+					<td id="wk-tbd-container"colspan="8">
+						<div id="tbd-container">
+							<div id="tbd-list"></div>
+						</div>
+					</td>
+				</tr>		
+			<!--</table>-->
+			<!--Create the structure of the week (mainly by time of the day) -->		
+			<!--<table class="week-structure">-->
+				<tr height="0" style="height:0px;">
+					<td width="40"></td>
+					<td colspan="5" style="font-size: 11px; line-height: normal;">
+						<div class="wk-hour-marker-wrapper">
+							<div class="wk-hour-markers">
+								<% for ( var _i = 0; _i < endHour-startHour; _i++ ){ %>
+								<div class="wk-hour-marker"></div>
+								<% } %>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="wk-timestamp">
+						<% for( var i=startHour;i<endHour;i++ ){ %>
+						<div class="wk-timestamp-list"><%=i>12?i-12:i%>:00<%=i>11?'pm':'am'%></div>
+						<% } %>
+					</td>
+					<!-- For each of the 5 days -->
+					<td class="wk-event-col">	
+						<div class="wk-event-wrapper" id="monday" data-day="monday"></div>
+					</td>
+					<td class="wk-event-col">	
+						<div class="wk-event-wrapper" id="tuesday" data-day="tuesday"></div>
+					</td>
+					<td class="wk-event-col">	
+						<div class="wk-event-wrapper" id="wednesday" data-day="wednesday"></div>
+					</td>
+					<td class="wk-event-col">	
+						<div class="wk-event-wrapper" id="thursday" data-day="thursday"></div>
+					</td>
+					<td class="wk-event-col">	
+						<div class="wk-event-wrapper" id="friday" data-day="friday"></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
