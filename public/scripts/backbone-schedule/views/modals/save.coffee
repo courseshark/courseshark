@@ -25,6 +25,9 @@ define(['jQuery',
 
     render: ->
       @$el.html @saveTemplate()
+      name = Shark.schedule.get('name')
+      if name != ''
+        @$el.find('[name=savename]').val(name)
 
   SaveView
 )
