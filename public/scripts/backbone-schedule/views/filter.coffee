@@ -9,7 +9,7 @@ define(['jQuery',
 			_.bindAll @
 
 			@filterTemplate = _.template(filterTemplate)
-			@render();
+			@render()
 
 		events:
 			'slide .slider': 'slideUpdate'
