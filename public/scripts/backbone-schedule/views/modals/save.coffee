@@ -7,7 +7,7 @@ define(['jQuery',
 
     initialize: ->
       _.bindAll @
-      @saveTemplate = _.template(saveTemplate)
+      @saveTemplate = _.template saveTemplate
       @render()
 
     events:
@@ -21,11 +21,11 @@ define(['jQuery',
       if found[0]
         Shark.schedulesList.remove found[0]
       Shark.schedulesList.push Shark.schedule.makeClone()
-      $('#save').modal('hide')
+      @$el.modal 'hide' 
 
     render: ->
       @$el.html @saveTemplate()
-      name = Shark.schedule.get('name')
+      name = Shark.schedule.get 'name' 
       if name != ''
         @$el.find('[name=savename]').val(name)
 
