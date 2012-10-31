@@ -16,6 +16,7 @@ define(['jQuery',
 
     new: ->
       Shark.schedule = new Schedule
+      Shark.term = Shark.terms.where( {_id: $('#term-list option:selected').val()} )[0]
       $('#new').modal('hide')
 
     render: ->
