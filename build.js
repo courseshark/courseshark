@@ -1,7 +1,7 @@
 var fs = require('fs');
-	
+
 exports.build = function(app){
-	buildApplication(app)
+  buildApplication(app)
 }
 
 function buildApplication(app){
@@ -9,40 +9,40 @@ function buildApplication(app){
     , mjs
     , foundCSS=false
     , foundJS=false
-    
+
   if ( app.settings.env == 'development' ){
     return;
   }
-	// Remove the old css files
-	fs.readdir(__dirname+'/public/styles/', function(err, files){
-		for( var i=0,len=files.length; i<len; i++ ){
-			if( (mcss=files[i].match(/([0-9a-zA-Z]+)\-courseshark\.css/)) !== null ){
+  // Remove the old css files
+  fs.readdir(__dirname+'/public/styles/', function(err, files){
+    for( var i=0,len=files.length; i<len; i++ ){
+      if( (mcss=files[i].match(/([0-9a-zA-Z]+)\-courseshark\.css/)) !== null ){
         foundCSS = true
-				if ( mcss[1] != app.settings.revision ){
-					fs.unlink(__dirname+'/public/styles/'+files[i])
-					compileCSS(app)
-				}
-			}
-		}
-		if (!foundCSS){
-			compileCSS(app)
-		}
-	})
-	// Remove old js files
-	fs.readdir(__dirname+'/public/scripts/', function(err, files){
-		for( var i=0,len=files.length; i<len; i++ ){
-			if( (mjs=files[i].match(/([0-9a-zA-Z]+)\-courseshark\.js/)) !== null ){
-				foundJS = true
+        if ( mcss[1] != app.settings.revision ){
+          fs.unlink(__dirname+'/public/styles/'+files[i])
+          compileCSS(app)
+        }
+      }
+    }
+    if (!foundCSS){
+      compileCSS(app)
+    }
+  })
+  // Remove old js files
+  fs.readdir(__dirname+'/public/scripts/', function(err, files){
+    for( var i=0,len=files.length; i<len; i++ ){
+      if( (mjs=files[i].match(/([0-9a-zA-Z]+)\-courseshark\.js/)) !== null ){
+        foundJS = true
         if ( mjs[1] != app.settings.revision ){
-					fs.unlink(__dirname+'/public/scripts/'+files[i])
+          fs.unlink(__dirname+'/public/scripts/'+files[i])
           compileJS(app)
-				}
-			}
-		}
-		if (!foundJS){
-			compileJS(app)
-		}
-	})
+        }
+      }
+    }
+    if (!foundJS){
+      compileJS(app)
+    }
+  })
 }
 
 function compileCSS(app){
@@ -91,7 +91,7 @@ function compileJS(app){
                   "lib/bootstrap-tab.js"
                 ],
       origJS = "";
-  
+
   for ( var i in jsFiles ){
     try {
       origJS += fs.readFileSync(jsDir+jsFiles[i], 'ascii') + "\n;\n";
@@ -100,7 +100,7 @@ function compileJS(app){
       console.error("There was an error opening the file: ", jsFiles[i]);
     }
   }
-    
+
   var ast = jsp.parse(origJS); // parse code and get the initial AST
   ast = pro.ast_mangle(ast); // get a new AST with mangled names
   ast = pro.ast_squeeze(ast); // get an AST with compression optimizations

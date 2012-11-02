@@ -23,7 +23,7 @@ The following schools are supported.
 Contributing
 -------
 * *NEVER* work in the main branch
-* Always work in your own branch, or branches. 
+* Always work in your own branch, or branches.
 * Push your completed branch to the repo only if it needs to be reviewed by others
 * When you are ready to commit your code into the main branch, submit a pull request that is well documented on the changes you made
 * Your pull will be reviewed by the team, and mereged if/when it is good.

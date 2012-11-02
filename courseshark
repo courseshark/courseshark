@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#	CourseShark run file
+# CourseShark run file
 #
 #
 NODE_VER="v0.6.19";
@@ -26,44 +26,44 @@ RESET="$(tput sgr0)";
 
 
 function INSTALL {
-	echo "Installing nodejs $NODE_VER";
-	cd /tmp;
-	if [ -d "/tmp/node" ]
-	then
-		cd node;
-		git checkout $NODE_VER;
-	else
-		git clone http://github.com/joyent/node.git
-		cd node;
-		git checkout $NODE_VER;
-	fi
-	make clean;
-	./configure --prefix=$BIN_DIR/node;
-	make;
-	make install;
+  echo "Installing nodejs $NODE_VER";
+  cd /tmp;
+  if [ -d "/tmp/node" ]
+  then
+    cd node;
+    git checkout $NODE_VER;
+  else
+    git clone http://github.com/joyent/node.git
+    cd node;
+    git checkout $NODE_VER;
+  fi
+  make clean;
+  ./configure --prefix=$BIN_DIR/node;
+  make;
+  make install;
 
-	## Install Dependancies
-	cd $CS_DIR
-	(
-		export PATH=$NEW_PATH;
-		npm install forever nodemon -g;
-		npm install;
-	)
+  ## Install Dependancies
+  cd $CS_DIR
+  (
+    export PATH=$NEW_PATH;
+    npm install forever nodemon -g;
+    npm install;
+  )
 }
 
 
 if [ "$1" == "install" ]
 then
-	INSTALL;
-	exit;
+  INSTALL;
+  exit;
 fi
 
 if [ "$1" == "deps" ]
 then 
  (
-		export PATH=$NEW_PATH;
-  	npm install forever nodemon -g;
-		npm install;
+    export PATH=$NEW_PATH;
+    npm install forever nodemon -g;
+    npm install;
  )
  exit;
 fi
@@ -72,91 +72,91 @@ CURRENT_NODE_VERSION="$(export PATH=$NEW_PATH; node -v)";
 
 if [ $CURRENT_NODE_VERSION != $NODE_VER ]
 then
-	echo $RED;
-	echo "Wrong version of node installed!"
-	echo $RESET;
-	INSTALL;
+  echo $RED;
+  echo "Wrong version of node installed!"
+  echo $RESET;
+  INSTALL;
 fi
 
 
 if [ -f $CUSTOM_NODE ]
 then
-	: # no-op
+  : # no-op
 else
-	echo "";
-	echo "[warn] No node found.";
-	INSTALL;
+  echo "";
+  echo "[warn] No node found.";
+  INSTALL;
 fi
 
 
 if [ "$1" == "seatwatcher" ]
 then
-	echo $GREEN;
-	echo "Starting seatwatcher with forever";
-	(
-		export PATH=$NEW_PATH;
-		forever stopall;
-	 	forever start -a -l $OUT_LOG ./seat-watcher.js;
-	)
-	exit;
+  echo $GREEN;
+  echo "Starting seatwatcher with forever";
+  (
+    export PATH=$NEW_PATH;
+    forever stopall;
+    forever start -a -l $OUT_LOG ./seat-watcher.js;
+  )
+  exit;
 fi
 
 if [ "$1" == "nodemon" ]
 then
-	echo $BLUE
-	echo "startting with nodemon $RESET";
-	(
-		export PATH=$NEW_PATH;
-	 	nodemon ./app.js;
-	)
+  echo $BLUE
+  echo "startting with nodemon $RESET";
+  (
+    export PATH=$NEW_PATH;
+    nodemon ./app.js;
+  )
 else
-	if [ "$1" == "forever" ]
-	then
-		if [ "$2" == "install" ]
-		then
-			(
-				export PATH=$NEW_PATH;
-				echo $GREEN;
-				echo "startting with nodemon $RESET";
-				npm install forever -g
-			)
-		else
-			echo $BLUE;
-			echo "startting with forever $RESET";
-			(
-				export PATH=$NEW_PATH;
-				shift 1;
-				forever $@;
-			)
-		fi
-	else
-		if [ "$1" == "start" ]
-		then
-			echo $BLUE;
-			echo "startting with forever $RESET";
-			(
-				export PATH=$NEW_PATH;
-				forever stopall;
-				forever start -a -l $OUT_LOG $CS_DIR/app.js;
-			)
-		else
-			if [ "$1" == "stop" ]
-			then 
-				echo $RED;
-				echo "stopping $RESET";
-				(
-					export PATH=$NEW_PATH;
-					forever stopall;
-				)
-			else
-				echo $YELLOW;
-				echo "restarting $RESET";
-				(
-					export PATH=$NEW_PATH;
-					forever stopall;
-					forever start -a -l $OUT_LOG $CS_DIR/app.js;
-				)
-			fi
-		fi
-	fi
+  if [ "$1" == "forever" ]
+  then
+    if [ "$2" == "install" ]
+    then
+      (
+        export PATH=$NEW_PATH;
+        echo $GREEN;
+        echo "startting with nodemon $RESET";
+        npm install forever -g
+      )
+    else
+      echo $BLUE;
+      echo "startting with forever $RESET";
+      (
+        export PATH=$NEW_PATH;
+        shift 1;
+        forever $@;
+      )
+    fi
+  else
+    if [ "$1" == "start" ]
+    then
+      echo $BLUE;
+      echo "startting with forever $RESET";
+      (
+        export PATH=$NEW_PATH;
+        forever stopall;
+        forever start -a -l $OUT_LOG $CS_DIR/app.js;
+      )
+    else
+      if [ "$1" == "stop" ]
+      then 
+        echo $RED;
+        echo "stopping $RESET";
+        (
+          export PATH=$NEW_PATH;
+          forever stopall;
+        )
+      else
+        echo $YELLOW;
+        echo "restarting $RESET";
+        (
+          export PATH=$NEW_PATH;
+          forever stopall;
+          forever start -a -l $OUT_LOG $CS_DIR/app.js;
+        )
+      fi
+    fi
+  fi
 fi
