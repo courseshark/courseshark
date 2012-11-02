@@ -14,20 +14,24 @@ define(['jQuery',
       'click #do-save' : 'save'
 
     save: ->
-      name = @$el.find('[name=savename]').val()
+
+      # Instant feedback by hiding modal
+      @$el.modal 'hide'
+
+      name = @$name.val()
       Shark.schedule.set('name', name)
-      found = Shark.schedulesList.where({name: name})
+      found = Shark.schedulesList.where name: name
 
       if found[0]
         Shark.schedulesList.remove found[0]
+
       Shark.schedulesList.push Shark.schedule.makeClone()
-      @$el.modal 'hide' 
 
     render: ->
       @$el.html @saveTemplate()
-      name = Shark.schedule.get 'name' 
-      if name != ''
-        @$el.find('[name=savename]').val(name)
+      @$name = @$el.find('#save-dialog-name-field')
+      @$name.val(name) if Shark.schedule.get('name') not ''
+
 
   SaveView
 )

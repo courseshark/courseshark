@@ -9,30 +9,26 @@ define(['jQuery',
       name: ""
       sections: new ScheduleSections
 
-    makeClone: =>
+    makeClone: ->
       clone = new Schedule
       clone.set('name', @.get('name'))
-      clone.set('sections', new ScheduleSections)
-      _.each @.get('sections').models, (section) =>
-        clone.addSection(section)
+      @.get('sections').each (section) ->
+        clone.get('sections').add section
       clone
 
-    loadSections: (importSections)=>
+    loadSections: (importSections) ->
       sections = @.get('sections')
       sections.reset()
-      _.each importSections.models, (section)=>
-        @.addSection(section, true)
-      @.trigger('change')
+      importSections.each (section) ->
+        sections.add(section)
 
-    addSection: (section, suppress=false) =>
-      @.get('sections').push (section)
-      @.trigger('change') unless suppress
+    addSection: (section) ->
+      @.get('sections').add (section)
 
-    removeSection: (section) =>
+    removeSection: (section) ->
       @.get('sections').remove (section)
-      @.trigger('change')
 
-    contains: (section) =>
+    contains: (section) ->
       if _.contains(@.get('sections').models, section)
         true
       else

@@ -27,8 +27,7 @@ define(['jQuery',
 			'click #ical-button' : 'ical'
 
 		save: ->
-			@$el.find('#save').modal('show');
-			@saveView = new SaveView( el: (@$el.find '#save')[0] )
+			@saveView = new SaveView( el: (@$el.find '#save')[0] ).render()
 
 		load: ->
 			# TODO: uncomment this
