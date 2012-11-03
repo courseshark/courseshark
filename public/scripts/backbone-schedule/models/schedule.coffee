@@ -1,13 +1,53 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'collections/schedule-sections'], ($,_, Backbone, ScheduleSections) ->
+        'collections/schedule-sections'
+        'models/course',
+        'models/section'], ($,_, Backbone, ScheduleSections, Course, Section) ->
 
   class Schedule extends Backbone.Model
+
+    idAttribute: "_id"
+    urlRoot: "/schedules/"
 
     defaults:
       name: ""
       sections: new ScheduleSections
+
+    load: (scheduleToLoad) ->
+      Shark.schedule.trigger 'wahoo!'
+      @.fetch
+        error: =>
+          console.log 'error'
+        success: =>
+          # Set the global term to this schedule's
+          Shark.term = @.get 'term'
+          # Set the sections
+          Shark.schedule.get('sections').reset()
+          @.get('sections').each (section) ->
+            Shark.schedule.get('sections').add section
+
+          # Set the properties (minus sections)
+          setClone = @.clone()
+          setClone.unset('sections')
+          Shark.schedule.set(setClone)
+          # Trigger the loaded event
+          Shark.schedule.trigger('loaded')
+
+    parse: (response) ->
+      response = response[0] if response.length > 0
+      if response.sections
+        response.sections = new ScheduleSections response.sections.map (s) ->
+          s.course = new Course s.course
+          s
+      response.term = Shark.terms.get(response.term)
+      response
+
+      # response.sections = new ScheduleSections response.sections.map (s) ->
+      #   s.course = new Course s.course
+      #   s
+      # response
+
 
     makeClone: ->
       clone = new Schedule

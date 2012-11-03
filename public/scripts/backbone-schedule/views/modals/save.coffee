@@ -19,13 +19,16 @@ define(['jQuery',
       @$el.modal 'hide'
 
       name = @$name.val()
-      Shark.schedule.set('name', name)
-      found = Shark.schedulesList.where name: name
+      Shark.schedule.set 'name', name
+      Shark.schedule.set 'user', Shark.session.get 'user'
+      Shark.schedule.save()
 
-      if found[0]
-        Shark.schedulesList.remove found[0]
+      # found = Shark.schedulesList.where name: name
 
-      Shark.schedulesList.push Shark.schedule.makeClone()
+      # if found[0]
+      #   Shark.schedulesList.remove found[0]
+
+      # Shark.schedulesList.push Shark.schedule.makeClone()
 
     render: ->
       @$el.html @saveTemplate()

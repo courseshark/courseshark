@@ -32,9 +32,9 @@ define(['jQuery',
 						startHourAdjusted = (slot.startTime.getUTCHours()%12 is 0) ? 12 : (slot.startTime.getUTCHours()%12)
 						endHourAdjusted = (slot.endTime.getUTCHours()%12 is 0) ? 12 : slot.endTime.getUTCHours()%12
 
-						$el = $ @template 
+						$el = $ @template
 							section: @model.attributes
-							color: @model.color()
+							color: @model.get 'color'
 							slot: slot
 							height: height
 							top_offset: top_offset

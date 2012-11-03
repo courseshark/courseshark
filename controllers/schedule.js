@@ -53,6 +53,45 @@ exports = module.exports = function(app){
     })
   })
 
+
+
+  /**
+  *
+  * Backbone.js routes
+  *
+  **/
+
+
+
+  // List of schedules for this user
+  app.get('/schedules', function(req, res){
+    Schedule.find({user: req.user}).exec(function(err, schedules){
+      res.json(schedules)
+    })
+  })
+
+  //Load schedule
+  app.get('/schedules/:id', function(req, res){
+    Schedule.find({_id: req.params.id}).exec(function(err, schedule){
+      if (err){
+        res.send(500);
+        return;
+      }else if (!schedule){
+        res.send(400)
+        return;
+      }
+      res.json(schedule);
+    })
+  })
+
+  // Save schedule
+  app.post('/schedules', function(req, res){
+    console.log('saving schedule', req.body)
+    res.send(200);
+  })
+
+
+
   /**
   *
   * Schedule CRUD

@@ -9,12 +9,12 @@ define(
 
 
     $.ajaxSetup statusCode:
-                  401: () ->
-                    # Redirect to the login
-                    window.location.replace('#login');
-                  403: () ->
-                    # Access denied
-                    window.location.replace('#denied');
+      401: () ->
+        # Redirect to the login
+        window.location.replace('#login');
+      403: () ->
+        # Access denied
+        window.location.replace('#denied');
 
     SharkRouter = Backbone.Router.extend(
 
@@ -22,6 +22,9 @@ define(
         @Shark = Shark
         Shark.schedule = new Schedule
         Shark.schedulesList = new Schedules
+        if Shark.session.authenticated()
+          Shark.schedulesList.fetch success: (newList) ->
+            newList.load(3)
         # Router Initilalized
 
       routes:
@@ -56,9 +59,10 @@ define(
     )
 
     initialize = (Shark) ->
-      router = new SharkRouter(Shark)
       Shark.session = new Session(CS.auth)
+      router = new SharkRouter(Shark)
       Backbone.history.start pushState: true, root: CS.baseDir||''
+
       router
 
     initialize: initialize

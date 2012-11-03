@@ -4,7 +4,9 @@ define(['jQuery',
         'models/term'], ($,_, Backbone, Term) ->
 
   class School extends Backbone.Model
-	  url: '/school'
+
+    idAttribute: "_id"
+    url: '/school'
 
 	  parse: (response) ->
 	    response.currentTerm = new Term(response.currentTerm)

@@ -24,6 +24,10 @@ define(['jQuery',
         section.miniCalView.remove()
         section.miniCalView.setTemp true
 
+      # Empty the list on reset ( triggered on load )
+      @model.get('sections').bind 'reset', () =>
+        @render()
+
       # Render call
       @render();
 

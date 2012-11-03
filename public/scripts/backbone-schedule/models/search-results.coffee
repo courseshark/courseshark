@@ -6,11 +6,11 @@ define(['jQuery',
 
   class SearchResults extends Backbone.Model
 
+    url: '/search'
+
     defaults:
       query: ""
       courses: new ResultCourses
-
-    url: '/search'
 
     search: ($searchField) ->
 
@@ -20,7 +20,7 @@ define(['jQuery',
     	#
       @trigger 'search:error', 'Must enter a query' if not $searchField.val()
       @trigger 'search:start'
-      @url = '/search?q='+$searchField.val()+'&t='+Shark.school.get('currentTerm').get('_id')
+      @url = '/search?q='+$searchField.val()+'&t='+Shark.term.get('_id')
       @set 'query', $searchField.val()
       @fetch success: () =>
         # Itterate over results to clean them up / prep them
@@ -31,7 +31,7 @@ define(['jQuery',
             # If it exists in the schedule object, replace it with the schedule's version
             if (list=Shark.schedule.get('sections').where({_id: section.get('_id')})).length
               course.attributes.sections.models[i] = list[0]
-        
+
         # Anouce that the searchis complete
         @trigger 'search:complete'
 
@@ -47,10 +47,10 @@ define(['jQuery',
         c.object.rank=c.rank
         # Turn the sections into a proper collection of sections
         c.object.sections = new ResultSections c.object.sections
-        #Return the new object piece of the {object: [course], rank: [number]} object 
+        #Return the new object piece of the {object: [course], rank: [number]} object
         c.object
       response
 
- 
+
   SearchResults
 )
