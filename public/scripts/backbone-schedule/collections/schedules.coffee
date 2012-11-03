@@ -8,7 +8,6 @@ define(['jQuery',
     url: '/schedules'
     model: Schedule
 
-
     load: (number = 0) ->
       @.at(number).load() if @.length > number
 

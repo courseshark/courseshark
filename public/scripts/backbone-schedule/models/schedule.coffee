@@ -15,7 +15,6 @@ define(['jQuery',
       sections: new ScheduleSections
 
     load: (scheduleToLoad) ->
-      Shark.schedule.trigger 'wahoo!'
       @.fetch
         error: =>
           console.log 'error'
@@ -26,8 +25,10 @@ define(['jQuery',
           Shark.schedule.get('sections').reset()
           @.get('sections').each (section) ->
             Shark.schedule.get('sections').add section
-
-          # Set the properties (minus sections)
+          # Set the other properties (minus sections)
+          # Here we make a clone, then unset the sections attribute
+          #   If we dont do this, then all the views that bind to the
+          #   schedule's sections list will become unbound.
           setClone = @.clone()
           setClone.unset('sections')
           Shark.schedule.set(setClone)
