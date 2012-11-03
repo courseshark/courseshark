@@ -17,7 +17,7 @@ define(['jQuery',
     load: (scheduleToLoad) ->
       @.fetch
         error: =>
-          console.log 'error'
+          console.log '[error] could not load schedule'
         success: =>
           # Set the global term to this schedule's
           Shark.term = @.get 'term'
