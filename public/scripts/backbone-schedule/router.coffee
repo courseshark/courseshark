@@ -11,7 +11,7 @@ define(
     $.ajaxSetup statusCode:
       401: () ->
         # Redirect to the login
-        Shark.session.login();
+        Shark.session.login()
       403: () ->
         # Access denied
         # TODO Replace this with nice actual message box
