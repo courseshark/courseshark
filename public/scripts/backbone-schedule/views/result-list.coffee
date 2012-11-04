@@ -5,9 +5,9 @@ define(['jQuery',
         'views/result-course'
         'text!/tmpl/results/result-section-list.ejs'], ($,_, Backbone, SearchResults, ResultsCourseView, templateText) ->
 
-  # This is the main search-results View. 
+  # This is the main search-results View.
   #
-  #  It handles the drawing of the results 
+  #  It handles the drawing of the results
   #  whenever the search object changes
   #
   class ResultListView extends Backbone.View
@@ -18,7 +18,7 @@ define(['jQuery',
 
       @searchResults = new SearchResults
       Shark.searchResults = @searchResults
-      
+
       @searchResults.bind 'search:start',  () => @showLoading()
       @searchResults.bind 'search:complete',  () => @renderResults()
       @searchResults.bind 'filter:start',  () => @showLoading()

@@ -13,19 +13,19 @@ define(['jQuery',
       # Compile the template for future use
       @template = _.template(templateText)
 
-      @model.get('sections').bind 'add', (section) =>
+      Shark.schedule.get('sections').bind 'add', (section) =>
         if not section.miniCalView
           section.miniCalView = new CalendarMiniSectionView model: section
         else
           section.miniCalView.render()
         section.miniCalView.setTemp false
 
-      @model.get('sections').bind 'remove', (section) =>
+      Shark.schedule.get('sections').bind 'remove', (section) =>
         section.miniCalView.remove()
         section.miniCalView.setTemp true
 
       # Empty the list on reset ( triggered on load )
-      @model.get('sections').bind 'reset', () =>
+      Shark.schedule.get('sections').bind 'reset', () =>
         @render()
 
       # Render call

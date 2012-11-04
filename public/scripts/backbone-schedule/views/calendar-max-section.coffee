@@ -34,7 +34,7 @@ define(['jQuery',
 
 						$el = $ @template
 							section: @model.attributes
-							color: @model.get 'color'
+							color: @model.color()
 							slot: slot
 							height: height
 							top_offset: top_offset

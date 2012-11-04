@@ -49,7 +49,7 @@ define(['jQuery',
       @.get('sections').add (section)
 
     removeSection: (section) ->
-      @.get('sections').remove (section)
+      @.get('sections').remove(@.get('sections').get(section.get('_id')))
 
     contains: (section) ->
       @.get('sections').where({_id: section.get('_id')}).length > 0
