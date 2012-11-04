@@ -28,7 +28,7 @@ define(['jQuery',
 
     save: ->
       return Shark.session.login() if not Shark.session.authenticated()
-      @saveView = new SaveView( el: (@$el.find '#save')[0] ).render()
+      @saveView.show()
 
     load: ->
       return Shark.session.login() if not Shark.session.authenticated()
@@ -51,6 +51,7 @@ define(['jQuery',
     render: ->
       @$el.html @template()
       @loadView = new LoadView()
+      @saveView = new SaveView()
 
   # Whatever is returned here will be usable by other modules
   navView

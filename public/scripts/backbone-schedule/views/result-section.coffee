@@ -21,6 +21,7 @@ define(['jQuery',
         else
           @$el.show()
 
+
     events:
       'click .expander' : 'expand'
       'click .add' : 'add'
@@ -30,25 +31,29 @@ define(['jQuery',
 
     hoverOn: ->
       if not @model.miniCalView
-        @model.miniCalView = new CalendarMiniSectionView model: @model 
+        @model.miniCalView = new CalendarMiniSectionView model: @model
       else
         @model.miniCalView.render()
-
       @model.miniCalView.setTemp true unless @model.miniCalView.temp is false
+
+
     hoverOff: ->
       @model.miniCalView.remove() if @model.miniCalView.temp
-
 
 
     expand: ->
       @$el.find('.details').slideToggle()
       @$el.find('i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up')
 
+
     add: ->
       if Shark.schedule.contains(@model)
         Shark.schedule.removeSection(@model)
+        @$addButton.removeClass('added')
+        @hoverOn()
       else
         Shark.schedule.addSection(@model)
+        @$addButton.addClass('added')
 
 
     render: ->
@@ -57,15 +62,17 @@ define(['jQuery',
         seats: @model.get('seatsAvailable') + '/' + @model.get('seatsTotal')
         section_id: @model.get('number') + ': Section ' + @model.get('info')
         hours: @model.get('credits')
+
       @$el.html @resultsSectionTemplate(params)
+      @$addButton = @$el.find('.add')
       # Color/bold the correct day letters
       _.each @model.get('timeslots'), (timeslot) =>
         _.each timeslot.days, (day) =>
           @$el.find('#' + day).addClass('selected')
 
       # Mark added if it is in the schedule?
-      if _.contains(Shark.schedule.get('sections').models, @model)
-        @$el.find('.add').addClass('added')
+      if Shark.schedule.contains(@model)
+        @$addButton.addClass('added')
       @ # Return the section view to be added by the results view
 
   ResultSectionView

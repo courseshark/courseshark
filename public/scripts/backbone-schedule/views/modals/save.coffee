@@ -5,6 +5,8 @@ define(['jQuery',
 
   class SaveView extends Backbone.View
 
+    className: "modal hide fade"
+
     initialize: ->
       _.bindAll @
       @saveTemplate = _.template saveTemplate
@@ -16,24 +18,25 @@ define(['jQuery',
     save: ->
 
       # Instant feedback by hiding modal
-      @$el.modal 'hide'
+      @hide()
 
       name = @$name.val()
+      Shark.schedule.unset '_id' if name != Shark.schedule.get 'name'
       Shark.schedule.set 'name', name
-      Shark.schedule.set 'user', Shark.session.get 'user'
-      Shark.schedule.save()
+      Shark.schedule.save error: =>
+        console.log '[error] Saving', arguments
 
-      # found = Shark.schedulesList.where name: name
+    show: ->
+      @$name.val(Shark.schedule.get('name'))
+      @$el.modal 'show'
 
-      # if found[0]
-      #   Shark.schedulesList.remove found[0]
-
-      # Shark.schedulesList.push Shark.schedule.makeClone()
+    hide: ->
+      @$el.modal('hide')
 
     render: ->
       @$el.html @saveTemplate()
       @$name = @$el.find('#save-dialog-name-field')
-      @$name.val(name) if Shark.schedule.get('name') not ''
+      ($ 'body').append @$el
 
 
   SaveView

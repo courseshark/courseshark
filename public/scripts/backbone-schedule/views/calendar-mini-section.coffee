@@ -61,7 +61,7 @@ define(['jQuery',
           _.each slot.days, (day) =>
 
             $el = $ @template
-              color: @model.get 'color'
+              color: @model.color()
               height: height
               topOffset: topOffset
             @$els.push $el
