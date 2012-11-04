@@ -11,7 +11,7 @@ define(['jQuery',
       _.bindAll @
 
       Shark.schedule.bind "change", =>
-        @render();
+        @render()
 
       @resultsSectionTemplate = _.template(resultsSectionTemplate)
 
@@ -64,6 +64,7 @@ define(['jQuery',
         hours: @model.get('credits')
 
       @$el.html @resultsSectionTemplate(params)
+      @$el.hide() if not @model.get 'visible'
       @$addButton = @$el.find('.add')
       # Color/bold the correct day letters
       _.each @model.get('timeslots'), (timeslot) =>
