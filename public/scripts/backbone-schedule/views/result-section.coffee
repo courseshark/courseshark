@@ -10,10 +10,10 @@ define(['jQuery',
     initialize: ->
       _.bindAll @
 
-      Shark.schedule.bind "change", =>
-        @render()
-
       @resultsSectionTemplate = _.template(resultsSectionTemplate)
+
+      Shark.schedule.bind "load", =>
+        @render()
 
       @model.bind 'change:visible', (section, visible) =>
         if not visible

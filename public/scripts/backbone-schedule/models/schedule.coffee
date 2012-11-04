@@ -33,7 +33,7 @@ define(['jQuery',
           setClone.unset('sections')
           Shark.schedule.set(setClone)
           # Trigger the loaded event
-          Shark.schedule.trigger('loaded')
+          Shark.schedule.trigger 'load'
 
     parse: (response) ->
       response = response[0] if response.length > 0
