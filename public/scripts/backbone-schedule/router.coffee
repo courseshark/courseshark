@@ -11,10 +11,16 @@ define(
     $.ajaxSetup statusCode:
       401: () ->
         # Redirect to the login
-        window.location.replace('#login');
+        Shark.session.login();
       403: () ->
         # Access denied
-        window.location.replace('#denied');
+        # TODO Replace this with nice actual message box
+        alert('You do not have permissions to preform that action.')
+
+      500: () ->
+        # Sys Error
+        # TODO Replace this with nice actual message box
+        alert('An error has occured. Please try again.')
 
     SharkRouter = Backbone.Router.extend(
 
