@@ -64,15 +64,15 @@ exports = module.exports = function(app){
 
 
   // List of schedules for this user
-  app.get('/schedules', function(req, res){
+  app.get('/schedules', requireLogin, function(req, res){
     Schedule.find({user: req.user}).exec(function(err, schedules){
       res.json(schedules)
     })
   })
 
   //Load schedule
-  app.get('/schedules/:id', function(req, res){
-    Schedule.find({_id: req.params.id}).exec(function(err, schedule){
+  app.get('/schedules/:id', requireLogin, function(req, res){
+    Schedule.find({_id: req.params.id, user: req.user}).exec(function(err, schedule){
       if (err){
         res.send(500);
         return;
@@ -84,12 +84,52 @@ exports = module.exports = function(app){
     })
   })
 
-  // Save schedule
-  app.post('/schedules', function(req, res){
-    console.log('saving schedule', req.body)
-    res.send(200);
+  // Save new schedule
+  app.post('/schedules', requireLogin, requireSchool, function(req, res){
+    passedJSON = JSON.parse(JSON.stringify(req.body))
+    passedJSON.name = passedJSON.name || "";
+    delete passedJSON.__v;
+    delete passedJSON._id;
+    newSchedule = new Schedule(passedJSON)
+    newSchedule.user = req.user
+    newSchedule.school = req.school
+    newSchedule.term = passedJSON.term._id
+    newSchedule.save(function(err, schedule){
+      if (err){
+        res.send(500);
+      }else{
+        res.json({_id: newSchedule.id, term: schedule.term});
+      }
+    })
+
   })
 
+  // Save updates to schedule schedule
+  app.put('/schedules/:id', requireLogin, requireSchool, function(req, res){
+    Schedule.findOne({_id: req.params.id, user: req.user}).exec(function(err, schedule){
+      if (err){
+        res.send(500);
+        return
+      }else if (!schedule){
+        res.send(403) // Forbidden status
+        return;
+      }
+      passedJSON = JSON.parse(JSON.stringify(req.body));
+      delete passedJSON.__v;
+      delete passedJSON._id;
+      delete passedJSON.term;
+      passedJSON.user = req.user;
+      passedJSON.school = req.school;
+      schedule.set(passedJSON);
+      schedule.save(function(err){
+        if ( err ){
+          res.send(500);
+        }else{
+          res.json({_id: schedule.id, term: schedule.term});
+        }
+      })
+    })
+  })
 
 
   /**

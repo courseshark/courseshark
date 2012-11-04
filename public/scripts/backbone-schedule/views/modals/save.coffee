@@ -23,8 +23,7 @@ define(['jQuery',
       name = @$name.val()
       Shark.schedule.unset '_id' if name != Shark.schedule.get 'name'
       Shark.schedule.set 'name', name
-      Shark.schedule.save error: =>
-        console.log '[error] Saving', arguments
+      Shark.schedule.save()
 
     show: ->
       @$name.val(Shark.schedule.get('name'))
