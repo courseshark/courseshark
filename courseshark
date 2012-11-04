@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#	CourseShark run file
+# CourseShark run file
 #
 #
 NODE_VER="v0.6.19";
@@ -26,29 +26,29 @@ RESET="$(tput sgr0)";
 
 
 function INSTALL {
-	echo "Installing nodejs $NODE_VER";
-	cd /tmp;
-	if [ -d "/tmp/node" ]
-	then
-		cd node;
-		git checkout $NODE_VER;
-	else
-		git clone http://github.com/joyent/node.git
-		cd node;
-		git checkout $NODE_VER;
-	fi
-	make clean;
-	./configure --prefix=$BIN_DIR/node;
-	make;
-	make install;
+  echo "Installing nodejs $NODE_VER";
+  cd /tmp;
+  if [ -d "/tmp/node" ]
+  then
+    cd node;
+    git checkout $NODE_VER;
+  else
+    git clone http://github.com/joyent/node.git
+    cd node;
+    git checkout $NODE_VER;
+  fi
+  make clean;
+  ./configure --prefix=$BIN_DIR/node;
+  make;
+  make install;
 
-	## Install Dependancies
-	cd $CS_DIR
-	(
-		export PATH=$NEW_PATH;
-		npm install forever nodemon -g;
-		npm install;
-	)
+  ## Install Dependancies
+  cd $CS_DIR
+  (
+    export PATH=$NEW_PATH;
+    npm install forever nodemon -g;
+    npm install;
+  )
 }
 
 function NODE_VERSION_CHECK {
@@ -91,8 +91,8 @@ done
 
 if [ "$1" == "install" ]
 then
-	INSTALL;
-	exit;
+  INSTALL;
+  exit;
 fi
 
 if [ "$1" == "deps" ]
@@ -108,11 +108,11 @@ fi
 
 if [ -f $CUSTOM_NODE ]
 then
-	: # no-op
+  : # no-op
 else
-	echo "";
-	echo "[warn] No node found.";
-	INSTALL;
+  echo "";
+  echo "[warn] No node found.";
+  INSTALL;
 fi
 
 if [ "$1" == "seatwatcher" ]

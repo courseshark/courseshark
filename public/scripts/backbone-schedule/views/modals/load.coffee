@@ -5,26 +5,34 @@ define(['jQuery',
 
   class LoadView extends Backbone.View
 
+    className: "modal hide fade"
+
     initialize: ->
       _.bindAll @
-      @loadTemplate = _.template(loadTemplate)
+      @loadTemplate = _.template loadTemplate
       @render()
 
     events:
       'click #do-load' : 'load'
 
     load: ->
-      loaded = Shark.schedulesList.getByCid(@$el.find('[name=loadlist]').val()[0])
-      Shark.schedule.set('name', loaded.get('name'))
-      Shark.schedule.loadSections(loaded.get('sections'))
-      Shark.schedule.trigger('change')
-      $('#load').modal('hide')
+      toLoad = Shark.schedulesList.get(@list.val())
+      toLoad.load()
+      @.hide()
+
+    show: ->
+      @list.empty()
+      Shark.schedulesList.each (schedule) =>
+        @list.append $("<option />").val(schedule.id).text(schedule.get 'name')
+      @$el.modal 'show'
+
+    hide: ->
+      @$el.modal('hide')
 
     render: ->
       @$el.html @loadTemplate()
-      @list = @$el.find('[name=loadlist]')
-      _.each Shark.schedulesList.models, (schedule) =>
-        @list.append $("<option />").val(schedule.cid).text(schedule.get('name'))
+      @list = @$el.find '#load-schedule-list'
+      ($ 'body').append @$el
 
   LoadView
 )

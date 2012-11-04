@@ -1,11 +1,11 @@
 var util = require('../lib/utils')
-	,	mongoose = require('mongoose')
-	, Schema = mongoose.Schema
-	, CourseSchema
+  , mongoose = require('mongoose')
+  , Schema = mongoose.Schema
+  , CourseSchema
 
 exports.boot = module.exports.boot = function (app){
-	mongoose.model('Course', CourseSchema);
-	app.Course = Course = mongoose.model('Course');
+  mongoose.model('Course', CourseSchema);
+  app.Course = Course = mongoose.model('Course');
 }
 
 CourseSchema = new Schema({
@@ -20,19 +20,19 @@ CourseSchema = new Schema({
 });
 
 CourseSchema.virtual('id')
-	.get(function (){return this._id.toHexString()})
+  .get(function (){return this._id.toHexString()})
 
 CourseSchema.method('addSection', function(section){
-	if ( !section ){
-		return;
-	}
-	for( var i=0, len=this.sections.length; i<len; i++ ){
-		if ( this.sections[i].toHexString() === section['_id'].toHexString() ){
-			return;
-		}
-	}
-	this.sections.push(section['_id'])
-	this.save()
+  if ( !section ){
+    return;
+  }
+  for( var i=0, len=this.sections.length; i<len; i++ ){
+    if ( this.sections[i].toHexString() === section['_id'].toHexString() ){
+      return;
+    }
+  }
+  this.sections.push(section['_id'])
+  this.save()
 })
 
 exports.CourseSchema = module.exports.CourseSchema = CourseSchema

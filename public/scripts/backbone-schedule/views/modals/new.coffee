@@ -6,6 +6,8 @@ define(['jQuery',
 
   class NewView extends Backbone.View
 
+    className: "modal hide fade"
+
     initialize: ->
       _.bindAll @
       @newTemplate = _.template newTemplate
@@ -14,22 +16,31 @@ define(['jQuery',
     events:
       'click #do-new' : 'new'
 
-    new: ->
-      Shark.schedule = new Schedule
-      $options = @$el.find '#term-list'
-      # Select the term chosen, defaulting to the current Term if none checked
-      Shark.term = Shark.terms.where( _id: $options.val() )[0] or Shark.school.get 'currentTerm'
-      # Close the modal
-      @$el.modal 'hide'
-
-    render: ->
-      @$el.html @newTemplate()
-      $list = @$el.find '#term-list'
+    show: ->
+      @$options.empty()
       Shark.terms.each (term) =>
         termText = term.get 'name'
         termText = termText.charAt(0).toUpperCase() + termText.slice 1
         termId = term.get '_id'
-        $list.append $('<option/>').val(termId).text(termText)
+        @$options.append $('<option/>').val(termId).text(termText)
+      @$el.modal 'show'
+
+    hide: ->
+      @$el.modal 'hide'
+
+    new: ->
+      # Close the modal
+      @hide()
+      # Tell the schedule object to essentially reset itself
+      Shark.schedule.new()
+
+      # Select the term chosen, defaulting to the current Term if none checked
+      Shark.term = Shark.terms.where( _id: @$options.val() )[0] or Shark.school.get 'currentTerm'
+
+    render: ->
+      @$el.html @newTemplate()
+      @$options = @$el.find '#term-list'
+      ($ 'body').append @$el
 
   NewView
 )

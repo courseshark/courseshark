@@ -32,11 +32,6 @@ define(['jQuery',
     # Renders the actual view from the template
     render: ->
 
-      if @$els.length
-        _.each @$els, ($el) ->
-          $el.show()
-        return
-
       # Hour scale in px
       scale = 10
 

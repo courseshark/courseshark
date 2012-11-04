@@ -5,7 +5,11 @@ define(['jQuery',
 
   class Schedules extends Backbone.Collection
 
+    url: '/schedules'
     model: Schedule
+
+    load: (number = 0) ->
+      @.at(number).load() if @.length > number and number >= 0
 
   Schedules
 )

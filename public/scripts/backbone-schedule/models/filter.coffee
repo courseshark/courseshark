@@ -16,7 +16,7 @@ define(['jQuery',
    		#  (no overriding other filter's choices, they are people too)
    		if false
    			section.set 'visible', false
-   		
+
    	# A global mapper for the filter
    	#  Takes in the course selection to map
     apply: (courseCollection) ->
