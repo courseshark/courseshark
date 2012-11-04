@@ -14,6 +14,12 @@ define(['jQuery',
       name: ""
       sections: new ScheduleSections
 
+    new: ->
+      @.unset('__v')
+      @.unset('_id')
+      @.set('name', '')
+      @.get('sections').reset()
+
     load: (scheduleToLoad) ->
       @.fetch
         error: =>

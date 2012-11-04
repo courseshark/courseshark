@@ -35,8 +35,7 @@ define(['jQuery',
       @loadView.show()
 
     new: ->
-      @$el.find('#new').modal('show');
-      @newView = new NewView( el: (@$el.find '#new')[0])
+      @newView.show()
 
     print: ->
       console.log 'print clicked'
@@ -52,6 +51,7 @@ define(['jQuery',
       @$el.html @template()
       @loadView = new LoadView()
       @saveView = new SaveView()
+      @newView  = new NewView()
 
   # Whatever is returned here will be usable by other modules
   navView
