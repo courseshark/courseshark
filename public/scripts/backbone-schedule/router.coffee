@@ -28,9 +28,6 @@ define(
         @Shark = Shark
         Shark.schedule = new Schedule
         Shark.schedulesList = new Schedules
-        if Shark.session.authenticated()
-          Shark.schedulesList.fetch success: (newList) ->
-            newList.load(3)
         # Router Initilalized
 
       routes:
@@ -47,6 +44,9 @@ define(
 
 
       landingPage: () =>
+        if Shark.session.authenticated()
+          Shark.schedulesList.fetch success: (newList) ->
+            newList.load(newList.length-1)
         @Shark.currentView = new @Shark.views.appView()
 
       view: () =>

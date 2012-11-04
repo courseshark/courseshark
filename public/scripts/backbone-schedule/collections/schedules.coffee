@@ -9,7 +9,7 @@ define(['jQuery',
     model: Schedule
 
     load: (number = 0) ->
-      @.at(number).load() if @.length > number
+      @.at(number).load() if @.length > number and number >= 0
 
   Schedules
 )
