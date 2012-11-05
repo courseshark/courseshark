@@ -18,7 +18,7 @@ define(['jQuery',
       @model.bind 'change:visible', (section, visible) =>
         if not visible
           @$el.hide()
-        else 
+        else
           @$el.show()
 
     events:

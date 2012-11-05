@@ -8,7 +8,9 @@ define(['jQuery','Underscore','Backbone', 'router', 'collections/terms', 'models
 		Shark.terms = new Terms
 		Shark.terms.fetch()
 		Shark.school = new School
-		Shark.school.fetch()
+		Shark.school.fetch
+			success: ->
+				Shark.term = Shark.terms.get (Shark.school.get 'currentTerm')._id
 		Router.initialize @
 
   #Return an object with the intialize method

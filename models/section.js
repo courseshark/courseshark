@@ -1,13 +1,13 @@
 var util = require('../lib/utils')
-	,	mongoose = require('mongoose')
-	, Schema = mongoose.Schema
-	, SectionSchema
-	, TimeslotSchema = require('./timeslot').TimeslotSchema
-	, Course = require('./course')
+  , mongoose = require('mongoose')
+  , Schema = mongoose.Schema
+  , SectionSchema
+  , TimeslotSchema = require('./timeslot').TimeslotSchema
+  , Course = require('./course')
 
 exports.boot = module.exports.boot = function (app){
-	mongoose.model('Section', SectionSchema);
-	app.Section = Section = mongoose.model('Section');
+  mongoose.model('Section', SectionSchema);
+  app.Section = Section = mongoose.model('Section');
 }
 
 exports.SectionSchema = module.exports.SectionSchema = SectionSchema
@@ -35,4 +35,4 @@ SectionSchema = new Schema({
 
 
 SectionSchema.virtual('id')
-	.get(function (){return this._id.toHexString()})
+  .get(function (){return this._id.toHexString()})
