@@ -1,7 +1,7 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'text!/tmpl/filters/checkbox-filter.ejs'], ($,_, Backbone, checkboxFilterTemplate) ->
+        'text!tmpl/filters/checkbox-filter.ejs'], ($,_, Backbone, checkboxFilterTemplate) ->
 
   class CheckboxFilterView extends Backbone.View
 
