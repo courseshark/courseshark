@@ -18,3 +18,5 @@ public/images/.DS_Store
 
 public/styles/schedule/main.css
 public/styles/admin.css
+
+public/scripts/backbone-schedule/build.main.js
