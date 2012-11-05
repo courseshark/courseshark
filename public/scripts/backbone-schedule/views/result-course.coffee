@@ -3,7 +3,7 @@ define(['jQuery',
         'Backbone',
         'models/course',
         'views/result-section'
-        'text!/tmpl/results/result-course.ejs'], ($,_, Backbone, Course, ResultSectionView, resultCourseTemplate) ->
+        'text!tmpl/results/result-course.ejs'], ($,_, Backbone, Course, ResultSectionView, resultCourseTemplate) ->
 
   class ResultCourseView extends Backbone.View
 

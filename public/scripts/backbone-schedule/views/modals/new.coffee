@@ -2,7 +2,7 @@ define(['jQuery',
   'Underscore',
   'Backbone',
   'models/schedule'
-  'text!/tmpl/modals/new.ejs'], ($, _, Backbone, Schedule, newTemplate) ->
+  'text!tmpl/modals/new.ejs'], ($, _, Backbone, Schedule, newTemplate) ->
 
   class NewView extends Backbone.View
 

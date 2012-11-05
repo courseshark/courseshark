@@ -5,7 +5,7 @@ define(['jQuery',
 	'views/modals/save',
 	'views/modals/load',
 	'views/modals/new'
-	'text!/tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, NewView, templateText) ->
+	'text!tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, NewView, templateText) ->
 
 	class navView extends Backbone.View
 

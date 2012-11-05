@@ -2,7 +2,7 @@
 define(['jQuery',
 	'Underscore',
 	'Backbone',
-	'text!/tmpl/schedule/calendar-max-section.ejs'], ($, _, Backbone, templateText) ->
+	'text!tmpl/schedule/calendar-max-section.ejs'], ($, _, Backbone, templateText) ->
 
 	class CalendarMaxSection extends Backbone.View
 
@@ -32,7 +32,7 @@ define(['jQuery',
 						startHourAdjusted = (slot.startTime.getUTCHours()%12 is 0) ? 12 : (slot.startTime.getUTCHours()%12)
 						endHourAdjusted = (slot.endTime.getUTCHours()%12 is 0) ? 12 : slot.endTime.getUTCHours()%12
 
-						$el = $ @template 
+						$el = $ @template
 							section: @model.attributes
 							color: @model.color()
 							slot: slot
