@@ -2,7 +2,7 @@
 define(['jQuery',
  'Underscore',
  'Backbone',
- 'text!/tmpl/app/panels.ejs',
+ 'text!tmpl/app/panels.ejs',
  'views/result-list',
  'views/schedule-sections-list',
  'views/filter',

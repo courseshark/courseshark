@@ -1,7 +1,7 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'text!/tmpl/friends/friends-list.ejs'], ($,_, Backbone, friendsListTemplate) ->
+        'text!tmpl/friends/friends-list.ejs'], ($,_, Backbone, friendsListTemplate) ->
 
   class FriendsListView extends Backbone.View
 

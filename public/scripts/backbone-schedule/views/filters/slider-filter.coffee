@@ -1,7 +1,7 @@
 define(['jQuery',
 				'Underscore',
 				'Backbone',
-				'text!/tmpl/filters/slider-filter.ejs'], ($,_, Backbone, sliderFilterTemplate) ->
+				'text!tmpl/filters/slider-filter.ejs'], ($,_, Backbone, sliderFilterTemplate) ->
 
 	class CheckboxFilterView extends Backbone.View
 
@@ -11,7 +11,7 @@ define(['jQuery',
 			@model.bind 'change:valueText', (filter, text) =>
 				@$value.html(text) if @$value
 
-		events: 
+		events:
 			'slidechange .slider' : 'updateModel'
 
 		render: ->

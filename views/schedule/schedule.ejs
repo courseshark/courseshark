@@ -1,19 +1,18 @@
 <div id="app-container"></div>
 
 
-<script>
-window.requestAnimFrame = (function(){
-	return  window.requestAnimationFrame ||
-	  window.webkitRequestAnimationFrame ||
-	  window.mozRequestAnimationFrame    ||
-	  window.oRequestAnimationFrame      ||
-	  window.msRequestAnimationFrame     ||
-	  function( callback ){
-	    window.setTimeout(callback, 1000 / 60);
-	  };
-})();
-</script>
-<script>
+<script defer="defer">
+	window.requestAnimFrame = (function(){
+		return  window.requestAnimationFrame ||
+		  window.webkitRequestAnimationFrame ||
+		  window.mozRequestAnimationFrame    ||
+		  window.oRequestAnimationFrame      ||
+		  window.msRequestAnimationFrame     ||
+		  function( callback ){
+		    window.setTimeout(callback, 1000 / 60);
+		  };
+	})();
+
 	window.CS = {
 
 			auth: {
@@ -29,7 +28,7 @@ window.requestAnimFrame = (function(){
 	}
 </script>
 <%if ( built ){ %>
-	<script src="/scripts/backbone-schedule/build.main.js"></script>
+<script src="/scripts/backbone-schedule/build.main.js" defer="defer"></script>
 <%}else{%>
-	<script data-main="/scripts/backbone-schedule/main" src="/scripts/lib/require/require.js"></script>
+<script data-main="/scripts/backbone-schedule/main" src="/scripts/backbone-schedule/lib/require/require.js"></script>
 <%}%>

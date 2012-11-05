@@ -1,7 +1,6 @@
 define(['jQuery',
 				'Underscore',
-				'Backbone',
-				'text!/login.tmpl'], ($,_, Backbone, LoginDialogView) ->
+				'Backbone'], ($,_, Backbone, LoginDialogView) ->
 
 	class AuthLoginView extends Backbone.View
 
@@ -9,7 +8,7 @@ define(['jQuery',
 
 		className: "modal fade"
 
-		events: 
+		events:
 			"click .close": "close"
 
 		initialize: ->
@@ -17,7 +16,8 @@ define(['jQuery',
 			@render()
 
 		render: ->
-			((@$el.html LoginDialogView).appendTo 'body').modal 'show'
+			require ['text!/login.tmpl'], (LoginDialogView) =>
+				(@$el.html LoginDialogView).appendTo('body').modal 'show'
 
 		close: ->
 			@$el.modal 'hide'

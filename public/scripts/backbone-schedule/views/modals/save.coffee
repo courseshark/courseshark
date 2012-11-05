@@ -1,7 +1,7 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'text!/tmpl/modals/save.ejs'], ($,_, Backbone, saveTemplate) ->
+        'text!tmpl/modals/save.ejs'], ($,_, Backbone, saveTemplate) ->
 
   class SaveView extends Backbone.View
 

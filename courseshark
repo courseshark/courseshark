@@ -89,6 +89,20 @@ do
 done
 
 
+if [ "$1" == "build" ]
+then
+	echo "$BLUE  Moving files$RESET";
+	mkdir -p /tmp/courseshark/build/;
+	cp -r ./public/scripts/backbone-schedule/ /tmp/courseshark/build;
+	echo "$BLUE  Compiling CoffeeScript$RESET";
+	coffee -b -o /tmp/courseshark/build ./public/scripts/backbone-schedule/;
+	echo "$BLUE  Optimizing and compiling$RESET"
+	r.js -o /tmp/courseshark/build/build.js
+	echo "$BLUE  Moving built file into production$RESET"
+	mv /private/tmp/courseshark/build/build.main.js ./public/scripts/backbone-schedule/build.main.js
+	exit;
+fi
+
 if [ "$1" == "install" ]
 then
 	INSTALL;
@@ -135,19 +149,6 @@ then
 	echo "starting with nodemon $RESET";
 	(
 		export PATH=$NEW_PATH;
-
-		#coffee --compile ./public/scripts/backbone-schedule/;
-
-		#r.js -o \
-		#	baseUrl=./public/scripts/backbone-schedule \
-		#	name=main \
-		#	out=./public/scripts/backbone-schedule/build.main.js \
-		#		paths.jQuery=./lib/jquery/jquery.req \
-		#		paths.Underscore=./lib/underscore/underscore.req \
-		#		paths.Backbone=./lib/backbone/backbone.req \
-		#		paths.requireLib=../lib/require/require \
-		#		include=requireLib;
-
 	 	nodemon ./app.js;
 	)
 else

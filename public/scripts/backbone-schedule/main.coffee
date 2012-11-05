@@ -1,13 +1,25 @@
 # Require.js allows us to configure shortcut alias to scripts
 # These will be usefull when requiring them later
 require.config(
+
   paths:
-    jQuery: '/scripts/lib/jquery/jquery.req'
-    Underscore: '/scripts/lib/underscore/underscore.req'
-    Backbone: '/scripts/lib/backbone/backbone.req'
-    jQueryUI: '/scripts/lib/jquery/jquery-ui.req'
-    jQueryCookie: '/scripts/lib/jquery/jquery-cookie.req'
-    Bootstrap: '/scripts/lib/bootstrap/bootstrap.req'
+    jQuery: 'lib/jquery/jquery.req'
+    jquery_js: 'lib/jquery/jquery'
+
+    Underscore: 'lib/underscore/underscore.req'
+    underscore_js: 'lib/underscore/_'
+
+    Backbone: 'lib/backbone/backbone.req'
+    backbone_js: 'lib/backbone/backbone'
+
+    jQueryUI: 'lib/jquery/jquery-ui.req'
+    jqueryui_js: 'lib/jquery/jquery-ui'
+
+    jQueryCookie: 'lib/jquery/jquery-cookie.req'
+    jquery_cookie_js: 'lib/jquery/jquery-cookie'
+
+    Bootstrap: 'lib/bootstrap/bootstrap.req'
+    bootstrap_js: 'lib/bootstrap/bootstrap'
 
   shim:
     jQuery:
@@ -39,8 +51,10 @@ require(
     'jQueryUI',
     'jQueryCookie'
     'Bootstrap'
-  ], (Shark) ->
+  ], (Shark, $) ->
       #The "app" dependency is passed in as "Shark"
       window.Shark = Shark
-      Shark.router = Shark.initialize()
+      $(document).ready ()->
+        Shark.router = Shark.initialize()
+
 )

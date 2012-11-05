@@ -1,7 +1,7 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'text!/tmpl/modals/load.ejs'], ($,_, Backbone, loadTemplate) ->
+        'text!tmpl/modals/load.ejs'], ($,_, Backbone, loadTemplate) ->
 
   class LoadView extends Backbone.View
 

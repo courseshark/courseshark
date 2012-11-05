@@ -3,7 +3,7 @@ define(['jQuery',
   'Underscore',
   'Backbone',
   'views/calendar-mini-section',
-  'text!/tmpl/schedule/calendar-mini.ejs'], ($, _, Backbone, CalendarMiniSectionView, templateText) ->
+  'text!tmpl/schedule/calendar-mini.ejs'], ($, _, Backbone, CalendarMiniSectionView, templateText) ->
 
   class CalendarMini extends Backbone.View
 
