@@ -1,10 +1,11 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
+        'dateFormat'
         'collections/schedule-sections'
         'models/course'
         'models/section'
-        'text!tmpl/schedule/downloads/ics.ejs'], ($,_, Backbone, ScheduleSections, Course, Section, icsTemplate) ->
+        'text!tmpl/schedule/downloads/ics.ejs'], ($,_, Backbone, dateFormat, ScheduleSections, Course, Section, icsTemplate) ->
 
   class Schedule extends Backbone.Model
 
@@ -91,29 +92,30 @@ define(['jQuery'
           daysets : []
         timeCombine = {}
         timeCombineTime = {}
-        for ts in section.get('timeslots').models
+        for ts in section.get('timeslots')
           startTime = new Date(ts.startTime)
           endTime = new Date(ts.endTime)
-          startString = ''+dateFormat(startTime, "yyyymmdd")+'T'+dateFormat(startTime, "HHMMss")
-          endString = ''+dateFormat(endTime, "yyyymmdd")+'T'+dateFormat(endTime, "HHMMss")
+          endDate = (new Date(ts.endDate)).format('yyyymmdd')
+          startString = startTime.format('yyyymmdd HHMMss').replace(' ','T')
+          endString = endTime.format('yyyymmdd HHMMss').replace(' ','T')
           k = startString+'---'+endString
           if not timeCombine[k]
             timeCombine[k] = []
             timeCombineTime[k] =
               'start'    : startString
               'end'      : endString
-              'location' : ''+ts.location
-              'endDate'  : ''+dateFormat(ts.endDate, "yyyymmdd")+'T'+dateFormat(ts.endTime, "HHMMss")
+              'location' : ts.location.toString()
+              'endDate'  : endDate+'T'+endTime.format("HHMMss")
           timeCombine[k] = ts.days.map (v,i) -> days[v]
 
-        for timeStr in timeCombine
+        for timeStr of timeCombine
           evnt['daysets'].push $.extend timeCombineTime[timeStr], days: timeCombine[timeStr].join ','
         events.push evnt
       now = new Date()
       data =
         name     : this.name
         timezone : 'America/New_York'
-        now      : dateFormat(now, "yyyymmdd")+'T'+dateFormat(now, "HHMMss")
+        now      : now.format('yyyymmdd HHMMss').replace(' ','T')
         events   : events
         user     : 'contact@courseshark.com'
       data
