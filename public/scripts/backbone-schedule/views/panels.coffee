@@ -24,7 +24,7 @@ define(['jQuery',
 
 			# Render call
 			@heightAdjust()	# Adjust before we render to save a paint cycle + visual jank
-			@render();
+			@render()
 
 			# Resize window listener
 			$(window).resize =>
@@ -58,9 +58,9 @@ define(['jQuery',
 		toggleSlidePanel: ->
 			return if ($ '#results-frame').hasClass 'hidden'
 			if ($ '#slide-panel').hasClass 'closed'
-				Shark.router.navigate '', trigger: false, replace: true
+				Shark.router.navigateRemove 'view', trigger: false, replace: true
 			else
-				Shark.router.navigate 'view', trigger: false, replace: true
+				Shark.router.navigateAppend 'view', trigger: false, replace: true
 			($ '#slide-panel-button').toggleClass 'open'
 			($ '#slide-panel').toggleClass 'closed'
 			($ '#max-cal-frame').removeClass 'hidden'

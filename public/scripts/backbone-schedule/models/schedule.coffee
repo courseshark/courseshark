@@ -20,9 +20,9 @@ define(['jQuery'
       @icsDownloadTemplate = _.template icsTemplate.replace(/\n/g, '#\n').trim()
 
     new: ->
-      @.unset('__v')
-      @.unset('_id')
-      @.set('name', '')
+      @.unset '__v'
+      @.unset '_id'
+      @.set 'name', ''
       @.get('sections').reset()
 
     load: (scheduleToLoad) ->
@@ -45,6 +45,31 @@ define(['jQuery'
           Shark.schedule.set(setClone)
           # Trigger the loaded event
           Shark.schedule.trigger 'load'
+
+    ensureScheduleLoaded: (id, options) ->
+      if typeof options is 'function'
+        options.success = options
+
+      if @.id is id
+        options.success?()
+        return
+
+      schedule = Shark.schedulesList.get(id)
+      if schedule
+        schedule.load()
+        options.success?()
+        return
+      else
+        Shark.schedulesList.fetch
+          success: ->
+            schedule = Shark.schedulesList.get(id)
+            if schedule
+              schedule.load()
+              options.success?()
+            else
+              options.failure?()
+
+
 
 
     parse: (response) ->
@@ -73,7 +98,7 @@ define(['jQuery'
       resultLink = 'data:text/Calendar;base64,'
       icsTxt = @icsDownloadTemplate @_generateIcsData()
       icsTxt = icsTxt.replace(/#\s*/g, "\r\n").trim()
-      window.location = resultLink+$.base64.encode(icsTxt);
+      resultLink+$.base64.encode(icsTxt);
 
     # Helper function to generate the ics file on export
     _generateIcsData: ->

@@ -17,7 +17,7 @@ define(['jQuery',
 
     load: ->
       toLoad = Shark.schedulesList.get(@list.val())
-      toLoad.load()
+      Shark.router.navigate toLoad.id, trigger: true, replace: false
       @.hide()
 
     show: ->

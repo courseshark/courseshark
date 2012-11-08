@@ -24,32 +24,41 @@ define(['jQuery'
     initialize: (Shark) ->
       @Shark = Shark
       Shark.router = @
-      Shark.schedule = new Schedule
-      Shark.schedulesList = new Schedules
       @Shark.currentView = new @Shark.views.appView()
-      # Router Initilalized
+
+
+    navigateRemove: (toRemove, navigateOptions={}) ->
+      fragment = Backbone.history.getFragment()
+      replaceRegExp = new RegExp('^'+toRemove+'\/?$|\/'+toRemove+'\/?$')
+      newUrl = fragment.replace(replaceRegExp, '')
+      if newUrl != fragment
+        Shark.router.navigate newUrl, navigateOptions
+
+    navigateAppend: (toAdd, navigateOptions={}) ->
+      fragment = Backbone.history.getFragment()
+      newUrl = fragment + '/' + toAdd
+      Shark.router.navigate newUrl, navigateOptions
 
     routes:
-      ''  : 'landingPage'
-      '/' : 'landingPage'
-      '/s/' : 'landingPage'
+      ''       : 'landingPage'
 
-      'login': 'login'
-      'view':'view'
-      'export': 'export'
+      'login'  : 'login'
+      'view'   : 'view'
+      'export' : 'export'
 
-      ':action':                   'defaultAction'
-      ':controller/:action':       'defaultAction'
-      ':controller/:action/:vid':  'defaultAction'
+      ':schedule'      : 'loadSchedule'
+      ':schedule/view' : 'view'
 
 
-    landingPage: () =>
-      if Shark.session.authenticated()
-        Shark.schedulesList.fetch success: (newList) ->
-          newList.load(newList.length-1)
+    landingPage: () ->
 
-    view: () =>
-      @Shark.currentView.panelsView.showMaxCal()
+    view: (id) ->
+      if id
+        Shark.schedule.ensureScheduleLoaded id,
+          success: ()->
+            Shark.currentView.panelsView.showMaxCal()
+          faulire: ()->
+            Shark.router.navigate '', trigger: false, replace: true
 
     login: () ->
       if !Shark.session.authenticated()
@@ -59,20 +68,29 @@ define(['jQuery'
 
     export: ->
       console.log 'exporting'
-      Shark.schedule.export() if Shark.schedule
+      # Shark.schedule.export() if Shark.schedule
       # Nagigate back but dont trigger router
       @navigate '', trigger: false, replace: true
+
+    loadSchedule: (id) ->
+      Shark.schedule.ensureScheduleLoaded id, failure: ()=>
+        @navigate '', trigger: false, replace: true
 
     defaultAction: (actions) ->
       console.log 'No route', actions
       Shark.router.navigate '', trigger: true, replace: true
-  )
+
+
+  ) # End router
 
   initialize = (Shark) ->
     Shark.session = new Session(CS.auth)
+    Shark.schedule = new Schedule
+    Shark.schedulesList = new Schedules
+    Shark.schedulesList.fetch() if Shark.session.authenticated()
+
     router = new SharkRouter(Shark)
     Backbone.history.start pushState: true, root: CS.baseDir||''
-
     router
 
   initialize: initialize
