@@ -55,6 +55,6 @@ require(
       #The "app" dependency is passed in as "Shark"
       window.Shark = Shark
       $(document).ready ()->
-        Shark.router = Shark.initialize()
+        Shark.initialize()
 
 )

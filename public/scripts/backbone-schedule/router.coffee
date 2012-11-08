@@ -26,8 +26,10 @@ define(
 
       initialize: (Shark) ->
         @Shark = Shark
+        Shark.router = @
         Shark.schedule = new Schedule
         Shark.schedulesList = new Schedules
+        @Shark.currentView = new @Shark.views.appView()
         # Router Initilalized
 
       routes:
@@ -37,6 +39,7 @@ define(
 
         'login': 'login'
         'view':'view'
+        'export': 'export'
 
         ':action':                   'defaultAction'
         ':controller/:action':       'defaultAction'
@@ -47,21 +50,24 @@ define(
         if Shark.session.authenticated()
           Shark.schedulesList.fetch success: (newList) ->
             newList.load(newList.length-1)
-        @Shark.currentView = new @Shark.views.appView()
 
       view: () =>
-        @Shark.currentView = new @Shark.views.appView().panelsView.showMaxCal()
+        @Shark.currentView.panelsView.showMaxCal()
 
       login: () ->
         if !Shark.session.authenticated()
           Shark.session.login()
         else
-          @navigate '/s/', true
+          @navigate '', trigger: false, replace: true
+
+      export: ->
+        console.log 'exporting'
+        # Nagigate back but dont trigger router
+        @navigate '', trigger: false, replace: true
 
       defaultAction: (actions) ->
-        @navigate '/' if actions is 's'
         console.log 'No route', actions
-        @navigate '/'
+        Shark.router.navigate '', trigger: true, replace: true
     )
 
     initialize = (Shark) ->
