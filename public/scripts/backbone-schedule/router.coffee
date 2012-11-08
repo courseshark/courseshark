@@ -36,8 +36,9 @@ define(['jQuery'
 
     navigateAppend: (toAdd, navigateOptions={}) ->
       fragment = Backbone.history.getFragment()
-      newUrl = fragment + '/' + toAdd
-      Shark.router.navigate newUrl, navigateOptions
+      findRegExp = new RegExp('^'+toAdd+'\/?$|\/'+toAdd+'\/?$')
+      newUrl =  if not fragment.match(findRegExp)
+        Shark.router.navigate fragment + '/' + toAdd, navigateOptions
 
     routes:
       ''       : 'landingPage'
