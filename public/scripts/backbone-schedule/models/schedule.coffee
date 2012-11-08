@@ -1,9 +1,10 @@
-define(['jQuery',
-        'Underscore',
-        'Backbone',
+define(['jQuery'
+        'Underscore'
+        'Backbone'
         'collections/schedule-sections'
-        'models/course',
-        'models/section'], ($,_, Backbone, ScheduleSections, Course, Section) ->
+        'models/course'
+        'models/section'
+        'text!tmpl/schedule/downloads/ics.ejs'], ($,_, Backbone, ScheduleSections, Course, Section, icsTemplate) ->
 
   class Schedule extends Backbone.Model
 
@@ -13,6 +14,9 @@ define(['jQuery',
     defaults:
       name: ""
       sections: new ScheduleSections
+
+    initialize: ->
+      @icsDownloadTemplate = _.template icsTemplate.replace(/\n/g, '#\n').trim()
 
     new: ->
       @.unset('__v')
@@ -41,6 +45,7 @@ define(['jQuery',
           # Trigger the loaded event
           Shark.schedule.trigger 'load'
 
+
     parse: (response) ->
       response = response[0] if response.length > 0
       if response.sections
@@ -54,11 +59,65 @@ define(['jQuery',
     addSection: (section) ->
       @.get('sections').add (section)
 
+
     removeSection: (section) ->
       @.get('sections').remove(@.get('sections').get(section.get('_id')))
 
+
     contains: (section) ->
       @.get('sections').where({_id: section.get('_id')}).length > 0
+
+
+    export: ->
+      resultLink = 'data:text/Calendar;base64,'
+      icsTxt = @icsDownloadTemplate @_generateIcsData()
+      icsTxt = icsTxt.replace(/#\s*/g, "\r\n").trim()
+      window.location = resultLink+$.base64.encode(icsTxt);
+
+    # Helper function to generate the ics file on export
+    _generateIcsData: ->
+      days =
+        'monday'    : 'MO'
+        'tuesday'   : 'TU'
+        'wednesday' : 'WE'
+        'thursday'  : 'TH'
+        'friday'    : 'FR'
+        'saturday'  : 'SA'
+        'sunday'    : 'SU'
+      events = []
+      for section in @.get('sections').models
+        evnt =
+          name    : section.get('name').replace(/\s?#[0-9]+$/,'')
+          daysets : []
+        timeCombine = {}
+        timeCombineTime = {}
+        for ts in section.get('timeslots').models
+          startTime = new Date(ts.startTime)
+          endTime = new Date(ts.endTime)
+          startString = ''+dateFormat(startTime, "yyyymmdd")+'T'+dateFormat(startTime, "HHMMss")
+          endString = ''+dateFormat(endTime, "yyyymmdd")+'T'+dateFormat(endTime, "HHMMss")
+          k = startString+'---'+endString
+          if not timeCombine[k]
+            timeCombine[k] = []
+            timeCombineTime[k] =
+              'start'    : startString
+              'end'      : endString
+              'location' : ''+ts.location
+              'endDate'  : ''+dateFormat(ts.endDate, "yyyymmdd")+'T'+dateFormat(ts.endTime, "HHMMss")
+          timeCombine[k] = ts.days.map (v,i) -> days[v]
+
+        for timeStr in timeCombine
+          evnt['daysets'].push $.extend timeCombineTime[timeStr], days: timeCombine[timeStr].join ','
+        events.push evnt
+      now = new Date()
+      data =
+        name     : this.name
+        timezone : 'America/New_York'
+        now      : dateFormat(now, "yyyymmdd")+'T'+dateFormat(now, "HHMMss")
+        events   : events
+        user     : 'contact@courseshark.com'
+      data
+
 
   Schedule
 )
