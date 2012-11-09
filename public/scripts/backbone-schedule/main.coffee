@@ -44,11 +44,11 @@ require.config(
 
 require(
   [
-    'app',
-    'jQuery',
-    'Underscore',
-    'Backbone',
-    'jQueryUI',
+    'app'
+    'jQuery'
+    'Underscore'
+    'Backbone'
+    'jQueryUI'
     'jQueryCookie'
     'Bootstrap'
   ], (Shark, $) ->
