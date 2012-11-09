@@ -27,7 +27,7 @@ define(['jQuery'
 
     load: (success) ->
       @.fetch
-        error: =>
+        error: ->
           console.log '[error] could not load schedule'
         success: =>
           # Set the global term to this schedule's
@@ -41,8 +41,8 @@ define(['jQuery'
           #   If we dont do this, then all the views that bind to the
           #   schedule's sections list will become unbound.
           setClone = @.clone()
-          setClone.unset('sections')
-          Shark.schedule.set(setClone)
+          setClone.unset 'sections'
+          Shark.schedule.set setClone
           success?()
           # Trigger the loaded event
           Shark.schedule.trigger 'load'
@@ -55,16 +55,16 @@ define(['jQuery'
         options.success?()
         return
 
-      schedule = Shark.schedulesList.get(id)
+      schedule = Shark.schedulesList.get id
       if schedule
-        schedule.load(options.success)
+        schedule.load options.success
         return
       else
         Shark.schedulesList.fetch
           success: ->
-            schedule = Shark.schedulesList.get(id)
+            schedule = Shark.schedulesList.get id
             if schedule
-              schedule.load(options.success)
+              schedule.load options.success
             else
               options.failure?()
 
@@ -77,16 +77,16 @@ define(['jQuery'
         response.sections = new ScheduleSections response.sections.map (s) ->
           s.course = new Course s.course
           s
-      response.term = Shark.terms.get(response.term)
+      response.term = Shark.terms.get response.term
       response
 
 
     addSection: (section) ->
-      @.get('sections').add (section)
+      @.get('sections').add section
 
 
     removeSection: (section) ->
-      @.get('sections').remove(@.get('sections').get(section.get('_id')))
+      @.get('sections').remove @.get('sections').get(section.get('_id'))
 
 
     contains: (section) ->
@@ -97,7 +97,7 @@ define(['jQuery'
       resultLink = 'data:text/Calendar;base64,'
       icsTxt = @icsDownloadTemplate @_generateIcsData()
       icsTxt = icsTxt.replace(/#\s*/g, "\r\n").trim()
-      resultLink+$.base64.encode(icsTxt);
+      resultLink+$.base64.encode(icsTxt)
 
     # Helper function to generate the ics file on export
     _generateIcsData: ->
@@ -116,10 +116,10 @@ define(['jQuery'
           daysets : []
         timeCombine = {}
         timeCombineTime = {}
-        for ts in section.get('timeslots')
-          startTime = new Date(ts.startTime)
-          endTime = new Date(ts.endTime)
-          endDate = (new Date(ts.endDate)).format('yyyymmdd')
+        for ts in section.get 'timeslots'
+          startTime = new Date ts.startTime
+          endTime = new Date ts.endTime
+          endDate = (new Date ts.endDate).format('yyyymmdd')
           startString = startTime.format('yyyymmdd HHMMss').replace(' ','T')
           endString = endTime.format('yyyymmdd HHMMss').replace(' ','T')
           k = startString+'---'+endString
