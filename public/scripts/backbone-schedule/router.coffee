@@ -52,6 +52,11 @@ define(['jQuery'
 
 
     landingPage: () ->
+      console.log 'howdy!'
+      if Shark.schedule.get('sections').length > 0
+        Shark.currentView.panelsView.showMaxCal()
+      else
+        Shark.currentView.panelsView.hideMaxCal()
 
     view: (id) ->
       if id
@@ -59,7 +64,7 @@ define(['jQuery'
           success: ()->
             Shark.currentView.panelsView.showMaxCal()
           faulire: ()->
-            Shark.router.navigate '', trigger: false, replace: true
+            Shark.router.navigate '', trigger: true, replace: true
 
     login: () ->
       if !Shark.session.authenticated()
@@ -71,11 +76,15 @@ define(['jQuery'
       console.log 'exporting'
       # Shark.schedule.export() if Shark.schedule
       # Nagigate back but dont trigger router
-      @navigate '', trigger: false, replace: true
+      @navigate '', trigger: true, replace: true
 
     loadSchedule: (id) ->
-      Shark.schedule.ensureScheduleLoaded id, failure: ()=>
-        @navigate '', trigger: false, replace: true
+      Shark.schedule.ensureScheduleLoaded id,
+      success: ()=>
+        if Shark.schedule.get('sections').length
+          Shark.currentView.panelsView.showMaxCal()
+      failure: ()=>
+        @navigate '', trigger: true, replace: true
 
     defaultAction: (actions) ->
       console.log 'No route', actions

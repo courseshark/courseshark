@@ -25,7 +25,7 @@ define(['jQuery'
       @.set 'name', ''
       @.get('sections').reset()
 
-    load: (scheduleToLoad) ->
+    load: (success) ->
       @.fetch
         error: =>
           console.log '[error] could not load schedule'
@@ -43,6 +43,7 @@ define(['jQuery'
           setClone = @.clone()
           setClone.unset('sections')
           Shark.schedule.set(setClone)
+          success?()
           # Trigger the loaded event
           Shark.schedule.trigger 'load'
 
@@ -56,16 +57,14 @@ define(['jQuery'
 
       schedule = Shark.schedulesList.get(id)
       if schedule
-        schedule.load()
-        options.success?()
+        schedule.load(options.success)
         return
       else
         Shark.schedulesList.fetch
           success: ->
             schedule = Shark.schedulesList.get(id)
             if schedule
-              schedule.load()
-              options.success?()
+              schedule.load(options.success)
             else
               options.failure?()
 

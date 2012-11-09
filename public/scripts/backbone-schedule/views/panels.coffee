@@ -55,6 +55,19 @@ define(['jQuery',
 			($ '#tutorial-frame').addClass 'hidden'
 			@toggleSlidePanel()
 
+		hideMaxCal: ->
+			if Shark.schedule.get('sections').length
+				($ '#tutorial-frame').addClass 'hidden'
+				Shark.showingResults = true
+			else
+				($ '#tutorial-frame').removeClass 'hidden'
+			($ '#results-frame').addClass 'hidden'
+			($ '#slide-container').removeClass('span16').addClass('span8')
+
+			($ '#slide-panel-button').addClass 'open'
+			($ '#slide-panel').removeClass 'closed'
+			($ '#max-cal-frame').addClass 'hidden'
+
 		toggleSlidePanel: ->
 			return if ($ '#results-frame').hasClass 'hidden'
 			if ($ '#slide-panel').hasClass 'closed'
