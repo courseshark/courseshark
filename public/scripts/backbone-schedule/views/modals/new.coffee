@@ -31,6 +31,9 @@ define(['jQuery',
     new: ->
       # Close the modal
       @hide()
+
+      Shark.router.navigate '', trigger: false, replace: true
+
       # Tell the schedule object to essentially reset itself
       Shark.schedule.new()
 

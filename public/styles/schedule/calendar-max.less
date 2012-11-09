@@ -1,7 +1,24 @@
 @import "vars";
 
+
+#max-cal-frame{
+	opacity: 1;
+	// Animation
+	@time: 500ms;
+	-webkit-transition: opacity @time;
+	-moz-transition: opacity @time;
+	-o-transition: opacity @time;
+	transition: opacity @time;
+	&.hidden{
+		display: block;
+		opacity: 0;
+		visibility: visible;
+	}
+}
+
+
 .weekly-calendar-panel{
-	overflow-x: hidden
+	overflow-x: hidden;
 }
 .weekly-calendar{
 	-moz-user-select: none;
@@ -21,7 +38,7 @@
 		  -ms-transition: all @time @easing;
 		      transition: all @time @easing;
 	border: 1px solid @grey;
-	border-top: 5px solid; 
+	border-top: 5px solid;
 	width:95%;
 	dl, div, .tbd-listing-head{
 		cursor:pointer;
@@ -96,7 +113,7 @@
 .wk-event-col{
 	border-left:2px double #eee !important;
 	vertical-align:top;
-	height: 100%; 
+	height: 100%;
 	margin-bottom: -1008px;
 	background:#FFF;
 	.wk-event-wrapper{

@@ -18,8 +18,13 @@ require.config(
     jQueryCookie: 'lib/jquery/jquery-cookie.req'
     jquery_cookie_js: 'lib/jquery/jquery-cookie'
 
+    jQueryBase64: 'lib/jquery/jquery-base64.req'
+    jquery_base64_js: 'lib/jquery/jquery-base64'
+
     Bootstrap: 'lib/bootstrap/bootstrap.req'
     bootstrap_js: 'lib/bootstrap/bootstrap'
+
+    dateFormat: 'lib/dateFormat/dateFormat'
 
   shim:
     jQuery:
@@ -37,6 +42,9 @@ require.config(
     jQueryCookie:
       deps: ['jQuery']
       exports: 'jQueryCookie'
+    jQueryBase64:
+      deps: ['jQuery']
+      exports: 'jQueryBase64'
     Bootstrap:
       deps: ['jQuery']
       exports: 'Bootstrap'
@@ -50,11 +58,12 @@ require(
     'Backbone'
     'jQueryUI'
     'jQueryCookie'
+    'jQueryBase64'
     'Bootstrap'
   ], (Shark, $) ->
       #The "app" dependency is passed in as "Shark"
       window.Shark = Shark
       $(document).ready ()->
-        Shark.router = Shark.initialize()
+        Shark.initialize()
 
 )

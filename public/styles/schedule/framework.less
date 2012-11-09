@@ -91,25 +91,23 @@ body{
 	}
 
 	#slide-panel{
-		&.closed{
-			position: absolute;
-			left: -100%;
-		}
+
 		z-index: 400;
 		position: absolute;
 		top: 0;
 		color: white;
 
-		// Animation
-		@time: 500ms;
-		-webkit-transition: left @time;
-		-moz-transition: left @time;
-		-o-transition: left @time;
-		transition: left @time;
-
-
 		#slide-container{
+			&.closed{
+				left: -100%;
+			}
+			position: relative;
 			// Animation
+			@time: 500ms;
+			-webkit-transition: left @time;
+			-moz-transition: left @time;
+			-o-transition: left @time;
+			transition: left @time;
 		}
 
 		#filter-frame{
@@ -125,31 +123,34 @@ body{
 				padding: 23px 0 0 15px;
 				margin-bottom: -6px;
 			}
-
-			// Slider Button
-			#slide-panel-button{
-				&:before{
-					content: "»";
-				}
-				&.open:before{
-					content: "«";
-				}
-				background: lighten(@blue, 25%);
-				color: @white;
-				padding: 0 0 0 2px;
-				position: absolute;
-				top: 0;
-				right: -30px;
-				width: 30px;
-				height: 30px;
-				font-size: 30px;
-				line-height: 23px;
-				font-weight: 300;
-				text-align: center;
-				&.open{
-					right: 0px;
-				}
-			}
 		}
 	}
 }
+
+// Slider Button
+#slide-panel-button{
+	&:before{
+		content: "»";
+	}
+	&.open:before{
+		content: "«";
+	}
+	background: lighten(@blue, 25%);
+	color: @white;
+	cursor: pointer;
+	padding: 0 0 0 2px;
+	position: absolute;
+	top: 0;
+	right: -35px;
+	width: 30px;
+	height: 30px;
+	font-size: 30px;
+	line-height: 23px;
+	font-weight: 300;
+	text-align: center;
+	&.open{
+		right: 0px;
+	}
+}
+
+

@@ -45,7 +45,7 @@ define(['jQuery',
 				course.set('visible', true)
 				course.get('sections').map (section) ->
 					section.set('visible', true)
-			
+
 			# Apply each filter
 			filter.apply(courses) for filter in @filters.models
 			# Tell the results object we are done with filtering
