@@ -45,14 +45,12 @@ define(['jQuery'
 
       'login'  : 'login'
       'view'   : 'view'
-      'export' : 'export'
 
-      ':schedule'      : 'loadSchedule'
-      ':schedule/view' : 'view'
+      ':schedule'        : 'loadSchedule'
+      ':schedule/view'   : 'view'
 
 
     landingPage: () ->
-      console.log 'howdy!'
       if Shark.schedule.get('sections').length > 0
         Shark.currentView.panelsView.showMaxCal()
       else
@@ -71,12 +69,6 @@ define(['jQuery'
         Shark.session.login()
       else
         @navigate '', trigger: false, replace: true
-
-    export: ->
-      console.log 'exporting'
-      # Shark.schedule.export() if Shark.schedule
-      # Nagigate back but dont trigger router
-      @navigate '', trigger: true, replace: true
 
     loadSchedule: (id) ->
       Shark.schedule.ensureScheduleLoaded id,

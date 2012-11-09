@@ -45,7 +45,6 @@ define(['jQuery'
 
     ical: ->
       $('#ical-button').attr('href', Shark.schedule.export()).attr('download', Shark.schedule.get('name'));
-      Shark.router.navigate 'export', trigger: true, replace: true
 
     # Renders the actual view from the template
     render: ->
