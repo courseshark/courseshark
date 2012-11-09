@@ -49,36 +49,27 @@ define(['jQuery',
 			@filterView.focusOnSearch()
 
 		showMaxCal: ->
-			Shark.showingResults = true
-			($ '#results-frame').toggleClass 'hidden'
-			($ '#slide-container').toggleClass('span16').toggleClass('span8')
+			Shark.router.navigateAppend 'view', trigger: false, replace: true
+			($ '#slide-container').addClass 'closed'
+			($ '#slide-panel-button').removeClass 'open'
+			($ '#max-cal-frame').removeClass 'hidden'
 			($ '#tutorial-frame').addClass 'hidden'
-			@toggleSlidePanel()
 
 		hideMaxCal: ->
+			Shark.router.navigateRemove 'view', trigger: false, replace: true
+			($ '#slide-container').removeClass 'closed'
+			($ '#slide-panel-button').addClass 'open'
+			($ '#max-cal-frame').addClass 'hidden'
 			if Shark.schedule.get('sections').length
 				($ '#tutorial-frame').addClass 'hidden'
-				Shark.showingResults = true
 			else
 				($ '#tutorial-frame').removeClass 'hidden'
-			($ '#results-frame').addClass 'hidden'
-			($ '#slide-container').removeClass('span16').addClass('span8')
-
-			($ '#slide-panel-button').addClass 'open'
-			($ '#slide-panel').removeClass 'closed'
-			($ '#max-cal-frame').addClass 'hidden'
 
 		toggleSlidePanel: ->
-			return if ($ '#results-frame').hasClass 'hidden'
-			if ($ '#slide-panel').hasClass 'closed'
-				Shark.router.navigateRemove 'view', trigger: false, replace: true
+			if ($ '#slide-container').hasClass 'closed'
+				@hideMaxCal()
 			else
-				Shark.router.navigateAppend 'view', trigger: false, replace: true
-			($ '#slide-panel-button').toggleClass 'open'
-			($ '#slide-panel').toggleClass 'closed'
-			($ '#max-cal-frame').removeClass 'hidden'
-
-
+				@showMaxCal()
 		# Is called every time the window resizes
 		resizeEvent: ->
 			# If we are already in a loop, dont call rAF
