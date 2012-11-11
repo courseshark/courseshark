@@ -1,9 +1,9 @@
 #Incude all the models here, then pass them back into the object
-define(['jQuery',
-	'Underscore',
-	'Backbone',
-	'views/modals/save',
-	'views/modals/load',
+define(['jQuery'
+	'Underscore'
+	'Backbone'
+	'views/modals/save'
+	'views/modals/load'
 	'views/modals/new'
 	'text!tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, NewView, templateText) ->
 
@@ -44,7 +44,7 @@ define(['jQuery',
       console.log 'share link clicked'
 
     ical: ->
-      console.log 'ical clicked'
+      $('#ical-button').attr('href', Shark.schedule.export()).attr('download', Shark.schedule.get('name'));
 
     # Renders the actual view from the template
     render: ->

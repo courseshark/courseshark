@@ -1,0 +1,34 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CourseShark//CourseShark Calendar 1.0//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH<%=name%>
+X-WR-TIMEZONE:<%=timezone%>
+X-WR-CALDESC:Term Schedule by CourseShark.com
+BEGIN:VTIMEZONE
+TZID:"<%=timezone%>"
+LAST-MODIFIED:20050809T050000Z
+BEGIN:DAYLIGHT
+DTSTART:19670430T020000
+RRULE:FREQ=YEARLY;BYMONTH=4;BYDAY=-1SU;UNTIL=19730429T070000Z
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+TZNAME:EDT
+END:DAYLIGHT
+END:VTIMEZONE<% for (var i=0, evnt; (evnt=events[i])!==undefined; i++){ for (var id=0, dayset; (dayset=evnt['daysets'][id])!==undefined; id++ ){ if (!dayset['days']||dayset['days']===""){continue;} %>
+BEGIN:VEVENT
+DTSTART;TZID=<%=timezone%>:<%=dayset['start']%>
+DTEND;TZID=<%=timezone%>:<%=dayset['end']%>
+RRULE:FREQ=WEEKLY;UNTIL=<%=dayset['endDate']%>;BYDAY=<%=dayset['days']%>
+DTSTAMP:<%=now%>
+UID:<%=''+Math.random()+user%>
+CREATED:<%=now%>
+DESCRIPTION:
+LAST-MODIFIED:<%=now%>
+LOCATION:<%=dayset['location']%>
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:<%=evnt['name']%>
+TRANSP:OPAQUE
+END:VEVENT<% } } %>
+END:VCALENDAR
