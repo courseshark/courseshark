@@ -14,7 +14,7 @@ define(['jQuery',
     render: ->
       number = @model.get 'number'
       name = @model.get('name').split(' #')[0]
-      @$el.html @scheduleSectionTemplate(number: number, name: name)
+      @$el.html @scheduleSectionTemplate(number: number, name: name, color:@model.color())
       @
 
   ScheduleSectionView
