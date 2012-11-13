@@ -15,6 +15,9 @@ define(['jQuery',
       Shark.schedule.bind "load", =>
         @render()
 
+      if not @model.resultView
+        @model.resultView = @
+
       @model.bind 'change:visible', (section, visible) =>
         if not visible
           @$el.hide()
@@ -46,10 +49,14 @@ define(['jQuery',
       @$el.find('i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up')
 
 
+    reset_add_button: ->
+      @$addButton.removeClass('added')
+
+
     add: ->
       if Shark.schedule.contains(@model)
         Shark.schedule.removeSection(@model)
-        @$addButton.removeClass('added')
+        # @$addButton.removeClass('added')
         @hoverOn()
       else
         Shark.schedule.addSection(@model)
