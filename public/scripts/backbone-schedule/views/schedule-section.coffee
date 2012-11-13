@@ -11,6 +11,13 @@ define(['jQuery',
       @scheduleSectionTemplate = _.template(scheduleSectionTemplate)
       @render()
 
+    events:
+      'click .remove' : 'remove'
+
+    remove: ->
+      Shark.schedule.removeSection(@model)
+      console.log(Shark.schedule.get('sections'))
+
     render: ->
       number = @model.get 'number'
       name = @model.get('name').split(' #')[0]
