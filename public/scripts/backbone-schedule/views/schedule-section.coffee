@@ -12,11 +12,11 @@ define(['jQuery',
       @render()
 
     events:
-      'click .remove' : 'remove'
+      'click .schedule-remove' : 'schedule_remove'
 
-    remove: ->
+    schedule_remove: ->
+      console.log('hi')
       Shark.schedule.removeSection(@model)
-      console.log(Shark.schedule.get('sections'))
 
     render: ->
       number = @model.get 'number'
