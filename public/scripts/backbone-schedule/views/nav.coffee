@@ -5,7 +5,8 @@ define(['jQuery'
 	'views/modals/save'
 	'views/modals/load'
 	'views/modals/new'
-	'text!tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, NewView, templateText) ->
+  'views/modals/register'
+	'text!tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, NewView, RegisterView, templateText) ->
 
   class navView extends Backbone.View
 
@@ -25,6 +26,7 @@ define(['jQuery'
       'click #print-button': 'print'
       'click #link-button' : 'link'
       'click #ical-button' : 'ical'
+      'click #register-button' : 'register'
 
     save: ->
       return Shark.session.login() if not Shark.session.authenticated()
@@ -46,12 +48,16 @@ define(['jQuery'
     ical: ->
       $('#ical-button').attr('href', Shark.schedule.export()).attr('download', Shark.schedule.get('name'));
 
+    register: ->
+      @registerView.show()
+
     # Renders the actual view from the template
     render: ->
       @$el.html @template()
       @loadView = new LoadView()
       @saveView = new SaveView()
       @newView  = new NewView()
+      @registerView = new RegisterView
 
   # Whatever is returned here will be usable by other modules
   navView
