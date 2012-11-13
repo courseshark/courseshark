@@ -15,7 +15,6 @@ define(['jQuery',
       'click .schedule-remove' : 'schedule_remove'
 
     schedule_remove: ->
-      console.log('hi')
       Shark.schedule.removeSection(@model)
 
     render: ->

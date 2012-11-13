@@ -56,7 +56,6 @@ define(['jQuery',
     add: ->
       if Shark.schedule.contains(@model)
         Shark.schedule.removeSection(@model)
-        # @$addButton.removeClass('added')
         @hoverOn()
       else
         Shark.schedule.addSection(@model)
