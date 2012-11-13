@@ -19,6 +19,8 @@ define(['jQuery',
       # Delete a removed section from the list
       Shark.schedule.get('sections').bind 'remove', (section) =>
         section.listView.remove()
+        section.listView = 0
+        section.resultView.reset_add_button()
 
       # Empty the list on reset ( triggered on load )
       Shark.schedule.get('sections').bind 'reset', () =>

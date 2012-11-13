@@ -1,11 +1,13 @@
 <div class="row-fluid">
   <div class="schedule-section span24">
-  	
     <div class="span20">
-      <div class="span1" style="background:<%=color%>;height:5px;"></div> 
-      <div class="offset1">
-      	<%= number %> : <%=name%> 
+      <div class="span1 colorbar" style="background-color: <%= color %>"></div>
+      <div class="offset1 span19">
+      	<%= number %> : <%=name%>
       </div>
+    </div>
+    <div class="span1 offset2 schedule-remove">
+        X
     </div>
   </div>
 </div>
