@@ -67,9 +67,10 @@ define(['jQuery',
       @$el.hide() if not @model.get 'visible'
       @$addButton = @$el.find('.add')
       # Color/bold the correct day letters
+      color = @model.color()
       _.each @model.get('timeslots'), (timeslot) =>
         _.each timeslot.days, (day) =>
-          @$el.find('#' + day).addClass('selected')
+          @$el.find('#' + day).addClass('selected').css 'color', color
 
       # Mark added if it is in the schedule?
       if Shark.schedule.contains(@model)
