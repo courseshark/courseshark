@@ -15,9 +15,7 @@ define(['jQuery',
     show: ->
       @list.empty()
       Shark.schedule.get('sections').each (section) =>
-        console.log(section)
         @list.append $("<li></li>").text section.get('number')
-        console.log(@list)
       @$el.modal 'show'
 
     hide: ->
