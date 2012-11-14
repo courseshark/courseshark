@@ -1,0 +1,36 @@
+@import "vars";
+
+.modal-backdrop{
+  background: @backdrop;
+}
+
+.modal{
+}
+
+.modal.fade{
+  top: 50%;
+
+  // @smallScale: 0.75;
+
+  // -webkit-transform: scale(@smallScale);
+  // -moz-transform: scale(@smallScale);
+  // -ms-transform: scale(@smallScale);
+  // -o-transform: scale(@smallScale);
+  // transform: scale(@smallScale);
+
+  @time: 210ms;
+
+  -webkit-transition: opacity @time linear,-webkit-transform @time ease-out;
+  -moz-transition: opacity @time linear,-moz-transform @time ease-out;
+  -ms-transition: opacity @time linear,-ms-transform @time ease-out;
+  -o-transition: opacity @time linear,-o-transform @time ease-out;
+  transition: opacity @time linear,transform @time ease-out;
+}
+
+.modal.fade.in{
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
+  transform: none;
+}
