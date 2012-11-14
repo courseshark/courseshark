@@ -132,6 +132,62 @@ exports = module.exports = function(app){
   })
 
 
+
+
+
+  // Link Schedules
+  app.post('/links', function(req, res){
+    console.log(req.body);
+    makeLink(req, res);
+  })
+  app.put('/links/:hash?', function(req, res){
+    makeLink(req,res);
+  })
+  app.get('/links/:hash', function(req, res){
+    ScheduleLink.findOne({hash:req.params.hash}, function(err,link){
+      if ( err || !link ){ res.send(404); return; }
+      res.json(link);
+    })
+  })
+
+
+  var makeLink = function(req, res){
+    function randomHash(){
+      return (((1+Math.random())*0x10000000)|0).toString(34).substr(1)
+    }
+    var fromClientSide = req.body;
+    link = new ScheduleLink()
+    link.schedule = fromClientSide.schedule
+    if ( req.user ){
+      link.user = req.user._id
+    }
+    ScheduleLink.findOne({
+          '_schedule.term.id': link.schedule.term.id
+        , '_schedule.name' : link.schedule.name
+        , '_schedule.school' : link.schedule.school
+        , '_schedule.sections.id': {$all : link.schedule.sections.map(function(e){return e._id}) }
+        }, function(err, existingLink){
+      if ( err ){ console.error(err); }
+      if ( !existingLink ){
+        link.hash = randomHash()
+        link.save(function(err){
+          shareLink = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
+          res.json(link)
+        })
+      }else{
+        app.getExistingLink('http://'+req.headers.host+'/sl/'+existingLink.hash, req.user, function(shareLink){
+          res.json(existingLink)
+        })
+      }
+    });
+  }
+
+
+
+
+
+
+
   /**
   *
   * Schedule CRUD

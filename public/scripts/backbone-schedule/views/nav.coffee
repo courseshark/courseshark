@@ -4,8 +4,10 @@ define(['jQuery'
 	'Backbone'
 	'views/modals/save'
 	'views/modals/load'
-	'views/modals/new'
-	'text!tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, NewView, templateText) ->
+  'views/modals/new'
+  'views/modals/share'
+  'models/share-link'
+	'text!tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, NewView, ShareView, ShareLink, templateText) ->
 
   class navView extends Backbone.View
 
@@ -41,7 +43,7 @@ define(['jQuery'
       console.log 'print clicked'
 
     link: ->
-      console.log 'share link clicked'
+      @shareView.show()
 
     ical: ->
       $('#ical-button').attr('href', Shark.schedule.export()).attr('download', Shark.schedule.get('name'));
@@ -52,6 +54,7 @@ define(['jQuery'
       @loadView = new LoadView()
       @saveView = new SaveView()
       @newView  = new NewView()
+      @shareView  = new ShareView model:new ShareLink(schedule:Shark.schedule)
 
   # Whatever is returned here will be usable by other modules
   navView
