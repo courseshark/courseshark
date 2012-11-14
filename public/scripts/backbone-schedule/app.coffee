@@ -5,13 +5,9 @@ define(['jQuery','Underscore','Backbone', 'router', 'collections/terms', 'models
 
 	#All the router's initialize function
 	initialize = () ->
-		Shark.terms = new Terms
-		Shark.terms.fetch
-			success: ->
-				Shark.school = new School
-				Shark.school.fetch
-					success: ->
-						Shark.term = Shark.terms.get (Shark.school.get 'currentTerm')._id
+		Shark.terms = new Terms(CS.terms)
+		Shark.school = new School(CS.school)
+		Shark.term = Shark.terms.get (Shark.school.get 'currentTerm')._id
 		Router.initialize @
 
   #Return an object with the intialize method
