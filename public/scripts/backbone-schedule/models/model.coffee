@@ -11,7 +11,6 @@ define(['jQuery',
       for prop of @attributes
         if typeof @attributes[prop] is 'object'
           if typeof @attributes[prop].toJSON is 'function'
-            console.log 'calling recurse from', @, 'on', prop
             res[prop] = _.clone(@attributes[prop].toJSON())
           else
             res[prop] = _.clone(@attributes[prop])

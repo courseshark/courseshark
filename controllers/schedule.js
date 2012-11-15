@@ -137,7 +137,6 @@ exports = module.exports = function(app){
     if ( req.user ){
       link.user = req.user._id
     }
-    console.log(link.schedule);
     ScheduleLink.findOne({
           '_schedule.term._id': link.schedule.term.id||link.schedule.term._id
         , '_schedule.name' : link.schedule.name

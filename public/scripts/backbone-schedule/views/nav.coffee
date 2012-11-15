@@ -52,8 +52,7 @@ define(['jQuery'
       $('#ical-button').attr('href', Shark.schedule.export()).attr('download', Shark.schedule.get('name'));
 
     register: ->
-      console.log 'register'
-      #@registerView.show()
+      @registerView.show()
 
     # Renders the actual view from the template
     render: ->
