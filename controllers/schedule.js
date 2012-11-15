@@ -11,10 +11,6 @@ exports = module.exports = function(app){
   *
   **/
 
-  app.get('/schedule', requireSchool, function(req, res){
-    res.redirect('/s/');
-  })
-
   app.get('/s(/*)?', requireSchool, function(req, res){
     res.render('schedule/schedule', {school: req.school._id, layout: 'app-layout.ejs', built: app.settings.env!="development"});
   })
@@ -140,6 +136,7 @@ exports = module.exports = function(app){
     console.log(link.schedule);
     ScheduleLink.findOne({
           '_schedule.term._id': link.schedule.term.id||link.schedule.term._id
+        , '_schedule.name' : link.schedule.name
         , '_schedule.school' : link.schedule.school
         , '_schedule.sections._id': {$all : link.schedule.sections.map(function(e){return e._id}) }
         }, function(err, existingLink){
