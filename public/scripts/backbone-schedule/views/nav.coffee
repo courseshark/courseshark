@@ -6,8 +6,10 @@ define(['jQuery'
 	'views/modals/load'
   'views/modals/new'
   'views/modals/share'
+  'views/modals/register'
   'models/share-link'
-	'text!tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, NewView, ShareView, ShareLink, templateText) ->
+  'text!tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, NewView, ShareView, RegisterView, ShareLink, templateText) ->
+
 
   class navView extends Backbone.View
 
@@ -27,6 +29,7 @@ define(['jQuery'
       'click #print-button': 'print'
       'click #link-button' : 'link'
       'click #ical-button' : 'ical'
+      'click #register-button' : 'register'
 
     save: ->
       return Shark.session.login() if not Shark.session.authenticated()
@@ -48,13 +51,18 @@ define(['jQuery'
     ical: ->
       $('#ical-button').attr('href', Shark.schedule.export()).attr('download', Shark.schedule.get('name'));
 
+    register: ->
+      console.log 'register'
+      #@registerView.show()
+
     # Renders the actual view from the template
     render: ->
       @$el.html @template()
       @loadView = new LoadView()
       @saveView = new SaveView()
       @newView  = new NewView()
-      @shareView  = new ShareView model:new ShareLink(schedule:Shark.schedule)
+      @shareView  = new ShareView()
+      @registerView = new RegisterView()
 
   # Whatever is returned here will be usable by other modules
   navView
