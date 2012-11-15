@@ -145,11 +145,11 @@ exports = module.exports = function(app){
         link.hash = randomHash()
         link.save(function(err){
           if ( err ){ console.log(err); }
-          shareLink = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
+          shareLink = app.createLink('http://'+req.headers.host+'/s/l/'+link.hash, req.user)
           res.json(link)
         })
       }else{
-        app.getExistingLink('http://'+req.headers.host+'/sl/'+existingLink.hash, req.user, function(shareLink){
+        app.getExistingLink('http://'+req.headers.host+'/s/l/'+existingLink.hash, req.user, function(shareLink){
           res.json(existingLink)
         })
       }
