@@ -1,13 +1,14 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
+        'models/model'
         'dateFormat'
         'collections/schedule-sections'
         'models/course'
         'models/section'
-        'text!tmpl/schedule/downloads/ics.ejs'], ($,_, Backbone, dateFormat, ScheduleSections, Course, Section, icsTemplate) ->
+        'text!tmpl/schedule/downloads/ics.ejs'], ($, _, Backbone, SharkModel, dateFormat, ScheduleSections, Course, Section, icsTemplate) ->
 
-  class Schedule extends Backbone.Model
+  class Schedule extends SharkModel
 
     idAttribute: "_id"
     urlRoot: "/schedules/"
@@ -18,6 +19,15 @@ define(['jQuery'
 
     initialize: ->
       @icsDownloadTemplate = _.template icsTemplate.replace(/\n/g, '#\n').trim()
+
+    toJSON: ->
+      res = {}
+      for prop of @attributes
+        if typeof @attributes[prop] is 'object'
+          res[prop] = _.clone(@attributes[prop].toJSON?())
+        else
+          res[prop] = _.clone(@attributes[prop])
+      return res;
 
     new: ->
       @.unset '__v'
@@ -75,7 +85,7 @@ define(['jQuery'
       response = response[0] if response.length > 0
       if response.sections
         response.sections = new ScheduleSections response.sections.map (s) ->
-          s.course = new Course s.course
+          s.course = (new Course s.course).id
           s
       response.term = Shark.terms.get response.term
       response

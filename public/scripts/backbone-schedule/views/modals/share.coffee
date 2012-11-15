@@ -20,7 +20,7 @@ define(['jQuery',
         url:'/links'
         type: 'post'
         data:
-          schedule: JSON.parse JSON.stringify Shark.schedule.toJSON()
+          schedule: Shark.schedule.toJSON()
         dataType: 'json'
         success: (link)=>
           @$link.html link.hash

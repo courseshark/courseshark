@@ -1,8 +1,9 @@
-define(['jQuery',
-        'Underscore',
-        'Backbone'], ($,_, Backbone) ->
+define(['jQuery'
+        'Underscore'
+        'Backbone'
+        'models/model'], ($, _, Backbone, SharkModel) ->
 
-  class Section extends Backbone.Model
+  class Section extends SharkModel
 
     idAttribute: "_id"
 
