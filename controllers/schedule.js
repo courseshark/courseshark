@@ -11,7 +11,6 @@ exports = module.exports = function(app){
   *
   **/
 
-
   app.get('/schedule', requireSchool, function(req, res){
     res.redirect('/s/');
   })
