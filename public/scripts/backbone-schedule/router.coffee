@@ -3,7 +3,8 @@ define(['jQuery'
         'Backbone'
         'models/schedule'
         'collections/schedules'
-        'models/session'], ($, _, Backbone, Schedule, Schedules, Session) ->
+        'models/session'
+        'models/share-link'], ($, _, Backbone, Schedule, Schedules, Session, ShareLink) ->
 
   $.ajaxSetup statusCode:
     401: () ->
@@ -41,13 +42,16 @@ define(['jQuery'
         Shark.router.navigate fragment + '/' + toAdd, navigateOptions
 
     routes:
-      ''       : 'landingPage'
+      ''                  : 'landingPage'
 
-      'login'  : 'login'
-      'view'   : 'view'
+      'login'             : 'login'
+      'view'              : 'view'
 
-      ':schedule'        : 'loadSchedule'
-      ':schedule/view'   : 'view'
+      'l/:link'           : 'showLink'
+      'l/:link/view'      : 'showLink'
+
+      ':schedule'         : 'loadSchedule'
+      ':schedule/view'    : 'view'
 
 
     landingPage: () ->
@@ -64,7 +68,7 @@ define(['jQuery'
           faulire: ()->
             Shark.router.navigate '', trigger: true, replace: true
 
-    login: () ->
+    login: ->
       if !Shark.session.authenticated()
         Shark.session.login()
       else
@@ -77,6 +81,16 @@ define(['jQuery'
           Shark.currentView.panelsView.showMaxCal()
       failure: ()=>
         @navigate '', trigger: true, replace: true
+
+    showLink: (link) ->
+      Shark.shareLink = new ShareLink hash: link
+      Shark.shareLink.fetch
+        success: ->
+          Shark.shareLink.get('schedule').setLive()
+          Shark.currentView.panelsView.showMaxCal()
+        error: ->
+          console.error "ERROR loading link"
+
 
     defaultAction: (actions) ->
       console.log 'No route', actions

@@ -23,17 +23,18 @@ define(['jQuery',
           schedule: Shark.schedule.toJSON()
         dataType: 'json'
         success: (link)=>
-          @$link.html link.hash
+          @$link.attr 'href', '/s/l/'+link.hash
+          @$linkText.text window.location.origin+'/s/l/'+link.hash
 
       @$el.modal 'show'
 
     hide: ->
-
       @$el.modal('hide')
 
     render: ->
       @$el.html @template()
-      @$link = @$el.find('.urlHash')
+      @$link = @$el.find('#share-link-result')
+      @$linkText = @$link.find('.link-text')
       ($ 'body').append @$el
 
 

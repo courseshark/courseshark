@@ -41,21 +41,24 @@ define(['jQuery'
           console.log '[error] could not load schedule'
         success: =>
           # Set the global term to this schedule's
-          Shark.term = @.get 'term'
-          # Set the sections
-          Shark.schedule.get('sections').reset()
-          @.get('sections').each (section) ->
-            Shark.schedule.get('sections').add section
-          # Set the other properties (minus sections)
-          # Here we make a clone, then unset the sections attribute
-          #   If we dont do this, then all the views that bind to the
-          #   schedule's sections list will become unbound.
-          setClone = @.clone()
-          setClone.unset 'sections'
-          Shark.schedule.set setClone
-          success?()
-          # Trigger the loaded event
-          Shark.schedule.trigger 'load'
+          @setLive(success)
+
+    setLive: (success) ->
+      Shark.term = @.get 'term'
+      # Set the sections
+      Shark.schedule.get('sections').reset()
+      @.get('sections').each (section) ->
+        Shark.schedule.get('sections').add section
+      # Set the other properties (minus sections)
+      # Here we make a clone, then unset the sections attribute
+      #   If we dont do this, then all the views that bind to the
+      #   schedule's sections list will become unbound.
+      setClone = @.clone()
+      setClone.unset 'sections'
+      Shark.schedule.set setClone
+      success?()
+      # Trigger the loaded event
+      Shark.schedule.trigger 'load'
 
     ensureScheduleLoaded: (id, options) ->
       if typeof options is 'function'

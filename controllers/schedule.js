@@ -28,32 +28,8 @@ exports = module.exports = function(app){
     res.redirect('/sl/'+req.params.hash);
   });
   app.get('/sl/:hash', function(req, res){
-    ScheduleLink.findOne({hash: req.params.hash}, function(err, scheduleLink){
-      if ( !scheduleLink ){
-        res.send(404);
-      }else{
-        var schedule = scheduleLink.schedule
-        if ( !scheduleLink.schedule.term ){
-          scheduleLink.schedule.term = schedulLink.schedule.sections[0]?schedulLink.schedule.sections[0].term:'';
-        }
-        scheduleLink.schedule.term = scheduleLink.schedule.term['_id']?scheduleLink.schedule.term['_id']:scheduleLink.schedule.term
-        Term.findOne({_id: scheduleLink.schedule.term}, function(err, term){
-          scheduleLink.schedule.term = term;
-
-          // Correct for timezone issue by re-finding the sections in the schedule
-          sectionIds = schedule.sections.map(function(s){return s._id});
-
-          Section.find({_id:{$in: sectionIds}}).populate('course').populate('department').exec(function(err, sections){
-            schedule.sections = sections;
-            sJson = JSON.stringify(schedule)
-            res.render('schedule/schedule', {link: true, school: schedule.school._id, schedule: sJson, noJS: true})
-          })
-        })
-      }
-    })
-  })
-
-
+    res.redirect('/s/l/'+req.params.hash);
+  });
 
   /**
   *
@@ -137,7 +113,6 @@ exports = module.exports = function(app){
 
   // Link Schedules
   app.post('/links', function(req, res){
-    console.log(req.body);
     makeLink(req, res);
   })
   app.put('/links/:hash?', function(req, res){
@@ -158,19 +133,21 @@ exports = module.exports = function(app){
     var fromClientSide = req.body;
     link = new ScheduleLink()
     link.schedule = fromClientSide.schedule
+    link.schedule._id = undefined;
     if ( req.user ){
       link.user = req.user._id
     }
+    console.log(link.schedule);
     ScheduleLink.findOne({
-          '_schedule.term.id': link.schedule.term.id
-        , '_schedule.name' : link.schedule.name
+          '_schedule.term._id': link.schedule.term.id||link.schedule.term._id
         , '_schedule.school' : link.schedule.school
-        , '_schedule.sections.id': {$all : link.schedule.sections.map(function(e){return e._id}) }
+        , '_schedule.sections._id': {$all : link.schedule.sections.map(function(e){return e._id}) }
         }, function(err, existingLink){
       if ( err ){ console.error(err); }
       if ( !existingLink ){
         link.hash = randomHash()
         link.save(function(err){
+          if ( err ){ console.log(err); }
           shareLink = app.createLink('http://'+req.headers.host+'/sl/'+link.hash, req.user)
           res.json(link)
         })
