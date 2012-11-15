@@ -16,7 +16,25 @@ exports = module.exports = function(app){
   })
 
   app.get('/s(/*)?', requireSchool, function(req, res){
-    res.render('schedule/schedule', {school: req.school._id, layout: 'app-layout.ejs', built: app.settings.env!="development"});
+    School.findById(req.school.id, {
+        terms:0
+      , oldId:0
+      , city:0
+      , state:0
+      , zip:0
+      , waitlist:0
+      , enabled:0
+      , notificationCron:0
+      , notifications:0
+      , created:0
+      , modified:0
+      }, function(err, school){
+          Term.find({school: req.school}, {
+            school:0
+            }, function(err, terms){
+                res.render('schedule/schedule', {school: school, terms: terms, layout: 'app-layout.ejs', built: app.settings.env!="development"});
+          })
+    })
   })
 
   app.get('/launch-schedule', requireSchool, function(req, res){

@@ -3,6 +3,10 @@
 @text-grey: #8a949e;
 
 
+@backdrop: #555;
+@bg-blue: #ecf2f7;
+
+
 @black: #141414;
 @blue: #3FA9F5;
 @dark-red: #A50505;
@@ -16,6 +20,10 @@
 @white: #fff;
 
 
+
+@corners: 5px;
+
+
 .background-gradient-linear(@from: #ddd, @to: #fff){
 	background: @from;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@{from}', endColorstr='@{to}');
@@ -24,5 +32,4 @@
   background-image: -ms-linear-gradient(top, @from, @to);
   background-image: -o-linear-gradient(top, @from, @to);
   background-image: linear-gradient(top, @from, @to);
-
 }

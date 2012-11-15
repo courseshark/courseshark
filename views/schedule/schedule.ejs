@@ -14,7 +14,6 @@
 	})();
 
 	window.CS = {
-
 			auth: {
 				<%if (loggedIn){%>
 					user_id: "<%=user.id%>"
@@ -22,7 +21,8 @@
 				,	user: <%-JSON.stringify(user)%>
 				<%}%>
 			}
-		,	school: "<%= school %>"
+		,	school: <%-JSON.stringify(school)%>
+		, terms: <%-JSON.stringify(terms)%>
 		,	serverScheduleVersion: "<%= revision %>"
 		, baseDir: '/s/'
 	}
