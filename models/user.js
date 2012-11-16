@@ -1,6 +1,7 @@
 var util = require('../lib/utils')
   , crypto = require('ezcrypto').Crypto
   , mongoose = require('mongoose')
+  , ScheduleSchema = require('./timeslot').ScheduleSchema
   , Schema = mongoose.Schema
   , UserSchema
 
@@ -28,6 +29,7 @@ UserSchema = new Schema({
   , modified: { type: Date, 'default': Date.now }
   , oauth: { type: String }
   , admin: { type: Boolean, 'default': false }
+  , schedule: [ScheduleSchema]
 });
 
 UserSchema.virtual('password')
