@@ -1,10 +1,11 @@
-define(['jQuery',
-        'Underscore',
-        'Backbone',
+define(['jQuery'
+        'Underscore'
+        'Backbone'
+        'models/model'
         'collections/result-courses'
-        'collections/result-sections'], ($,_, Backbone, ResultCourses, ResultSections) ->
+        'collections/result-sections'], ($,_, Backbone, SharkModel, ResultCourses, ResultSections) ->
 
-  class SearchResults extends Backbone.Model
+  class SearchResults extends SharkModel
 
     url: '/search'
 
@@ -43,7 +44,7 @@ define(['jQuery',
       @get('courses').each (course) ->
         course.get('sections').each (section, i) ->
           # Add reference back to course into section
-          section.set('course', course)
+          # section.set('course', course)
           # If it exists in the schedule object, replace it with the schedule's version
           if Shark.schedule.contains(section)
             course.attributes.sections.models[i] = Shark.schedule.get('sections').get(section.get('_id'))

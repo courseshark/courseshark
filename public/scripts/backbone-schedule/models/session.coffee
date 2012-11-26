@@ -1,9 +1,10 @@
-define(['jQuery',
-        'Underscore',
+define(['jQuery'
+        'Underscore'
         'Backbone'
-        'views/auth'], ($,_, Backbone, AuthLoginView) ->
+        'models/model'
+        'views/auth'], ($, _, Backbone, SharkModel, AuthLoginView) ->
 
-  class Session extends Backbone.Model
+  class Session extends SharkModel
 
     defaults:
       access_token: null

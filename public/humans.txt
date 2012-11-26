@@ -9,7 +9,7 @@
 
 	CoFounder:Greg Cobb
 	Contact: greg [at] courseshark.com
-	Twitter: @gregmcobb 
+	Twitter: @gregmcobb
 
 	Design Consultation:Sam Lui
 	Contact: sam [at] courseshark.com
@@ -22,13 +22,13 @@
 	business.
 
 	Dr. James D. Foley
-	For: Dr. Foley's teachings helped in the design 
+	For: Dr. Foley's teachings helped in the design
 	and evaluation of the website as it is now.
 	Website:http://www.cc.gatech.edu/fac/Jim.Foley/foley.html
-	
-	Chris Millar, Kevin Robertson, Nina Flaherty, 
-	Kevin Anzalone, and everyone who has helped test / 
-	advise the project along the way. 
+
+	Chris Millar, Kevin Robertson, Nina Flaherty,
+	Kevin Anzalone, and everyone who has helped test /
+	advise the project along the way.
 
 /* SITE */
 	Language:English
