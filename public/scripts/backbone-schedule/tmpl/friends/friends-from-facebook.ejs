@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+  <h3>Find Facebook Friends</h3>
+</div>
+<div class="modal-body">
+  <div class="row-fluid">
+    <ul class="media-list">
+      <% list.each(function(user){   if (!user.get('installed')){ return; } %>
+      <li class="media friend-option" data-user="<%=user.get('name')%>" data-user-id="<%=user.get('id')%>">
+        <div class="pull-left profile-picture">
+          <img class="media-object" src="https://graph.facebook.com/<%=user.get('id')%>/picture" alt="<%=user.get('name')%>" />
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading"><%=user.get('name')%></h4>
+          <p><button class="btn btn-mini select-friend">Add</button></p>
+        </div>
+      </li>
+      <% }); %>
+    </ul>
+  </div>
+</div>
+<div class="modal-footer">
+  <a href="#" id="do-add-friends" class="btn btn-success">Add Friends</a>
+  <a href="#" class="btn" data-dismiss="modal">Close</a>
+</div>

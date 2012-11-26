@@ -1,3 +1,4 @@
+var FB = require('FB');
 /*
  * User management site pages
  */
@@ -15,6 +16,22 @@ exports = module.exports = function(app){
         })
       })
     })
+  })
+
+  // Find the user's friends with a facebook request
+  app.get('/friends/find-from-facebook', requireLogin, function(req, res){
+    if (req.session.auth.facebook) {
+      sessionFB = req.session.auth.facebook
+      FB.options({accessToken: sessionFB.accessToken});
+      FB.api('me/friends', { fields: ['id', 'first_name', 'last_name', 'name', 'installed'] }, function (fbRes) {
+        if(!fbRes || fbRes.error) {
+          fbRes = !fbRes ? {error:'No Results'} : fbRes;
+        }
+        res.json(fbRes);
+      });
+    }else{
+      res.json({error:'No Facebook token exists for user'});
+    }
   })
 
   app.get('/friends/add', requireLogin, function(req, res){

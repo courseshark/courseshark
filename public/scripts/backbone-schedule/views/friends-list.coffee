@@ -1,7 +1,9 @@
-define(['jQuery',
-        'Underscore',
-        'Backbone',
-        'text!tmpl/friends/friends-list.ejs'], ($,_, Backbone, friendsListTemplate) ->
+define(['jQuery'
+        'Underscore'
+        'Backbone'
+        'collections/facebook-friends-results'
+        'views/friends-from-facebook'
+        'text!tmpl/friends/friends-list.ejs'], ($,_, Backbone, FacebookFriendsResults, FriendsFromFacebookView, friendsListTemplate) ->
 
   class FriendsListView extends Backbone.View
 
@@ -12,8 +14,19 @@ define(['jQuery',
 
       @render();
 
+    events:
+      'click #friend-list-add-from-facebook': 'addFirendFromFacebook'
+
     render: ->
       @$el.html $ @friendsListTemplate()
+
+
+    addFirendFromFacebook: ->
+      $.ajax url: '/friends/find-from-facebook', success: (d) ->
+        if not d.error
+          friends = d.data
+          @friendPicker = new FriendsFromFacebookView(model: new FacebookFriendsResults(friends))
+          @friendPicker.show()
 
   FriendsListView
 )
