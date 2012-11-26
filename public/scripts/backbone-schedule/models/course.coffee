@@ -1,8 +1,9 @@
 define(['jQuery',
         'Underscore',
-        'Backbone'], ($,_, Backbone) ->
+        'Backbone'
+        'models/model'], ($, _, Backbone, SharkModel) ->
 
-  class Course extends Backbone.Model
+  class Course extends SharkModel
 
     idAttribute: "_id"
 

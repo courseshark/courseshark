@@ -1,8 +1,9 @@
 define(['jQuery',
         'Underscore',
-        'Backbone'], ($,_, Backbone) ->
+        'Backbone'
+        'models/model'], ($, _, Backbone, SharkModel) ->
 
-  class Filter extends Backbone.Model
+  class Filter extends SharkModel
 
     defaults:
       name: "Unnamed Filter"

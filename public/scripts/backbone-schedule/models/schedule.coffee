@@ -1,13 +1,14 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
+        'models/model'
         'dateFormat'
         'collections/schedule-sections'
         'models/course'
         'models/section'
-        'text!tmpl/schedule/downloads/ics.ejs'], ($,_, Backbone, dateFormat, ScheduleSections, Course, Section, icsTemplate) ->
+        'text!tmpl/schedule/downloads/ics.ejs'], ($, _, Backbone, SharkModel, dateFormat, ScheduleSections, Course, Section, icsTemplate) ->
 
-  class Schedule extends Backbone.Model
+  class Schedule extends SharkModel
 
     idAttribute: "_id"
     urlRoot: "/schedules/"
@@ -18,6 +19,15 @@ define(['jQuery'
 
     initialize: ->
       @icsDownloadTemplate = _.template icsTemplate.replace(/\n/g, '#\n').trim()
+
+    toJSON: ->
+      res = {}
+      for prop of @attributes
+        if typeof @attributes[prop] is 'object'
+          res[prop] = _.clone(@attributes[prop].toJSON?())
+        else
+          res[prop] = _.clone(@attributes[prop])
+      return res;
 
     new: ->
       @.unset '__v'
@@ -31,21 +41,24 @@ define(['jQuery'
           console.log '[error] could not load schedule'
         success: =>
           # Set the global term to this schedule's
-          Shark.term = @.get 'term'
-          # Set the sections
-          Shark.schedule.get('sections').reset()
-          @.get('sections').each (section) ->
-            Shark.schedule.get('sections').add section
-          # Set the other properties (minus sections)
-          # Here we make a clone, then unset the sections attribute
-          #   If we dont do this, then all the views that bind to the
-          #   schedule's sections list will become unbound.
-          setClone = @.clone()
-          setClone.unset 'sections'
-          Shark.schedule.set setClone
-          success?()
-          # Trigger the loaded event
-          Shark.schedule.trigger 'load'
+          @setLive(success)
+
+    setLive: (success) ->
+      Shark.term = @.get 'term'
+      # Set the sections
+      Shark.schedule.get('sections').reset()
+      @.get('sections').each (section) ->
+        Shark.schedule.get('sections').add section
+      # Set the other properties (minus sections)
+      # Here we make a clone, then unset the sections attribute
+      #   If we dont do this, then all the views that bind to the
+      #   schedule's sections list will become unbound.
+      setClone = @.clone()
+      setClone.unset 'sections'
+      Shark.schedule.set setClone
+      success?()
+      # Trigger the loaded event
+      Shark.schedule.trigger 'load'
 
     ensureScheduleLoaded: (id, options) ->
       if typeof options is 'function'
@@ -75,7 +88,7 @@ define(['jQuery'
       response = response[0] if response.length > 0
       if response.sections
         response.sections = new ScheduleSections response.sections.map (s) ->
-          s.course = new Course s.course
+          s.course = (new Course s.course).id
           s
       response.term = Shark.terms.get response.term
       response
