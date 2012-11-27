@@ -28,6 +28,7 @@ UserSchema = new Schema({
   , created: { type: Date, 'default': Date.now }
   , modified: { type: Date, 'default': Date.now }
   , oauth: { type: String }
+  , oauthInfo: {type: {}}
   , admin: { type: Boolean, 'default': false }
   , schedule: [ScheduleSchema]
 });
