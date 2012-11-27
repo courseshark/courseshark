@@ -1,15 +1,15 @@
-self.onmessage = function (event) {	
-	
+self.onmessage = function (event) {
+
 	data = JSON.parse(event.data);
 	schedule = data.schedule;
 	section  = data.section;
-	
+
 	conflicts = testConflicts(schedule, section);
-	
+
 	res = data;
 	res.conflicts = conflicts;
 	res.section = section;
-	
+
 	self.postMessage(JSON.stringify(res));
 };
 
