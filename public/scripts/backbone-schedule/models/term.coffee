@@ -7,7 +7,7 @@ define(['jQuery'
 
     idAttribute: "_id"
 
-  	default:
+  	defaults:
   		rank: 0
 
   Term
