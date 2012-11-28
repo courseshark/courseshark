@@ -1,11 +1,13 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'models/course'], ($,_, Backbone, Course) ->
+        'models/friend'], ($,_, Backbone, Friend) ->
 
   class Friends extends Backbone.Collection
 
-    model: Course
+    model: Friend
+
+    url: "/sandbox/friends"
 
     comparator: (friend)->
       friend.get('name')

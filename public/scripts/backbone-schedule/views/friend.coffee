@@ -11,8 +11,11 @@ define(['jQuery',
       @friendTemplate = _.template(friendTemplate)
       @render()
 
+    remove_friend: ->
+      Shark.friendsList.remove(@model)
+
     render: ->
-      @$el.html @friendTemplate(name: @model.name)
+      @$el.html @friendTemplate(name: @model.get('firstName') + " " + @model.get('lastName'))
       @
 
   FriendView

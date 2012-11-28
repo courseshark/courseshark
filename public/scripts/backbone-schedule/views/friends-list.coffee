@@ -13,12 +13,16 @@ define(['jQuery',
 
       @render();
 
+    add: ->
+      Shark.friendsList.add new Friend {firstName: "Bob", lastName: "Smith"}
+
     render: ->
       @$el.html $ @friendsListTemplate()
       @$list = @$el.find('#friends-list-content') if not @$list
-      @$list.html (new FriendView model: {name: "Bob"}).el
-      @$list.append (new FriendView model: {name: "Jill"}).el
-      @$list.append (new FriendView model: {name: "Sam"}).el
+      Shark.friendsList.fetch success: =>
+        Shark.friendsList.each (friend) =>
+          @$list.append (new FriendView model: friend).el
+
 
   FriendsListView
 )
