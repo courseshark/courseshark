@@ -15,7 +15,7 @@ define(['jQuery',
       'click .schedule-remove' : 'schedule_remove'
 
     schedule_remove: ->
-      Shark.schedule.removeSection(@model)
+      Shark.friendsList.remove @model
 
     render: ->
       number = @model.get 'number'

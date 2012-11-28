@@ -2,7 +2,8 @@ define(['jQuery',
         'Underscore',
         'Backbone',
         'text!tmpl/friends/friends-list.ejs'
-        'views/friend'], ($,_, Backbone, friendsListTemplate, FriendView) ->
+        'views/friend'
+        'models/friend'], ($,_, Backbone, friendsListTemplate, FriendView, Friend) ->
 
   class FriendsListView extends Backbone.View
 
@@ -11,9 +12,15 @@ define(['jQuery',
 
       @friendsListTemplate = _.template(friendsListTemplate)
 
+      Shark.friendsList.bind 'add', (friend) =>
+        @$list.append (new FriendView model: friend).el
+
       @render();
 
-    add: ->
+    events:
+      'click #add-friend' : 'add_friend'
+
+    add_friend: ->
       Shark.friendsList.add new Friend {firstName: "Bob", lastName: "Smith"}
 
     render: ->

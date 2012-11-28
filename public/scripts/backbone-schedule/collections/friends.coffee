@@ -10,7 +10,7 @@ define(['jQuery',
     url: "/sandbox/friends"
 
     comparator: (friend)->
-      friend.get('name')
+      friend.get('lastName')
 
   Friends
 )
