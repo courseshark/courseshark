@@ -9,18 +9,18 @@ define(['jQuery'
 
     initialize: ->
       _.bindAll @
-
-      @friendsListTemplate = _.template(friendsListTemplate)
-
-      @render();
+      @template = _.template(friendsListTemplate)
+      @render()
 
     events:
+      'click .add-friends': 'addFriends'
       'click #friend-list-add-from-facebook': 'addFirendFromFacebook'
 
     render: ->
-      @$el.html $ @friendsListTemplate()
+      @$el.html @template(list: Shark.friends)
 
 
+    addFriends: -> console.log 'adding Friend'
     addFirendFromFacebook: ->
       $.ajax url: '/friends/find-from-facebook', success: (d) ->
         if not d.error
