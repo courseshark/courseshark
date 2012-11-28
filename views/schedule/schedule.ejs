@@ -24,7 +24,8 @@
 		,	school: <%-JSON.stringify(school)%>
 		, terms: <%-JSON.stringify(terms)%>
 		,	serverScheduleVersion: "<%= revision %>"
-		, baseDir: '/s/'
+		, baseDir: "/s/"
+    , domain: "<%=domain%>"
 		, facebook: { appId: "<%= app.config.facebook.appId %>" }
 	}
 </script>
