@@ -15,11 +15,13 @@ define(['jQuery'
 	#All the router's initialize function
 	initialize = () ->
 		Shark.friends = new Friends()
-		Shark.friends.fetch()
+		if CS.auth.user
+			Shark.friends.fetch()
 		Shark.terms = new Terms(CS.terms)
 		Shark.school = new School(CS.school)
 		Shark.term = Shark.terms.get Shark.school.get 'currentTerm'
 		Router.initialize @
+		window.loadFacebook()
 
   #Return an object with the intialize method
 	initialize: initialize

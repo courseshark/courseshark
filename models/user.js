@@ -121,5 +121,48 @@ UserSchema.method('getInvited', function(callback){
   User.find({_id: {$nin: this.friends}, school: this.school, friends: this._id}, callback)
 })
 
+UserSchema.method('isDuplicate', function(userObj){
+  // if (this.school != userObj.school){
+  //   console.log (this.school, userOb)
+  //   return false;
+  // }
+
+  if( !this.oauthInfo && !userObj.oauthInfo ){
+    return this.email === userObj.email;
+  }
+  var thisInfo = this.oauthInfo
+    , otherInfo = userObj.oauthInfo
+
+  // Facebook checks
+  if ( thisInfo.facebook || otherInfo.facebook ){
+    // Facebook ID checks
+    if ( thisInfo.facebook && otherInfo.facebook ){
+      if ( thisInfo.facebook.id === otherInfo.facebook.id ){
+        return true;
+      }
+    }
+    // Facebook email check
+    if ( this.email === otherInfo.facebook.email || thisInfo.facebook.email === userObj.email ){
+      return true;
+    }
+  } // end Facebook checks
+
+
+  // LinkedIn checks
+  if ( thisInfo.linkedin || otherInfo.linkedin ){
+    // Facebook ID checks
+    if ( thisInfo.linkedin && otherInfo.linkedin ){
+      if ( thisInfo.linkedin.id === otherInfo.linkedin.id ){
+        return true;
+      }
+    }
+    // Facebook email check
+    if ( this.email === otherInfo.linkedin.email || thisInfo.linkedin.email === userObj.email ){
+      return true;
+    }
+  } // end LinkedIn checks
+  return false;
+})
+
 
 exports.UserSchema = module.exports.UserSchema = UserSchema;

@@ -137,6 +137,157 @@ exports = module.exports = function(app){
     })
   })
 
+  // Link or login from facebook accessToken
+  app.get('/auth/facebook-from-token', function(req, res){
+    var FB = require('FB');
+    FB.options({accessToken: req.query.accessToken});
+    FB.api('me', function(fbRes){
+      if ( req.session.auth && req.user ){
+        // We are logged in so lets link / add FB user info to account
+        req.user.oauthInfo = req.user.oauthInfo||{};
+        req.user.oauthInfo['facebook'] = fbRes;
+        req.user.markModified('oauthInfo');
+        req.user.save(function(err){if(err){console.log('ERROR:: /auth/facebook-from-token',err)}});
+        req.session.auth.facebook = {accessToken: req.query.accessToken};
+        User.findOne({_id: {$ne: req.user._id}, 'oauthInfo.facebook.id': fbRes.id}, function(err, duplicate){
+          if (duplicate){
+            res.json({duplicate: duplicate._id})
+          }else{
+            res.json(true);
+          }
+        })
+        return;
+      }else{
+        var userFindOrCreate = require('../lib/user').findOrCreateFacebookData
+          , userPromise = new (require('events').EventEmitter)();
+        // Create a fake promise object from an EventEmitter
+        userPromise.fulfill = function(user){ this.emit('fulfill', user) }
+        userPromise.fail = function(err){ this.emit('fail', err) }
+        // Call the findOrCreate function
+        userFindOrCreate(fbRes, userPromise, req.session, app.mixpanel)
+        // When we get our promise back fulfull the request
+        userPromise.on('fulfill', function(user){
+          req.session.auth = {
+              facebook: {
+                  accessToken: req.query.accessToken
+                , user: fbRes
+              }
+            , loggedIn: true
+            , userId: user.id
+          };
+          res.json({
+              access_token: req.query.accessToken
+            , user_id: user.id
+            , user: user
+          });
+        })
+        userPromise.on('fail', function(err){
+          res.json({error: err});
+        });
+      }
+    })
+  });
+
+
+  // Merge self into user
+  app.get('/user/merge-prompt', requireLogin, function(req, res){
+    if ( !req.query.duplicate ){
+      res.send(400);
+    }
+    User.findById(req.query.duplicate, function(err, foundUser){
+      if (err||!foundUser){
+        res.send(404);
+        return;
+      }
+      if ( !req.user.isDuplicate(foundUser) ){
+        res.json({error:'Not duplicates'})
+        return;
+      }
+      Schedule.find({user: req.user}, {name:1}, function(err, mySchedules){
+        req.user.getFriends(function(err, myFriends){
+          Schedule.find({user: foundUser}, {name:1}, function(err, foundSchedules){
+            foundUser.getFriends(function(err, foundFriends){
+              var me = {
+                      avatar: req.user.avatar()
+                    , name: req.user.name
+                    , email: req.user.email
+                    , schedulesCount: mySchedules.length
+                    , friendsCount: myFriends.length
+                  }
+                , found = {
+                      avatar: foundUser.avatar()
+                    , name: foundUser.name || ''
+                    , email: foundUser.email || ''
+                    , schedulesCount: foundSchedules.length
+                    , friendsCount: foundFriends.length
+                  }
+              res.json({me:me, found:found});
+            })
+          })
+        })
+      })
+    })
+  })
+
+
+
+  app.get('/user/merge', function(req, res){
+    res.send(405); // Method not Allowed
+  })
+
+  app.post('/user/merge', requireLogin, function(req, res){
+    if ( !req.body.duplicate ){
+      res.send(405);
+    }
+    User.findById(req.body.duplicate, function(err, foundUser){
+      if (err||!foundUser){
+        res.send(404);
+        return;
+      }
+      if ( !req.user.isDuplicate(foundUser) ){
+        res.json({error:'Not duplicates'})
+        return;
+      }
+      var newId = req.user._id
+        , oldId = foundUser._id
+      // Begin Changeover
+      Schedule.update({user: oldId}, {$set: {user: newId}}, {multi: true}, function(err, numChanged){
+        Link.update({user: oldId}, {$set: {user: newId}}, {multi: true}, function(err, numChanged){
+          Notification.update({user: oldId}, {$set: {user: newId}}, {multi: true}, function(err, numChanged){
+            ScheduleLink.update({user: oldId}, {$set: {user: newId}}, {multi: true}, function(err, numChanged){
+              var userUpdate = {
+                      hashPassword: req.user.hashPassword ||  foundUser.hashPassword
+                    , firstName: req.user.firstName || foundUser.firstName
+                    , lastName: req.user.lastName || foundUser.lastName
+                    , major: req.user.major || foundUser.major
+                    , year: req.user.year || foundUser.year
+                    , shareWithRecruiters: req.user.shareWithRecruiters || foundUser.shareWithRecruiters
+                    , email: req.user.email ||  foundUser.email
+                    , loginCount: req.user.loginCount + foundUser.loginCount
+                    , admin: req.user.admin || foundUser.admin
+                    , schedule: req.user.schedule || foundUser.schedule
+                  }
+              User.update({_id: newId}, {$set: userUpdate, $addToSet: {friends: {$each : foundUser.friends}}}, function(err, count){
+                if (err){ console.log('UserChangeNew', err); }
+                User.update({_id: {$in: foundUser.friends}}, {$addToSet: {friends: newId}}, function(err, count){
+                  if (err){ console.log('FriendsInformOfNewID', err); }
+                  User.update({_id: {$in: foundUser.friends}}, {$pull: {friends: oldId}}, function(err, count){
+                    if (err){ console.log('FriendsRemoveOldId', err); }
+                    res.json({success:true});
+                    foundUser.remove();
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })// End Initial Find of foundUser
+  })
+
+
+
+
 
   // Choose School page
   app.get('/choose-school', function(req, res){

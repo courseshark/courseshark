@@ -21,12 +21,32 @@ define(['jQuery'
 
 
     addFriends: -> console.log 'adding Friend'
+
     addFirendFromFacebook: ->
-      $.ajax url: '/friends/find-from-facebook', success: (d) ->
-        if not d.error
-          friends = d
-          @friendPicker = new FriendsFromFacebookView(model: new FacebookFriendsResults(friends))
-          @friendPicker.show()
+      if Shark.session.authenticated()
+        $.ajax url: '/friends/find-from-facebook', success: (d) =>
+          if not d.error
+            friends = d
+            @friendPicker = new FriendsFromFacebookView(model: new FacebookFriendsResults(friends))
+            @friendPicker.show()
+          else if d.error is "No Facebook token exists for user"
+            @addFirendFromFacebookLogin()
+      else
+        @addFirendFromFacebookLogin()
+
+    addFirendFromFacebookLogin: ->
+      FB.getLoginStatus (response) =>
+        if response.status is 'connected'
+          # We want to link the account so call facebookAuth()
+          Shark.session.facebookAuth response.authResponse.accessToken, @addFirendFromFacebook
+        else
+          # Either not logged in or not authorized
+          # both solvable with a call to login
+          FB.login (loginResponse) ->
+            if loginResponse.authResponse
+              Shark.session.facebookAuth loginResponse.authResponse.accessToken, @addFirendFromFacebook
+
+
 
   FriendsListView
 )

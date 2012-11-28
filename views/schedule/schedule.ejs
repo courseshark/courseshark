@@ -1,4 +1,5 @@
 <div id="app-container"></div>
+<div id="fb-root"></div>
 
 
 <script defer="defer">
@@ -12,7 +13,6 @@
 		    window.setTimeout(callback, 1000 / 60);
 		  };
 	})();
-
 	window.CS = {
 			auth: {
 				<%if (loggedIn){%>
@@ -25,6 +25,7 @@
 		, terms: <%-JSON.stringify(terms)%>
 		,	serverScheduleVersion: "<%= revision %>"
 		, baseDir: '/s/'
+		, facebook: { appId: "<%= app.config.facebook.appId %>" }
 	}
 </script>
 <%if ( built ){ %>
@@ -32,3 +33,24 @@
 <%}else{%>
 <script data-main="/scripts/backbone-schedule/main" src="/scripts/backbone-schedule/lib/require/require.js"></script>
 <%}%>
+
+<!-- Facebook -->
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : CS.facebook.appId, // App ID
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+  };
+  window.loadFacebook = function(){
+  	(function(d){
+			var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement('script'); js.id = id; js.async = true;
+			js.src = "//connect.facebook.net/en_US/all.js";
+			ref.parentNode.insertBefore(js, ref);
+		}(document));
+  }
+</script>
