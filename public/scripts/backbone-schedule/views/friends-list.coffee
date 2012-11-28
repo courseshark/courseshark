@@ -24,7 +24,7 @@ define(['jQuery'
     addFirendFromFacebook: ->
       $.ajax url: '/friends/find-from-facebook', success: (d) ->
         if not d.error
-          friends = d.data
+          friends = d
           @friendPicker = new FriendsFromFacebookView(model: new FacebookFriendsResults(friends))
           @friendPicker.show()
 

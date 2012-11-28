@@ -5,10 +5,10 @@
 <div class="modal-body">
   <div class="row-fluid">
     <ul class="media-list">
-      <% list.each(function(user){   if (!user.get('installed')){ return; } %>
+      <% list.each(function(user){ %>
       <li class="media friend-option" data-user="<%=user.get('name')%>" data-user-id="<%=user.get('id')%>">
         <div class="pull-left profile-picture">
-          <img class="media-object" src="https://graph.facebook.com/<%=user.get('id')%>/picture" alt="<%=user.get('name')%>" />
+          <img class="media-object" src="https://graph.facebook.com/<%=user.get('fbId')%>/picture" alt="<%=user.get('name')%>" />
         </div>
         <div class="media-body">
           <h4 class="media-heading"><%=user.get('name')%></h4>

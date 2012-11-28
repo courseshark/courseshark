@@ -82,7 +82,9 @@ UserSchema.pre('save', function (next) {
 
 UserSchema.method('avatar', function(size){
   size = size || 64
-  if ( this.email ) {
+  if ( this.oauthInfo && this.oauthInfo.facebook ){
+    return 'https://graph.facebook.com/'+this.oauthInfo.facebook.id+'/picture'
+  } else if ( this.email ) {
     return 'https://secure.gravatar.com/avatar/'+crypto.MD5(this.email)+'?s='+size+'&d=http%3A%2F%2Fplacehold.it%2F'+size+'x'+size+'%26text%3D'+this.initials;
   }else{
     return "http://placehold.it/"+size+'x'+size+'?text='+this.initials;
@@ -100,5 +102,6 @@ UserSchema.method('getInvites', function(callback){
 UserSchema.method('getInvited', function(callback){
   User.find({_id: {$nin: this.friends}, school: this.school, friends: this._id}, callback)
 })
+
 
 exports.UserSchema = module.exports.UserSchema = UserSchema;
