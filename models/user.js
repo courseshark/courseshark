@@ -82,12 +82,30 @@ UserSchema.pre('save', function (next) {
 
 UserSchema.method('avatar', function(size){
   size = size || 64
-  if ( this.oauthInfo && this.oauthInfo.facebook ){
-    return 'https://graph.facebook.com/'+this.oauthInfo.facebook.id+'/picture'
-  } else if ( this.email ) {
-    return 'https://secure.gravatar.com/avatar/'+crypto.MD5(this.email)+'?s='+size+'&d=http%3A%2F%2Fplacehold.it%2F'+size+'x'+size+'%26text%3D'+this.initials;
-  }else{
-    return "http://placehold.it/"+size+'x'+size+'?text='+this.initials;
+  if ( this.oauthInfo ){
+    if ( this.oauthInfo.facebook ){
+      return 'https://graph.facebook.com/'+this.oauthInfo.facebook.id+'/picture'
+    } else if ( this.oauthInfo.twitter ){
+      return this.oauthInfo.twitter.profile_image_url_https;
+    } else if ( this.oauthInfo.linkedin ){
+      return this.oauthInfo.linkedin.pictureUrl;
+    }
+  } else {
+    return 'https://secure.gravatar.com/avatar/'+crypto.MD5(this.email||'')+'?s='+size+'&d=identicon';
+  }
+})
+
+UserSchema.method('avatarFrom', function(){
+  if ( this.oauthInfo ){
+    if ( this.oauthInfo.facebook ){
+      return 'Facebook'
+    } else if ( this.oauthInfo.twitter ){
+      return 'Twitter'
+    } else if ( this.oauthInfo.linkedin ){
+      return 'LinkedIn'
+    }
+  } else {
+    return 'Gravatar';
   }
 })
 

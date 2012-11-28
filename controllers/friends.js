@@ -112,7 +112,7 @@ exports = module.exports = function(app){
     }
     re = new RegExp(query, 'gi')
     User.find({school: req.user.school, $or:[{email: re}, {firstName: re}, {lastName: re}] }, function(err, users){
-      users = users.map(function(u){return {id:u.id, name:u.name, email:u.email.replace(/@.+/gi,''), avatar:u.avatar(30)}})
+      users = users.map(function(u){return {id:u.id, name:u.name, email:((u.email&&u.email.replace(/@.+/gi,''))||''), avatar:u.avatar(30)}})
       if ( req.params.format == 'json' ){
         res.json({query: query, users: users})
       }else{
