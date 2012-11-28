@@ -78,6 +78,10 @@ define(['jQuery',
         _.each timeslot.days, (day) =>
           @$el.find('#' + day).addClass('selected').css 'color', color
 
+      console.log(Shark.sectionFriends[@model.get('_id')])
+      if Shark.sectionFriends[@model.get('_id')]
+        @$el.find('.results-section').addClass "has-friend"
+
       # Mark added if it is in the schedule?
       if Shark.schedule.contains(@model)
         @$addButton.addClass('added')

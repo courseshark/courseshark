@@ -48,6 +48,9 @@ define(['jQuery',
         number: @model.get 'number'
       @$el.html @template params
 
+      if Shark.courseFriends[@model.get('_id')]
+        @$el.find('.results-course').addClass "has-friend"
+
       # Find pieces for later reference
       @$sectionContainer = @$el.find('.sections-container')
       @$sections = @$el.find('.sections-list')
