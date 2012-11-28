@@ -32,7 +32,6 @@ define(['jQuery'
           user: Shark.session.get 'user'
           domain: CS.domain
       $('body').prepend @$el
-      console.log(@$el)
 
 
 

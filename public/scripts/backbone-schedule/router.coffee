@@ -28,8 +28,6 @@ define(['jQuery'
       Shark.currentView = new AppView()
       Backbone.history.start pushState: true, root: CS.baseDir||''
 
-
-
     navigateRemove: (toRemove, navigateOptions={}) ->
       fragment = Backbone.history.getFragment()
       replaceRegExp = new RegExp('^'+toRemove+'\/?$|\/'+toRemove+'\/?$')
@@ -99,4 +97,5 @@ define(['jQuery'
       Shark.router.navigate '', trigger: true, replace: true
 
   SharkRouter
+
 )
