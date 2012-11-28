@@ -1,10 +1,11 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
-        'models/schedule'
         'collections/schedules'
+        'models/schedule'
         'models/session'
-        'models/share-link'], ($, _, Backbone, Schedule, Schedules, Session, ShareLink) ->
+        'models/share-link'
+        'views/app'], ($, _, Backbone, Schedules, Schedule, Session, ShareLink, AppView) ->
 
   $.ajaxSetup statusCode:
     401: () ->
@@ -20,12 +21,13 @@ define(['jQuery'
       # TODO Replace this with nice actual message box
       alert('An error has occured. Please try again.')
 
-  SharkRouter = Backbone.Router.extend(
+  class SharkRouter extends Backbone.Router
 
-    initialize: (Shark) ->
-      @Shark = Shark
+    initialize: () ->
       Shark.router = @
-      @Shark.currentView = new @Shark.views.appView()
+      Shark.currentView = new AppView()
+      Backbone.history.start pushState: true, root: CS.baseDir||''
+
 
 
     navigateRemove: (toRemove, navigateOptions={}) ->
@@ -96,18 +98,5 @@ define(['jQuery'
       console.log 'No route', actions
       Shark.router.navigate '', trigger: true, replace: true
 
-
-  ) # End router
-
-  initialize = (Shark) ->
-    Shark.session = new Session(CS.auth)
-    Shark.schedule = new Schedule
-    Shark.schedulesList = new Schedules
-    Shark.schedulesList.fetch() if Shark.session.authenticated()
-
-    router = new SharkRouter(Shark)
-    Backbone.history.start pushState: true, root: CS.baseDir||''
-    router
-
-  initialize: initialize
+  SharkRouter
 )

@@ -13,8 +13,12 @@ define(['jQuery'
       user_id: null
       user: null
 
-    initalize: ->
-      @load()
+    initalize: -> return
+
+    start: ->
+      for field, val of CS.auth
+        @set(field, val)
+      @trigger('authenticated') if @authenticated()
 
     authenticated: ->
       !!@get("access_token") and !!@get("user")
