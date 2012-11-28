@@ -49,7 +49,7 @@ define(['jQuery',
       @$el.html @template params
 
       if Shark.courseFriends[@model.get('_id')]
-        @$el.find('.results-course').addClass "has-friend"
+        @$el.find('.friend-icon').show()
 
       # Find pieces for later reference
       @$sectionContainer = @$el.find('.sections-container')

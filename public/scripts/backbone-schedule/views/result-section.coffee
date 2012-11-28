@@ -80,7 +80,7 @@ define(['jQuery',
 
       console.log(Shark.sectionFriends[@model.get('_id')])
       if Shark.sectionFriends[@model.get('_id')]
-        @$el.find('.results-section').addClass "has-friend"
+        @$el.find('.friend-icon').show()
 
       # Mark added if it is in the schedule?
       if Shark.schedule.contains(@model)
