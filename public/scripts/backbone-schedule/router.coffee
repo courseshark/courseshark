@@ -4,7 +4,8 @@ define(['jQuery'
         'models/schedule'
         'collections/schedules'
         'models/session'
-        'models/share-link'], ($, _, Backbone, Schedule, Schedules, Session, ShareLink) ->
+        'models/share-link'
+        'collections/friends'], ($, _, Backbone, Schedule, Schedules, Session, ShareLink, Friends) ->
 
   $.ajaxSetup statusCode:
     401: () ->
@@ -104,6 +105,7 @@ define(['jQuery'
     Shark.schedule = new Schedule
     Shark.schedulesList = new Schedules
     Shark.schedulesList.fetch() if Shark.session.authenticated()
+    Shark.friendsList = new Friends
 
     router = new SharkRouter(Shark)
     Backbone.history.start pushState: true, root: CS.baseDir||''

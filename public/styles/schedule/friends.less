@@ -1,3 +1,27 @@
-.friends-list{
+@import 'vars';
 
+.friends-list{
+  #add-friend{
+    color: blue;
+  }
+  .friend{
+    border-bottom: 1px solid #BBB;
+
+    .avatar{
+      text-align: center;
+
+      img{
+        height: 30px;
+        width: 30px;
+      }
+    }
+
+    .friend-name{
+      line-height: 30px;
+    }
+
+    .remove-friend:hover {
+      text-decoration: none;
+    }
+  }
 }
