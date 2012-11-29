@@ -31,7 +31,6 @@ define(['jQuery',
       @
 
     toggleBig: ->
-      console.log 'howdy there'
       @$el.toggleClass 'chosen'
 
   FriendView

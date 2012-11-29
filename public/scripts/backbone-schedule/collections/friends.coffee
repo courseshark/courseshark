@@ -16,8 +16,6 @@ define(['jQuery'
         '1'+friend.get('firstName')
 
     initialize: ->
-      @.bind 'all', () ->
-        console.log arguments
       @.bind 'add', (friend) ->
         @addFriend friend
       @.bind 'remove', (friend) ->
