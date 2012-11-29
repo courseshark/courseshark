@@ -99,7 +99,7 @@ then
 	echo "$BLUE  Optimizing and compiling$RESET"
 	r.js -o /tmp/courseshark/build/build.js
 	echo "$BLUE  Moving built file into production$RESET"
-	mv /private/tmp/courseshark/build/build.main.js ./public/scripts/backbone-schedule/build.main.js
+	mv /tmp/courseshark/build/build.main.js ./public/scripts/backbone-schedule/build.main.js
 	exit;
 fi
 
