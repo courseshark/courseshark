@@ -114,11 +114,11 @@ UserSchema.method('getFriends', function(callback){
   User.find({_id: {$in: this.friends}, school: this.school, friends: this._id}, callback)
 })
 
-UserSchema.method('getInvites', function(callback){
+UserSchema.method('getUsersIRequestedToByMyFriend', function(callback){
   User.find({_id: {$in: this.friends}, school: this.school, friends: {$ne: this._id}}, callback)
 })
 
-UserSchema.method('getInvited', function(callback){
+UserSchema.method('getFriendRequests', function(callback){
   User.find({_id: {$nin: this.friends}, school: this.school, friends: this._id}, callback)
 })
 

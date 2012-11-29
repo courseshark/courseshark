@@ -8,8 +8,11 @@ define(['jQuery'
     url: '/sandbox/friends'
     model: Friend
 
-    comparator: (friend)->
-      friend.get('lastName')
+    comparator: (friend) ->
+      if friend.get('confirmed')
+        '0'+friend.get('firstName')
+      else
+        '1'+friend.get('firstName')
 
     initialize: ->
       @.bind 'all', () ->
@@ -19,18 +22,21 @@ define(['jQuery'
       @.bind 'remove', (friend) ->
         @removeFriend friend
 
-    save: ->
-      options =
-        success: (model, resp, xhr) =>
-          @.reset model
-      Backbone.sync 'update', @, options
 
     addFriend: (friend) ->
       $.ajax
-          url: '/friends/'+friend.id
+          url: '/sandbox/friends/'+friend.id
           type: 'put'
           success: (res)=>
-            console.log res
+            @fetch()
+
+
+    removeFriend: (friend) ->
+      $.ajax
+          url: '/sandbox/friends/'+friend.id
+          type: 'delete'
+          success: (res)=>
+            @fetch()
 
   Friends
 )

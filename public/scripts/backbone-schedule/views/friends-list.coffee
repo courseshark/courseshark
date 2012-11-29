@@ -16,6 +16,7 @@ define(['jQuery'
 
       # Bind to adding of friends
       Shark.friendsList.bind 'reset', (friends) =>
+        @$list.empty()
         Shark.friendsList.each (friend) =>
           friend.listView = friend.listView || new FriendView model: friend
           @$list.append friend.listView.el if @$list

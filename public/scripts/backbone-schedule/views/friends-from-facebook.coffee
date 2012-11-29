@@ -25,6 +25,7 @@ define(['jQuery'
       @$el.html(@template(list: @model)).appendTo('body')
 
     addFriends: ->
+      @hide()
       @$el.find('.friend-option.chosen').each (index, friendChosen) ->
         Shark.friendsList.add(
           new Friend
