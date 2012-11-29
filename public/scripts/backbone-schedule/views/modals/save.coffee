@@ -24,6 +24,7 @@ define(['jQuery',
       Shark.schedule.unset '_id' if name != Shark.schedule.get 'name'
       Shark.schedule.set 'name', name
       Shark.schedule.save()
+      Shark.session.get('user').schedule = Shark.schedule
 
     show: ->
       @$name.val(Shark.schedule.get('name'))

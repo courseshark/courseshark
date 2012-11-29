@@ -17,12 +17,18 @@ define(['jQuery'
 
     initialize: ->
       @.bind 'all', () ->
-        console.log arguments
+        console.log arguments #DEBUG
       @.bind 'add', (friend) ->
         @addFriend friend
       @.bind 'remove', (friend) ->
         @removeFriend friend
 
+    genFriendsHashes: ->
+      console.log('gen hash')
+      sectionHash = {}
+      courseHash = {}
+      @.each (friend) =>
+        console.log(friend)
 
     addFriend: (friend) ->
       $.ajax
