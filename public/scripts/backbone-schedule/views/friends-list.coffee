@@ -87,6 +87,7 @@ define(['jQuery'
         Shark.friendsList.each (friend) ->
           if friend.listView.$el.hasClass('chosen')
             Shark.friendsList.remove(friend)
+        @removeMode = !@removeMode
 
   FriendsListView
 )

@@ -41,22 +41,23 @@
     background: fadeout(@dark-red, 70%);
 
     .friend-block{
+      -webkit-transition: none;
+      -moz-transition: none;
+      -ms-transition: none;
+      -o-transition: none;
+      transition: none;
       &.chosen{
         width: 14.285714285%;
-        &:after{
-            content: '';
-            width:10px;
-            height:10px;
-            backhground: @red;
-            position: absolute;
-            bottom:0;
-            right:0;
-          }
+        border: 1px solid @red;
+        margin: -1px;
         .options{
           display: none;
         }
         .avatar{
           -webkit-filter: blur(4px) invert(100%);
+          -moz-filter: blur(4px) invert(100%);
+          -ms-filter: blur(4px) invert(100%);
+          filter: blur(4px) invert(100%);
           position: relative;
         }
       }
@@ -83,6 +84,10 @@
   }
 
   -webkit-transition: all 100ms ease;
+  -moz-transition: all 100ms ease;
+  -ms-transition: all 100ms ease;
+  -o-transition: all 100ms ease;
+  transition: all 100ms ease;
 
   .options{
     display: none;

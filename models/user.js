@@ -1,4 +1,5 @@
 var util = require('../lib/utils')
+  , cleanUserObject = require('../lib/user').cleanUserObject
   , crypto = require('ezcrypto').Crypto
   , mongoose = require('mongoose')
   , ScheduleSchema = require('./timeslot').ScheduleSchema
@@ -34,6 +35,18 @@ UserSchema = new Schema({
 });
 
 UserSchema.set('toJSON', { virtuals: true })
+
+
+UserSchema.methods.toJSON = function(options) {
+  if (!(options && 'Object' == options.constructor.name)) {
+    options = this.schema.options.toJSON
+      ? (function(o){var t={},i;for(i in o){if(o.hasOwnProperty(i)){t[i]=o[i]}}return t})(this.schema.options.toJSON)
+      : {};
+  }
+  var objectified = this.toObject(options)
+  return cleanUserObject(objectified)
+}
+
 
 UserSchema.virtual('password')
   .get( function (){ return this._password } )

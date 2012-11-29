@@ -1,3 +1,4 @@
+var cleanUserObject = require('../lib/user').cleanUserObject
 /*
  * User management site pages
  */
@@ -9,12 +10,12 @@ exports = module.exports = function(app){
       , invited = []
     req.user.getFriends(function(err, friends){
       for(var i=0,_len=friends.length;i<_len;i++){
-        friends[i] = friends[i].toObject({virtuals: true})
+        friends[i] = cleanUserObject(friends[i].toObject({virtuals: true}))
         friends[i].confirmed=true;
       }
       req.user.getUsersIRequestedToByMyFriend(function(err, friendsUserHasInvited){
         for(var i=0,_len=friendsUserHasInvited.length;i<_len;i++){
-          friends.push(friendsUserHasInvited[i].toObject({virtuals:true}))
+          friends.push(cleanUserObject(friendsUserHasInvited[i].toObject({virtuals:true})))
         }
         res.json(friends||[]);
       })
@@ -32,10 +33,10 @@ exports = module.exports = function(app){
       if ( err||!friend ) { res.json(false); return; }
       User.update({_id: req.user._id}, {$addToSet: {friends: req.params.id}}, function(err, num){
         if ( err ){ res.json(false); return; }
-        res.json(true);
         if ( !friend.canEmailFriendRequests || !friend.email ){
           return;
         }
+        res.json(cleanUserObject(friend.toObject()));
         require('../lib/friends').sendInviteEmailToFriendFromUser(friend, req.user);
       })
     })

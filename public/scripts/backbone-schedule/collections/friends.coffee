@@ -27,15 +27,16 @@ define(['jQuery'
           url: '/sandbox/friends/'+friend.id
           type: 'put'
           success: (res)=>
-            @fetch()
+            newFriend = new Friend(res)
+            @remove(friend, {silent: true})
+            @add(newFriend, {silent: true})
 
 
     removeFriend: (friend) ->
       $.ajax
           url: '/sandbox/friends/'+friend.id
           type: 'delete'
-          success: (res)=>
-            @fetch()
+          success: (res)=> return
 
   Friends
 )
