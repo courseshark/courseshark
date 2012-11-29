@@ -3,12 +3,12 @@ define(['jQuery'
         'Backbone'
         'models/model'], ($, _, Backbone, SharkModel) ->
 
-  class Term extends SharkModel
+  class User extends SharkModel
 
     idAttribute: "_id"
 
-  	defaults:
-  		rank: 0
+    defaults:
+      avatar: 'http://www.gravatar.com/avatar/00000000000000000000000000000000'
 
-  Term
+  User
 )

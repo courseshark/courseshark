@@ -3,41 +3,52 @@
  */
 exports = module.exports = function(app){
   // home
-  app.get('/sandbox/friends', requireSchool, function(req, res){
+  app.get('/sandbox/friends', requireLogin, function(req, res){
     var friends = []
       , invites = []
       , invited = []
-    User.findById('4ffd366d2819105a12000003', function(err,user){
-      Section.find({_id: {$in: [
-          '50803ef5b0ad06a16235c7dd',
-          '50803ef7b0ad06a16235cd35',
-          '50803effb0ad06a16235e29b',
-          '50803ebac9d14226d11634bf'
-        ]}}, function(err, sections){
-        user = new User()
-        user.set('firstName', 'Lee');
-        user.set('lastName', 'Adama');
-        user.set('email', 'lee.adama@courseshark.com');
-        schedule = new Schedule({
-          term: req.school.term,
-          name: "My schedule",
-          primary: true,
-          sections: sections
-        })
-        user.set('schedule', schedule)
-        friends.push(user);
-        friends.push(new User({firstName: 'Jane', lastName: 'Seymour', school: req.school}))
-        res.json(friends)
+    req.user.getFriends(function(err, friends){
+      for(var i=0,_len=friends.length;i<_len;i++){
+        friends[i] = friends[i].toObject({virtuals: true})
+        friends[i].confirmed=true;
+      }
+      req.user.getUsersIRequestedToByMyFriend(function(err, friendsUserHasInvited){
+        for(var i=0,_len=friendsUserHasInvited.length;i<_len;i++){
+          friends.push(friendsUserHasInvited[i].toObject({virtuals:true}))
+        }
+        res.json(friends||[]);
       })
-    });
+    })
   })
 
-  app.put('/sandbox/friends/:id', requireSchool, function(req, res){
-    console.log('[friends] ADD : ',req.body)
+  app.put('/sandbox/friends/:id', requireLogin, function(req, res){
+    for (var i=0,_len=req.user.friends.length;i<_len;i++){
+      if (req.user.friends[i].toString() === req.params.id ){
+        res.json(true);
+        return;
+      }
+    }
+    User.findOne({_id: req.params.id},function(err, friend){
+      if ( err||!friend ) { res.json(false); return; }
+      User.update({_id: req.user._id}, {$addToSet: {friends: req.params.id}}, function(err, num){
+        console.log(arguments);
+        if ( err ){ res.json(false); return; }
+        res.json(true);
+        if ( !friend.canEmailFriendRequests || !friend.email ){
+          return;
+        }
+        require('../lib/friends').sendInviteEmailToFriendFromUser(friend, req.user);
+      })
+    })
   })
 
-  app.delete('/sandbox/friends/:id', requireSchool, function(req, res){
-    console.log('[friends] Remove : ',req.body)
+  app.delete('/sandbox/friends/:id', requireLogin, function(req, res){
+    var friendId = req.params.id.toString().replace(/[^0-9a-z]/ig, '')
+    User.update({_id: req.user.id}, {$pull:{friends:friendId}}, function(err, num){
+      User.update({_id: friendId}, {$pull:{friends:req.user._id}}, function(err,num){
+        res.json(true)
+      })
+    })
   })
 
 }

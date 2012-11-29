@@ -1,13 +1,16 @@
 define(['jQuery',
         'Underscore',
-        'Backbone'], ($,_, Backbone) ->
+        'Backbone'
+        'models/user'], ($,_, Backbone, User) ->
 
-  class Friend extends Backbone.Model
+  class Friend extends User
 
     idAttribute: "_id"
 
   	defaults:
-  		name: "Bob"
+      firstName: "Friend"
+      lastNamme: ""
+      confirmed: false
 
   Friend
 )

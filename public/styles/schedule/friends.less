@@ -1,4 +1,4 @@
-@import 'vars';
+@import "vars";
 
 .friends-list{
   #add-friend{
@@ -6,7 +6,10 @@
   }
   .friend{
     border-bottom: 1px solid #BBB;
-
+    &.pending{
+      opacity: 0.5;
+      -webkit-filter: grayscale(100%);
+    }
     .avatar{
       text-align: center;
 
@@ -19,7 +22,12 @@
     .friend-name{
       line-height: 30px;
     }
+  }
+}
 
+.friend-option{
+  &.chosen{
+    background: @blue;
     .remove-friend:hover {
       text-decoration: none;
     }
