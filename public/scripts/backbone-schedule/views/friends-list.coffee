@@ -15,12 +15,20 @@ define(['jQuery'
       @template = _.template(friendsListTemplate)
 
       # Bind to adding of friends
+      Shark.friendsList.bind 'reset', (friends) =>
+        @$list.empty()
+        Shark.friendsList.each (friend) =>
+          friend.listView = friend.listView || new FriendView model: friend
+          @$list.append friend.listView.el if @$list
       Shark.friendsList.bind 'add', (friend) =>
-        @$list.append (new FriendView model: friend).el
+        friend.listView = friend.listView || new FriendView model: friend
+        @$list.append friend.listView.el
+      Shark.friendsList.bind 'remove', (friend) =>
+        friend.listView.remove()
 
       # Rerender list when we log in
-      Shark.session.on 'authenticated', ()=>
-        @render()
+      Shark.session.on 'authenticated', () =>
+        Shark.friendsList.fetch()
 
       # Initial render call
       @render()
@@ -32,15 +40,12 @@ define(['jQuery'
     render: ->
       @$el.html @template()
       @$list = @$el.find('#friends-list-content')
-      Shark.friendsList.fetch success: =>
-        Shark.friendsList.each (friend) =>
-          @$list.append (new FriendView model: friend).el
+
 
     addFriends: ->
       console.log 'Adding friends. [NOT IMPLEMENTED]'
 
     findAndAddFriends: ->
-      console.log 'here'
       # Would actually open a dialog to find friends with
       Shark.friendsList.add new Friend {firstName: "Bob", lastName: "Smith"}
 

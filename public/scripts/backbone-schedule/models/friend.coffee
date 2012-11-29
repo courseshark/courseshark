@@ -8,7 +8,9 @@ define(['jQuery',
     idAttribute: "_id"
 
   	defaults:
-  		name: "Bob"
+      firstName: "Friend"
+      lastNamme: ""
+      confirmed: false
 
   Friend
 )

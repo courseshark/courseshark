@@ -33,6 +33,8 @@ UserSchema = new Schema({
   , schedule: [ScheduleSchema]
 });
 
+UserSchema.set('toJSON', { virtuals: true })
+
 UserSchema.virtual('password')
   .get( function (){ return this._password } )
   .set( function (pass){
@@ -80,8 +82,7 @@ UserSchema.pre('save', function (next) {
   }
 });
 
-UserSchema.method('avatar', function(size){
-  size = size || 64
+UserSchema.virtual('avatar').get(function(){
   if ( this.oauthInfo ){
     if ( this.oauthInfo.facebook ){
       return 'https://graph.facebook.com/'+this.oauthInfo.facebook.id+'/picture'
@@ -91,11 +92,11 @@ UserSchema.method('avatar', function(size){
       return this.oauthInfo.linkedin.pictureUrl;
     }
   } else {
-    return 'https://secure.gravatar.com/avatar/'+crypto.MD5(this.email||'')+'?s='+size+'&d=identicon';
+    return 'https://secure.gravatar.com/avatar/'+crypto.MD5(this.email||'')+'?s=75&d=identicon';
   }
 })
 
-UserSchema.method('avatarFrom', function(){
+UserSchema.virtual('avatarFrom').get(function(){
   if ( this.oauthInfo ){
     if ( this.oauthInfo.facebook ){
       return 'Facebook'
@@ -113,11 +114,11 @@ UserSchema.method('getFriends', function(callback){
   User.find({_id: {$in: this.friends}, school: this.school, friends: this._id}, callback)
 })
 
-UserSchema.method('getInvites', function(callback){
+UserSchema.method('getUsersIRequestedToByMyFriend', function(callback){
   User.find({_id: {$in: this.friends}, school: this.school, friends: {$ne: this._id}}, callback)
 })
 
-UserSchema.method('getInvited', function(callback){
+UserSchema.method('getFriendRequests', function(callback){
   User.find({_id: {$nin: this.friends}, school: this.school, friends: this._id}, callback)
 })
 

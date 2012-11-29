@@ -1,13 +1,11 @@
-<div class="row-fluid">
-  <div class="friend span24">
-    <div class="span4 avatar">
-        <img src="http://1.gravatar.com/avatar/061fcb1bcd37d7e4a23a0b4761b7739f" class="img-rounded">
-    </div>
-    <div class="span17 friend-name">
-    	<%= name %>
-    </div>
-    <div class="span3">
-      <button class="remove-friend btn btn-small btn-link">&times;</button>
-    </div>
+<div class="row-fluid friend <%=!confirmed?'pending':''%>">
+  <div class="span4 avatar">
+    <img src="<%= avatar %>" alt="<%= name %>" class="img-rounded">
+  </div>
+  <div class="span17 friend-name">
+  	<%= name %>
+  </div>
+  <div class="span3">
+    <button class="remove-friend btn btn-small btn-link">&times;</button>
   </div>
 </div>

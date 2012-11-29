@@ -6,7 +6,7 @@
   <div class="row-fluid">
     <ul class="media-list">
       <% list.each(function(user){ %>
-      <li class="media friend-option" data-user="<%=user.get('name')%>" data-user-id="<%=user.get('id')%>">
+      <li class="media friend-option" data-user="<%=user.get('name')%>" data-user-id="<%=user.get('id')%>" data-user-fbid="<%=user.get('fbId')%>">
         <div class="pull-left profile-picture">
           <img class="media-object" src="https://graph.facebook.com/<%=user.get('fbId')%>/picture" alt="<%=user.get('name')%>" />
         </div>
