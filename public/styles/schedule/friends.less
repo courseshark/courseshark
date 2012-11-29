@@ -33,3 +33,42 @@
     }
   }
 }
+
+
+#friends-list-content{
+  padding:10px;
+}
+
+.tooltip-inner {
+  box-shadow: 0 0 10px #000;
+}
+
+.friend-block{
+  width: 14.285714285%;
+  float: left;
+  position: relative;
+
+  &.chosen{
+    width: 28.57142857%;
+    .options{
+      display: block;
+    }
+  }
+
+  -webkit-transition: all 100ms ease;
+
+  .options{
+    display: none;
+    position: absolute;
+  }
+  .avatar{
+    margin: 1px;
+    &.pending{
+      opacity: 0.5;
+      -webkit-filter: grayscale(100%) blur(2px);
+    }
+  }
+  .img-block{
+    width: 100%;
+  }
+}

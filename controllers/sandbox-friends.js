@@ -31,7 +31,6 @@ exports = module.exports = function(app){
     User.findOne({_id: req.params.id},function(err, friend){
       if ( err||!friend ) { res.json(false); return; }
       User.update({_id: req.user._id}, {$addToSet: {friends: req.params.id}}, function(err, num){
-        console.log(arguments);
         if ( err ){ res.json(false); return; }
         res.json(true);
         if ( !friend.canEmailFriendRequests || !friend.email ){

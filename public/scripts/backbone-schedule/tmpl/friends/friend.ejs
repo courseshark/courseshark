@@ -1,4 +1,12 @@
-<div class="row-fluid friend <%=!confirmed?'pending':''%>">
+<div class="options">
+  <button class="remove-friend btn btn-mini btn-danger">&times;</button>
+</div>
+
+<div class="avatar <%=!confirmed?'pending':''%>">
+  <img src="<%=avatar%>" alt="<%=name%>" class="img-block" />
+</div>
+
+<!-- <div class="row-fluid friend <%=!confirmed?'pending':''%>">
   <div class="span4 avatar">
     <img src="<%= avatar %>" alt="<%= name %>" class="img-rounded">
   </div>
@@ -8,4 +16,4 @@
   <div class="span3">
     <button class="remove-friend btn btn-small btn-link">&times;</button>
   </div>
-</div>
+</div> -->
