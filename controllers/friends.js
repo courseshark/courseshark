@@ -5,8 +5,8 @@ exports = module.exports = function(app){
   // home
   app.get('/friends.:format?', requireLogin, function(req, res){
     req.user.getFriends(function(err, friends){
-      req.user.getInvites(function(err, invites){
-        req.user.getInvited(function(err, invited){
+      req.user.getUsersIRequestedToByMyFriend(function(err, invites){
+        req.user.getFriendRequests(function(err, invited){
           if ( req.params.format == 'json' ){
             res.json(friends)
           }else{
@@ -68,10 +68,10 @@ exports = module.exports = function(app){
           if ( !this.users ){
             this.users = []
           }
-          friendsAlready = 0;
+          friendsAlready = false;
           for(i=0,_len=req.user.friends.length;i<_len;i++){
-            if ( req.user.friends[i] === userObj.id ){
-              friendsAlready = 1;
+            if ( req.user.friends[i].toString() === userObj.id ){
+              friendsAlready = true;
             }
           }
           if (!friendsAlready){

@@ -28,9 +28,10 @@ define(['jQuery'
       @.session = new Session()
       @.session.on 'authenticated', ()=>
         @.schedulesList.fetch()
-      @.session.start()
 
       @.router = new Router()
+
+      @.session.start()
 
       window.FB or window.loadFacebook()
   Shark
