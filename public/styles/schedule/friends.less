@@ -1,4 +1,4 @@
-@import 'vars';
+@import "vars";
 
 .friends-list{
   #add-friend{
@@ -19,7 +19,12 @@
     .friend-name{
       line-height: 30px;
     }
+  }
+}
 
+.friend-option{
+  &.chosen{
+    background: @blue;
     .remove-friend:hover {
       text-decoration: none;
     }

@@ -21,6 +21,7 @@
 		, "express": "2.5.11"
 		, "express-messages-bootstrap" : "0.1.0"
 		, "ezcrypto" : "0.0.3"
+		, "fb": "0.0.9"
 		, "gzippo" : "0.1.7"
 		, "jwt-simple": "0.1.0"
 		, "jsdom": "0.2.15"

@@ -62,8 +62,7 @@ require(
     'Bootstrap'
   ], (Shark, $) ->
       #The "app" dependency is passed in as "Shark"
-      window.Shark = Shark
       $(document).ready ()->
-        Shark.initialize()
+        new Shark()
 
 )
