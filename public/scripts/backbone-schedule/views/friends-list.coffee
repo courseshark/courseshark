@@ -38,7 +38,7 @@ define(['jQuery'
       'click #find-and-add-friends' : 'findAndAddFriends' # Should actuall be a call to a friend finding dialog
 
     render: ->
-      @$el.html @template(list: Shark.friendsList)
+      @$el.html @template()
       @$list = @$el.find('#friends-list-content')
 
 
