@@ -89,6 +89,8 @@ exports = module.exports = function(app){
     newSchedule.school = req.school
     newSchedule.term = passedJSON.term._id
     newSchedule.save(function(err, schedule){
+      req.user.schedule = schedule;
+      req.user.save();
       if (err){
         res.send(500);
       }else{
