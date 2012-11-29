@@ -30,7 +30,7 @@ UserSchema = new Schema({
   , oauth: { type: String }
   , oauthInfo: {type: {}}
   , admin: { type: Boolean, 'default': false }
-  , schedule: [ScheduleSchema]
+  , _schedule: { type: {} }
 });
 
 UserSchema.set('toJSON', { virtuals: true })
@@ -55,6 +55,12 @@ UserSchema.virtual('name')
 UserSchema.virtual('initials')
   .get( function() { return ((""+this.firstName).substring(0,1))+((""+(this.lastName?this.lastName:' ')).substring(0,1).trim())})
 
+UserSchema.virtual('schedule')
+  .get( function () { return this._schedule })
+  .set( function (schedule) {
+    this.markModified('_schedule');
+    this._schedule = schedule;
+  });
 UserSchema.method('encryptPassword', function (plainText) {
   return crypto.MD5(plainText || '')
 });
