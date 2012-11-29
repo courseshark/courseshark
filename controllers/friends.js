@@ -71,7 +71,7 @@ exports = module.exports = function(app){
           friendsAlready = false;
           for(i=0,_len=req.user.friends.length;i<_len;i++){
             if ( req.user.friends[i].toString() === userObj.id ){
-              friendsAlready = 1;
+              friendsAlready = true;
             }
           }
           if (!friendsAlready){

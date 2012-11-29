@@ -9,6 +9,7 @@ define(['jQuery'
     model: Friend
 
     comparator: (friend) ->
+      # Sort by confirmed then by firstName
       if friend.get('confirmed')
         '0'+friend.get('firstName')
       else
