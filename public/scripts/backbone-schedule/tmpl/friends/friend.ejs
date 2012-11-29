@@ -1,11 +1,7 @@
-<div class="row-fluid friend <%=!confirmed?'pending':''%>">
-  <div class="span4 avatar">
-    <img src="<%= avatar %>" alt="<%= name %>" class="img-rounded">
-  </div>
-  <div class="span17 friend-name">
-  	<%= name %>
-  </div>
-  <div class="span3">
-    <button class="remove-friend btn btn-small btn-link">&times;</button>
-  </div>
+<div class="options">
+  <!-- Overlay stuff can go here -->
+</div>
+
+<div class="avatar <%=!confirmed?'pending':''%>">
+  <img src="<%=avatar%>" alt="<%=name%>" class="img-block" />
 </div>

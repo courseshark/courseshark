@@ -33,3 +33,73 @@
     }
   }
 }
+
+
+#friends-list-content{
+  padding:10px;
+  &.remove-mode{
+    background: fadeout(@dark-red, 70%);
+
+    .friend-block{
+      -webkit-transition: none;
+      -moz-transition: none;
+      -ms-transition: none;
+      -o-transition: none;
+      transition: none;
+      &.chosen{
+        width: 14.285714285%;
+        border: 1px solid @red;
+        margin: -1px;
+        .options{
+          display: none;
+        }
+        .avatar{
+          -webkit-filter: blur(4px) invert(100%);
+          -moz-filter: blur(4px) invert(100%);
+          -ms-filter: blur(4px) invert(100%);
+          filter: blur(4px) invert(100%);
+          position: relative;
+        }
+      }
+    }
+  }
+}
+
+.tooltip-inner {
+  box-shadow: 0 0 10px #000;
+}
+
+
+
+.friend-block{
+  width: 14.285714285%;
+  float: left;
+  position: relative;
+
+  &.chosen{
+    width: 28.57142857%;
+    .options{
+      display: block;
+    }
+  }
+
+  -webkit-transition: all 100ms ease;
+  -moz-transition: all 100ms ease;
+  -ms-transition: all 100ms ease;
+  -o-transition: all 100ms ease;
+  transition: all 100ms ease;
+
+  .options{
+    display: none;
+    position: absolute;
+  }
+  .avatar{
+    margin: 1px;
+    &.pending{
+      opacity: 0.2;
+    }
+  }
+  .img-block{
+    width: 100%;
+  }
+}
