@@ -58,6 +58,8 @@ define(['jQuery'
             @friendPicker.show()
           else if d.error is "No Facebook token exists for user"
             @addFirendFromFacebookLogin()
+          else if d.error?.code is 190
+            @addFirendFromFacebookLogin()
       else
         @addFirendFromFacebookLogin()
 
