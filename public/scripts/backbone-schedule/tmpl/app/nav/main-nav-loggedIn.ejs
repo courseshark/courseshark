@@ -1,0 +1,11 @@
+<div class="navbar-inner">
+  <div class="container-fluid">
+    <a class="brand" href="/">Course<strong>Shark</strong> </a>
+    <div class="pull-right main-nav-right">
+      <% if(user.admin){ %><a href="//admin.<%=domain%>" class="btn btn-nav">admin</a><%}%>
+      <button id="menu-notifications" class="btn btn-nav"><i class="icon-bullhorn"></i> notifications</button>
+      <button id="menu-schedules" class="btn btn-nav"><i class="icon-calendar"></i> schedules</button>
+      <img src="<%=user.avatar%>" class="user-icon" />
+    </div>
+  </div>
+</div>

@@ -8,7 +8,7 @@ define(['jQuery'
   'views/modals/share'
   'views/modals/register'
   'models/share-link'
-  'text!tmpl/app/nav.ejs'], ($, _, Backbone, SaveView, LoadView, NewView, ShareView, RegisterView, ShareLink, templateText) ->
+  'text!tmpl/app/nav/schedule.ejs'], ($, _, Backbone, SaveView, LoadView, NewView, ShareView, RegisterView, ShareLink, templateText) ->
 
 
   class navView extends Backbone.View

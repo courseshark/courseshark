@@ -2,7 +2,8 @@
 define(['jQuery'
   'Underscore'
   'Backbone'
-  'text!tmpl/app/main-nav.ejs'], ($, _, Backbone, templateText) ->
+  'text!tmpl/app/nav/main-nav-loggedIn.ejs'
+  'text!tmpl/app/nav/main-nav-loggedOut.ejs'], ($, _, Backbone, templateTextLoggedIn, templateTextLoggedOut) ->
 
 
   class MainNavView extends Backbone.View
@@ -12,13 +13,13 @@ define(['jQuery'
     initialize: ->
       _.bindAll @
       # Compile the template for future use
-      @template = _.template(templateText)
+      @templateLoggedIn = _.template(templateTextLoggedIn)
+      @templateLoggedOut = _.template(templateTextLoggedOut)
       # Render call
       @render();
 
       Shark.session.on 'authenticated', ()=>
-        @$el.html @template
-          loggedIn: Shark.session.authenticated()
+        @$el.html @templateLoggedIn
           user: Shark.session.get 'user'
           domain: CS.domain
 
@@ -27,10 +28,14 @@ define(['jQuery'
 
     # Renders the actual view from the template
     render: ->
-      @$el.html @template
-          loggedIn: Shark.session.authenticated()
+      if Shark.session.authenticated()
+        @$el.html @templateLoggedIn
           user: Shark.session.get 'user'
           domain: CS.domain
+      else
+        @$el.html @templateLoggedOut
+          domain: CS.domain
+
       $('body').prepend @$el
 
 
