@@ -12,6 +12,7 @@ define(['jQuery'
 
     initialize: ->
       _.bindAll @
+      @removeMode = false
       @template = _.template(friendsListTemplate)
 
       # Bind to adding of friends
@@ -20,9 +21,6 @@ define(['jQuery'
         Shark.friendsList.each (friend) =>
           friend.listView = friend.listView || new FriendView model: friend
           @$list.append friend.listView.el if @$list
-      Shark.friendsList.bind 'add', (friend) =>
-        friend.listView = friend.listView || new FriendView model: friend
-        @$list.append friend.listView.el
       Shark.friendsList.bind 'remove', (friend) =>
         friend.listView.remove()
 
@@ -36,6 +34,7 @@ define(['jQuery'
     events:
       'click #friend-list-add-from-facebook': 'addFirendFromFacebook'
       'click #find-and-add-friends' : 'findAndAddFriends' # Should actuall be a call to a friend finding dialog
+      'click #remove-init-button' : 'toggleRemoveMode' # Should actuall be a call to a friend finding dialog
 
     render: ->
       @$el.html @template()
@@ -74,7 +73,20 @@ define(['jQuery'
           FB.login (loginResponse) ->
             if loginResponse.authResponse
               Shark.session.facebookAuth loginResponse.authResponse.accessToken, @addFirendFromFacebook
-
+    toggleRemoveMode: ->
+      if not @removeMode
+        @$list.addClass('remove-mode')
+        $('#remove-init-button').html('Remove Selected')
+        @$list.find('.chosen').each (i, friend) ->
+          $(friend).removeClass('chosen')
+        @removeMode = !@removeMode
+        return
+      else
+        @$list.removeClass('remove-mode')
+        $('#remove-init-button').html('&times;')
+        Shark.friendsList.each (friend) ->
+          if friend.listView.$el.hasClass('chosen')
+            Shark.friendsList.remove(friend)
 
   FriendsListView
 )

@@ -37,11 +37,38 @@
 
 #friends-list-content{
   padding:10px;
+  &.remove-mode{
+    background: fadeout(@dark-red, 70%);
+
+    .friend-block{
+      &.chosen{
+        width: 14.285714285%;
+        &:after{
+            content: '';
+            width:10px;
+            height:10px;
+            backhground: @red;
+            position: absolute;
+            bottom:0;
+            right:0;
+          }
+        .options{
+          display: none;
+        }
+        .avatar{
+          -webkit-filter: blur(4px) invert(100%);
+          position: relative;
+        }
+      }
+    }
+  }
 }
 
 .tooltip-inner {
   box-shadow: 0 0 10px #000;
 }
+
+
 
 .friend-block{
   width: 14.285714285%;
