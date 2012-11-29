@@ -106,7 +106,7 @@ define(['jQuery'
     Shark.schedulesList = new Schedules
     Shark.schedulesList.fetch() if Shark.session.authenticated()
     Shark.friendsList = new Friends
-    Shark.sectionFriends = {"4ffd2376668b5416035b3d04" : "50b660dab1079d1171000001"}
+    Shark.sectionFriends = {"4ffd2376668b5416035b3d04" : ["50b6a125f420b805a6000028"]}
     Shark.courseFriends = {"4ffd2367668b5416035b1a8e": 1}
 
     router = new SharkRouter(Shark)

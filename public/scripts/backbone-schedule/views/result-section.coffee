@@ -78,9 +78,16 @@ define(['jQuery',
         _.each timeslot.days, (day) =>
           @$el.find('#' + day).addClass('selected').css 'color', color
 
-      console.log(Shark.sectionFriends[@model.get('_id')])
       if Shark.sectionFriends[@model.get('_id')]
         @$el.find('.friend-icon').show()
+        # friends = Shark.sectionFriends[@model.get('_id')]
+        friends = ["hi", "lo"]
+        $section_friends = @$el.find('.section-friends')
+        _.each friends, (friend) =>
+          # imgUrl = Shark.friendsList.where('_id' : @model.get('_id')).get('avatar')
+          imgUrl = 'http://1.gravatar.com/avatar/061fcb1bcd37d7e4a23a0b4761b7739f'
+          $section_friends.append('<img class="friend-img" src="'+imgUrl+'"></img>')
+
 
       # Mark added if it is in the schedule?
       if Shark.schedule.contains(@model)
