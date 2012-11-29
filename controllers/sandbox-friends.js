@@ -30,7 +30,15 @@ exports = module.exports = function(app){
         if ( !friend.canEmailFriendRequests || !friend.email ){
           return;
         }
-        res.json(cleanUserObject(friend.toObject()));
+
+        var friendClean = cleanUserObject(friend.toObject())
+        // Check if already friends
+        for (var i=0,_len=friend.friends.length;i<_len;i++){
+          if (friend.friends[i].toString() == req.user.id){
+            friendClean.confirmed=true;
+          }
+        }
+        res.json(friendClean);
         require('../lib/friends').sendInviteEmailToFriendFromUser(friend, req.user);
       })
     })
