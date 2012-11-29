@@ -122,10 +122,6 @@ UserSchema.method('getInvited', function(callback){
 })
 
 UserSchema.method('isDuplicate', function(userObj){
-  // if (this.school != userObj.school){
-  //   console.log (this.school, userOb)
-  //   return false;
-  // }
 
   if( !this.oauthInfo && !userObj.oauthInfo ){
     return this.email === userObj.email;
