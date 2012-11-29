@@ -23,13 +23,17 @@ define(['jQuery'
 
 
     addFriend: (friend) ->
+      return if not friend.id
       $.ajax
           url: '/sandbox/friends/'+friend.id
           type: 'put'
           success: (res)=>
+            if (!res)
+              @remove(friend)
             newFriend = new Friend(res)
             @remove(friend, {silent: true})
             @add(newFriend, {silent: true})
+            @trigger 'addComplete', newFriend
 
 
     removeFriend: (friend) ->

@@ -23,12 +23,6 @@ exports = module.exports = function(app){
   })
 
   app.put('/sandbox/friends/:id', requireLogin, function(req, res){
-    for (var i=0,_len=req.user.friends.length;i<_len;i++){
-      if (req.user.friends[i].toString() === req.params.id ){
-        res.json(true);
-        return;
-      }
-    }
     User.findOne({_id: req.params.id},function(err, friend){
       if ( err||!friend ) { res.json(false); return; }
       User.update({_id: req.user._id}, {$addToSet: {friends: req.params.id}}, function(err, num){

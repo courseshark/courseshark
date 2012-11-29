@@ -21,8 +21,11 @@ define(['jQuery'
         Shark.friendsList.each (friend) =>
           friend.listView = friend.listView || new FriendView model: friend
           @$list.append friend.listView.el if @$list
+      Shark.friendsList.bind 'addComplete', (friend) =>
+        friend.listView = friend.listView || new FriendView model: friend
+        @$list.append friend.listView.el if @$list
       Shark.friendsList.bind 'remove', (friend) =>
-        friend.listView.remove()
+        friend.listView?.remove()
 
       # Rerender list when we log in
       Shark.session.on 'authenticated', () =>
@@ -84,9 +87,9 @@ define(['jQuery'
       else
         @$list.removeClass('remove-mode')
         $('#remove-init-button').html('&times;')
-        Shark.friendsList.each (friend) ->
-          if friend.listView.$el.hasClass('chosen')
-            Shark.friendsList.remove(friend)
+        @$el.find('.chosen').each (i, friendElement) ->
+          friend = Shark.friendsList.getByCid($(friendElement).data('cid'))
+          Shark.friendsList.remove(friend)
         @removeMode = !@removeMode
 
   FriendsListView

@@ -27,6 +27,7 @@ define(['jQuery',
           avatar: @model.get 'avatar'
           confirmed: @model.get 'confirmed'
         )
+      @$el.data 'cid', @model.cid
       @$el.tooltip title: name
       @
 

@@ -35,6 +35,7 @@ UserSchema = new Schema({
 });
 
 UserSchema.set('toJSON', { virtuals: true })
+UserSchema.set('toObject', { virtuals: true })
 
 
 UserSchema.methods.toJSON = function(options) {
