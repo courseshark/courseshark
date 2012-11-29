@@ -120,7 +120,6 @@ exports = module.exports = function(app){
       schedule.save(function(err){
         req.user.schedule = schedule;
         req.user.save();
-
         if ( err ){
           res.send(500);
         }else{
