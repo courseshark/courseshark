@@ -11,6 +11,7 @@ define(['jQuery',
 
 		events:
 			"keypress .login-form-input-password": "checkSubmit"
+			"click .login-forgot-password": "switchToForgot"
 			"click .login-needs-account": "switchToSignup"
 			"click .login-form-submit": "login"
 			"click .close": "close"
@@ -50,6 +51,10 @@ define(['jQuery',
 		switchToSignup: ->
 			@close()
 			Shark.session.signup()
+
+		switchToForgot: ->
+			@close()
+			Shark.session.forgotPassword()
 
 		loginFailed: ->
 			@$error.hide().html('Username / Password incorrect').slideToggle()

@@ -5,7 +5,8 @@ define(['jQuery'
         'models/user'
         'views/auth/login'
         'views/auth/signup'
-        'views/auth/resolve-duplicate'], ($, _, Backbone, SharkModel, User, AuthLoginView, AuthSignupView, ResolveDuplicateView) ->
+        'views/auth/forgot-password'
+        'views/auth/resolve-duplicate'], ($, _, Backbone, SharkModel, User, AuthLoginView, AuthSignupView, AuthForgotPasswordView, ResolveDuplicateView) ->
 
   class Session extends SharkModel
 
@@ -45,6 +46,9 @@ define(['jQuery'
     signup: ->
       @signupView = new AuthSignupView() if not @authenticated()
 
+    forgotPassword: ->
+      @password = new AuthForgotPasswordView() if not @authenticated()
+
     _authorizeFromRes: (res) ->
       @set 'access_token', res.access_token
       @set 'user_id', res.user_id
@@ -79,6 +83,21 @@ define(['jQuery'
         success: (res) =>
           if res.success
             @_authorizeFromRes res
+            success()
+          else
+            fail()
+        error: =>
+          fail()
+
+    doPassword: (email, success=(()->return), fail=(()->return)) ->
+      $.ajax
+        url: ' /forgot-password'
+        data:
+          user:
+            email: email
+        type: 'post'
+        success: (res) =>
+          if res
             success()
           else
             fail()
