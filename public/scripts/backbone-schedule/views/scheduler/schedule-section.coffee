@@ -2,7 +2,7 @@ define(['jQuery'
         'Underscore'
         'Backbone'
         'models/schedule'
-        'text!tmpl/schedule/schedule-section.ejs'], ($,_, Backbone, Schedule, templateText) ->
+        'text!tmpl/scheduler/schedule/schedule-section.ejs'], ($,_, Backbone, Schedule, templateText) ->
 
   class ScheduleSectionView extends Backbone.View
 

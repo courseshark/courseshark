@@ -3,14 +3,14 @@ define(['jQuery',
         'Backbone',
         'collections/result-sections'
         'views/scheduler/calendar-mini-section'
-        'text!tmpl/results/result-section.ejs'], ($,_, Backbone, ResultsSections, CalendarMiniSectionView, resultsSectionTemplate) ->
+        'text!tmpl/scheduler/results/result-section.ejs'], ($,_, Backbone, ResultsSections, CalendarMiniSectionView, templateText) ->
 
   class ResultSectionView extends Backbone.View
 
     initialize: ->
       _.bindAll @
 
-      @resultsSectionTemplate = _.template(resultsSectionTemplate)
+      @template = _.template(templateText)
 
       Shark.schedule.bind "load", =>
         @render()
@@ -63,13 +63,11 @@ define(['jQuery',
 
 
     render: ->
-      params =
+      @$el.html @template
         prof: @model.get('instructor')
         seats: @model.get('seatsAvailable') + '/' + @model.get('seatsTotal')
         section_id: @model.get('number') + ': Section ' + @model.get('info')
         hours: @model.get('credits')
-
-      @$el.html @resultsSectionTemplate(params)
       @$el.hide() if not @model.get 'visible'
       @$addButton = @$el.find('.add')
       # Color/bold the correct day letters

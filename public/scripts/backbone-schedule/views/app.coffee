@@ -3,9 +3,7 @@ define(['jQuery'
 				'Underscore'
 				'Backbone'
 				'views/main-nav'
-				'views/scheduler/nav'
-				'views/scheduler/panels'
-				'text!tmpl/app/index.ejs'], ($, _, Backbone, MainNavView, NavView, PanelsView, templateText) ->
+				'views/scheduler'], ($, _, Backbone, MainNavView, Scheduler) ->
 
 	class AppView extends Backbone.View
 		el: $ '#app-container'
@@ -13,29 +11,14 @@ define(['jQuery'
 		initialize: ->
 			_.bindAll @
 
-			# Compile the template for future use
-			@template = _.template(templateText)
+			@mainNav = new MainNavView()
 
 			## Render
 			@render()	# Render out the view
 
-
-		events:
-			'click #tutorial-frame': 'focusOnSearch'
-
-
-		focusOnSearch: ->
-			@panelsView.focusOnSearch()
-
 		# Renders the actual view from the template
 		render: ->
-			@$el.html $ @template()
-			@mainNav = new MainNavView()
-			@navView = new NavView( el: (@$el.children '#main-nav')[0] )
-			@panelsView = new PanelsView( el: (@$el.children '#main-container')[0] )
-			@ # Return self when done
-
-
+			@$el.prepend @mainNav.$el
 
 	# Whatever is returned here will be usable by other modules
 	AppView

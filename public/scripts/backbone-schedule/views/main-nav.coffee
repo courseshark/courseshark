@@ -16,7 +16,7 @@ define(['jQuery'
       @templateLoggedIn = _.template(templateTextLoggedIn)
       @templateLoggedOut = _.template(templateTextLoggedOut)
       # Render call
-      @render();
+      @render()
 
       Shark.session.on 'authenticated', ()=>
         @$el.html @templateLoggedIn
@@ -37,8 +37,6 @@ define(['jQuery'
       else
         @$el.html @templateLoggedOut
           domain: CS.domain
-
-      $('body').prepend @$el
 
 
     login: ->
