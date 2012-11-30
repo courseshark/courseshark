@@ -101,5 +101,4 @@ define(['jQuery'
       Shark.router.navigate '', trigger: true, replace: true
 
   SharkRouter
-
 )

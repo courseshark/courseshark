@@ -1,3 +1,4 @@
+var cleanUserObject = require('../lib/user').cleanUserObject
 /*
  * User management site pages
  */
@@ -9,12 +10,12 @@ exports = module.exports = function(app){
       , invited = []
     req.user.getFriends(function(err, friends){
       for(var i=0,_len=friends.length;i<_len;i++){
-        friends[i] = friends[i].toObject({virtuals: true})
+        friends[i] = cleanUserObject(friends[i].toObject({virtuals: true}))
         friends[i].confirmed=true;
       }
       req.user.getUsersIRequestedToByMyFriend(function(err, friendsUserHasInvited){
         for(var i=0,_len=friendsUserHasInvited.length;i<_len;i++){
-          friends.push(friendsUserHasInvited[i].toObject({virtuals:true}))
+          friends.push(cleanUserObject(friendsUserHasInvited[i].toObject({virtuals:true})))
         }
         res.json(friends||[]);
       })
@@ -22,21 +23,22 @@ exports = module.exports = function(app){
   })
 
   app.put('/sandbox/friends/:id', requireLogin, function(req, res){
-    for (var i=0,_len=req.user.friends.length;i<_len;i++){
-      if (req.user.friends[i].toString() === req.params.id ){
-        res.json(true);
-        return;
-      }
-    }
     User.findOne({_id: req.params.id},function(err, friend){
       if ( err||!friend ) { res.json(false); return; }
       User.update({_id: req.user._id}, {$addToSet: {friends: req.params.id}}, function(err, num){
-        console.log(arguments);
         if ( err ){ res.json(false); return; }
-        res.json(true);
         if ( !friend.canEmailFriendRequests || !friend.email ){
           return;
         }
+
+        var friendClean = cleanUserObject(friend.toObject())
+        // Check if already friends
+        for (var i=0,_len=friend.friends.length;i<_len;i++){
+          if (friend.friends[i].toString() == req.user.id){
+            friendClean.confirmed=true;
+          }
+        }
+        res.json(friendClean);
         require('../lib/friends').sendInviteEmailToFriendFromUser(friend, req.user);
       })
     })

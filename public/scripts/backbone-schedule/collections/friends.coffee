@@ -21,21 +21,37 @@ define(['jQuery'
       @.bind 'remove', (friend) ->
         @removeFriend friend
 
+    genFriendsHashes: ->
+      sectionHash = {}
+      @.each (friend) =>
+        if friend.get('schedule')
+          sections = friend.get('schedule').sections
+          _.each sections, (section) =>
+            if sectionHash[section._id]
+              sectionHash[section._id].push friend.id
+            else
+              sectionHash[section._id] = [friend.id]
+      Shark.sectionFriends = sectionHash
 
     addFriend: (friend) ->
+      return if not friend.id
       $.ajax
           url: '/sandbox/friends/'+friend.id
           type: 'put'
           success: (res)=>
-            @fetch()
+            if (!res)
+              @remove(friend)
+            newFriend = new Friend(res)
+            @remove(friend, {silent: true})
+            @add(newFriend, {silent: true})
+            @trigger 'addComplete', newFriend
 
 
     removeFriend: (friend) ->
       $.ajax
           url: '/sandbox/friends/'+friend.id
           type: 'delete'
-          success: (res)=>
-            @fetch()
+          success: (res)=> return
 
   Friends
 )
