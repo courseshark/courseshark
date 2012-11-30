@@ -3,11 +3,11 @@ define(['jQuery'
 				'Underscore'
 				'Backbone'
 				'views/main-nav'
-				'views/nav'
-				'views/panels'
-				'text!tmpl/app/index.ejs'], ($, _, Backbone, MainNavView, navView, panelsView, templateText) ->
+				'views/scheduler/nav'
+				'views/scheduler/panels'
+				'text!tmpl/app/index.ejs'], ($, _, Backbone, MainNavView, NavView, PanelsView, templateText) ->
 
-	class appView extends Backbone.View
+	class AppView extends Backbone.View
 		el: $ '#app-container'
 
 		initialize: ->
@@ -31,12 +31,12 @@ define(['jQuery'
 		render: ->
 			@$el.html $ @template()
 			@mainNav = new MainNavView()
-			@navView = new navView( el: (@$el.children '#main-nav')[0] )
-			@panelsView = new panelsView( el: (@$el.children '#main-container')[0] )
+			@navView = new NavView( el: (@$el.children '#main-nav')[0] )
+			@panelsView = new PanelsView( el: (@$el.children '#main-container')[0] )
 			@ # Return self when done
 
 
 
 	# Whatever is returned here will be usable by other modules
-	appView
+	AppView
 )

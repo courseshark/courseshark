@@ -1,14 +1,14 @@
 define(['jQuery',
         'Underscore',
         'Backbone',
-        'views/schedule-section',
-        'text!tmpl/schedule/schedule-sections-list.ejs'], ($,_, Backbone, ScheduleSectionView, scheduleSectionsListTemplate) ->
+        'views/scheduler/schedule-section',
+        'text!tmpl/schedule/schedule-sections-list.ejs'], ($,_, Backbone, ScheduleSectionView, templateText) ->
 
   class ScheduleSectionsListView extends Backbone.View
 
     initialize: ->
       _.bindAll @
-      @scheduleSectionsListTemplate = _.template(scheduleSectionsListTemplate)
+      @template = _.template(templateText)
 
       # Add the newly created section into the list
       Shark.schedule.get('sections').bind 'add', (section) =>
@@ -30,7 +30,7 @@ define(['jQuery',
 
     # Render the basic container
     render: ->
-      @$el.html $ @scheduleSectionsListTemplate()
+      @$el.html $ @template()
       @$list = @$el.find('#schedule-sections-list-content') if not @$list
 
   ScheduleSectionsListView

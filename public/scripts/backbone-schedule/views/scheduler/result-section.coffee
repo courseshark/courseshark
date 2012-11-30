@@ -2,7 +2,7 @@ define(['jQuery',
         'Underscore',
         'Backbone',
         'collections/result-sections'
-        'views/calendar-mini-section'
+        'views/scheduler/calendar-mini-section'
         'text!tmpl/results/result-section.ejs'], ($,_, Backbone, ResultsSections, CalendarMiniSectionView, resultsSectionTemplate) ->
 
   class ResultSectionView extends Backbone.View

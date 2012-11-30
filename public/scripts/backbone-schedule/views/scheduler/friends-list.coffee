@@ -3,8 +3,8 @@ define(['jQuery'
         'Backbone'
         'collections/facebook-friends-results'
         'models/friend'
-        'views/friends-from-facebook'
-        'views/friend'
+        'views/scheduler/friends-from-facebook'
+        'views/scheduler/friend'
         'text!tmpl/friends/friends-list.ejs'], ($,_, Backbone, FacebookFriendsResults, Friend, FriendsFromFacebookView, FriendView, friendsListTemplate) ->
 
 

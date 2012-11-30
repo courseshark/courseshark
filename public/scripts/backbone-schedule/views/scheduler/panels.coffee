@@ -3,12 +3,12 @@ define(['jQuery',
  'Underscore',
  'Backbone',
  'text!tmpl/app/panels.ejs',
- 'views/result-list',
- 'views/schedule-sections-list',
- 'views/filter',
- 'views/calendar-max',
- 'views/calendar-mini',
- 'views/friends-list'], ($, _, Backbone, templateText, ResultListView, ScheduleSectionsListView, FilterView, CalendarMaxView, CalendarMiniView, FriendsListView) ->
+ 'views/scheduler/result-list',
+ 'views/scheduler/schedule-sections-list',
+ 'views/scheduler/filter',
+ 'views/scheduler/calendar-max',
+ 'views/scheduler/calendar-mini',
+ 'views/scheduler/friends-list'], ($, _, Backbone, templateText, ResultListView, ScheduleSectionsListView, FilterView, CalendarMaxView, CalendarMiniView, FriendsListView) ->
 
 	class panelsView extends Backbone.View
 

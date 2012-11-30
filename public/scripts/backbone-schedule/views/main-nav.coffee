@@ -22,9 +22,11 @@ define(['jQuery'
         @$el.html @templateLoggedIn
           user: Shark.session.get 'user'
           domain: CS.domain
+        @initDropdowns()
 
     events:
       'click #nav-login': 'login'
+      'click .user-icon': 'showUserMenu'
 
     # Renders the actual view from the template
     render: ->
@@ -39,10 +41,11 @@ define(['jQuery'
       $('body').prepend @$el
 
 
-
     login: ->
       Shark.session.login()
 
+    showUserMenu: ->
+      @$el.find('#user-menu').toggleClass('open');
 
 
   # Whatever is returned here will be usable by other modules
