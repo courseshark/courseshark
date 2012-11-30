@@ -112,10 +112,19 @@ define(['jQuery'
         error: =>
           fail()
 
+    doMerge: (model) ->
+      $.ajax
+        url: '/user/merge'
+        data:
+          duplicate: model.id
+        type: 'post'
+        success: (res) =>
+          if not res.error
+            @._authorizeFromRes res
+
     resolveDuplicate: (duplicateId, next) ->
       duplicate = new User({_id:duplicateId})
       @resolveDuplicateView = new ResolveDuplicateView(model: duplicate, next: next)
-      console.log @resolveDuplicateView
       @resolveDuplicateView.show()
 
   Session

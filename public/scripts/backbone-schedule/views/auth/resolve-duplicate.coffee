@@ -21,12 +21,7 @@ define(['jQuery'
     merge: ->
       # Instant feedback by hiding modal
       @hide()
-      $.ajax
-        url: '/user/merge'
-        data: duplicate: @model.id
-        type: 'post'
-        success: (res) =>
-          console.log res
+      Shark.session.doMerge(@model)
 
     show: ->
       @$el.modal 'show'
