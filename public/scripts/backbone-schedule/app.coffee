@@ -18,6 +18,8 @@ define(['jQuery'
       window.Shark = @
 
       @.friendsList = new Friends()
+      @.sectionFriends = {}
+
       @.terms = new Terms(CS.terms)
       @.school = new School(CS.school)
       @.term = @.terms.get @.school.get 'currentTerm'

@@ -72,11 +72,22 @@ define(['jQuery',
       @$el.html @resultsSectionTemplate(params)
       @$el.hide() if not @model.get 'visible'
       @$addButton = @$el.find('.add')
+
       # Color/bold the correct day letters
       color = @model.color()
       _.each @model.get('timeslots'), (timeslot) =>
         _.each timeslot.days, (day) =>
           @$el.find('#' + day).addClass('selected').css 'color', color
+
+      # Adds friends heart/ images
+      if friends = Shark.sectionFriends[@model.get('_id')]
+        @$el.find('.friend-icon').show()
+
+        $section_friends = @$el.find('.section-friends')
+        _.each friends, (friend_id) =>
+          friend = Shark.friendsList.get friend_id
+          $section_friends.append($('<img class="friend-img" src="'+friend.get('avatar')+'"></img>')
+            .tooltip(title: friend.get('firstName') + " " + friend.get('lastName')))
 
       # Mark added if it is in the schedule?
       if Shark.schedule.contains(@model)
