@@ -58,7 +58,7 @@ define(['jQuery',
 							title: @model.get('name')
 							html: true
 							content: popover_content
-							placement: 'bottom'
+							placement: 'top'
 							trigger: 'hover'
 							animation: false
 
