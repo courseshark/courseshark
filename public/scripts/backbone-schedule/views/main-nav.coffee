@@ -46,7 +46,8 @@ define(['jQuery'
       Shark.session.login()
 
     showUserMenu: ->
-      @$el.find('#user-menu').toggleClass('open');
+      Shark.session.logout()
+      #@$el.find('#user-menu').toggleClass('open');
 
 
   # Whatever is returned here will be usable by other modules
