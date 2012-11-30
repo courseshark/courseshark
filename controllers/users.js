@@ -160,7 +160,7 @@ exports = module.exports = function(app){
         req.user.markModified('oauthInfo');
         req.user.save(function(err){if(err){console.log('ERROR:: /auth/facebook-from-token',err)}});
         req.session.auth.facebook = {accessToken: req.query.accessToken};
-        User.findOne({_id: {$ne: req.user._id}, 'oauthInfo.facebook.id': fbRes.id}, function(err, duplicate){
+        User.findOne({_id: {$ne: req.user._id}, school: req.user.school, 'oauthInfo.facebook.id': fbRes.id}, function(err, duplicate){
           if (duplicate){
             res.json({duplicate: duplicate._id})
           }else{
@@ -219,14 +219,14 @@ exports = module.exports = function(app){
           Schedule.find({user: foundUser}, {name:1}, function(err, foundSchedules){
             foundUser.getFriends(function(err, foundFriends){
               var me = {
-                      avatar: req.user.avatar()
+                      avatar: req.user.avatar
                     , name: req.user.name
                     , email: req.user.email
                     , schedulesCount: mySchedules.length
                     , friendsCount: myFriends.length
                   }
                 , found = {
-                      avatar: foundUser.avatar()
+                      avatar: foundUser.avatar
                     , name: foundUser.name || ''
                     , email: foundUser.email || ''
                     , schedulesCount: foundSchedules.length
@@ -277,14 +277,41 @@ exports = module.exports = function(app){
                     , loginCount: req.user.loginCount + foundUser.loginCount
                     , admin: req.user.admin || foundUser.admin
                     , schedule: req.user.schedule || foundUser.schedule
+                    , oauthInfo: {}
                   }
+              var prop;
+              if ( req.user.oauthInfo ){
+                for(prop in req.user.oauthInfo){
+                  if ( req.user.oauthInfo.hasOwnProperty(prop) ){
+                    userUpdate.oauthInfo[prop] = req.user.oauthInfo[prop] || (foundUser.oauthInfo&&foundUser.oauth[prop])
+                  }
+                }
+              }
+              if (foundUser.oauthInfo){
+                for(prop in foundUser.oauthInfo){
+                  if ( foundUser.oauthInfo.hasOwnProperty(prop) ){
+                    userUpdate.oauthInfo[prop] = foundUser.oauthInfo[prop] || (req.user.oauthInfo&&foundUser.oauth[prop])
+                  }
+                }
+              }
               User.update({_id: newId}, {$set: userUpdate, $addToSet: {friends: {$each : foundUser.friends}}}, function(err, count){
                 if (err){ console.log('UserChangeNew', err); }
-                User.update({_id: {$in: foundUser.friends}}, {$addToSet: {friends: newId}}, function(err, count){
+                User.update({_id: {$in: foundUser.friends}}, {$addToSet: {friends: newId}}, {multi: true}, function(err, count){
                   if (err){ console.log('FriendsInformOfNewID', err); }
-                  User.update({_id: {$in: foundUser.friends}}, {$pull: {friends: oldId}}, function(err, count){
+                  User.update({_id: {$in: foundUser.friends}}, {$pull: {friends: oldId}}, {multi: true}, function(err, count){
                     if (err){ console.log('FriendsRemoveOldId', err); }
-                    res.json({success:true});
+                    User.findOne({_id: req.user._id}, function(err, user){
+                      if (user){
+                        res.json({
+                              success: true
+                            , redirect: '/'
+                            , access_token: req.sessionID.toString().replace(/[^A-Fa-f0-9]/g,'')
+                            , user_id: user.id
+                            , user: user})
+                      }else{
+                        res.json({error: err});
+                      }
+                    })
                     foundUser.remove();
                   })
                 })
