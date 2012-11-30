@@ -17,7 +17,7 @@ define(['jQuery'
 
     initialize: ->
       @.bind 'all', () ->
-        console.log arguments #DEBUG
+        console.log arguments
       @.bind 'add', (friend) ->
         @addFriend friend
       @.bind 'remove', (friend) ->
