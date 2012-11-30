@@ -23,6 +23,10 @@ define(['jQuery'
           user: Shark.session.get 'user'
           domain: CS.domain
 
+      Shark.session.on 'unauthenticated', ()=>
+        @$el.html @templateLoggedOut
+          domain: CS.domain
+
     events:
       'click #nav-login': 'login'
       'click .user-icon': 'showUserMenu'
