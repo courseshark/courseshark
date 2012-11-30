@@ -48,6 +48,11 @@ define(['jQuery',
         number: @model.get 'number'
       @$el.html @template params
 
+      # Since friends schedules don't have courses, we have to do it here for now
+      @model.get('sections').each (section) =>
+        if Shark.sectionFriends[section.get('_id')]
+          @$el.find('.friend-icon').show()
+
       # Find pieces for later reference
       @$sectionContainer = @$el.find('.sections-container')
       @$sections = @$el.find('.sections-list')
