@@ -57,16 +57,16 @@ define(['jQuery'
     landingPage: () ->
       Shark.appView.show('scheduler')
       if Shark.schedule.get('sections').length > 0
-        Shark.appView.scheduler.panelsView.showMaxCal()
+        Shark.view.panelsView.showMaxCal()
       else
-        Shark.appView.scheduler.panelsView.hideMaxCal()
+        Shark.view.panelsView.hideMaxCal()
 
     view: (id) ->
       Shark.appView.show('scheduler')
       if id
         Shark.schedule.ensureScheduleLoaded id,
           success: ()->
-            Shark.currentView.panelsView.showMaxCal()
+            Shark.view.panelsView.showMaxCal()
           faulire: ()->
             Shark.router.navigate '', trigger: true, replace: true
 
@@ -81,7 +81,7 @@ define(['jQuery'
       Shark.schedule.ensureScheduleLoaded id,
       success: ()=>
         if Shark.schedule.get('sections').length
-          Shark.currentView.panelsView.showMaxCal()
+          Shark.view.panelsView.showMaxCal()
       failure: ()=>
         @navigate '', trigger: true, replace: true
 
@@ -91,7 +91,7 @@ define(['jQuery'
       Shark.shareLink.fetch
         success: ->
           Shark.shareLink.get('schedule').setLive()
-          Shark.currentView.panelsView.showMaxCal()
+          Shark.view.panelsView.showMaxCal()
         error: ->
           console.error "ERROR loading link"
 

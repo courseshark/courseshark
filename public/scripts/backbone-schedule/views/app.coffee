@@ -27,7 +27,7 @@ define(['jQuery'
 			if view != @showing
 				@showing = view
 				if view is 'scheduler'
-					@view = new SchedulerView( el: @$viewContainer )
+					Shark.view = @view = new SchedulerView( el: @$viewContainer )
 
 	# Whatever is returned here will be usable by other modules
 	AppView
