@@ -281,11 +281,21 @@ exports = module.exports = function(app){
               User.update({_id: newId}, {$set: userUpdate, $addToSet: {friends: {$each : foundUser.friends}}}, function(err, count){
                 if (err){ console.log('UserChangeNew', err); }
                 User.update({_id: {$in: foundUser.friends}}, {$addToSet: {friends: newId}}, {multi: true}, function(err, count){
-                  console.log(count);
                   if (err){ console.log('FriendsInformOfNewID', err); }
                   User.update({_id: {$in: foundUser.friends}}, {$pull: {friends: oldId}}, {multi: true}, function(err, count){
                     if (err){ console.log('FriendsRemoveOldId', err); }
-                    res.json({success:true});
+                    User.findOne({_id: req.user._id}, function(err, user){
+                      if (user){
+                        res.json({
+                              success: true
+                            , redirect: '/'
+                            , access_token: req.sessionID.toString().replace(/[^A-Fa-f0-9]/g,'')
+                            , user_id: user.id
+                            , user: user})
+                      }else{
+                        res.json({error: err});
+                      }
+                    })
                     foundUser.remove();
                   })
                 })
