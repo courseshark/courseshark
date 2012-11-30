@@ -40,6 +40,14 @@ define(['jQuery'
           else
             next()
 
+    logout: ->
+      $.ajax
+        url: '/logout'
+      @unset 'access_token'
+      @unset 'user_id'
+      @unset 'user'
+      @trigger('unauthenticated')
+
     login: ->
       @loginView = new AuthLoginView() if not @authenticated()
 

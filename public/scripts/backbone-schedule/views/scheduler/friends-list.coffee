@@ -31,6 +31,9 @@ define(['jQuery'
       # Rerender list when we log in
       Shark.session.on 'authenticated', () =>
         Shark.friendsList.fetch()
+      # Clear and rerender friends on logout
+      Shark.session.on 'unauthenticated', () =>
+        Shark.friendsList.reset()
 
       # Initial render call
       @render()
