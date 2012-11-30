@@ -277,7 +277,23 @@ exports = module.exports = function(app){
                     , loginCount: req.user.loginCount + foundUser.loginCount
                     , admin: req.user.admin || foundUser.admin
                     , schedule: req.user.schedule || foundUser.schedule
+                    , oauthInfo: {}
                   }
+              var prop;
+              if ( req.user.oauthInfo ){
+                for(prop in req.user.oauthInfo){
+                  if ( req.user.oauthInfo.hasOwnProperty(prop) ){
+                    userUpdate.oauthInfo[prop] = req.user.oauthInfo[prop] || (foundUser.oauthInfo&&foundUser.oauth[prop])
+                  }
+                }
+              }
+              if (foundUser.oauthInfo){
+                for(prop in foundUser.oauthInfo){
+                  if ( foundUser.oauthInfo.hasOwnProperty(prop) ){
+                    userUpdate.oauthInfo[prop] = foundUser.oauthInfo[prop] || (req.user.oauthInfo&&foundUser.oauth[prop])
+                  }
+                }
+              }
               User.update({_id: newId}, {$set: userUpdate, $addToSet: {friends: {$each : foundUser.friends}}}, function(err, count){
                 if (err){ console.log('UserChangeNew', err); }
                 User.update({_id: {$in: foundUser.friends}}, {$addToSet: {friends: newId}}, {multi: true}, function(err, count){
