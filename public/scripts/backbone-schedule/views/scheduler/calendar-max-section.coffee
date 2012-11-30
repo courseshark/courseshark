@@ -2,7 +2,7 @@
 define(['jQuery',
 	'Underscore',
 	'Backbone',
-	'text!tmpl/schedule/calendar-max-section.ejs'], ($, _, Backbone, templateText) ->
+	'text!tmpl/scheduler/schedule/calendar-max-section.ejs'], ($, _, Backbone, templateText) ->
 
 	class CalendarMaxSection extends Backbone.View
 

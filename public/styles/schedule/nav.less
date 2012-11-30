@@ -1,5 +1,46 @@
 @import "vars";
 
+.navbar-fixed-top{
+  .navbar-inner.navbar-main{
+    @from: lighten(@offWhite, 30%);
+    @to: darken(@from, 5%);
+
+
+    background-color: @from;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@{from}', endColorstr='@{to}');
+    background-image: -webkit-gradient(linear, left top, left bottom, from(@from), to(@to));
+    background-image: -moz-linear-gradient(top, @from, @to);
+    background-image: -ms-linear-gradient(top, @from, @to);
+    background-image: -o-linear-gradient(top, @from, @to);
+    background-image: linear-gradient(top, @from, @to);
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    .brand{
+      //color: @black;
+      //text-shadow:none;
+    }
+  }
+}
+.main-nav-right{
+  .btn-nav{
+    margin-right: 0px;
+    background: darken(@offWhite, 5%);
+    &:hover{
+      background: @offWhite;
+    }
+  }
+  img.user-icon{
+    height: 30px;
+    width: 30px;
+    margin: 3px -2px -2px;
+    border: 2px solid @white;
+  }
+}
+
+
+
 .nav-btn {
 	color: @cs-blue;
 }

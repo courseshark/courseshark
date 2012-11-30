@@ -25,7 +25,7 @@ define(['jQuery'
 
     initialize: () ->
       Shark.router = @
-      Shark.currentView = new AppView()
+      Shark.appView = new AppView()
       Backbone.history.start pushState: true, root: CS.baseDir||''
 
     navigateRemove: (toRemove, navigateOptions={}) ->
@@ -55,16 +55,18 @@ define(['jQuery'
 
 
     landingPage: () ->
+      Shark.appView.show('scheduler')
       if Shark.schedule.get('sections').length > 0
-        Shark.currentView.panelsView.showMaxCal()
+        Shark.view.panelsView.showMaxCal()
       else
-        Shark.currentView.panelsView.hideMaxCal()
+        Shark.view.panelsView.hideMaxCal()
 
     view: (id) ->
+      Shark.appView.show('scheduler')
       if id
         Shark.schedule.ensureScheduleLoaded id,
           success: ()->
-            Shark.currentView.panelsView.showMaxCal()
+            Shark.view.panelsView.showMaxCal()
           faulire: ()->
             Shark.router.navigate '', trigger: true, replace: true
 
@@ -75,19 +77,21 @@ define(['jQuery'
         @navigate '', trigger: false, replace: true
 
     loadSchedule: (id) ->
+      Shark.appView.show('scheduler')
       Shark.schedule.ensureScheduleLoaded id,
       success: ()=>
         if Shark.schedule.get('sections').length
-          Shark.currentView.panelsView.showMaxCal()
+          Shark.view.panelsView.showMaxCal()
       failure: ()=>
         @navigate '', trigger: true, replace: true
 
     showLink: (link) ->
+      Shark.appView.show('scheduler')
       Shark.shareLink = new ShareLink hash: link
       Shark.shareLink.fetch
         success: ->
           Shark.shareLink.get('schedule').setLive()
-          Shark.currentView.panelsView.showMaxCal()
+          Shark.view.panelsView.showMaxCal()
         error: ->
           console.error "ERROR loading link"
 

@@ -2,8 +2,8 @@ define(['jQuery',
         'Underscore',
         'Backbone',
         'models/course',
-        'views/result-section'
-        'text!tmpl/results/result-course.ejs'], ($,_, Backbone, Course, ResultSectionView, resultCourseTemplate) ->
+        'views/scheduler/result-section'
+        'text!tmpl/scheduler/results/result-course.ejs'], ($,_, Backbone, Course, ResultSectionView, templateText) ->
 
   class ResultCourseView extends Backbone.View
 
@@ -11,7 +11,7 @@ define(['jQuery',
 
     initialize: ->
       _.bindAll @
-      @template = _.template resultCourseTemplate
+      @template = _.template templateText
       @renderedSections = false
       @showingSections = false
 

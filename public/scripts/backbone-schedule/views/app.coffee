@@ -3,40 +3,32 @@ define(['jQuery'
 				'Underscore'
 				'Backbone'
 				'views/main-nav'
-				'views/nav'
-				'views/panels'
-				'text!tmpl/app/index.ejs'], ($, _, Backbone, MainNavView, navView, panelsView, templateText) ->
+				'views/scheduler'], ($, _, Backbone, MainNavView, SchedulerView) ->
 
-	class appView extends Backbone.View
+	class AppView extends Backbone.View
 		el: $ '#app-container'
 
 		initialize: ->
 			_.bindAll @
 
-			# Compile the template for future use
-			@template = _.template(templateText)
+			@mainNav = new MainNavView()
+
+			@$viewContainer = $('<div id="view-container"></div>').appendTo @$el
+
 
 			## Render
 			@render()	# Render out the view
 
-
-		events:
-			'click #tutorial-frame': 'focusOnSearch'
-
-
-		focusOnSearch: ->
-			@panelsView.focusOnSearch()
-
 		# Renders the actual view from the template
 		render: ->
-			@$el.html $ @template()
-			@mainNav = new MainNavView()
-			@navView = new navView( el: (@$el.children '#main-nav')[0] )
-			@panelsView = new panelsView( el: (@$el.children '#main-container')[0] )
-			@ # Return self when done
+			@$el.prepend @mainNav.$el
 
-
+		show: (view) ->
+			if view != @showing
+				@showing = view
+				if view is 'scheduler'
+					Shark.view = @view = new SchedulerView( el: @$viewContainer )
 
 	# Whatever is returned here will be usable by other modules
-	appView
+	AppView
 )

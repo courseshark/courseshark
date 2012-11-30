@@ -2,7 +2,7 @@ define(['jQuery'
         'Underscore'
         'Backbone'
         'models/friend'
-        'text!tmpl/friends/friends-from-facebook.ejs'], ($, _, Backbone, Friend, templateText) ->
+        'text!tmpl/scheduler/friends/friends-from-facebook.ejs'], ($, _, Backbone, Friend, templateText) ->
 
   class FriendsFromFacebookView extends Backbone.View
 

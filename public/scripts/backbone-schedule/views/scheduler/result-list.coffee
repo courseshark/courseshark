@@ -2,8 +2,8 @@ define(['jQuery',
         'Underscore',
         'Backbone',
         'models/search-results'
-        'views/result-course'
-        'text!tmpl/results/result-section-list.ejs'], ($,_, Backbone, SearchResults, ResultsCourseView, templateText) ->
+        'views/scheduler/result-course'
+        'text!tmpl/scheduler/results/result-section-list.ejs'], ($,_, Backbone, SearchResults, ResultsCourseView, templateText) ->
 
   # This is the main search-results View.
   #
