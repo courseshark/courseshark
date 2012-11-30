@@ -1,33 +1,34 @@
 <div class="modal-header">
   <a href="#" class="close">&times;</a>
-  <h3>Login <small>to Course<strong>Shark</strong><small></h3>
+  <h3>signup <small>for Course<strong>Shark</strong><small></h3>
 </div>
 
 <div class="modal-body">
-  <div id="login" class="form-horizontal">
+  <div id="signup" class="form-horizontal">
     <!-- Email -->
-    <div class="control-group" id="login-email-control">
+    <div class="control-group" id="signup-email-control">
       <label class="control-label" for="email">Email</label>
       <div class="controls">
-          <input type="email" class="input-xlarge login-form-input-email" placeholder="Email Address"/>
+          <input type="email" class="input-xlarge signup-form-input-email" placeholder="Email Address"/>
           <p class="help-inline" for="email"></p>
       </div>
     </div>
     <!-- Password -->
-    <div class="control-group" id="login-password-control">
+    <div class="control-group" id="signup-password-control">
       <label class="control-label" for="password">Password</label>
       <div class="controls">
-        <input type="password" class="input-xlarge login-form-input-password" placeholder="Password"/>
+        <input type="password" class="input-xlarge signup-form-input-password" placeholder="Password"/>
         <div class="help-inline">
-          <div class="btn btn-mini btn-link login-forgot-password">Forgot?</div>
-          <div class="btn btn-mini btn-link login-needs-account">Need an account?</div>
+          <div class="btn btn-mini btn-link user-has-login">Already have an account?</div>
         </div>
-        <p class="text-error login-error"></p>
+        <p class="text-error signup-error"></p>
       </div>
     </div>
-    <!-- Alt login -->
-    <div class="control-group" id="login-oauth-control">
-      <label class="control-label" for="alt">or Login with </label>
+    <!-- Alt signup -->
+    <div class="control-group" id="signup-oauth-control">
+      <label class="control-label" for="alt">
+        <strong>or signin with</strong>
+      </label>
       <div class="controls">
         <a href="/auth/facebook" class="btn login-via-facebook"><img class="icon-img" src="/images/login/facebook.png" /></a>
         <a href="/auth/google"   class="btn login-via-google"  ><img class="icon-img" src="/images/login/google.png" /></a>
@@ -39,6 +40,6 @@
 </div>
 
 <div class="modal-footer">
-  <div class="btn btn-primary login-form-submit">Login</div>
+  <div class="btn btn-primary signup-form-submit">signup</div>
   <div class="btn" data-dismiss="modal">Close</div>
 </div>

@@ -88,7 +88,13 @@ exports = module.exports = function(app){
           req.session.auth = auth
           req.session.save()
           req.user = user
-          res.json({success: true, message: '/'})
+          res.json({
+              success: true
+            , redirect: '/'
+            , access_token: req.sessionID.toString().replace(/[^A-Fa-f0-9]/g,'')
+            , user_id: req.user.id
+            , user: req.user
+            , message: '/'})
         }
       })
     })

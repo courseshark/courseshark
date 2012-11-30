@@ -4,7 +4,8 @@ define(['jQuery'
         'models/model'
         'models/user'
         'views/auth/login'
-        'views/auth/resolve-duplicate'], ($, _, Backbone, SharkModel, User, AuthLoginView, ResolveDuplicateView) ->
+        'views/auth/signup'
+        'views/auth/resolve-duplicate'], ($, _, Backbone, SharkModel, User, AuthLoginView, AuthSignupView, ResolveDuplicateView) ->
 
   class Session extends SharkModel
 
@@ -41,6 +42,9 @@ define(['jQuery'
     login: ->
       @loginView = new AuthLoginView() if not @authenticated()
 
+    signup: ->
+      @signupView = new AuthSignupView() if not @authenticated()
+
     _authorizeFromRes: (res) ->
       @set 'access_token', res.access_token
       @set 'user_id', res.user_id
@@ -64,6 +68,22 @@ define(['jQuery'
         error: =>
           fail()
 
+    doSignup: (email, password, success=(()->return), fail=(()->return)) ->
+      $.ajax
+        url: '/signup'
+        data:
+          user:
+            email: email
+            password: password
+        type: 'post'
+        success: (res) =>
+          if res.success
+            @_authorizeFromRes res
+            success()
+          else
+            fail()
+        error: =>
+          fail()
 
     resolveDuplicate: (duplicateId, next) ->
       duplicate = new User({_id:duplicateId})
