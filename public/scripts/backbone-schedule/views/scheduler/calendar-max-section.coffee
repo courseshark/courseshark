@@ -59,7 +59,7 @@ define(['jQuery',
 							html: true
 							content: popover_content
 							placement: 'bottom'
-							trigger: 'click'
+							trigger: 'hover'
 							animation: false
 
 
