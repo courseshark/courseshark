@@ -85,10 +85,10 @@ define(['jQuery',
 
         friends = Shark.sectionFriends[@model.get('_id')]
         $section_friends = @$el.find('.section-friends')
-        _.each friends, (friend) =>
-          imgUrl = Shark.friendsList.where('_id' : friend)[0].get('avatar')
-          $section_friends.append('<img class="friend-img" src="'+imgUrl+'"></img>')
-
+        _.each friends, (friend_id) =>
+          friend = Shark.friendsList.where('_id' : friend_id)[0]
+          $section_friends.append($('<img class="friend-img" src="'+friend.get('avatar')+'"></img>')
+            .tooltip(title: friend.get('firstName') + " " + friend.get('lastName')))
 
       # Mark added if it is in the schedule?
       if Shark.schedule.contains(@model)
