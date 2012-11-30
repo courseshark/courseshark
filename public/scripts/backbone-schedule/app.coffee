@@ -18,8 +18,8 @@ define(['jQuery'
       window.Shark = @
 
       @.friendsList = new Friends()
-      @.sectionFriends = {"4ffd2376668b5416035b3d04" : ["50b6a125f420b805a6000028"]}
-      @.courseFriends = {"4ffd2367668b5416035b1a8e": 1}
+      @.sectionFriends = {}
+      @.courseFriends = {}
 
       @.terms = new Terms(CS.terms)
       @.school = new School(CS.school)
