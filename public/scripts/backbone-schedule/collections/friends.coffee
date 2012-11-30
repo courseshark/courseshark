@@ -16,8 +16,6 @@ define(['jQuery'
         '1'+friend.get('firstName')
 
     initialize: ->
-      @.bind 'all', () ->
-        console.log arguments
       @.bind 'add', (friend) ->
         @addFriend friend
       @.bind 'remove', (friend) ->
@@ -25,19 +23,24 @@ define(['jQuery'
 
 
     addFriend: (friend) ->
+      return if not friend.id
       $.ajax
           url: '/sandbox/friends/'+friend.id
           type: 'put'
           success: (res)=>
-            @fetch()
+            if (!res)
+              @remove(friend)
+            newFriend = new Friend(res)
+            @remove(friend, {silent: true})
+            @add(newFriend, {silent: true})
+            @trigger 'addComplete', newFriend
 
 
     removeFriend: (friend) ->
       $.ajax
           url: '/sandbox/friends/'+friend.id
           type: 'delete'
-          success: (res)=>
-            @fetch()
+          success: (res)=> return
 
   Friends
 )
