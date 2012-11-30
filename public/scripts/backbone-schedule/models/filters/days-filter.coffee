@@ -1,8 +1,8 @@
-define(['jQuery',
-				'Underscore',
+define(['jQuery'
+				'Underscore'
 				'Backbone'
-				'../../models/filter',
-				'../../views/filters/checkbox-filter'], ($,_, Backbone, FilterModel, CheckBoxFilterView) ->
+				'models/filter'
+				'views/scheduler/filters/checkbox-filter'], ($,_, Backbone, FilterModel, CheckBoxFilterView) ->
 
 	class DaysFilter extends FilterModel
 
@@ -15,13 +15,13 @@ define(['jQuery',
 		initialize: ->
 			@active = false
 			@view = CheckBoxFilterView
-			@mapper = 
+			@mapper =
 				monday: 'm'
 				tuesday: 't'
 				wednesday: 'w'
 				thursday: 'th'
 				friday: 'f'
-		 
+
 
 		# Logic section of the filter
 		filter: (section) =>
@@ -38,13 +38,13 @@ define(['jQuery',
 				dayIndex = options.indexOf(@mapper[day])
 				if dayIndex not in list
 					list.push(dayIndex)
-			
+
 			# Loops though all timeslots -> day arrays -> days, adding them to the allDays array
 			(addDayToList(day,allDays) for day in days) for days in (timeslot.days for timeslot in timeslots)
-			
+
 			# compare this array with the checked values
 			section.set 'visible', false if true in (!values[dayIndex] for dayIndex in allDays)
-			
+
 		viewChange: (values) ->
 			@active = false in values
 			@.set 'values', values

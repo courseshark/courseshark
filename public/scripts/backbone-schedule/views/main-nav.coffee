@@ -22,7 +22,6 @@ define(['jQuery'
         @$el.html @templateLoggedIn
           user: Shark.session.get 'user'
           domain: CS.domain
-        @initDropdowns()
 
     events:
       'click #nav-login': 'login'

@@ -1,8 +1,8 @@
-define(['jQuery',
-				'Underscore',
+define(['jQuery'
+				'Underscore'
 				'Backbone'
-				'../../models/filter',
-				'../../views/filters/slider-filter'], ($,_, Backbone, FilterModel, SliderFilterView) ->
+				'models/filter'
+				'views/scheduler/filters/slider-filter'], ($,_, Backbone, FilterModel, SliderFilterView) ->
 
 	class TimeFilter extends FilterModel
 
@@ -12,8 +12,8 @@ define(['jQuery',
 			sliderOptions:
 				range: true
 				min: 12	# Now using a step of 30 minutes for ease
-				max: 46 
-				values: [14,38] # 7am - 7pm 
+				max: 46
+				values: [14,38] # 7am - 7pm
 				animate: 100
 			options: ['m','t','w','th','f']
 			values: [true, true, true, true, true]
@@ -70,7 +70,7 @@ define(['jQuery',
 					endTime = new Date timeslot.endTime
 					if toMinutes(startTime) < @startMinute or toMinutes(endTime) > @endMinute
 						section.set 'visible', false
-			
+
 		viewChange: (values) ->
 			@updateText(values)
 

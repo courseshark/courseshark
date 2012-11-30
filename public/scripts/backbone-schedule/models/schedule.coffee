@@ -6,7 +6,7 @@ define(['jQuery'
         'collections/schedule-sections'
         'models/course'
         'models/section'
-        'text!tmpl/schedule/downloads/ics.ejs'], ($, _, Backbone, SharkModel, dateFormat, ScheduleSections, Course, Section, icsTemplate) ->
+        'text!tmpl/scheduler/schedule/downloads/ics.ejs'], ($, _, Backbone, SharkModel, dateFormat, ScheduleSections, Course, Section, icsTemplate) ->
 
   class Schedule extends SharkModel
 

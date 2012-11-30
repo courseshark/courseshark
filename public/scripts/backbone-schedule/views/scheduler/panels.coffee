@@ -27,8 +27,8 @@ define(['jQuery'
 			@render()
 
 			# Resize window listener
-			resizeLayout = _.debounce(@resizeEvent, 300)
-			$(window).resize resizeLayout
+			#@resizeLayout = _.debounce(@resizeEvent, 10)
+			@$window.resize @resizeEvent
 
 
 		# Renders the actual view from the template
