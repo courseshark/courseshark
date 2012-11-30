@@ -19,7 +19,6 @@ define(['jQuery'
 
       @.friendsList = new Friends()
       @.sectionFriends = {}
-      @.courseFriends = {}
 
       @.terms = new Terms(CS.terms)
       @.school = new School(CS.school)

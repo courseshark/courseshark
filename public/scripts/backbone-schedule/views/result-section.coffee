@@ -72,14 +72,17 @@ define(['jQuery',
       @$el.html @resultsSectionTemplate(params)
       @$el.hide() if not @model.get 'visible'
       @$addButton = @$el.find('.add')
+
       # Color/bold the correct day letters
       color = @model.color()
       _.each @model.get('timeslots'), (timeslot) =>
         _.each timeslot.days, (day) =>
           @$el.find('#' + day).addClass('selected').css 'color', color
 
+      # Adds friends heart/ images
       if Shark.sectionFriends[@model.get('_id')]
         @$el.find('.friend-icon').show()
+
         friends = Shark.sectionFriends[@model.get('_id')]
         $section_friends = @$el.find('.section-friends')
         _.each friends, (friend) =>

@@ -24,20 +24,16 @@ define(['jQuery'
         @removeFriend friend
 
     genFriendsHashes: ->
-      console.log('gen hash')
       sectionHash = {}
-      courseHash = {}
       @.each (friend) =>
         if friend.get('schedule')
           sections = friend.get('schedule').sections
           _.each sections, (section) =>
             if sectionHash[section._id]
-              sectionHash[section._id].push friend.get('id')
+              sectionHash[section._id].push friend.get('_id')
             else
-              sectionHash[section._id] = [friend.get('id')]
-            #also do the course thing
+              sectionHash[section._id] = [friend.get('_id')]
       Shark.sectionFriends = sectionHash
-      Shark.courseFriends = courseHash
 
     addFriend: (friend) ->
       $.ajax
