@@ -30,9 +30,9 @@ define(['jQuery'
           sections = friend.get('schedule').sections
           _.each sections, (section) =>
             if sectionHash[section._id]
-              sectionHash[section._id].push friend.get('_id')
+              sectionHash[section._id].push friend.id
             else
-              sectionHash[section._id] = [friend.get('_id')]
+              sectionHash[section._id] = [friend.id]
       Shark.sectionFriends = sectionHash
 
     addFriend: (friend) ->

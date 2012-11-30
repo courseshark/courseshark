@@ -80,13 +80,12 @@ define(['jQuery',
           @$el.find('#' + day).addClass('selected').css 'color', color
 
       # Adds friends heart/ images
-      if Shark.sectionFriends[@model.get('_id')]
+      if friends = Shark.sectionFriends[@model.get('_id')]
         @$el.find('.friend-icon').show()
 
-        friends = Shark.sectionFriends[@model.get('_id')]
         $section_friends = @$el.find('.section-friends')
         _.each friends, (friend_id) =>
-          friend = Shark.friendsList.where('_id' : friend_id)[0]
+          friend = Shark.friendsList.get friend_id
           $section_friends.append($('<img class="friend-img" src="'+friend.get('avatar')+'"></img>')
             .tooltip(title: friend.get('firstName') + " " + friend.get('lastName')))
 
