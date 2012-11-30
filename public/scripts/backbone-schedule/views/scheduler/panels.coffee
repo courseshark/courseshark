@@ -1,14 +1,14 @@
 #Incude all the models here, then pass them back into the object
-define(['jQuery',
- 'Underscore',
- 'Backbone',
- 'text!tmpl/app/panels.ejs',
- 'views/result-list',
- 'views/schedule-sections-list',
- 'views/filter',
- 'views/calendar-max',
- 'views/calendar-mini',
- 'views/friends-list'], ($, _, Backbone, templateText, ResultListView, ScheduleSectionsListView, FilterView, CalendarMaxView, CalendarMiniView, FriendsListView) ->
+define(['jQuery'
+ 'Underscore'
+ 'Backbone'
+ 'views/scheduler/result-list'
+ 'views/scheduler/schedule-sections-list'
+ 'views/scheduler/filter'
+ 'views/scheduler/calendar-max'
+ 'views/scheduler/calendar-mini'
+ 'views/scheduler/friends-list'
+ 'text!tmpl/scheduler/panels.ejs'], ($, _, Backbone, ResultListView, ScheduleSectionsListView, FilterView, CalendarMaxView, CalendarMiniView, FriendsListView, templateText) ->
 
 	class panelsView extends Backbone.View
 
@@ -27,8 +27,8 @@ define(['jQuery',
 			@render()
 
 			# Resize window listener
-			$(window).resize =>
-				@resizeEvent()
+			#@resizeLayout = _.debounce(@resizeEvent, 10)
+			@$window.resize @resizeEvent
 
 
 		# Renders the actual view from the template

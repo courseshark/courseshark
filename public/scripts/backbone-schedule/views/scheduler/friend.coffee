@@ -1,8 +1,8 @@
-define(['jQuery',
-        'Underscore',
-        'Backbone',
-        'text!tmpl/friends/friend.ejs',
-        'models/friend'], ($,_, Backbone, friendTemplate, Friend) ->
+define(['jQuery'
+        'Underscore'
+        'Backbone'
+        'models/friend'
+        'text!tmpl/scheduler/friends/friend.ejs'], ($,_, Backbone, Friend, templateText) ->
 
   class FriendView extends Backbone.View
 
@@ -10,7 +10,7 @@ define(['jQuery',
 
     initialize: ->
       _.bindAll @
-      @friendTemplate = _.template(friendTemplate)
+      @template = _.template(templateText)
       @render()
 
     events:
@@ -22,7 +22,7 @@ define(['jQuery',
 
     render: ->
       name = [@model.get('firstName'),@model.get('lastName')].join(' ')
-      @$el.html @friendTemplate(
+      @$el.html @template(
           name: name
           avatar: @model.get 'avatar'
           confirmed: @model.get 'confirmed'

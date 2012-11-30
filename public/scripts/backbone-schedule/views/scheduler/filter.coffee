@@ -6,7 +6,7 @@ define(['jQuery',
 	'models/filters/days-filter',
 	'models/filters/time-filter',
 	'models/filters/friends-filter',
-	'text!tmpl/app/filter.ejs'], ($, _, Backbone, FilterCollection, SeatsFilter, DaysFilter, TimeFilter, FriendsFilter, filterTemplate) ->
+	'text!tmpl/scheduler/filters/index.ejs'], ($, _, Backbone, FilterCollection, SeatsFilter, DaysFilter, TimeFilter, FriendsFilter, filterTemplate) ->
 
 	class filterView extends Backbone.View
 

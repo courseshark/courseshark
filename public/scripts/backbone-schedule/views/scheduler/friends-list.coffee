@@ -3,9 +3,9 @@ define(['jQuery'
         'Backbone'
         'collections/facebook-friends-results'
         'models/friend'
-        'views/friends-from-facebook'
-        'views/friend'
-        'text!tmpl/friends/friends-list.ejs'], ($,_, Backbone, FacebookFriendsResults, Friend, FriendsFromFacebookView, FriendView, friendsListTemplate) ->
+        'views/scheduler/friends-from-facebook'
+        'views/scheduler/friend'
+        'text!tmpl/scheduler/friends/friends-list.ejs'], ($,_, Backbone, FacebookFriendsResults, Friend, FriendsFromFacebookView, FriendView, templateText) ->
 
 
   class FriendsListView extends Backbone.View
@@ -13,7 +13,7 @@ define(['jQuery'
     initialize: ->
       _.bindAll @
       @removeMode = false
-      @template = _.template(friendsListTemplate)
+      @template = _.template(templateText)
 
       # Bind to adding of friends
       Shark.friendsList.bind 'reset', (friends) =>
