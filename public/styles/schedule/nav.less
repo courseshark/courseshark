@@ -2,8 +2,8 @@
 
 .navbar-fixed-top{
   .navbar-inner.navbar-main{
-    @from: lighten(@grey, 10%);
-    @to: lighten(@from, 10%);
+    @from: lighten(@offWhite, 30%);
+    @to: darken(@from, 5%);
 
 
     background-color: @from;
@@ -18,15 +18,15 @@
     -moz-box-shadow: none;
     box-shadow: none;
     .brand{
-      color: @white;
-      text-shadow:none;
+      //color: @black;
+      //text-shadow:none;
     }
   }
 }
 .main-nav-right{
   .btn-nav{
     margin-right: 0px;
-    background: darken(@offWhite, 10%);
+    background: darken(@offWhite, 5%);
     &:hover{
       background: @offWhite;
     }
