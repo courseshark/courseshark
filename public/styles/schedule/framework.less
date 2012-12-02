@@ -1,12 +1,16 @@
-@import 'vars';
-
 body{
 	overflow-y: hidden;
 	overflow-x: auto;
 	padding-top: 53px;
 	background: #f0f0f0;
 	//background: #f4f4f4 url('/images/backbone/bg-shard.png') repeat center center;
+}
 
+a{
+	color: @primary;
+	&:hover{
+		color: @tirtiary;
+	}
 }
 
 .outline-border{
@@ -130,7 +134,7 @@ body{
 	&.open:before{
 		content: "«";
 	}
-	background: lighten(@blue, 25%);
+	background: lighten(@secondary, 20%);
 	color: @white;
 	cursor: pointer;
 	padding: 0 0 0 2px;

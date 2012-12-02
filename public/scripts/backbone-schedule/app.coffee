@@ -24,7 +24,7 @@ define(['jQuery'
       @.school = new School(CS.school)
       @.term = @.terms.get @.school.get 'currentTerm'
 
-      @.schedule = new Schedule
+      @.schedule = new Schedule term: @.term
       @.schedulesList = new Schedules
 
       @.session = new Session()

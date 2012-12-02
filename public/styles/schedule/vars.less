@@ -1,35 +1,35 @@
-@cs-blue: #3FA9F5;
-@cs-accent-blue: #3F7BF5;
-@text-grey: #8a949e;
-
-
-@nav-bar: #266e97;
-
-@backdrop: #555;
-@bg-blue: #ecf2f7;
-
-
 @black: #141414;
-@blue: @cs-blue;
+@blue: #3FA9F5;
+@dark-blue: #266e97;
 @dark-red: #A50505;
-@darkBlue: #4D6484;
 @green: #1fff19;
 @grey:  #7f7f7f;
 @light-grey: #E5E5E5;
 @offWhite: #f5f5f5;
 @orange: #FF994D;
-@red: #f00;
+@red: #f00000;
 @white: #fff;
 
+@cs-blue: @blue;
+@cs-accent-blue: @blue;
+@text-grey: #8a949e;
 
-@blue-bar-top: #51aef7;
-@blue-bar-bottom: #2c7bb8;
+@background: #f0f0f0;
+@backdrop: #555;
+@bg-blue: #ecf2f7;
+
+
+@primary: @blue;
+@secondary: @orange;
+@tirtiary: @dark-blue;
+
+//@nav-bar: #266e97;
+@nav-bar: @tirtiary;//darken(@primary, 50%);
 
 
 @corners: 5px;
 @border: lighten(@grey, 30%);
 @text-blue: @nav-bar;
-@secondary: #3f92ce;
 
 .background-gradient-linear(@from: #ddd, @to: #fff){
 	background-color: @from;

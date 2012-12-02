@@ -1,11 +1,7 @@
-@import "vars";
-
 .navbar-fixed-top{
   .navbar-inner.navbar-main{
     @from: @nav-bar;
     @to: darken(@from, 5%);
-
-
     background-color: @from;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@{from}', endColorstr='@{to}');
     background-image: -webkit-gradient(linear, left top, left bottom, from(@from), to(@to));
@@ -13,6 +9,8 @@
     background-image: -ms-linear-gradient(top, @from, @to);
     background-image: -o-linear-gradient(top, @from, @to);
     background-image: linear-gradient(top, @from, @to);
+
+    border-bottom: 3px solid @primary;
 
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -47,8 +45,3 @@
   }
 }
 
-
-
-.nav-btn {
-	color: @cs-blue;
-}
