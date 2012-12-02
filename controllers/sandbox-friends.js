@@ -22,6 +22,16 @@ exports = module.exports = function(app){
     })
   })
 
+  app.get('/sandbox/friends/invites', requireLogin, function(req, res){
+    req.user.getFriendRequests(function(err, invites){
+      if ( err ){
+        res.json({error: err})
+      }else{
+        res.json(invites.map(function(f){return cleanUserObject(f.toObject());}))
+      }
+    })
+  })
+
   app.put('/sandbox/friends/:id', requireLogin, function(req, res){
     User.findOne({_id: req.params.id},function(err, friend){
       if ( err||!friend ) { res.json(false); return; }

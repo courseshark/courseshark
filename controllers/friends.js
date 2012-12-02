@@ -112,11 +112,15 @@ exports = module.exports = function(app){
     }
     re = new RegExp(query, 'gi')
     User.find({school: req.user.school, $or:[{email: re}, {firstName: re}, {lastName: re}] }, function(err, users){
-      users = users.map(function(u){return {id:u.id, name:u.name, email:((u.email&&u.email.replace(/@.+/gi,''))||''), avatar:u.avatar(30)}})
-      if ( req.params.format == 'json' ){
-        res.json({query: query, users: users})
+      if (users){
+        users = users.map(function(u){return {id:u.id, name:u.name, email:((u.email&&u.email.replace(/@.+/gi,''))||''), avatar:u.avatar}})
+        if ( req.params.format == 'json' ){
+          res.json({query: query, users: users})
+        }else{
+          res.render('friends/results', {users: users, search: req.params.name})
+        }
       }else{
-        res.render('friends/results', {users: users, search: req.params.name})
+        res.json({query: query, users: [], error: err})
       }
     })
   })
@@ -128,9 +132,10 @@ exports = module.exports = function(app){
       User.update({_id: req.user._id}, {$addToSet: {friends: req.params.friendId}}, function(err, num){
         if ( err ){ res.json(false); return; }
         res.json(true);
-        if ( !user.canEmailFriendRequests || !friend.email ){
+        if ( !req.user.canEmailFriendRequests || !friend.email ){
           return;
         }
+        mandrill = require('mandrill');
         mandrill.messages_send_template({
             template_name:'friend_invite'
           , template_content:''
@@ -149,7 +154,7 @@ exports = module.exports = function(app){
             , merge_vars:[{
                 rcpt: friend.email
               , vars:[
-                  {name: 'FNAME', content: user.firstName}
+                  {name: 'FNAME', content: req.user.firstName}
                 , {name: 'SENDER', content: friend.name}
               ]}]
             , tags: ['friends', 'invite']

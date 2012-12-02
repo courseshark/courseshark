@@ -16,6 +16,8 @@ exports = module.exports = function(app){
   })
 
   app.get('/s(/*)?', requireSchool, function(req, res){
+
+    var built = app.settings.env!="development" || req.query.b
     School.findById(req.school.id, {
         terms:0
       , oldId:0
@@ -32,7 +34,7 @@ exports = module.exports = function(app){
           Term.find({school: req.school}, {
             school:0
             }, function(err, terms){
-                res.render('schedule/schedule', {school: school, terms: terms, layout: 'app-layout.ejs', built: app.settings.env!="development"});
+                res.render('schedule/schedule', {school: school, terms: terms, layout: 'app-layout.ejs', built: built});
           })
     })
   })

@@ -2,7 +2,7 @@
 
 .navbar-fixed-top{
   .navbar-inner.navbar-main{
-    @from: lighten(@offWhite, 30%);
+    @from: @nav-bar;
     @to: darken(@from, 5%);
 
 
@@ -18,24 +18,32 @@
     -moz-box-shadow: none;
     box-shadow: none;
     .brand{
-      //color: @black;
-      //text-shadow:none;
+      color: @offWhite;
+      text-shadow: 0 1px 0 @black;
     }
   }
 }
 .main-nav-right{
   .btn-nav{
     margin-right: 0px;
-    background: darken(@offWhite, 5%);
+    @bgColor: lighten(@nav-bar, 5%);
+    @cnt: 10%;
+    color: @white;
+    text-shadow: none;
+    //text-shadow: 0 1px 1px @black;
+    background: @bgColor;
     &:hover{
-      background: @offWhite;
+      background: lighten(@bgColor, @cnt);
     }
   }
   img.user-icon{
     height: 30px;
     width: 30px;
-    margin: 3px -2px -2px;
-    border: 2px solid @white;
+    margin: 3px -1px -1px 1px;
+    border: 1px solid darken(@offWhite, 5%);
+    &:hover{
+      border-color: @offWhite;
+    }
   }
 }
 
