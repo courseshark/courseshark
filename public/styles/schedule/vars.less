@@ -10,26 +10,26 @@
 @red: #f00000;
 @white: #fff;
 
-@cs-blue: @blue;
-@cs-accent-blue: @blue;
+
 @text-grey: #8a949e;
 
-@background: #f0f0f0;
-@backdrop: #555;
-@bg-blue: #ecf2f7;
-
-
+/** Actual Important Color Definitions */
+// Most everything is colored using these variables
 @primary: @blue;
 @secondary: @orange;
 @tirtiary: @dark-blue;
+@nav-bar: @tirtiary;
 
-//@nav-bar: #266e97;
-@nav-bar: @tirtiary;//darken(@primary, 50%);
+@background: #f0f0f0;
+@backdrop: #555;
 
-
-@corners: 5px;
 @border: lighten(@grey, 30%);
-@text-blue: @nav-bar;
+@corners: 5px;
+
+
+
+
+/** Mixins **/
 
 .background-gradient-linear(@from: #ddd, @to: #fff){
 	background-color: @from;
