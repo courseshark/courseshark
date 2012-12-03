@@ -1,0 +1,1 @@
+define( ['jquery_js', 'jqueryui_js'], ($) -> $ )

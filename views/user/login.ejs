@@ -39,7 +39,7 @@
 			</div>
 		</fieldset>
 	</form>
-	<a href="#" class="btn btn-primary left" onClick="login_submit()">Login</a>
+	<a href="#" class="btn btn-primary left">Login</a>
 	</div>
 </div>
 <div class="row">
@@ -63,7 +63,7 @@
 						'remember':$('input#remember').val()
 					});
 				$.ajax({
-					url:'/users/login',
+					url:'/login',
 					async:false,
 					data:{
 							'password':$('input#password').val(),

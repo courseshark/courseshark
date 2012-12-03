@@ -1,0 +1,67 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+  <h3>Duplicate Accounts Found</h3>
+</div>
+<div class="modal-body">
+  <!-- TODO: Change this to something better -->
+  <p>It looks like there is a seperate account associated with this Facebook account!</p>
+  <p>Good thing thats an easy problem to solve. But how is up to you? Would you like to merege these accounts?</p>
+
+  <div class="row-fluid">
+    <div class="span12">
+      <h4>You</h4>
+    </div>
+    <div class="span12">
+      <h4>Found Account</h4>
+    </div>
+  </div>
+
+  <div class="row-fluid">
+    <div class="span12">
+      <img src="<%=me.avatar%>" alt="Your Avatar"/>
+    </div>
+    <div class="span12">
+      <img src="<%=found.avatar%>" alt="Found Avatar"/>
+    </div>
+  </div>
+
+  <div class="row-fluid">
+    <div class="span12">
+      <dl>
+        <dt>Email</dt>
+        <dd><%=me.email%></dd>
+
+        <dt>Name</dt>
+        <dd><%=me.name%></dd>
+
+        <dt># of Schedules</dt>
+        <dd><%=me.schedulesCount%></dd>
+
+        <dt># of Friends</dt>
+        <dd><%=me.friendsCount%></dd>
+      </dl>
+    </div>
+    <div class="span12">
+      <dl>
+        <dt>Email</dt>
+        <dd><%=found.email%></dd>
+
+        <dt>Name</dt>
+        <dd><%=found.name%></dd>
+
+        <dt>Schedules</dt>
+        <dd><%=found.schedulesCount%></dd>
+
+        <dt>Friends</dt>
+        <dd><%=found.friendsCount%></dd>
+      </dl>
+    </div>
+  </div>
+
+
+
+</div>
+<div class="modal-footer">
+  <a href="#" data-dismiss="modal" class="btn">Ignore</a>
+  <a href="#" class="btn btn-success" id="resolve-merge">Merge Accounts</a>
+</div>

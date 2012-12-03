@@ -1,0 +1,1 @@
+define( ['underscore_js'], () -> _ )
