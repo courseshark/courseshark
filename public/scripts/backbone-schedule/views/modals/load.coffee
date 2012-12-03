@@ -22,8 +22,9 @@ define(['jQuery',
 
     show: ->
       @list.empty()
-      Shark.schedulesList.each (schedule) =>
-        @list.append $("<option />").val(schedule.id).text(schedule.get 'name')
+      Shark.schedulesList.fetch success: =>
+        Shark.schedulesList.each (schedule) =>
+          @list.append $("<option />").val(schedule.id).text(schedule.get 'name')
       @$el.modal 'show'
 
     hide: ->

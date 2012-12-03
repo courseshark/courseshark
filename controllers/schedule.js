@@ -16,8 +16,8 @@ exports = module.exports = function(app){
   })
 
   app.get('/s(/*)?', requireSchool, function(req, res){
-
     var built = app.settings.env!="development" || req.query.b
+    req.session.redirectTo='/s/';
     School.findById(req.school.id, {
         terms:0
       , oldId:0

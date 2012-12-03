@@ -2,7 +2,8 @@
 define(['jQuery',
 	'Underscore',
 	'Backbone',
-	'text!tmpl/scheduler/schedule/calendar-max-section.ejs'], ($, _, Backbone, templateText) ->
+	'text!tmpl/scheduler/schedule/calendar-max-section.ejs'
+	'text!tmpl/scheduler/schedule/calendar-popover-content.ejs'], ($, _, Backbone, templateText, popoverTemplate) ->
 
 	class CalendarMaxSection extends Backbone.View
 
@@ -11,6 +12,7 @@ define(['jQuery',
 
 			# Compile the template for future use
 			@template = _.template(templateText)
+			@popoverTemplate = _.template(popoverTemplate)
 
 			@$els = []
 
@@ -40,8 +42,25 @@ define(['jQuery',
 							top_offset: top_offset
 							startHourAdjusted: startHourAdjusted
 							endHourAdjusted: startHourAdjusted
+
 						@$els.push $el
 						($ '.wk-event-wrapper[data-day="'+day+'"]').append $el
+
+						popover_content = @popoverTemplate
+							credits: @model.get('credits')
+							section: @model.get('info')
+							instructor: @model.get('instructor')
+							crn: @model.get('number')
+							seats: (@model.get('steatsAvailable') || "0") + "/" + @model.get('seatsTotal')
+							time: slot.startTime.toLocaleTimeString() + " - " + slot.endTime.toLocaleTimeString()
+
+						$el.popover
+							title: @model.get('name')
+							html: true
+							content: popover_content
+							placement: 'top'
+							trigger: 'hover'
+							animation: false
 
 
 		# Remove the section

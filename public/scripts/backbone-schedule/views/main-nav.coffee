@@ -23,6 +23,10 @@ define(['jQuery'
           user: Shark.session.get 'user'
           domain: CS.domain
 
+      Shark.session.on 'unauthenticated', ()=>
+        @$el.html @templateLoggedOut
+          domain: CS.domain
+
     events:
       'click #nav-login': 'login'
       'click .user-icon': 'showUserMenu'
@@ -42,7 +46,8 @@ define(['jQuery'
       Shark.session.login()
 
     showUserMenu: ->
-      @$el.find('#user-menu').toggleClass('open');
+      Shark.session.logout()
+      #@$el.find('#user-menu').toggleClass('open');
 
 
   # Whatever is returned here will be usable by other modules
