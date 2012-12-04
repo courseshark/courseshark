@@ -52,7 +52,8 @@ define(['jQuery'
       @loginView = new AuthLoginView() if not @authenticated()
 
     loginWithFacebook: (callback=(()->return)) ->
-      return if not FB
+      callback() if @authenticated()
+      window.location = "/auth/facebook" if not FB
       FB.login (loginResponse) ->
         if loginResponse.authResponse
           Shark.session.facebookAuth loginResponse.authResponse.accessToken, callback

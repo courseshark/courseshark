@@ -4,7 +4,7 @@ define(['jQuery'
         'Backbone'
         'text!tmpl/app/nav/account-dropdown.ejs'], ($, _, Backbone, templateText) ->
 
-  class AccountDropdownView extends Backbone.view
+  class AccountDropdownView extends Backbone.View
 
     initialize: ->
       _.bindAll @
