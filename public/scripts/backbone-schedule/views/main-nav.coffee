@@ -2,8 +2,9 @@
 define(['jQuery'
   'Underscore'
   'Backbone'
+  'views/dropdowns/account'
   'text!tmpl/app/nav/main-nav-loggedIn.ejs'
-  'text!tmpl/app/nav/main-nav-loggedOut.ejs'], ($, _, Backbone, templateTextLoggedIn, templateTextLoggedOut) ->
+  'text!tmpl/app/nav/main-nav-loggedOut.ejs'], ($, _, Backbone, AccountDropdownView, templateTextLoggedIn, templateTextLoggedOut) ->
 
 
   class MainNavView extends Backbone.View
@@ -45,8 +46,9 @@ define(['jQuery'
     login: ->
       Shark.session.login()
 
-    showUserMenu: ->
-      Shark.session.logout()
+    showUserMenu: (e) ->
+      Shark.dropdown = new AccountDropdownView()
+      e.stopPropagation()
       #@$el.find('#user-menu').toggleClass('open');
 
 

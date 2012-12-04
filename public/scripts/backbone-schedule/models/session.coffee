@@ -51,6 +51,12 @@ define(['jQuery'
     login: ->
       @loginView = new AuthLoginView() if not @authenticated()
 
+    loginWithFacebook: (callback=(()->return)) ->
+      return if not FB
+      FB.login (loginResponse) ->
+        if loginResponse.authResponse
+          Shark.session.facebookAuth loginResponse.authResponse.accessToken, callback
+
     signup: ->
       @signupView = new AuthSignupView() if not @authenticated()
 
