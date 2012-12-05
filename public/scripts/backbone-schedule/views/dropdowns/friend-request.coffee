@@ -24,11 +24,10 @@ define(['jQuery'
     accept: ->
       Shark.friendInvites.remove @model
       Shark.friendsList.add(@model)
-      console.log 'Accepting request', @model
 
     ignore: ->
       Shark.friendInvites.remove @model
-      console.log 'Ignoring request', @model
+      Shark.friendsList.removeFriend @model
 
   # Whatever is returned here will be usable by other modules
   FriendRequestView
