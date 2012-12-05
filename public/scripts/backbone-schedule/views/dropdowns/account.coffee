@@ -2,7 +2,7 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
-        'text!tmpl/app/nav/account-dropdown.ejs'], ($, _, Backbone, templateText) ->
+        'text!tmpl/app/nav/dropdowns/account.ejs'], ($, _, Backbone, templateText) ->
 
   class AccountDropdownView extends Backbone.View
 
@@ -12,13 +12,14 @@ define(['jQuery'
       if not $('#dropdown-view').length
         @$el = $('<div></div>').attr('id', 'dropdown-view').appendTo 'body'
       else
-        @$el = $('#dropdown-view').empty()
+        @$el = $('#dropdown-view')
 
       @template = _.template templateText
       @render()
 
     render: ->
       @$el.html @template user: Shark.session.get 'user'
+      @$el.css right: '10px'
       @show()
 
     events:

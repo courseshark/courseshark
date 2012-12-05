@@ -3,8 +3,9 @@ define(['jQuery'
   'Underscore'
   'Backbone'
   'views/dropdowns/account'
+  'views/dropdowns/notifications'
   'text!tmpl/app/nav/main-nav-loggedIn.ejs'
-  'text!tmpl/app/nav/main-nav-loggedOut.ejs'], ($, _, Backbone, AccountDropdownView, templateTextLoggedIn, templateTextLoggedOut) ->
+  'text!tmpl/app/nav/main-nav-loggedOut.ejs'], ($, _, Backbone, AccountDropdownView, NotificationsDropdownView, templateTextLoggedIn, templateTextLoggedOut) ->
 
 
   class MainNavView extends Backbone.View
@@ -32,9 +33,15 @@ define(['jQuery'
         @$el.html @templateLoggedOut
           domain: CS.domain
 
+      Shark.friendInvites.on 'remove', ()=>
+        @updateFriendInvitesMarker()
+      Shark.friendInvites.on 'add', ()=>
+        @updateFriendInvitesMarker()
+
     events:
       'click #nav-login': 'login'
       'click .user-icon': 'showUserMenu'
+      'click #menu-notifications': 'showNotifications'
 
     # Renders the actual view from the template
     render: ->
@@ -59,7 +66,13 @@ define(['jQuery'
       Shark.session.login()
 
     showUserMenu: (e) ->
+      Shark.dropdown?.hide()
       Shark.dropdown = new AccountDropdownView()
+      e.stopPropagation()
+
+    showNotifications: (e) ->
+      Shark.dropdown?.hide()
+      Shark.dropdown = new NotificationsDropdownView()
       e.stopPropagation()
 
     updateFriendNotifications: ->
@@ -71,7 +84,6 @@ define(['jQuery'
     updateFriendInvitesMarker: ->
       @friendInvitesCount = Shark.friendInvites.length
       @updateNotificationCount()
-
 
   # Whatever is returned here will be usable by other modules
   MainNavView

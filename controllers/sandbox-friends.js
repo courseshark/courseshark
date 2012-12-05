@@ -37,9 +37,6 @@ exports = module.exports = function(app){
       if ( err||!friend ) { res.json(false); return; }
       User.update({_id: req.user._id}, {$addToSet: {friends: req.params.id}}, function(err, num){
         if ( err ){ res.json(false); return; }
-        if ( !friend.canEmailFriendRequests || !friend.email ){
-          return;
-        }
 
         var friendClean = cleanUserObject(friend.toObject())
         // Check if already friends
@@ -49,7 +46,9 @@ exports = module.exports = function(app){
           }
         }
         res.json(friendClean);
-        require('../lib/friends').sendInviteEmailToFriendFromUser(friend, req.user);
+        if ( friend.canEmailFriendRequests && friend.email && !friendClean.confirmend){
+          require('../lib/friends').sendInviteEmailToFriendFromUser(friend, req.user);
+        }
       })
     })
   })
