@@ -1,16 +1,14 @@
-@import "vars";
-
 .friends-list, .schedule-sections-list{
 
   .title-bar{
-    @titletop: #51aef7;
-    @titlebottom: #2c7bb8;
 
-    background-color: #3fa9f5;
-    .background-gradient-linear(@titletop, @titlebottom);
+    @from: @nav-bar;
+    @to: darken(@from, 5%);
+
+    .background-gradient-linear(@from, @to);
     height: 30px;
     color: white;
-    text-shadow: black 0.1em 0.1em 0.2em;
+    text-shadow: @black 0.1em 0.1em 0.2em;
     font-size: 14px;
     padding-left: 15px;
     line-height: 30px;
@@ -25,7 +23,7 @@
   }
 
   .list{
-    background-color: @bg-blue;
+    background-color: @white;
     min-height: 140px;
     overflow-y: auto;
   }

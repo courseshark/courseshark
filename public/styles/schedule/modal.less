@@ -1,10 +1,27 @@
-@import "vars";
-
 .modal-backdrop{
   background: @backdrop;
 }
 
 .modal{
+  .btn-success {
+    color: white;
+    .background-gradient-linear(@primary, darken(@primary, 10%));
+    &:hover{
+      background-color: darken(@primary, 10%);
+    }
+  }
+
+  .modal-header{
+    border-bottom: 1px solid @primary;
+  }
+
+  .modal-body {
+    .header {
+      color: @tirtiary;
+      font-size: 1.25em;
+      font-weight: bold;
+    }
+  }
 }
 
 .modal.fade{

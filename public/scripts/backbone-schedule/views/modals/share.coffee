@@ -23,6 +23,10 @@ define(['jQuery',
           schedule: Shark.schedule.toJSON()
         dataType: 'json'
         success: (link)=>
+          if link.error
+            @$linkText.text 'Invalid Schedule. Cannot create link'
+            @link.attr '#'
+            return
           @$link.attr 'href', '/s/l/'+link.hash
           @$linkText.text window.location.origin+'/s/l/'+link.hash
 

@@ -13,6 +13,7 @@ define(['jQuery',
 			"keypress .login-form-input-password": "checkSubmit"
 			"click .login-forgot-password": "switchToForgot"
 			"click .login-needs-account": "switchToSignup"
+			"click .login-via-facebook": "loginWithFacebook"
 			"click .login-form-submit": "login"
 			"click .close": "close"
 
@@ -34,6 +35,8 @@ define(['jQuery',
 		close: ->
 			@$el.modal 'hide'
 
+		loginWithFacebook: ->
+			Shark.session.loginWithFacebook @close
 
 		checkSubmit: (e) ->
 			if e.keyCode is 13

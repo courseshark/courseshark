@@ -1,5 +1,3 @@
-@import 'vars';
-
 .filter-panel {
 	padding: 8px;
 	position: relative;
@@ -14,13 +12,15 @@
 		.cs-button {
 			padding: 4px 13px;
 			color: white;
-			background-color: @cs-blue;
-			background-image: -moz-linear-gradient(top, @cs-accent-blue, @cs-blue);
-			background-image: -ms-linear-gradient(top, @cs-accent-blue, @cs-blue);
-			background-image: -webkit-gradient(linear,0 0,0 100%,from(@cs-accent-blue),to(@cs-blue));
-			background-image: -webkit-linear-gradient(top, @cs-accent-blue, @cs-blue);
-			background-image: -o-linear-gradient(top, @cs-accent-blue, @cs-blue);
-			background-image: linear-gradient(top, @cs-accent-blue, @cs-blue);
+			@from: @primary;
+			@to: darken(@primary, 10%);
+			.background-gradient-linear(@from, @to);
+			&:hover{
+				@from: spin(@primary, 10);
+				@to: darken(@primary, 10%);
+				.background-gradient-linear(@from, @to);
+				background-color: @to;
+			}
 		}
 	}
 
@@ -37,7 +37,7 @@
 		}
 
 		legend {
-			color: @text-grey;
+			color: darken(@secondary, 10%);
 			text-align: left;
 			width: auto;
 			border: none;
@@ -59,7 +59,7 @@
 		}
 	}
 	.time {
-		color: @cs-blue;
+		color: @tirtiary;
 		margin-left: 10px;
 	}
 
@@ -95,29 +95,29 @@
 	}
 	// slider range background
 	.ui-widget-header {
-		border: 1px solid @cs-blue;
-		background-color: @cs-blue;
+		border: 1px solid @primary;
+		background-color: @primary;
 		background-image: none;
 	}
 	// slider hovering style
 	.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { 
-		border: 1px solid @cs-blue;
-		background-color: @cs-blue * 3;
+		border: 1px solid @primary;
+		background-color: @primary * 3;
 		background-image: none;
 		font-weight: bold;
-		color: @text-grey; 
+		color: @text-grey;
 	}
 	// slider moving style
-	.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { 
-		border: 1px solid @cs-blue;
+	.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+		border: 1px solid @primary;
 		background-color: @white;
 		background-image: none;
 		font-weight: bold;
-		color: @cs-blue;
+		color: @primary;
 	 }
 	// slider hovering around style
 	.ui-state-hover a, .ui-state-hover a:hover {
-		color: @cs-blue;
+		color: @primary;
 		text-decoration: none;
 	}
 }

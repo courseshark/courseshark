@@ -16,6 +16,7 @@ exports = module.exports = function(app){
   })
 
   app.get('/s(/*)?', requireSchool, function(req, res){
+    var built = app.settings.env!="development" || req.query.b
     req.session.redirectTo='/s/';
     School.findById(req.school.id, {
         terms:0
@@ -33,7 +34,7 @@ exports = module.exports = function(app){
           Term.find({school: req.school}, {
             school:0
             }, function(err, terms){
-                res.render('schedule/schedule', {school: school, terms: terms, layout: 'app-layout.ejs', built: app.settings.env!="development"});
+                res.render('schedule/schedule', {school: school, terms: terms, layout: 'app-layout.ejs', built: built});
           })
     })
   })
@@ -160,8 +161,13 @@ exports = module.exports = function(app){
     if ( req.user ){
       link.user = req.user._id
     }
+    // If no or blank schedule passed. Fail out
+    if ( !link.schedule.term || !link.schedule.sections || !link.schedule.sections.length ){
+      res.json({error: 'Invalid schedule'});
+      return;
+    }
     ScheduleLink.findOne({
-          '_schedule.term._id': link.schedule.term.id||link.schedule.term._id
+          '_schedule.term._id': link.schedule.term?(link.schedule.term.id||link.schedule.term._id):''
         , '_schedule.name' : link.schedule.name
         , '_schedule.school' : link.schedule.school
         , '_schedule.sections._id': {$all : link.schedule.sections.map(function(e){return e._id}) }
