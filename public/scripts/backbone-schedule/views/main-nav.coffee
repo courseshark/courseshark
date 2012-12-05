@@ -16,6 +16,8 @@ define(['jQuery'
       # Compile the template for future use
       @templateLoggedIn = _.template(templateTextLoggedIn)
       @templateLoggedOut = _.template(templateTextLoggedOut)
+
+      @friendInvitesCount = 0
       # Render call
       @render()
 
@@ -23,6 +25,8 @@ define(['jQuery'
         @$el.html @templateLoggedIn
           user: Shark.session.get 'user'
           domain: CS.domain
+        @$notificationCount = $ '#notification-count'
+        @updateFriendNotifications()
 
       Shark.session.on 'unauthenticated', ()=>
         @$el.html @templateLoggedOut
@@ -43,13 +47,30 @@ define(['jQuery'
           domain: CS.domain
 
 
+    updateNotificationCount: ->
+      notifications = @friendInvitesCount;
+      return if not @$notificationCount
+      if notifications == 0
+        @$notificationCount.hide()
+      else
+        @$notificationCount.html(@friendInvitesCount).show()
+
     login: ->
       Shark.session.login()
 
     showUserMenu: (e) ->
       Shark.dropdown = new AccountDropdownView()
       e.stopPropagation()
-      #@$el.find('#user-menu').toggleClass('open');
+
+    updateFriendNotifications: ->
+      return if not Shark.session.authenticated()
+      Shark.friendInvites.fetch
+        success: () =>
+          @updateFriendInvitesMarker()
+
+    updateFriendInvitesMarker: ->
+      @friendInvitesCount = Shark.friendInvites.length
+      @updateNotificationCount()
 
 
   # Whatever is returned here will be usable by other modules

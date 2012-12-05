@@ -23,15 +23,28 @@
 }
 .main-nav-right{
   .btn-nav{
-    margin-right: 0px;
     @bgColor: lighten(@nav-bar, 5%);
     @cnt: 10%;
-    color: @white;
-    text-shadow: none;
-    //text-shadow: 0 1px 1px @black;
     background: @bgColor;
+    color: @white;
+    margin-right: 0px;
+    position: relative;
+    text-shadow: none;
     &:hover{
       background: lighten(@bgColor, @cnt);
+    }
+
+    .notification{
+      background: @dark-red;
+      bottom: -2px;
+      color: @white;
+      font-size: 8px;
+      font-weight: bold;
+      line-height: 14px;
+      padding: 0px 4px;
+      position: absolute;
+      right: -2px;
+      text-shadow: 0 0 3px black;
     }
   }
   img.user-icon{
