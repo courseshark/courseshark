@@ -1,7 +1,8 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
-        'models/friend'], ($, _, Backbone, Friend) ->
+        'models/friend'
+        'models/schedule'], ($, _, Backbone, Friend, Schedule) ->
 
   class Friends extends Backbone.Collection
 
@@ -25,12 +26,11 @@ define(['jQuery'
       sectionHash = {}
       @.each (friend) =>
         if friend.get('schedule')
-          sections = friend.get('schedule').sections
-          _.each sections, (section) =>
-            if sectionHash[section._id]
-              sectionHash[section._id].push friend.id
+          friend.get('schedule').get('sections').each (section) =>
+            if sectionHash[section.id]
+              sectionHash[section.id].push friend.id
             else
-              sectionHash[section._id] = [friend.id]
+              sectionHash[section.id] = [friend.id]
       Shark.sectionFriends = sectionHash
 
     addFriend: (friend) ->
@@ -52,6 +52,16 @@ define(['jQuery'
           url: '/sandbox/friends/'+friend.id
           type: 'delete'
           success: (res)=> return
+
+
+    parse: (response) ->
+      console.log response
+      s = new Schedule()
+      for friend in response
+        if friend.schedule
+          friend.schedule = new Schedule(s.parse(friend.schedule))
+
+      response
 
   Friends
 )

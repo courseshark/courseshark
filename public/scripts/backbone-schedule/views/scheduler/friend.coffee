@@ -33,6 +33,8 @@ define(['jQuery'
 
     toggleBig: ->
       @$el.toggleClass 'chosen'
+      if @$el.hasClass 'chosen'
+        console.log @model.get('schedule')
 
   FriendView
 )
