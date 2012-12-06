@@ -1,0 +1,31 @@
+#tutorial-frame{
+  position: absolute;
+  top:0;
+  right:0;
+  z-index: 350;
+  overflow: hidden;
+  .tutorial-svg{
+    margin-top: 20px;
+    width: 130px;
+    .tutorial-svg-arrow{
+      color: @red;
+      fill: @primary;
+      stroke: @border;
+      stroke-width: 2px;
+      filter: url(#inner-shadow);
+    }
+  }
+  h1, h2{
+    color: @primary;
+    width: 100%;
+    text-align: center;
+    font-size: 22px;
+    line-height: 22px;
+    margin: 4px 0;
+    padding: 0;
+    text-shadow: 0 1px 1px @border;
+  }
+  h2{
+    font-size: 20px;
+  }
+}

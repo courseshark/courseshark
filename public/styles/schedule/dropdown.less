@@ -1,0 +1,120 @@
+#dropdown-view{
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  z-index: 2000;
+  box-shadow: 2px 2px 15px fade(@black, 80%);
+  overflow: hidden;
+  padding: 10px;
+  background: @white;
+  border-radius: 2px;
+
+
+  // HEADER
+  .dropdown-header{
+    position: relative;
+    padding: 0px 0 5px 0;
+    text-align: center;
+    border-bottom: 1px solid @primary;
+    .header-title{
+      color: lighten(@tirtiary, 10%);
+      font-weight: bold;
+      text-align: center;
+      padding: 0 20px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-width: 200px;
+    }
+    .close{
+      position: absolute;
+      top: -5px;
+      right: 0;
+      padding: 0;
+    }
+  }
+
+  // CONTENT
+  .dropdown-content{
+    margin-top: 4px;
+
+    .split{
+      height: 1px;
+      width: 100%;
+      background: @primary;
+      margin: 4px 0;
+    }
+
+    .nav{
+      background: none;
+      box-shadow: none;
+      margin-bottom:0;
+      li{
+        a{
+          cursor:pointer;
+          color: @black;
+          font-weight: bold;
+          margin: 0 -10px;
+          padding: 0 10px;
+          line-height: 30px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          &:hover{
+            background: @tirtiary;
+            color: @white;
+          }
+          &.disabled{
+            opacity: 0.4;
+          }
+        }
+      }
+    }
+
+    .friend-requests{
+      width: 340px;
+      h1 {
+        font-size: 15px;
+        line-height: 15px;
+        margin: 10px 0 5px;
+      }
+    }
+    .request-list{
+      &.empty {
+        background: rgb(238, 238, 238);
+        text-align: center;
+        padding: 10px;
+        margin: 0 -10px;
+        color: rgb(136, 136, 136);
+      }
+      .friend-request{
+        min-height: 50px;
+        padding: 3px 10px;
+        margin: 0 -10px;
+        border-top: 1px solid @light-grey;
+        vertical-align: middle;
+        &:last-child{
+          border-bottom: 1px solid @light-grey;
+        }
+        &:hover{
+          background: fadeout(@primary, 95%);
+        }
+        img.avatar{
+          width: 50px;
+          height: 50px;
+        }
+        .name{
+          display: inline-block;
+          line-height: 50px;
+          margin: 0 15px 0 10px;
+          width: 150px;
+        }
+        .button-container{
+          display: inline-block;
+          text-align: right;
+          width: 100px;
+        }
+      }
+    }
+
+
+  }
+}

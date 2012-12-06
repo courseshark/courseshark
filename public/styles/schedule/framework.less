@@ -1,11 +1,23 @@
-@import 'vars';
-
 body{
 	overflow-y: hidden;
 	overflow-x: auto;
 	padding-top: 53px;
-	background: #f4f4f4 url('/images/backbone/bg-shard.png') repeat center center;
+	background: #f0f0f0;
+	//background: #f4f4f4 url('/images/backbone/bg-shard.png') repeat center center;
+}
 
+a{
+	color: @primary;
+	&:hover{
+		color: @tirtiary;
+	}
+}
+
+.outline-border{
+	border: 1px solid @border;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .full-height{
@@ -14,13 +26,15 @@ body{
 .hide-overflow{
 }
 .panel{
-	background: #fff;
+	background: @white;
+	.outline-border;
+
 	h1{
 		margin: 0;
 		font-size: 14px;
 		font-weight: bold;
 		line-height: 150%;
-		color: @blue;
+		color: @tirtiary;
 	}
 	h2{
 		margin: 0;
@@ -46,6 +60,7 @@ body{
 #schedule-frame{
 	overflow-y: auto;
 	.panel;
+	border:none;
 	background: none;
 	#mini-cal-frame, #courses-frame{
 		margin-bottom: 10px;
@@ -54,26 +69,14 @@ body{
 		padding: 0;
 		border-radius: @corners;
 		overflow: hidden;
+		.outline-border;
+	}
+	#mini-cal-frame{
+		border-radius: 0;
 	}
 }
 
-#tutorial-frame{
-	position: absolute;
-	top:0;
-	right:0;
-	background: url('/images/backbone/tutorial.png') 0px 10px no-repeat;
-	background-size: contain;
-	z-index: 350;
-	overflow: hidden;
-	.all-the-things{
-		margin: 250px auto 0 auto;
-		background: url('/images/backbone/all-the-things.png') 0px 10px no-repeat;
-		background-size: contain;
-		width: 100%;
-		height: 300px;
-		opacity: 0.4;
-	}
-}
+
 
 #right-two-panels{
 	position: relative;
@@ -111,7 +114,7 @@ body{
 		}
 
 		#results-frame{
-			border-left: 1px solid grey;
+			border-left: 1px solid @border;
 			margin-left: -1px;
 			overflow-y: auto;
 
@@ -131,7 +134,7 @@ body{
 	&.open:before{
 		content: "«";
 	}
-	background: lighten(@blue, 25%);
+	background: lighten(@secondary, 20%);
 	color: @white;
 	cursor: pointer;
 	padding: 0 0 0 2px;

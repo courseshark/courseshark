@@ -11,8 +11,9 @@ define(['jQuery',
 
 		events:
 			"keypress .signup-form-input-password": "checkSubmit"
-			"click .user-has-login": "switchToLogin"
+			"click .login-via-facebook": "loginWithFacebook"
 			"click .signup-form-submit": "signup"
+			"click .user-has-login": "switchToLogin"
 			"click .close": "close"
 
 		initialize: ->
@@ -49,6 +50,9 @@ define(['jQuery',
 		switchToLogin: ->
 			@close()
 			Shark.session.login()
+
+		loginWithFacebook: ->
+			Shark.session.loginWithFacebook @close
 
 		sigupFailed: ->
 			@$error.hide().html('Account Creation Failed. Please try again').slideToggle()

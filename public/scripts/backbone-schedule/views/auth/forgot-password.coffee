@@ -15,6 +15,7 @@ define(['jQuery',
       "click .rememeber-needs-account": "switchToSignup"
       "click .forgot-form-submit": "recover"
       "click .close": "close"
+      "click .login-via-facebook": "loginWithFacebook"
 
     initialize: ->
       _.bindAll @
@@ -44,6 +45,9 @@ define(['jQuery',
         Shark.session.doPassword email, @switchToLogin, @forgotFailed
       else
         @$error.html('Must enter Email').slideToggle()
+
+    loginWithFacebook: ->
+      Shark.session.loginWithFacebook @close
 
     switchToLogin: ->
       @close()

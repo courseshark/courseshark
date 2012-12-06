@@ -22,14 +22,21 @@ exports = module.exports = function(app){
     })
   })
 
+  app.get('/sandbox/friends/invites', requireLogin, function(req, res){
+    req.user.getFriendRequests(function(err, invites){
+      if ( err ){
+        res.json({error: err})
+      }else{
+        res.json(invites.map(function(f){return cleanUserObject(f.toObject());}))
+      }
+    })
+  })
+
   app.put('/sandbox/friends/:id', requireLogin, function(req, res){
     User.findOne({_id: req.params.id},function(err, friend){
       if ( err||!friend ) { res.json(false); return; }
       User.update({_id: req.user._id}, {$addToSet: {friends: req.params.id}}, function(err, num){
         if ( err ){ res.json(false); return; }
-        if ( !friend.canEmailFriendRequests || !friend.email ){
-          return;
-        }
 
         var friendClean = cleanUserObject(friend.toObject())
         // Check if already friends
@@ -39,7 +46,9 @@ exports = module.exports = function(app){
           }
         }
         res.json(friendClean);
-        require('../lib/friends').sendInviteEmailToFriendFromUser(friend, req.user);
+        if ( friend.canEmailFriendRequests && friend.email && !friendClean.confirmend){
+          require('../lib/friends').sendInviteEmailToFriendFromUser(friend, req.user);
+        }
       })
     })
   })
