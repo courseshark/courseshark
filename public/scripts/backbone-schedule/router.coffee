@@ -58,9 +58,6 @@ define(['jQuery'
 
 
     settings: () ->
-      if not Shark.session.authenticated()
-        Shark.router.navigate '', trigger: !(Shark.view)
-        return
       Shark.appView.show('settings')
 
 

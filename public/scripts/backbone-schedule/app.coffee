@@ -32,6 +32,9 @@ define(['jQuery'
       @.session = new Session()
       @.session.on 'authenticated', ()=>
         @.schedulesList.fetch()
+        @.friendsList.fetch()
+      @.session.on 'unauthenticated', () =>
+        @.friendsList.reset()
 
       @.router = new Router()
 

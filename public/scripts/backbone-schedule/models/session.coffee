@@ -21,6 +21,7 @@ define(['jQuery'
       for field, val of CS.auth
         @set(field, val)
       @trigger('authenticated') if @authenticated()
+      @trigger('unauthenticated') if !@authenticated()
 
     authenticated: ->
       !!@get("access_token") and !!@get("user")

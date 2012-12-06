@@ -19,6 +19,9 @@ define(['jQuery'
       Shark.session.bind 'unauthenticated', ()=>
         Shark.router.navigate '', trigger: true
 
+      Shark.session.bind 'authenticated', ()=>
+        @render()
+
     # Renders the actual view from the template
     render: ->
       @$el.html $ @template user: new User(Shark.session.get('user'))
