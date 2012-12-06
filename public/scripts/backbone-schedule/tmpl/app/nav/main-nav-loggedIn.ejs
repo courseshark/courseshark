@@ -3,7 +3,7 @@
     <a class="brand" href="/">Course<strong>Shark</strong> </a>
     <div class="pull-right main-nav-right">
 
-      <% if(user.admin){ %>
+      <% if(user.get('admin')){ %>
       <a href="//admin.<%=domain%>" class="btn btn-nav">
         <i class="icon-cog icon-white"></i> Admin
       </a>
@@ -16,7 +16,7 @@
       <button id="menu-schedules" class="btn btn-nav">
         <i class="icon-calendar icon-white"></i> Schedules
       </button>
-      <img src="<%=user.avatar%>" class="user-icon"/>
+      <img src="<%=user.get('avatar')%>" class="user-icon"/>
     </div>
   </div>
 </div>

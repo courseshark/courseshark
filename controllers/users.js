@@ -13,6 +13,14 @@ exports = module.exports = function(app){
   }
 
 
+  app.get('/me', function(req, res){
+    if ( !req.loggedIn ){
+      res.json(false)
+    }else{
+      res.json({user: req.user, user_id: req.user.id, access_token: req.sessionID.toString().replace(/[^A-Fa-f0-9]/g,'')})
+    }
+  })
+
   // home
   app.get('/login.:format?', function(req, res){
     if ( req.headers['x-requested-with'] === 'XMLHttpRequest' || req.params.format === "tmpl"){

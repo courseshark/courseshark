@@ -24,7 +24,8 @@ define(['jQuery'
 
     # Renders the actual view from the template
     render: ->
-      @$el.html $ @template user: new User(Shark.session.get('user'))
+      user = Shark.session.get('user') || new User()
+      @$el.html $ @template user: user
       @ # Return self when done
 
 

@@ -18,10 +18,13 @@ define(['jQuery'
     initalize: -> return
 
     start: ->
-      for field, val of CS.auth
-        @set(field, val)
-      @trigger('authenticated') if @authenticated()
-      @trigger('unauthenticated') if !@authenticated()
+      $.ajax
+        url: '/me'
+        success: (res) =>
+          if res
+            @_authorizeFromRes(res)
+          else
+            @trigger('unauthenticated')
 
     authenticated: ->
       !!@get("access_token") and !!@get("user")
@@ -68,7 +71,7 @@ define(['jQuery'
     _authorizeFromRes: (res) ->
       @set 'access_token', res.access_token
       @set 'user_id', res.user_id
-      @set 'user', res.user
+      @set 'user', new User(res.user)
       @trigger('authenticated')
 
     doLogin: (email, password, success=(()->return), fail=(()->return)) ->

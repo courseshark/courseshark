@@ -18,6 +18,15 @@ define(['jQuery'
     initialize: ->
       window.Shark = @
 
+      @.session = new Session()
+      @.session.on 'authenticated', ()=>
+        @.schedulesList.fetch()
+        @.friendsList.fetch()
+      @.session.on 'unauthenticated', () =>
+        @.friendsList.reset()
+      @.session.start()
+
+
       @.friendsList = new Friends()
       @.friendInvites = new FriendInvites()
       @.sectionFriends = {}
@@ -29,16 +38,7 @@ define(['jQuery'
       @.schedule = new Schedule term: @.term
       @.schedulesList = new Schedules
 
-      @.session = new Session()
-      @.session.on 'authenticated', ()=>
-        @.schedulesList.fetch()
-        @.friendsList.fetch()
-      @.session.on 'unauthenticated', () =>
-        @.friendsList.reset()
-
       @.router = new Router()
-
-      @.session.start()
 
       window.FB or window.loadFacebook()
   Shark
