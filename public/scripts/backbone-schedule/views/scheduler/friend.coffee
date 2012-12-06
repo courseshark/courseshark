@@ -33,6 +33,12 @@ define(['jQuery'
 
     toggleBig: ->
       @$el.toggleClass 'chosen'
+      if @$el.hasClass 'chosen'
+        @$el.css border: '3px solid '+@model.color()
+        Shark.friendsList.trigger('showFriendsSchedule', @model)
+      else
+        @$el.css border: 'none'
+        Shark.friendsList.trigger('hideFriendsSchedule', @model)
 
   FriendView
 )
