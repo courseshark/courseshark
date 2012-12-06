@@ -55,7 +55,6 @@ define(['jQuery'
 
 
     parse: (response) ->
-      console.log response
       s = new Schedule()
       for friend in response
         if friend.schedule
