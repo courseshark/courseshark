@@ -23,6 +23,10 @@ define(['jQuery',
       @model.get('sections').bind 'reset', () =>
         @render()
 
+      Shark.friendsList.bind 'showFriendsSchedule', (friend) =>
+        @showFriendsSchedule friend
+      Shark.friendsList.bind 'hideFriendsSchedule', (friend) =>
+        @hideFriendsSchedule friend
       # Render call
       @render();
 
@@ -31,6 +35,18 @@ define(['jQuery',
       @$el.html @template({startHour: 6, endHour: 22})
       @model.get('sections').each (section) =>
         section.maxCalView = new CalendarSectionView model: section
+
+    showFriendsSchedule: (friend) ->
+      return if not friend.get('schedule')?.get('sections')?.length
+      friend.get('schedule').get('sections').each (section) ->
+        section.color = () -> return friend.color()
+        section.maxCalView = new CalendarSectionView model: section
+        section.maxCalView.setFriend(true)
+
+    hideFriendsSchedule: (friend) ->
+      return if not friend.get('schedule')?.get('sections')?.length
+      friend.get('schedule').get('sections').each (section) ->
+        section.maxCalView?.remove()
 
 
   # Whatever is returned here will be usable by other modules
