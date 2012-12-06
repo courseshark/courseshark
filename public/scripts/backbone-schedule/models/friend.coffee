@@ -11,6 +11,7 @@ define(['jQuery',
       firstName: "Friend"
       lastNamme: ""
       confirmed: false
+      something: 'new'
 
   Friend
 )

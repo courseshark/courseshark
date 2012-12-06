@@ -30,6 +30,9 @@ define(['jQuery'
 			#@resizeLayout = _.debounce(@resizeEvent, 10)
 			@$window.resize @resizeEvent
 
+			Shark.friendsList.on 'showFriendsSchedule', () =>
+				@showMaxCal() if not ($ '#slide-container').hasClass 'closed'
+
 
 		# Renders the actual view from the template
 		render: ->

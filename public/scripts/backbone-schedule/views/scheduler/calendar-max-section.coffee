@@ -68,6 +68,14 @@ define(['jQuery',
 			_.each @$els, ($el) ->
 				$el.remove()
 
+		setFriend: (isFriend) ->
+			if isFriend
+				_.each @$els, ($el) ->
+					$el.addClass('friend')
+			else
+				_.each @$els, ($el) ->
+					$el.removeClass('friend')
+
 	# Whatever is returned here will be usable by other modules
 	CalendarMaxSection
 )
