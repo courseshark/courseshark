@@ -32,9 +32,9 @@
   window.fbAsyncInit = function() {
     FB.init({
       appId      : CS.facebook.appId, // App ID
-      status     : true, // check login status
-      cookie     : true, // enable cookies to allow the server to access the session
-      xfbml      : true  // parse XFBML
+      status     : false,
+      cookie     : true,
+      xfbml      : false
     });
   };
   window.loadFacebook = function(){
