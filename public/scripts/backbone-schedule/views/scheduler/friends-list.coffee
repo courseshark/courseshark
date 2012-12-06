@@ -46,6 +46,11 @@ define(['jQuery'
     render: ->
       @$el.html @template()
       @$list = @$el.find('#friends-list-content')
+      @$list.empty()
+      Shark.friendsList.genFriendsHashes()
+      Shark.friendsList.each (friend) =>
+        friend.listView = friend.listView || new FriendView model: friend
+        @$list.append friend.listView.el if @$list
 
 
     addFriends: ->

@@ -42,6 +42,7 @@ define(['jQuery'
       'click #nav-login': 'login'
       'click .user-icon': 'showUserMenu'
       'click #menu-notifications': 'showNotifications'
+      'click #menu-schedules': 'showScheduler'
 
     # Renders the actual view from the template
     render: ->
@@ -74,6 +75,9 @@ define(['jQuery'
       Shark.dropdown?.hide()
       Shark.dropdown = new NotificationsDropdownView()
       e.stopPropagation()
+
+    showScheduler: (e) ->
+      Shark.router.navigate '', trigger: true
 
     updateFriendNotifications: ->
       return if not Shark.session.authenticated()

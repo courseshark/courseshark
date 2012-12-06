@@ -32,8 +32,6 @@ define(['jQuery'
       @panelsView = new PanelsView( el: (@$el.children '.workspace-container')[0] )
       @ # Return self when done
 
-
-
   # Whatever is returned here will be usable by other modules
   SchedulerView
 )

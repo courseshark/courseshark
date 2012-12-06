@@ -3,7 +3,8 @@ define(['jQuery'
 				'Underscore'
 				'Backbone'
 				'views/main-nav'
-				'views/scheduler'], ($, _, Backbone, MainNavView, SchedulerView) ->
+				'views/scheduler'
+				'views/settings'], ($, _, Backbone, MainNavView, SchedulerView, SettingsView) ->
 
 	class AppView extends Backbone.View
 		el: $ '#app-container'
@@ -27,7 +28,11 @@ define(['jQuery'
 			if view != @showing
 				@showing = view
 				if view is 'scheduler'
+					@$viewContainer.empty()
 					Shark.view = @view = new SchedulerView( el: @$viewContainer )
+				else if view is 'settings'
+					@$viewContainer.empty()
+					Shark.view = @view = new SettingsView ( el: @$viewContainer )
 
 	# Whatever is returned here will be usable by other modules
 	AppView

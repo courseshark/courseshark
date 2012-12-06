@@ -34,7 +34,9 @@ define(['jQuery',
     # Renders the actual view from the template
     render: ->
       @$el.html @template({startHour: 6, endHour: 21})
-
+      Shark.schedule.get('sections').each (section) ->
+        section.miniCalView = new CalendarMiniSectionView model: section
+        section.miniCalView.setTemp false
 
   # Whatever is returned here will be usable by other modules
   CalendarMini

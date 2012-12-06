@@ -25,6 +25,9 @@ define(['jQuery'
     events:
       'click .close' : 'hide'
       'click #nav-act-logout' : 'logout'
+      'click #nav-act-settings': 'showSettings'
+      'click #nav-act-schedules': 'showSchedules'
+
 
     show: ->
       @$el.show()
@@ -36,9 +39,18 @@ define(['jQuery'
 
 
     ## Actual Actions found in menu
+
+    showSchedules: ->
+      @hide()
+      Shark.router.navigate '', trigger: true
+
     logout: ->
       Shark.session.logout()
       @hide()
+
+    showSettings: ->
+      @hide()
+      Shark.router.navigate 'settings', trigger: true
 
   # Whatever is returned here will be usable by other modules
   AccountDropdownView

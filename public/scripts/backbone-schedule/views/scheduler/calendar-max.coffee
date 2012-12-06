@@ -29,6 +29,8 @@ define(['jQuery',
     # Renders the actual view from the template
     render: ->
       @$el.html @template({startHour: 6, endHour: 22})
+      @model.get('sections').each (section) =>
+        section.maxCalView = new CalendarSectionView model: section
 
 
   # Whatever is returned here will be usable by other modules

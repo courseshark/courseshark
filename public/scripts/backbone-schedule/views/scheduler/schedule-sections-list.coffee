@@ -32,6 +32,9 @@ define(['jQuery',
     render: ->
       @$el.html $ @template()
       @$list = @$el.find('#schedule-sections-list-content') if not @$list
+      Shark.schedule.get('sections').each (section) =>
+        section.listView = new ScheduleSectionView model: section
+        @$list.append section.listView.el
 
   ScheduleSectionsListView
 )

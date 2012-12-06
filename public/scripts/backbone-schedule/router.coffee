@@ -47,11 +47,21 @@ define(['jQuery'
       'login'             : 'login'
       'view'              : 'view'
 
+      'settings'          : 'settings'
+
+
       'l/:link'           : 'showLink'
       'l/:link/view'      : 'showLink'
 
       ':schedule'         : 'loadSchedule'
       ':schedule/view'    : 'view'
+
+
+    settings: () ->
+      if not Shark.session.authenticated()
+        Shark.router.navigate '', trigger: !(Shark.view)
+        return
+      Shark.appView.show('settings')
 
 
     landingPage: () ->
@@ -97,7 +107,6 @@ define(['jQuery'
 
 
     defaultAction: (actions) ->
-      console.log 'No route', actions
       Shark.router.navigate '', trigger: true, replace: true
 
   SharkRouter
