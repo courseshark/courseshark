@@ -36,6 +36,7 @@ define(['jQuery'
     hide: ->
       $('#app-container').off 'click', @hide
       @$el.hide()
+      @$el.remove()
 
 
     ## Actual Actions found in menu

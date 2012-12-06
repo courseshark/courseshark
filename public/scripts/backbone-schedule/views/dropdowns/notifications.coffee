@@ -49,6 +49,7 @@ define(['jQuery'
     hide: ->
       $('#app-container').off 'click', @hide
       @$el.hide()
+      @$el.remove()
 
 
   # Whatever is returned here will be usable by other modules
