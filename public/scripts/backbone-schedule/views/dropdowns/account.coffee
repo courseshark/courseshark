@@ -2,9 +2,10 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
-        'text!tmpl/app/nav/dropdowns/account.ejs'], ($, _, Backbone, templateText) ->
+        'views/shark-view'
+        'text!tmpl/app/nav/dropdowns/account.ejs'], ($, _, Backbone, SharkView, templateText) ->
 
-  class AccountDropdownView extends Backbone.View
+  class AccountDropdownView extends SharkView
 
     initialize: ->
       _.bindAll @
@@ -35,8 +36,7 @@ define(['jQuery'
 
     hide: ->
       $('#app-container').off 'click', @hide
-      @$el.hide()
-      @$el.remove()
+      @teardown()
 
 
     ## Actual Actions found in menu

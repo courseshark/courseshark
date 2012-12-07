@@ -42,7 +42,7 @@ define(['jQuery'
         Shark.router.navigate fragment + '/' + toAdd, navigateOptions
 
     routes:
-      ''                  : 'landingPage'
+      ''                  : 'scheduler'
 
       'login'             : 'login'
       'view'              : 'view'
@@ -61,7 +61,7 @@ define(['jQuery'
       Shark.appView.show('settings')
 
 
-    landingPage: () ->
+    scheduler: () ->
       Shark.appView.show('scheduler')
       if Shark.schedule.get('sections').length > 0
         Shark.view.panelsView.showMaxCal()

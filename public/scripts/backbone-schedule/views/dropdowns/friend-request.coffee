@@ -2,7 +2,8 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
-        'text!tmpl/app/nav/dropdowns/friend-request.ejs'], ($, _, Backbone, templateText) ->
+        'views/shark-view'
+        'text!tmpl/app/nav/dropdowns/friend-request.ejs'], ($, _, Backbone, SharkView, templateText) ->
 
   class FriendRequestView extends Backbone.View
 

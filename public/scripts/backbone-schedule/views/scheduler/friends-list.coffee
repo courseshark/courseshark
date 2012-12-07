@@ -1,14 +1,15 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
+        'views/shark-view'
         'collections/facebook-friends-results'
         'models/friend'
         'views/scheduler/friends-from-facebook'
         'views/scheduler/friend'
-        'text!tmpl/scheduler/friends/friends-list.ejs'], ($,_, Backbone, FacebookFriendsResults, Friend, FriendsFromFacebookView, FriendView, templateText) ->
+        'text!tmpl/scheduler/friends/friends-list.ejs'], ($,_, Backbone, SharkView, FacebookFriendsResults, Friend, FriendsFromFacebookView, FriendView, templateText) ->
 
 
-  class FriendsListView extends Backbone.View
+  class FriendsListView extends SharkView
 
     initialize: ->
       _.bindAll @
@@ -20,13 +21,14 @@ define(['jQuery'
         @$list.empty()
         Shark.friendsList.genFriendsHashes()
         Shark.friendsList.each (friend) =>
-          friend.listView = friend.listView || new FriendView model: friend
+          friend.listView?.teardown?()
+          friend.listView = new FriendView model: friend
           @$list.append friend.listView.el if @$list
       Shark.friendsList.bind 'addComplete', (friend) =>
-        friend.listView = friend.listView || new FriendView model: friend
+        friend.listView = new FriendView model: friend
         @$list.append friend.listView.el if @$list
       Shark.friendsList.bind 'remove', (friend) =>
-        friend.listView?.remove()
+        friend.listView?.teardown?()
 
       # Initial render call
       @render()
@@ -42,7 +44,7 @@ define(['jQuery'
       @$list.empty()
       Shark.friendsList.genFriendsHashes()
       Shark.friendsList.each (friend) =>
-        friend.listView = friend.listView || new FriendView model: friend
+        friend.listView = friend.listView?.show() || new FriendView model: friend
         @$list.append friend.listView.el if @$list
 
 
@@ -93,6 +95,11 @@ define(['jQuery'
           friend = Shark.friendsList.getByCid($(friendElement).data('cid'))
           Shark.friendsList.remove(friend)
         @removeMode = !@removeMode
+
+    teardown: ->
+      Shark.friendsList.each (friend) ->
+        friend.listView?.teardown?()
+      super()
 
   FriendsListView
 )

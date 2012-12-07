@@ -2,10 +2,16 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
+        'views/shark-view'
         'models/user'
-        'text!tmpl/settings/index.ejs'], ($, _, Backbone, User, templateText) ->
+        'text!tmpl/settings/index.ejs'], ($, _, Backbone, SharkView, User, templateText) ->
 
-  class SettingsView extends Backbone.View
+
+
+
+
+
+  class SettingsView extends SharkView
 
     initialize: ->
       _.bindAll @
@@ -28,7 +34,8 @@ define(['jQuery'
       @$el.html $ @template user: user
       @ # Return self when done
 
-
+    teardown: ->
+      super()
 
   # Whatever is returned here will be usable by other modules
   SettingsView

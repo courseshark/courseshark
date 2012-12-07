@@ -2,16 +2,17 @@
 define(['jQuery'
 	'Underscore'
 	'Backbone'
+  'views/shark-view'
 	'views/modals/save'
 	'views/modals/load'
   'views/modals/new'
   'views/modals/share'
   'views/modals/register'
   'models/share-link'
-  'text!tmpl/scheduler/nav.ejs'], ($, _, Backbone, SaveView, LoadView, NewView, ShareView, RegisterView, ShareLink, templateText) ->
+  'text!tmpl/scheduler/nav.ejs'], ($, _, Backbone, SharkView, SaveView, LoadView, NewView, ShareView, RegisterView, ShareLink, templateText) ->
 
 
-  class navView extends Backbone.View
+  class navView extends SharkView
 
     initialize: ->
       _.bindAll @
@@ -62,6 +63,11 @@ define(['jQuery'
       @newView  = new NewView()
       @shareView  = new ShareView()
       @registerView = new RegisterView()
+
+    teardown: ->
+      for view in [@loadView,@saveView,@newView,@shareView,@registerView]
+        view.teardown?()
+      super()
 
   # Whatever is returned here will be usable by other modules
   navView

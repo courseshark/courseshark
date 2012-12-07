@@ -1,34 +1,40 @@
 #Incude all the models here, then pass them back into the object
-define(['jQuery',
-  'Underscore',
-  'Backbone',
-  'views/scheduler/calendar-max-section',
-  'text!tmpl/scheduler/schedule/calendar-max.ejs'], ($, _, Backbone, CalendarSectionView, templateText) ->
+define(['jQuery'
+  'Underscore'
+  'Backbone'
+  'views/shark-view'
+  'views/scheduler/calendar-max-section'
+  'text!tmpl/scheduler/schedule/calendar-max.ejs'], ($, _, Backbone, SharkView, CalendarSectionView, templateText) ->
 
-  class CalendarMax extends Backbone.View
+  class CalendarMax extends SharkView
 
     initialize: ->
       _.bindAll @
-
+      console.log 'init maxcal'
       # Compile the template for future use
       @template = _.template(templateText)
 
-      @model.get('sections').bind 'add', (section) =>
-        section.maxCalView = new CalendarSectionView model: section
+      @subviews = []
 
+      @model.get('sections').bind 'add', (section) =>
+        view = new CalendarSectionView model: section
+        @subviews.push view
+        section.maxCalView = view
       @model.get('sections').bind 'remove', (section) =>
-        section.maxCalView.remove()
+        for view, index in @subviews
+          if section.maxCalView == view
+            view.teardown()
+            delete @subviews[index]
+            delete section.maxCalView
 
       # Empty the list on reset ( triggered on load )
       @model.get('sections').bind 'reset', () =>
         @render()
 
-      Shark.friendsList.bind 'showFriendsSchedule', (friend) =>
-        @showFriendsSchedule friend
-      Shark.friendsList.bind 'hideFriendsSchedule', (friend) =>
-        @hideFriendsSchedule friend
+      Shark.friendsList.bind 'showFriendsSchedule', @showFriendsSchedule
+      Shark.friendsList.bind 'hideFriendsSchedule', @hideFriendsSchedule
       # Render call
-      @render();
+      @render()
 
     # Renders the actual view from the template
     render: ->
@@ -48,6 +54,12 @@ define(['jQuery',
       friend.get('schedule').get('sections').each (section) ->
         section.maxCalView?.remove()
 
+    teardown: ->
+      Shark.friendsList.unbind 'showFriendsSchedule', @showFriendsSchedule
+      Shark.friendsList.unbind 'hideFriendsSchedule', @hideFriendsSchedule
+      for view in @subviews
+        view.teardown?()
+      super()
 
   # Whatever is returned here will be usable by other modules
   CalendarMax

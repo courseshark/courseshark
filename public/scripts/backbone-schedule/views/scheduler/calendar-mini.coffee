@@ -1,11 +1,12 @@
 #Incude all the models here, then pass them back into the object
-define(['jQuery',
-  'Underscore',
-  'Backbone',
-  'views/scheduler/calendar-mini-section',
-  'text!tmpl/scheduler/schedule/calendar-mini.ejs'], ($, _, Backbone, CalendarMiniSectionView, templateText) ->
+define(['jQuery'
+  'Underscore'
+  'Backbone'
+  'views/shark-view'
+  'views/scheduler/calendar-mini-section'
+  'text!tmpl/scheduler/schedule/calendar-mini.ejs'], ($, _, Backbone, SharkView, CalendarMiniSectionView, templateText) ->
 
-  class CalendarMini extends Backbone.View
+  class CalendarMini extends SharkView
 
     initialize: ->
       _.bindAll @
@@ -37,6 +38,11 @@ define(['jQuery',
       Shark.schedule.get('sections').each (section) ->
         section.miniCalView = new CalendarMiniSectionView model: section
         section.miniCalView.setTemp false
+
+    teardown: ->
+      Shark.schedule.get('sections').each (section) ->
+        section.miniCalView?.teardown()
+      super()
 
   # Whatever is returned here will be usable by other modules
   CalendarMini

@@ -2,13 +2,14 @@
 define(['jQuery'
   'Underscore'
   'Backbone'
+  'views/shark-view'
   'views/dropdowns/account'
   'views/dropdowns/notifications'
   'text!tmpl/app/nav/main-nav-loggedIn.ejs'
-  'text!tmpl/app/nav/main-nav-loggedOut.ejs'], ($, _, Backbone, AccountDropdownView, NotificationsDropdownView, templateTextLoggedIn, templateTextLoggedOut) ->
+  'text!tmpl/app/nav/main-nav-loggedOut.ejs'], ($, _, Backbone, SharkView, AccountDropdownView, NotificationsDropdownView, templateTextLoggedIn, templateTextLoggedOut) ->
 
 
-  class MainNavView extends Backbone.View
+  class MainNavView extends SharkView
 
     className: 'navbar navbar-fixed-top'
 
