@@ -7,10 +7,6 @@ define(['jQuery'
         'text!tmpl/settings/index.ejs'], ($, _, Backbone, SharkView, User, templateText) ->
 
 
-
-
-
-
   class SettingsView extends SharkView
 
     initialize: ->
