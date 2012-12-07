@@ -10,7 +10,6 @@ define(['jQuery'
 
     initialize: ->
       _.bindAll @
-      console.log 'init maxcal'
       # Compile the template for future use
       @template = _.template(templateText)
 

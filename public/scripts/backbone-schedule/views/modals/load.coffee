@@ -1,16 +1,16 @@
-define(['jQuery',
-        'Underscore',
-        'Backbone',
-        'text!tmpl/modals/load.ejs'], ($,_, Backbone, loadTemplate) ->
+define(['jQuery'
+        'Underscore'
+        'Backbone'
+        'views/shark-view'
+        'text!tmpl/modals/load.ejs'], ($,_, Backbone, SharkView, loadTemplate) ->
 
-  class LoadView extends Backbone.View
+  class LoadView extends SharkView
 
     className: "modal hide fade"
 
     initialize: ->
       _.bindAll @
       @loadTemplate = _.template loadTemplate
-      @render()
 
     events:
       'click #do-load' : 'load'
@@ -21,7 +21,11 @@ define(['jQuery',
       @.hide()
 
     show: ->
-      @list.empty()
+      @$el.html(@loadTemplate()).appendTo $ 'body'
+      @bind()
+      @$el.on 'hidden', =>
+        @teardown()
+      @list = @$el.find('#load-schedule-list').empty()
       Shark.schedulesList.fetch success: =>
         Shark.schedulesList.each (schedule) =>
           @list.append $("<option />").val(schedule.id).text(schedule.get 'name')
@@ -30,10 +34,6 @@ define(['jQuery',
     hide: ->
       @$el.modal('hide')
 
-    render: ->
-      @$el.html @loadTemplate()
-      @list = @$el.find '#load-schedule-list'
-      ($ 'body').append @$el
 
   LoadView
 )
