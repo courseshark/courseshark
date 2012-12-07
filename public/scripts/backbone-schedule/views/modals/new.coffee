@@ -18,7 +18,7 @@ define(['jQuery'
 
     show: ->
       @$el.html(@template()).appendTo $ 'body'
-      @bind()
+      @delegateEvents()
       @$el.on 'hidden', =>
         @teardown()
       @$options = @$el.find('#term-list').empty()

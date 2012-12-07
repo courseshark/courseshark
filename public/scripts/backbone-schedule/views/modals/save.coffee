@@ -28,7 +28,7 @@ define(['jQuery'
 
     show: ->
       @$el.html(@template()).appendTo $ 'body'
-      @bind()
+      @delegateEvents()
       @$el.on 'hidden', =>
         @teardown()
       @$name = @$el.find('#save-dialog-name-field').val(Shark.schedule.get('name'))

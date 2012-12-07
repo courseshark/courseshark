@@ -22,7 +22,7 @@ define(['jQuery'
 
     show: ->
       @$el.html(@loadTemplate()).appendTo $ 'body'
-      @bind()
+      @delegateEvents()
       @$el.on 'hidden', =>
         @teardown()
       @list = @$el.find('#load-schedule-list').empty()

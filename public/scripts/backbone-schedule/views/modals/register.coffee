@@ -14,7 +14,7 @@ define(['jQuery'
 
     show: ->
       @$el.html(@template()).appendTo $ 'body'
-      @bind()
+      @delegateEvents()
       @$el.on 'hidden', =>
         @teardown()
       @list = @$el.find('#register-crn-list').empty()
