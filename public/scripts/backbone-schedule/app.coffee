@@ -7,11 +7,12 @@ define(['jQuery'
         'router'
         'collections/friends'
         'collections/friend-invites'
+        'collections/schools'
         'collections/terms'
         'collections/schedules'
         'models/school'
         'models/schedule'
-        'models/session'], ($, _, Backbone, Router, Friends, FriendInvites, Terms, Schedules, School, Schedule, Session) ->
+        'models/session'], ($, _, Backbone, Router, Friends, FriendInvites, Schools, Terms, Schedules, School, Schedule, Session) ->
 
   class Shark extends Backbone.Model
     #All the router's initialize function
@@ -30,6 +31,7 @@ define(['jQuery'
       @.friendInvites = new FriendInvites()
       @.sectionFriends = {}
 
+      @.schools = new Schools()
       @.terms = new Terms(CS.terms)
       @.school = new School(CS.school)
       @.term = @.terms.get @.school.get 'currentTerm'
