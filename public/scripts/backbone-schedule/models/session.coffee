@@ -18,13 +18,16 @@ define(['jQuery'
     initalize: -> return
 
     start: ->
-      $.ajax
-        url: '/me'
-        success: (res) =>
-          if res
-            @_authorizeFromRes(res)
-          else
-            @trigger('unauthenticated')
+      if CS.loggedIn
+        @_authorizeFromRes(CS.auth)
+      else
+        $.ajax
+          url: '/me'
+          success: (res) =>
+            if res
+              @_authorizeFromRes(res)
+            else
+              @trigger('unauthenticated')
 
     authenticated: ->
       !!@get("access_token") and !!@get("user")

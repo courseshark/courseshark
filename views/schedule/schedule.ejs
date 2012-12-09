@@ -14,11 +14,19 @@
 		  };
 	})();
 	window.CS = {
-		  school: <%-JSON.stringify(school)%>
+      loggedIn: <%=!!loggedIn%>
+		, school: <%-JSON.stringify(school)%>
 		, terms: <%-JSON.stringify(terms)%>
 		, baseDir: "/s/"
     , domain: "<%=domain%>"
 		, facebook: { appId: "<%= app.config.facebook.appId %>" }
+    <%if (loggedIn){ %>
+    , auth: {
+          user: <%-JSON.stringify(user)%>
+        , user_id: "<%=user.id%>"
+        , access_token: "<%=authToken%>"
+      }
+    <%}%>
 	}
 </script>
 <%if ( built ){ %>

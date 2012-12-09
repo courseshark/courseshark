@@ -3,8 +3,10 @@ define(['jQuery'
         'Underscore'
         'Backbone'
         'views/shark-view'
+        'views/settings/general'
+        'views/settings/privacy'
         'models/user'
-        'text!tmpl/settings/index.ejs'], ($, _, Backbone, SharkView, User, templateText) ->
+        'text!tmpl/settings/index.ejs'], ($, _, Backbone, SharkView, GeneralSettingsView, PrivacySettingsView, User, templateText) ->
 
 
   class SettingsView extends SharkView
@@ -14,6 +16,7 @@ define(['jQuery'
 
       # Compile the template for future use
       @template = _.template(templateText)
+
 
       ## Render
       @render() # Render out the view
@@ -26,11 +29,29 @@ define(['jQuery'
 
     # Renders the actual view from the template
     render: ->
-      user = Shark.session.get('user') || new User()
-      @$el.html $ @template user: user
+      @$el.html $ @template user: Shark.session.get('user') || new User()
+      @$subViewContainer = @$el.find('#settings-container')
+      @renderSubview new GeneralSettingsView
       @ # Return self when done
 
+    events:
+      'click #general-settings': 'showGeneralSettings'
+      'click #privacy-settings': 'showPrivacySettings'
+
+    renderSubview: (view) ->
+      @subView?.teardown?()
+      @subview = view
+      @$subViewContainer.html @subview.$el
+
+
+    showGeneralSettings: ->
+      @renderSubview new GeneralSettingsView
+
+    showPrivacySettings: ->
+      @renderSubview new PrivacySettingsView
+
     teardown: ->
+      @subView?.teardown?()
       super()
 
   # Whatever is returned here will be usable by other modules

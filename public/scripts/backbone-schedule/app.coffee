@@ -24,7 +24,6 @@ define(['jQuery'
         @.friendsList.fetch()
       @.session.on 'unauthenticated', () =>
         @.friendsList.reset()
-      @.session.start()
 
 
       @.friendsList = new Friends()
@@ -38,6 +37,7 @@ define(['jQuery'
       @.schedule = new Schedule term: @.term
       @.schedulesList = new Schedules
 
+      @.session.start()
       @.router = new Router()
 
       window.FB or window.loadFacebook()
