@@ -8,6 +8,5 @@ define(['jQuery'
       @off()
       @remove()
       @undelegateEvents()
-      @
   SharkView
 )

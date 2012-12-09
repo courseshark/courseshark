@@ -1,8 +1,10 @@
-<div class="container">
+<div class="container settings-page">
   <div class="row">
-    <div class="offset6 span8">
-      <div class="row-fluid" id="settings-container"></div>
+
+    <div class="offset4 span12" id="settings-container">
     </div>
+
+
     <div class="span4 user-settings-overview">
       <div class="avatar">
         <img src="<%=user.get('avatar')%>?type=large" style="width: 100%"/>
@@ -10,10 +12,13 @@
       <div class="username">
         <%=user.get('name')%>
       </div>
-      <ul class="nav nav-pills nav-stacked">
-        <li><div id="general-settings">General</div></li>
-        <li><div id="privacy-settings">Privacy</div></li>
+      <ul class="nav settings-nav">
+        <li><a id="general-settings">General</a></li>
+        <li><a id="privacy-settings">Privacy</a></li>
       </ul>
     </div>
+
+
+
   </div>
 </div>

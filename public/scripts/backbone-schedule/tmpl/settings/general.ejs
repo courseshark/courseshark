@@ -1,1 +1,20 @@
-<h1>General Settings</h1>
+<div class="row-fluid">
+  <div class="span24">
+    <h2>General Settings</h2>
+  </div>
+</div>
+
+<div class="row-fluid">
+  <ul class="nav settings-list">
+    <li class="setting-item">
+      <div class="span8">Name</div>
+      <div class="span16"><%=user.get('name')%> <i class="icon icon-pencil" id="edit-name"></i></div>
+    </li>
+
+    <li class="setting-item">
+      <div class="span8">Email</div>
+      <div class="span16"><%=user.get('email')%> <i class="icon icon-pencil" id="edit-email"></i></div>
+    </li>
+  </ul>
+
+</div>

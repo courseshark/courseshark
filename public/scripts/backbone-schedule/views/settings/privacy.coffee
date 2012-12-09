@@ -8,6 +8,8 @@ define(['jQuery'
 
   class PrivacySettingsView extends SharkView
 
+    className: 'row-fluid'
+
     initialize: ->
       _.bindAll @
       @template = _.template(templateText)

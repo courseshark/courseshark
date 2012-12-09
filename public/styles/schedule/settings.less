@@ -1,3 +1,7 @@
+.settings-page{
+  margin-top: 40px;
+}
+
 .username {
   font-size: 11.844px;
   font-weight: bold;
@@ -6,7 +10,35 @@
   vertical-align: baseline;
   white-space: nowrap;
   text-shadow: 0 -1px 0 fade(@black, 75%);
-  background-color: @primary;
+  background-color: @tirtiary;
+  padding: 0 0 0 2px;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
+}
+
+
+
+.settings-nav{
+  background: none;
+  box-shadow: none;
+  margin-bottom:0;
+  margin-top: 10px;
+  li{
+    a{
+      cursor:pointer;
+      color: @black;
+      font-weight: bold;
+      line-height: 30px;
+      padding: 0 3px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      &:hover{
+        background: @tirtiary;
+        color: @white;
+      }
+      &.disabled{
+        opacity: 0.4;
+      }
+    }
+  }
 }
