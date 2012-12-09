@@ -7,6 +7,8 @@ define(['jQuery'
 
     idAttribute: "_id"
 
+    url: '/user'
+
     defaults:
       avatar: 'http://www.gravatar.com/avatar/00000000000000000000000000000000'
 

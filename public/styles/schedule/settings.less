@@ -16,8 +16,6 @@
   border-bottom-left-radius: 3px;
 }
 
-
-
 .settings-nav{
   background: none;
   box-shadow: none;
@@ -42,3 +40,100 @@
     }
   }
 }
+
+.settings-list{
+  list-style: none;
+  margin: 20px 0;
+  border-top: 1px solid @black;
+  border-bottom: 1px solid @black;
+
+  .setting-item{
+    border-top: 1px solid lighten(@grey, 25%);
+    &:first-child{
+      border-top: none;
+    }
+    &.open:hover, &.open{
+      background: fade(@grey, 20%);
+    }
+    &:hover{
+      background: fade(@secondary, 20%);
+      .setting-item-link .editicon{
+        text-decoration: underline;
+        color: @tirtiary;
+        .icon{
+          display: inline-block;
+        }
+      }
+    }
+    .setting-item-link{
+      color: @black;
+      cursor: pointer;
+      text-decoration: none;
+      padding: 10px 5px;
+      &:hover{
+        color: @black;
+        text-decoration: none;
+      }
+
+      .setting-name{
+        float: left;
+        padding: 10px 5px;
+        font-weight: bold;
+      }
+      .editicon{
+        float: right;
+        text-decoration: none;
+        color: @primary;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 14px;
+        padding: 10px 5px;
+        .icon{
+          display:none;
+          margin-right: 10px;
+        }
+      }
+      .setting-value{
+        padding: 10px 5px;
+        margin: 0 80px 0 150px;
+        .oauth-logo {
+          width: 16px;
+          height: 16px;
+          display: inline-block;
+        }
+      }
+    }
+    .setting-name{
+    }
+    .setting-value{
+      .icon{
+        float: right;
+      }
+    }
+    .setting-content{
+      display: none;
+      padding: 10px 5px;
+      .setting-name{
+        float: left;
+        font-weight: bold;
+      }
+      .setting-form{
+        margin-left: 130px;
+        .form-horizontal{
+          .control-label{
+            width: 130px;
+          }
+          .controls{
+            margin-left: 150px;
+          }
+          .error{
+            color: @red;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+

@@ -21,16 +21,21 @@ define(['jQuery'
       if CS.loggedIn
         @_authorizeFromRes(CS.auth)
       else
-        $.ajax
-          url: '/me'
-          success: (res) =>
-            if res
-              @_authorizeFromRes(res)
-            else
-              @trigger('unauthenticated')
+        @trigger('unauthenticated')
 
     authenticated: ->
       !!@get("access_token") and !!@get("user")
+
+    reloadUser: ( callback=(()->return) )->
+      $.ajax
+        url: '/me'
+        success: (res) =>
+          if res
+            @_authorizeFromRes(res, true, callback)
+          else
+            @trigger('unauthenticated')
+            callback()
+
 
     facebookAuth: (accessToken, next=(()->return;)) ->
       $.ajax
@@ -41,7 +46,7 @@ define(['jQuery'
             console.error res.error
             return
           if !@authenticated()
-            @_authorizeFromRes res
+            @_authorizeFromRes res, next
           if res.duplicate
             @resolveDuplicate res.duplicate, next
           else
@@ -71,11 +76,15 @@ define(['jQuery'
     forgotPassword: ->
       @password = new AuthForgotPasswordView() if not @authenticated()
 
-    _authorizeFromRes: (res) ->
+    _authorizeFromRes: (res, quiet, callback=(()->return)) ->
+      if typeof quiet is 'function'
+        callback = quiet
+        quiet = false
       @set 'access_token', res.access_token
       @set 'user_id', res.user_id
       @set 'user', new User(res.user)
-      @trigger('authenticated')
+      callback()
+      @trigger('authenticated') if not quiet
 
     doLogin: (email, password, success=(()->return), fail=(()->return)) ->
       $.ajax

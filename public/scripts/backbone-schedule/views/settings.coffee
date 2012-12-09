@@ -17,9 +17,8 @@ define(['jQuery'
       # Compile the template for future use
       @template = _.template(templateText)
 
-
-      ## Render
-      @render() # Render out the view
+      Shark.session.reloadUser ()=>
+        @render()
 
       Shark.session.bind 'unauthenticated', ()=>
         Shark.router.navigate '', trigger: true

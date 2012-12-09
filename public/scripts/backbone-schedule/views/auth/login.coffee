@@ -31,6 +31,7 @@ define(['jQuery',
       @show()
 
     show: ->
+      @delegateEvents()
       @$el.modal 'show'
 
     close: ->
