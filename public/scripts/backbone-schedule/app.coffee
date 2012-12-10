@@ -24,7 +24,6 @@ define(['jQuery'
       @.session.on 'authenticated', ()=>
         @.schedulesList.fetch()
         @.friendsList.fetch()
-        console.log @.school, @.session.get('user').get('school')
         if @.school != @.session.get('user').get('school')
           @setSchool @.session.get('user').get('school')
       @.session.on 'unauthenticated', () =>
