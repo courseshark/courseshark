@@ -1,10 +1,11 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
+        'views/shark-view'
         'models/friend'
-        'text!tmpl/scheduler/friends/friend.ejs'], ($,_, Backbone, Friend, templateText) ->
+        'text!tmpl/scheduler/friends/friend.ejs'], ($,_, Backbone, SharkView, Friend, templateText) ->
 
-  class FriendView extends Backbone.View
+  class FriendView extends SharkView
 
     className: 'friend-block'
 
@@ -29,7 +30,11 @@ define(['jQuery'
         )
       @$el.data 'cid', @model.cid
       @$el.tooltip title: name
+      @delegateEvents()
       @
+
+    show: ->
+      @render()
 
     toggleBig: ->
       @$el.toggleClass 'chosen'
@@ -39,6 +44,11 @@ define(['jQuery'
       else
         @$el.css border: 'none'
         Shark.friendsList.trigger('hideFriendsSchedule', @model)
+
+    teardown: ->
+      super()
+      if @$el.hasClass 'chosen'
+        @$el.css(border: 'none').removeClass('chosen')
 
   FriendView
 )

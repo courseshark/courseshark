@@ -1,11 +1,12 @@
-define(['jQuery',
-        'Underscore',
-        'Backbone',
+define(['jQuery'
+        'Underscore'
+        'Backbone'
+        'views/shark-view'
         'collections/result-sections'
         'views/scheduler/calendar-mini-section'
-        'text!tmpl/scheduler/results/result-section.ejs'], ($,_, Backbone, ResultsSections, CalendarMiniSectionView, templateText) ->
+        'text!tmpl/scheduler/results/result-section.ejs'], ($,_, Backbone, SharkView, ResultsSections, CalendarMiniSectionView, templateText) ->
 
-  class ResultSectionView extends Backbone.View
+  class ResultSectionView extends SharkView
 
     initialize: ->
       _.bindAll @
@@ -91,6 +92,10 @@ define(['jQuery',
       if Shark.schedule.contains(@model)
         @$addButton.addClass('added')
       @ # Return the section view to be added by the results view
+
+    teardown: ->
+      @model.miniCalView?.teardown?()
+      super()
 
   ResultSectionView
 )

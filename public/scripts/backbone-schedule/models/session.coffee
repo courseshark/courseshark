@@ -18,12 +18,24 @@ define(['jQuery'
     initalize: -> return
 
     start: ->
-      for field, val of CS.auth
-        @set(field, val)
-      @trigger('authenticated') if @authenticated()
+      if CS.loggedIn
+        @_authorizeFromRes(CS.auth)
+      else
+        @reloadUser (()->return), false
 
     authenticated: ->
       !!@get("access_token") and !!@get("user")
+
+    reloadUser: ( callback=(()->return), silent=true )->
+      $.ajax
+        url: '/me'
+        success: (res) =>
+          if res
+            @_authorizeFromRes(res, silent, callback)
+          else
+            @trigger('unauthenticated')
+            callback()
+
 
     facebookAuth: (accessToken, next=(()->return;)) ->
       $.ajax
@@ -34,7 +46,7 @@ define(['jQuery'
             console.error res.error
             return
           if !@authenticated()
-            @_authorizeFromRes res
+            @_authorizeFromRes res, next
           if res.duplicate
             @resolveDuplicate res.duplicate, next
           else
@@ -48,8 +60,8 @@ define(['jQuery'
       @unset 'user'
       @trigger('unauthenticated')
 
-    login: ->
-      @loginView = new AuthLoginView() if not @authenticated()
+    login: (next=(()->return)) ->
+      @loginView = new AuthLoginView({next: next}) if not @authenticated()
 
     loginWithFacebook: (callback=(()->return)) ->
       callback() if @authenticated()
@@ -64,11 +76,15 @@ define(['jQuery'
     forgotPassword: ->
       @password = new AuthForgotPasswordView() if not @authenticated()
 
-    _authorizeFromRes: (res) ->
+    _authorizeFromRes: (res, quiet=false, callback=(()->return)) ->
+      if typeof quiet is 'function'
+        callback = quiet
+        quiet = false
       @set 'access_token', res.access_token
       @set 'user_id', res.user_id
-      @set 'user', res.user
-      @trigger('authenticated')
+      @set 'user', new User(res.user)
+      @trigger('authenticated') if not quiet
+      callback()
 
     doLogin: (email, password, success=(()->return), fail=(()->return)) ->
       $.ajax

@@ -1,19 +1,18 @@
 define(['jQuery'
         'Underscore'
-        'Backbone'], ($,_, Backbone) ->
+        'Backbone'
+        'views/shark-view'
+        'text!tmpl/auth/duplicate.ejs'], ($,_, Backbone, SharkView, templateText) ->
 
-  class ResolveDuplicateView extends Backbone.View
+  class ResolveDuplicateView extends SharkView
 
     className: "modal hide fade"
 
     initialize: ->
       _.bindAll @
       @next = @options.next||()->return;
-
-      #Lazy load the template to save space (since this is a rare occurance)
-      require ['text!tmpl/auth/duplicate.ejs'], (template) =>
-        @template = _.template template
-        @render()
+      @template = _.template templateText
+      @render()
 
     events:
       'click #resolve-merge' : 'merge'
@@ -25,7 +24,9 @@ define(['jQuery'
 
     show: ->
       @$el.modal 'show'
-      @$el.on 'hidden', @next
+      @$el.on 'hidden', ()=>
+        @next
+        @teardown()
 
     hide: ->
       @$el.modal('hide')

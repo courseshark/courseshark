@@ -2,11 +2,12 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
+        'views/shark-view'
         'views/scheduler/nav'
         'views/scheduler/panels'
-        'text!tmpl/scheduler/index.ejs'], ($, _, Backbone, NavView, PanelsView, templateText) ->
+        'text!tmpl/scheduler/index.ejs'], ($, _, Backbone, SharkView, NavView, PanelsView, templateText) ->
 
-  class SchedulerView extends Backbone.View
+  class SchedulerView extends SharkView
 
     initialize: ->
       _.bindAll @
@@ -25,14 +26,18 @@ define(['jQuery'
     focusOnSearch: ->
       @panelsView.focusOnSearch()
 
+    teardown: ->
+      @navView?.teardown?()
+      @panelsView?.teardown?()
+      super()
+
+
     # Renders the actual view from the template
     render: ->
       @$el.html $ @template()
       @navView = new NavView( el: (@$el.children '.workspace-nav')[0] )
       @panelsView = new PanelsView( el: (@$el.children '.workspace-container')[0] )
       @ # Return self when done
-
-
 
   # Whatever is returned here will be usable by other modules
   SchedulerView

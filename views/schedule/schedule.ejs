@@ -14,19 +14,19 @@
 		  };
 	})();
 	window.CS = {
-			auth: {
-				<%if (loggedIn){%>
-					user_id: "<%=user.id%>"
-				,	access_token: "<%=authToken%>"
-				,	user: <%-JSON.stringify(user)%>
-				<%}%>
-			}
-		,	school: <%-JSON.stringify(school)%>
+      loggedIn: <%=!!loggedIn%>
+		, school: <%-JSON.stringify(school)%>
 		, terms: <%-JSON.stringify(terms)%>
-		,	serverScheduleVersion: "<%= revision %>"
 		, baseDir: "/s/"
     , domain: "<%=domain%>"
 		, facebook: { appId: "<%= app.config.facebook.appId %>" }
+    <%if (loggedIn){ %>
+    , auth: {
+          user: <%-JSON.stringify(user)%>
+        , user_id: "<%=user.id%>"
+        , access_token: "<%=authToken%>"
+      }
+    <%}%>
 	}
 </script>
 <%if ( built ){ %>
@@ -40,9 +40,9 @@
   window.fbAsyncInit = function() {
     FB.init({
       appId      : CS.facebook.appId, // App ID
-      status     : true, // check login status
-      cookie     : true, // enable cookies to allow the server to access the session
-      xfbml      : true  // parse XFBML
+      status     : false,
+      cookie     : true,
+      xfbml      : false
     });
   };
   window.loadFacebook = function(){

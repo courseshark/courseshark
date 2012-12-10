@@ -1,9 +1,10 @@
-define(['jQuery',
-				'Underscore',
+define(['jQuery'
+				'Underscore'
 				'Backbone'
-				'text!tmpl/auth/signup.ejs'], ($, _, Backbone, templateText) ->
+				'views/shark-view'
+				'text!tmpl/auth/signup.ejs'], ($, _, Backbone, SharkView, templateText) ->
 
-	class SignupView extends Backbone.View
+	class SignupView extends SharkView
 
 		tagName: "div"
 
@@ -33,6 +34,8 @@ define(['jQuery',
 
 		close: ->
 			@$el.modal 'hide'
+			@$el.on 'hidden', ()=>
+        @teardown()
 
 		checkSubmit: (e) ->
 			if e.keyCode is 13

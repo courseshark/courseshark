@@ -3,6 +3,7 @@
  */
 var MandrillAPI = require('mailchimp').MandrillAPI
   , social = require('../lib/social-track')
+  , userLib = require('../lib/user')
 
 exports = module.exports = function(app){
 
@@ -11,7 +12,6 @@ exports = module.exports = function(app){
   } catch (error) {
     console.log('Mandrill Error: ' + error);
   }
-
 
   // home
   app.get('/login.:format?', function(req, res){

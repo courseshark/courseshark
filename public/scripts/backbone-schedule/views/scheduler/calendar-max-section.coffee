@@ -1,11 +1,12 @@
 #Incude all the models here, then pass them back into the object
-define(['jQuery',
-	'Underscore',
-	'Backbone',
+define(['jQuery'
+	'Underscore'
+	'Backbone'
+	'views/shark-view'
 	'text!tmpl/scheduler/schedule/calendar-max-section.ejs'
-	'text!tmpl/scheduler/schedule/calendar-popover-content.ejs'], ($, _, Backbone, templateText, popoverTemplate) ->
+	'text!tmpl/scheduler/schedule/calendar-popover-content.ejs'], ($, _, Backbone, SharkView, templateText, popoverTemplate) ->
 
-	class CalendarMaxSection extends Backbone.View
+	class CalendarMaxSection extends SharkView
 
 		initialize: ->
 			_.bindAll @
@@ -75,6 +76,11 @@ define(['jQuery',
 			else
 				_.each @$els, ($el) ->
 					$el.removeClass('friend')
+
+		teardown: ->
+			_.each @$els, ($el) ->
+				$el.remove()
+			super()
 
 	# Whatever is returned here will be usable by other modules
 	CalendarMaxSection

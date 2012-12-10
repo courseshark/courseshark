@@ -1,10 +1,11 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
+        'views/shark-view'
         'models/schedule'
-        'text!tmpl/scheduler/schedule/schedule-section.ejs'], ($,_, Backbone, Schedule, templateText) ->
+        'text!tmpl/scheduler/schedule/schedule-section.ejs'], ($,_, Backbone, SharkView, Schedule, templateText) ->
 
-  class ScheduleSectionView extends Backbone.View
+  class ScheduleSectionView extends SharkView
 
     initialize: ->
       _.bindAll @

@@ -1,19 +1,20 @@
 define(['jQuery',
-        'Underscore',
-        'Backbone',
-        'text!tmpl/scheduler/filters/checkbox-filter.ejs'], ($,_, Backbone, checkboxFilterTemplate) ->
+        'Underscore'
+        'Backbone'
+        'views/shark-view'
+        'text!tmpl/scheduler/filters/checkbox-filter.ejs'], ($,_, Backbone, SharkView, templateText) ->
 
-  class CheckboxFilterView extends Backbone.View
+  class CheckboxFilterView extends SharkView
 
     initialize: ->
       _.bindAll @
-      @checkboxFilterTemplate = _.template(checkboxFilterTemplate)
+      @template = _.template templateText
 
     events:
       'click .checkbox' : 'updateModel'
 
     render: ->
-      @$el.html @checkboxFilterTemplate(@model.attributes)
+      @$el.html @template(@model.attributes)
       @
 
     updateModel: ->

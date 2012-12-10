@@ -2,9 +2,10 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
-        'text!tmpl/app/nav/dropdowns/account.ejs'], ($, _, Backbone, templateText) ->
+        'views/shark-view'
+        'text!tmpl/app/nav/dropdowns/account.ejs'], ($, _, Backbone, SharkView, templateText) ->
 
-  class AccountDropdownView extends Backbone.View
+  class AccountDropdownView extends SharkView
 
     initialize: ->
       _.bindAll @
@@ -25,6 +26,9 @@ define(['jQuery'
     events:
       'click .close' : 'hide'
       'click #nav-act-logout' : 'logout'
+      'click #nav-act-settings': 'showSettings'
+      'click #nav-act-schedules': 'showSchedules'
+
 
     show: ->
       @$el.show()
@@ -32,13 +36,22 @@ define(['jQuery'
 
     hide: ->
       $('#app-container').off 'click', @hide
-      @$el.hide()
+      @teardown()
 
 
     ## Actual Actions found in menu
+
+    showSchedules: ->
+      @hide()
+      Shark.router.navigate '', trigger: true
+
     logout: ->
       Shark.session.logout()
       @hide()
+
+    showSettings: ->
+      @hide()
+      Shark.router.navigate 'settings', trigger: true
 
   # Whatever is returned here will be usable by other modules
   AccountDropdownView
