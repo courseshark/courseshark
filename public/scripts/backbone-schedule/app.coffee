@@ -1,6 +1,4 @@
 #Main Shark Application file
-
-# Require the router here to help route urls
 define(['jQuery'
         'Underscore'
         'Backbone'
@@ -19,6 +17,7 @@ define(['jQuery'
     initialize: ->
       window.Shark = @
 
+      # Setup the session
       @.session = new Session()
       @.session.on 'authenticated', ()=>
         @.schedulesList.fetch()
@@ -26,23 +25,27 @@ define(['jQuery'
       @.session.on 'unauthenticated', () =>
         @.friendsList.reset()
 
-
+      #Setup global Friends info
       @.friendsList = new Friends()
       @.friendInvites = new FriendInvites()
       @.sectionFriends = {}
 
+      # School and term setup
       @.schools = new Schools()
       @.terms = new Terms(CS.terms)
       @.school = new School(CS.school)
       @.schools.add @.school
       @.term = @.terms.get @.school.get 'currentTerm'
 
+      # Schedule setup
       @.schedule = new Schedule term: @.term
       @.schedulesList = new Schedules
 
+      #Start the Auth session and the router
       @.session.start()
       @.router = new Router()
 
+      # Lastly load Facebook scripts (safely)
       window.FB or window.loadFacebook()
   Shark
 )

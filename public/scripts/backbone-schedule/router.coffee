@@ -28,6 +28,7 @@ define(['jQuery'
       Shark.appView = new AppView()
       Backbone.history.start pushState: true, root: CS.baseDir||''
 
+    # Remove an appendage to the route
     navigateRemove: (toRemove, navigateOptions={}) ->
       fragment = Backbone.history.getFragment()
       replaceRegExp = new RegExp('^'+toRemove+'\/?$|\/'+toRemove+'\/?$')
@@ -35,6 +36,7 @@ define(['jQuery'
       if newUrl != fragment
         Shark.router.navigate newUrl, navigateOptions
 
+    # Append the existing route
     navigateAppend: (toAdd, navigateOptions={}) ->
       fragment = Backbone.history.getFragment()
       findRegExp = new RegExp('^'+toAdd+'\/?$|\/'+toAdd+'\/?$')

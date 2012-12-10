@@ -15,7 +15,7 @@ exports = module.exports = function(app){
     res.redirect('/s/');
   })
 
-  app.get('/s(/*)?', function(req, res){
+  app.get('/s(/*)?', requireSchool, function(req, res){
     var built = app.settings.env!="development" || req.query.b
     req.session.redirectTo='/s/';
     if ( !req.school || !req.school.id ){

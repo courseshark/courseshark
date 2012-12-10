@@ -21,6 +21,7 @@ define(['jQuery'
           Shark.schools.add new School @.get 'school'
           @.set 'school', Shark.schools.get @.get('school')._id
 
+    # Implementation of CRC32 (to translate ObejceID to int )
     _crc32: (s="", polynomial=0x04C11DB7, initialValue=0xFFFFFFFF, finalXORValue=0xFFFFFFFF) ->
       s = String(s)
       crc = initialValue

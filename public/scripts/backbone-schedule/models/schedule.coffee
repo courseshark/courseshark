@@ -105,7 +105,7 @@ define(['jQuery'
     contains: (section) ->
       @.get('sections').where({_id: section.get('_id')}).length > 0
 
-
+    # Exports the schedule into a .ics file
     export: ->
       resultLink = 'data:text/Calendar;base64,'
       icsTxt = @icsDownloadTemplate @_generateIcsData()

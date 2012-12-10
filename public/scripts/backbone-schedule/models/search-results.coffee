@@ -20,7 +20,6 @@ define(['jQuery'
 
 
     search: ($searchField) ->
-
     	## TODO ##
     	#
     	# apply any search filters that must be sent to server

@@ -22,6 +22,7 @@ define(['jQuery'
 			@active = true
 			@view = SliderFilterView
 
+		# Update the view with the text version of the values
 		updateText: (value) ->
 			step = 30
 			divisor = 60/step
