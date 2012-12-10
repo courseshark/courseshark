@@ -5,7 +5,8 @@ define(['jQuery'
         'models/schedule'
         'models/session'
         'models/share-link'
-        'views/app'], ($, _, Backbone, Schedules, Schedule, Session, ShareLink, AppView) ->
+        'views/modals/school-picker'
+        'views/app'], ($, _, Backbone, Schedules, Schedule, Session, ShareLink, SchoolPickerView, AppView) ->
 
   $.ajaxSetup statusCode:
     401: () ->
@@ -58,27 +59,36 @@ define(['jQuery'
       ':schedule'         : 'loadSchedule'
       ':schedule/view'    : 'view'
 
+    requireSchool: (next=(()->return))->
+      if !Shark.school
+        @picker = new SchoolPickerView {next: next}
+      else
+        next()
+
     home: () ->
       Shark.appView.show('home')
 
     scheduler: () ->
-      Shark.appView.show('scheduler')
-      if Shark.schedule.get('sections').length > 0
-        Shark.view.panelsView.showMaxCal()
-      else
-        Shark.view.panelsView.hideMaxCal()
+      @requireSchool ()=>
+        console.log 'here'
+        Shark.appView.show('scheduler')
+        if Shark.schedule.get('sections').length > 0
+          Shark.view.panelsView.showMaxCal()
+        else
+          Shark.view.panelsView.hideMaxCal()
 
     settings: () ->
       Shark.appView.show('settings')
 
     view: (id) ->
-      Shark.appView.show('scheduler')
-      if id
-        Shark.schedule.ensureScheduleLoaded id,
-          success: ()->
-            Shark.view.panelsView.showMaxCal()
-          faulire: ()->
-            Shark.router.navigate '', trigger: true, replace: true
+      @requireSchool ()=>
+        Shark.appView.show('scheduler')
+        if id
+          Shark.schedule.ensureScheduleLoaded id,
+            success: ()->
+              Shark.view.panelsView.showMaxCal()
+            faulire: ()->
+              Shark.router.navigate '', trigger: true, replace: true
 
     login: ->
       if !Shark.session.authenticated()

@@ -17,9 +17,12 @@ define(['jQuery'
       if !@.get('school')?.get
         if Shark.schools.get @.get('school')._id
           @.set 'school', Shark.schools.get @.get('school')._id
+          Shark.school = Shark.school || school
         else
-          Shark.schools.add new School @.get 'school'
-          @.set 'school', Shark.schools.get @.get('school')._id
+          school = new School @.get 'school'
+          @.set 'school', school
+          Shark.school = Shark.school || school
+
 
     _crc32: (s="", polynomial=0x04C11DB7, initialValue=0xFFFFFFFF, finalXORValue=0xFFFFFFFF) ->
       s = String(s)

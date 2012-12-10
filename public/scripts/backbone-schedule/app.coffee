@@ -32,17 +32,20 @@ define(['jQuery'
       @.sectionFriends = {}
 
       @.schools = new Schools()
-      @.terms = new Terms(CS.terms)
-      @.school = new School(CS.school)
-      @.schools.add @.school
-      @.term = @.terms.get @.school.get 'currentTerm'
-
-      @.schedule = new Schedule term: @.term
-      @.schedulesList = new Schedules
-
-      @.session.start()
-      @.router = new Router()
+      @.schools.fetch
+        success: () =>
+          @.schedulesList = new Schedules
+          if CS.school
+            @.school = new School(CS.school) if CS.school
+            @.terms = new Terms(CS.terms)
+            @.terms.fetch
+              success: () =>
+                @.term = @.terms.get @.school.get 'currentTerm'
+                @.schedule = new Schedule term: @.term
+          @.session.start()
+          @.router = new Router()
 
       window.FB or window.loadFacebook()
+
   Shark
 )
