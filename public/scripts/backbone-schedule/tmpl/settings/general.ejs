@@ -51,15 +51,15 @@
       </a>
       <div class="setting-content"></div>
     </li>
-<!--
-    <li class="setting-item" id="edit-oauth">
+
+    <li class="setting-item noedit" id="edit-oauth">
       <a class="setting-item-link clearfix">
         <div class="setting-name">OAuth Providers</div>
         <span class="editicon">
           <i class="icon icon-pencil"></i>Edit
         </span>
         <div class="setting-value">
-          <%if(user.get('oauthPassword').length){%>
+          <%if(user.get('oauthPassword') && user.get('oauthPassword').length){%>
             <%for(i in user.get('oauthPassword')){%>
               <img class="oauth-logo" src="/images/login/<%=user.get('oauthPassword')[i]%>.png"/>
             <%}%>
@@ -70,7 +70,7 @@
       </a>
       <div class="setting-content"></div>
     </li>
--->
+
     <li class="setting-item" id="edit-school">
       <a class="setting-item-link clearfix">
         <div class="setting-name">School</div>
@@ -78,8 +78,12 @@
           <i class="icon icon-pencil"></i>Edit
         </span>
         <div class="setting-value">
+          <%if (user.get('school')){%>
           <img class="oauth-logo" src="/images/schools/<%=user.get('school').get('abbr')%>_logo.png"/>
           <%=user.get('school').get('name')%>
+          <%}else{%>
+          Not Set
+          <%}%>
         </div>
       </a>
       <div class="setting-content"></div>

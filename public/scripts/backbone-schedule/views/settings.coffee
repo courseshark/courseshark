@@ -17,18 +17,14 @@ define(['jQuery'
       # Compile the template for future use
       @template = _.template(templateText)
 
-      Shark.session.reloadUser ()=>
-        @render()
+      Shark.session.reloadUser @render
 
-      Shark.session.bind 'unauthenticated', ()=>
-        Shark.router.navigate '', trigger: true
-
-      Shark.session.bind 'authenticated', ()=>
-        @render()
+      Shark.session.on 'unauthenticated', @goSchedule
+      Shark.session.on 'authenticated', @render
 
     # Renders the actual view from the template
     render: ->
-      @$el.html $ @template user: Shark.session.get('user') || new User()
+      @$el.html $ @template user: Shark.session.get('user')
       @$subViewContainer = @$el.find('#settings-container')
       @renderSubview new GeneralSettingsView
       @ # Return self when done
@@ -38,10 +34,12 @@ define(['jQuery'
       'click #privacy-settings': 'showPrivacySettings'
 
     renderSubview: (view) ->
-      @subView?.teardown?()
-      @subview = view
-      @$subViewContainer.html @subview.$el
+      @subView?.teardown()
+      @subView = view
+      @$subViewContainer.html @subView.$el
 
+    goSchedule: ->
+      Shark.router.navigate '', trigger: true
 
     showGeneralSettings: ->
       @renderSubview new GeneralSettingsView
@@ -51,6 +49,8 @@ define(['jQuery'
 
     teardown: ->
       @subView?.teardown?()
+      Shark.session.off 'unauthenticated', @goSchedule
+      Shark.session.off 'authenticated', @render
       super()
 
   # Whatever is returned here will be usable by other modules

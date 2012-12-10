@@ -18,17 +18,10 @@ define(['jQuery'
       _.bindAll @
       @template = _.template(templateText)
       @render()
-      Shark.session.get('user').bind 'change:name', (user, newName) =>
-        $el = @$el.find('#edit-name .setting-item-link .setting-value')
-        $el.html newName
-      Shark.session.get('user').bind 'change:email', (user, newEmail) =>
-        $el = @$el.find('#edit-email .setting-item-link .setting-value')
-        $el.html newEmail
-      Shark.session.get('user').bind 'setPassword', () =>
-        Shark.session.get('user').set('password', true)
-        @render()
-      Shark.session.get('user').bind 'change:school', () =>
-        @render()
+      Shark.session.get('user').on 'change:name', @render
+      Shark.session.get('user').on 'change:email', @render
+      Shark.session.get('user').on 'setPassword', @render
+      Shark.session.get('user').on 'change:school', @render
 
     render: ->
       @$el.html $ @template user: Shark.session.get('user')
@@ -84,6 +77,10 @@ define(['jQuery'
       @showEditSubview $el, SchoolEditView
 
     teardown: ->
+      Shark.session.get('user')?.off 'change:name', @render
+      Shark.session.get('user')?.off 'change:email', @render
+      Shark.session.get('user')?.off 'setPassword', @render
+      Shark.session.get('user')?.off 'change:school', @render
       super()
 
   GeneralSettingsView

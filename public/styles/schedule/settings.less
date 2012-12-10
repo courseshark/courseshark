@@ -55,6 +55,17 @@
     &.open:hover, &.open{
       background: fade(@grey, 20%);
     }
+    &.noedit{
+      &:hover{
+        background: none;
+      }
+      .setting-item-link{
+        cursor: default;
+        .editicon{
+          display: none;
+        }
+      }
+    }
     &:hover{
       background: fade(@secondary, 20%);
       .setting-item-link .editicon{

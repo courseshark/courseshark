@@ -27,7 +27,7 @@ define(['jQuery'
         @$el.html @templateLoggedIn
           user: Shark.session.get 'user'
           domain: CS.domain
-        @$notificationCount = $ '#notification-count'
+        @$notificationCount = @$el.find('#notification-count')
         @updateFriendNotifications()
 
       Shark.session.on 'unauthenticated', ()=>
@@ -52,13 +52,15 @@ define(['jQuery'
         @$el.html @templateLoggedIn
           user: Shark.session.get 'user'
           domain: CS.domain
+        @$notificationCount = @$el.find('#notification-count')
+        @updateFriendNotifications()
       else
         @$el.html @templateLoggedOut
           domain: CS.domain
 
 
     updateNotificationCount: ->
-      notifications = @friendInvitesCount;
+      notifications = @friendInvitesCount
       return if not @$notificationCount
       if notifications == 0
         @$notificationCount.hide()

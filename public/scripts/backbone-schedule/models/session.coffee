@@ -76,15 +76,15 @@ define(['jQuery'
     forgotPassword: ->
       @password = new AuthForgotPasswordView() if not @authenticated()
 
-    _authorizeFromRes: (res, quiet, callback=(()->return)) ->
+    _authorizeFromRes: (res, quiet=false, callback=(()->return)) ->
       if typeof quiet is 'function'
         callback = quiet
         quiet = false
       @set 'access_token', res.access_token
       @set 'user_id', res.user_id
       @set 'user', new User(res.user)
-      callback()
       @trigger('authenticated') if not quiet
+      callback()
 
     doLogin: (email, password, success=(()->return), fail=(()->return)) ->
       $.ajax
