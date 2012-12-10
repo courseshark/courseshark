@@ -60,8 +60,8 @@ define(['jQuery'
       @unset 'user'
       @trigger('unauthenticated')
 
-    login: ->
-      @loginView = new AuthLoginView() if not @authenticated()
+    login: (next=(()->return)) ->
+      @loginView = new AuthLoginView({next: next}) if not @authenticated()
 
     loginWithFacebook: (callback=(()->return)) ->
       callback() if @authenticated()

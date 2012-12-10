@@ -33,11 +33,11 @@ define(['jQuery'
       'click #register-button' : 'register'
 
     save: ->
-      return Shark.session.login() if not Shark.session.authenticated()
+      return Shark.session.login(@saveView.show) if not Shark.session.authenticated()
       @saveView.show()
 
     load: ->
-      return Shark.session.login() if not Shark.session.authenticated()
+      return Shark.session.login(@loadView.show) if not Shark.session.authenticated()
       @loadView.show()
 
     new: ->

@@ -14,7 +14,7 @@ define(['jQuery'
       avatar: 'http://www.gravatar.com/avatar/00000000000000000000000000000000'
 
     initialize: ->
-      if !@.get('school').get
+      if !@.get('school')?.get
         if Shark.schools.get @.get('school')._id
           @.set 'school', Shark.schools.get @.get('school')._id
         else

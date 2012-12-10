@@ -18,13 +18,15 @@ define(['jQuery',
       "click .login-form-submit": "login"
       "click .close": "close"
 
-    initialize: ->
+    initialize: (options={}) ->
       _.bindAll @
       @template = _.template(templateText)
       (@$el.html @template()).appendTo('body')
       @$email = @$el.find('.login-form-input-email')
       @$password = @$el.find('.login-form-input-password')
       @$error = @$el.find('.login-error').hide()
+      if options.next and typeof options.next is 'function'
+        @next = options.next
       @render()
 
     render: ->
@@ -40,7 +42,10 @@ define(['jQuery',
         @teardown()
 
     loginWithFacebook: ->
-      Shark.session.loginWithFacebook @close
+      success = ()=>
+        @close()
+        @next?()
+      Shark.session.loginWithFacebook success
 
     checkSubmit: (e) ->
       if e.keyCode is 13
@@ -51,7 +56,10 @@ define(['jQuery',
       password = @$password.val()
       @$error.hide()
       if email and password
-        Shark.session.doLogin email, password, @close, @loginFailed
+        success = ()=>
+          @close()
+          @next?()
+        Shark.session.doLogin email, password, success, @loginFailed
       else
         @$error.html('Must enter Email and Password').slideToggle()
 
