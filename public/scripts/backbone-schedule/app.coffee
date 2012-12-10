@@ -11,8 +11,9 @@ define(['jQuery'
         'collections/terms'
         'collections/schedules'
         'models/school'
+        'models/term'
         'models/schedule'
-        'models/session'], ($, _, Backbone, Router, Friends, FriendInvites, Schools, Terms, Schedules, School, Schedule, Session) ->
+        'models/session'], ($, _, Backbone, Router, Friends, FriendInvites, Schools, Terms, Schedules, School, Term, Schedule, Session) ->
 
   class Shark extends Backbone.Model
     #All the router's initialize function
@@ -23,6 +24,9 @@ define(['jQuery'
       @.session.on 'authenticated', ()=>
         @.schedulesList.fetch()
         @.friendsList.fetch()
+        console.log @.school, @.session.get('user').get('school')
+        if @.school != @.session.get('user').get('school')
+          @setSchool @.session.get('user').get('school')
       @.session.on 'unauthenticated', () =>
         @.friendsList.reset()
 
@@ -31,21 +35,33 @@ define(['jQuery'
       @.friendInvites = new FriendInvites()
       @.sectionFriends = {}
 
-      @.schools = new Schools()
-      @.schools.fetch
-        success: () =>
-          @.schedulesList = new Schedules
-          if CS.school
-            @.school = new School(CS.school) if CS.school
-            @.terms = new Terms(CS.terms)
-            @.terms.fetch
-              success: () =>
-                @.term = @.terms.get @.school.get 'currentTerm'
-                @.schedule = new Schedule term: @.term
-          @.session.start()
-          @.router = new Router()
+      @.schools = new Schools(CS.schools)
+      @.school = new School
+      @.terms = new Terms
+
+      @.schedulesList = new Schedules
+      @.schedule = new Schedule
+
+      if CS.school
+        @.school = @.schools.get CS.school
+        console.log @.school
+        term = new Term @.school.get 'currentTerm'
+        @.terms.add term
+        @.term = term
+
+
+      @.session.start()
+      @.router = new Router()
 
       window.FB or window.loadFacebook()
+
+    setSchool: (school, next=(()->return)) ->
+      @.school = school
+      @.terms.fetch
+        success: ()=>
+          @.term = @.terms.get school.get('currentTerm').id
+          @.schedule.set 'term', @.term
+          next()
 
   Shark
 )

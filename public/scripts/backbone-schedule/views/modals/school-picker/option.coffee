@@ -8,8 +8,9 @@ define(['jQuery'
 
     className: "school-option"
 
-    initialize: ->
+    initialize: (options) ->
       _.bindAll @
+      @next = options.next || (()->return)
       @template = _.template templateText
       @render()
 
@@ -20,8 +21,8 @@ define(['jQuery'
       @$el.html @template school: @model
 
     choose: ->
-      Shark.school = @model
-      console.log 'setting school to', @model.get 'name'
+      Shark.setSchool @model, ()=>
+        @next()
 
   NewView
 )

@@ -15,8 +15,8 @@ define(['jQuery'
 
     initialize: ->
       if !@.get('school')?.get
-        if Shark.schools.get @.get('school')._id
-          @.set 'school', Shark.schools.get @.get('school')._id
+        if Shark.schools.get @.get('school')
+          @.set 'school', Shark.schools.get @.get('school')
           Shark.school = Shark.school || school
         else
           school = new School @.get 'school'

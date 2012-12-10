@@ -60,7 +60,7 @@ define(['jQuery'
       ':schedule/view'    : 'view'
 
     requireSchool: (next=(()->return))->
-      if !Shark.school
+      if !Shark.school.id
         @picker = new SchoolPickerView {next: next}
       else
         next()
@@ -70,7 +70,6 @@ define(['jQuery'
 
     scheduler: () ->
       @requireSchool ()=>
-        console.log 'here'
         Shark.appView.show('scheduler')
         if Shark.schedule.get('sections').length > 0
           Shark.view.panelsView.showMaxCal()

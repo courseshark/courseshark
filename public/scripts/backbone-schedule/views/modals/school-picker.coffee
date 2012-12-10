@@ -28,18 +28,27 @@ define(['jQuery'
       @delegateEvents()
       @$el.modal 'show'
       @$el.on 'hidden', =>
-        @teardown()
+        @checkAndHide()
       @showSchools()
 
     showSchools: ->
       @$options = @$el.find('#school-list').empty()
+      next = ()=>
+        @hide()
+        @next()
       Shark.schools.each (school) =>
-        view = new SchoolPickOptionView model: school
+        view = new SchoolPickOptionView model: school, next: next
         @subviews.push view
         @$options.append view.$el
 
     hide: ->
       @$el.modal 'hide'
+
+
+    checkAndHide: ->
+      @teardown()
+      if not Shark.school.id
+        @render()
 
     events:
       'click .school': 'pickSchool'

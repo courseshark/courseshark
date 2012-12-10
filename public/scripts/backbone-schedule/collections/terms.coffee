@@ -7,11 +7,14 @@ define(['jQuery',
 
     model: Term
 
-    url: '/schedule/terms'
+    baseUrl: '/api/terms/'
     # # Determines order of sections in collection
     comparator: (term)->
       -term.get('number')
 
+    fetch: () ->
+      @url = @baseUrl + Shark.school.id
+      super
 
   Terms
 )

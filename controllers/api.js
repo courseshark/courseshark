@@ -101,4 +101,12 @@ exports = module.exports = function(app){
       }
     })
   })
+
+
+  app.get('/api/terms/:id', function(req, res){
+    var schoolId = req.params.id
+    Term.find({school: schoolId}, function(err, terms){
+      res.json(terms || {error: err});
+    })
+  })
 };
