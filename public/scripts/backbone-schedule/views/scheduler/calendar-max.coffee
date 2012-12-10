@@ -20,11 +20,11 @@ define(['jQuery'
         @subviews.push view
         section.maxCalView = view
       @model.get('sections').bind 'remove', (section) =>
+        cid = section.maxCalView.cid
+        section.maxCalView.teardown()
         for view, index in @subviews
-          if section.maxCalView == view
+          if view.cid == cid
             view.teardown()
-            delete @subviews[index]
-            delete section.maxCalView
 
       # Empty the list on reset ( triggered on load )
       @model.get('sections').bind 'reset', () =>
@@ -57,7 +57,7 @@ define(['jQuery'
       Shark.friendsList.unbind 'showFriendsSchedule', @showFriendsSchedule
       Shark.friendsList.unbind 'hideFriendsSchedule', @hideFriendsSchedule
       for view in @subviews
-        view.teardown?()
+        view?.teardown?()
       super()
 
   # Whatever is returned here will be usable by other modules

@@ -17,7 +17,7 @@ define(['jQuery'
       @ticking = false
       @$window = $ window
       # Resize window listener
-      @$window.resize @resizeEvent
+      @$window.on 'resize', @resizeEvent
       ## Render
       @render() # Render out the view
 
@@ -54,6 +54,10 @@ define(['jQuery'
       console.log newHeight, @$window.height(), @$el, (parseInt(@$el.css('padding-top'),10)||0), (parseInt(@$el.css('padding-bottom'),10)||0)
       @ticking = false
 
+
+    teardown: ->
+      @$window.off 'resize', @resizeEvent
+      super()
   # Whatever is returned here will be usable by other modules
   HomeView
 )

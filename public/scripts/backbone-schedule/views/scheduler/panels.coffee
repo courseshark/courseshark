@@ -29,7 +29,7 @@ define(['jQuery'
 
 			# Resize window listener
 			#@resizeLayout = _.debounce(@resizeEvent, 10)
-			@$window.resize @resizeEvent
+			@$window.on 'resize', @resizeEvent
 
 			Shark.friendsList.on 'showFriendsSchedule', () =>
 				@showMaxCal() if not ($ '#slide-container').hasClass 'closed'
@@ -50,6 +50,7 @@ define(['jQuery'
 			@miniCal = new CalendarMiniView( model: Shark.schedule, el: (@$el.find '#mini-cal-frame')[0] )
 
 		teardown: ->
+			@$window.off 'resize', @resizeEvent
 			views = [@resultsView, @coursesView, @filterView, @friendsView, @maxiCal, @miniCal]
 			for view in views
 				view.teardown?()
