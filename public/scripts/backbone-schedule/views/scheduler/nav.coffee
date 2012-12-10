@@ -44,7 +44,7 @@ define(['jQuery'
       @newView.show()
 
     print: ->
-      console.log 'print clicked'
+      window.print()
 
     link: ->
       @shareView.show()

@@ -61,7 +61,7 @@ exports = module.exports = function(app){
 
   // List of schedules for this user
   app.get('/schedules', requireLogin, function(req, res){
-    Schedule.find({user: req.user}).exec(function(err, schedules){
+    Schedule.find({user: req.user, school: req.user.school}).exec(function(err, schedules){
       res.json(schedules)
     })
   })
