@@ -21,7 +21,7 @@ define(['jQuery'
       if CS.loggedIn
         @_authorizeFromRes(CS.auth)
       else
-        @trigger('unauthenticated')
+        @reloadUser (()->return), false
 
     authenticated: ->
       !!@get("access_token") and !!@get("user")

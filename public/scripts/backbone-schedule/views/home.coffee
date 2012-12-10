@@ -51,7 +51,6 @@ define(['jQuery'
                   (parseInt(@$el.css('padding-top'),10)||0) -
                   (parseInt(@$el.css('padding-bottom'),10)||0)
       @$el.height newHeight
-      console.log newHeight, @$window.height(), @$el, (parseInt(@$el.css('padding-top'),10)||0), (parseInt(@$el.css('padding-bottom'),10)||0)
       @ticking = false
 
 
