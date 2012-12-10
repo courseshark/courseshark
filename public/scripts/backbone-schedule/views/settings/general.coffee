@@ -5,8 +5,9 @@ define(['jQuery'
         'views/settings/general/name'
         'views/settings/general/email'
         'views/settings/general/password'
+        'views/settings/general/school'
         'models/user'
-        'text!tmpl/settings/general.ejs'], ($, _, Backbone, SharkView, NameEditView, EmailEditView, PasswordEditView, User, templateText) ->
+        'text!tmpl/settings/general.ejs'], ($, _, Backbone, SharkView, NameEditView, EmailEditView, PasswordEditView, SchoolEditView, User, templateText) ->
 
 
   class GeneralSettingsView extends SharkView
@@ -26,6 +27,8 @@ define(['jQuery'
       Shark.session.get('user').bind 'setPassword', () =>
         Shark.session.get('user').set('password', true)
         @render()
+      Shark.session.get('user').bind 'change:school', () =>
+        @render()
 
     render: ->
       @$el.html $ @template user: Shark.session.get('user')
@@ -35,6 +38,7 @@ define(['jQuery'
       'click #edit-name' : 'showEditName'
       'click #edit-email' : 'showEditEmail'
       'click #edit-password' : 'showEditPassword'
+      'click #edit-school' : 'showEditSchool'
 
     closeSubview: ->
       @$link.show()
@@ -74,6 +78,10 @@ define(['jQuery'
     showEditPassword: ->
       $el = @$el.find('#edit-password')
       @showEditSubview $el, PasswordEditView
+
+    showEditSchool: ->
+      $el = @$el.find('#edit-school')
+      @showEditSubview $el, SchoolEditView
 
     teardown: ->
       super()

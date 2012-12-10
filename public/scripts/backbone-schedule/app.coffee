@@ -34,6 +34,7 @@ define(['jQuery'
       @.schools = new Schools()
       @.terms = new Terms(CS.terms)
       @.school = new School(CS.school)
+      @.schools.add @.school
       @.term = @.terms.get @.school.get 'currentTerm'
 
       @.schedule = new Schedule term: @.term

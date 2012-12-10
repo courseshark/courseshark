@@ -48,6 +48,23 @@ exports = module.exports = function(app){
         res.json({error: "Incorrect Current Password"})
       }
     }
+    if ( req.body.changeSchool ){
+      School.findById(req.body.changeSchool.school, function(err, school){
+        if ( err || !school ){
+          res.json({error: err||'No School found'});
+          return;
+        }else{
+          req.user.school = school;
+          req.user.save(function(err){
+            if(err){
+              res.json({error: err});
+            }else{
+              res.json({success: true})
+            }
+          })
+        }
+      })
+    }
   })
 
   app.get('/me', function(req, res){

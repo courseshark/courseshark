@@ -26,12 +26,12 @@ define(['jQuery'
     authenticated: ->
       !!@get("access_token") and !!@get("user")
 
-    reloadUser: ( callback=(()->return) )->
+    reloadUser: ( callback=(()->return), silent=true )->
       $.ajax
         url: '/me'
         success: (res) =>
           if res
-            @_authorizeFromRes(res, true, callback)
+            @_authorizeFromRes(res, silent, callback)
           else
             @trigger('unauthenticated')
             callback()

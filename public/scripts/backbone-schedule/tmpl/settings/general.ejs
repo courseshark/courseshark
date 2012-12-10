@@ -51,7 +51,7 @@
       </a>
       <div class="setting-content"></div>
     </li>
-
+<!--
     <li class="setting-item" id="edit-oauth">
       <a class="setting-item-link clearfix">
         <div class="setting-name">OAuth Providers</div>
@@ -70,7 +70,7 @@
       </a>
       <div class="setting-content"></div>
     </li>
-
+-->
     <li class="setting-item" id="edit-school">
       <a class="setting-item-link clearfix">
         <div class="setting-name">School</div>
@@ -78,8 +78,8 @@
           <i class="icon icon-pencil"></i>Edit
         </span>
         <div class="setting-value">
-          <img class="oauth-logo" src="/images/schools/<%=user.get('school').abbr%>_logo.png"/>
-          <%=user.get('school').name%>
+          <img class="oauth-logo" src="/images/schools/<%=user.get('school').get('abbr')%>_logo.png"/>
+          <%=user.get('school').get('name')%>
         </div>
       </a>
       <div class="setting-content"></div>
