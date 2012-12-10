@@ -41,6 +41,7 @@ define(['jQuery'
 
     events:
       'click #nav-login': 'login'
+      'click .brand': 'goHome'
       'click .user-icon': 'showUserMenu'
       'click #menu-notifications': 'showNotifications'
       'click #menu-schedules': 'showScheduler'
@@ -63,6 +64,9 @@ define(['jQuery'
         @$notificationCount.hide()
       else
         @$notificationCount.html(@friendInvitesCount).show()
+
+    goHome: ->
+      Shark.router.navigate '/home', {trigger: true}
 
     login: ->
       Shark.session.login()

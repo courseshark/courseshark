@@ -44,6 +44,8 @@ define(['jQuery'
     routes:
       ''                  : 'scheduler'
 
+      'home'              : 'home'
+
       'login'             : 'login'
       'view'              : 'view'
 
@@ -56,10 +58,8 @@ define(['jQuery'
       ':schedule'         : 'loadSchedule'
       ':schedule/view'    : 'view'
 
-
-    settings: () ->
-      Shark.appView.show('settings')
-
+    home: () ->
+      Shark.appView.show('home')
 
     scheduler: () ->
       Shark.appView.show('scheduler')
@@ -67,6 +67,9 @@ define(['jQuery'
         Shark.view.panelsView.showMaxCal()
       else
         Shark.view.panelsView.hideMaxCal()
+
+    settings: () ->
+      Shark.appView.show('settings')
 
     view: (id) ->
       Shark.appView.show('scheduler')

@@ -4,8 +4,9 @@ define(['jQuery'
 				'Backbone'
 				'views/shark-view'
 				'views/main-nav'
+				'views/home'
 				'views/scheduler'
-				'views/settings'], ($, _, Backbone, SharkView, MainNavView, SchedulerView, SettingsView) ->
+				'views/settings'], ($, _, Backbone, SharkView, MainNavView, HomeView, SchedulerView, SettingsView) ->
 
 	class AppView extends SharkView
 		el: $ '#app-container'
@@ -25,11 +26,13 @@ define(['jQuery'
 			if view != @showing
 				@showing = view
 				@view?.teardown?() || @view?.remove()
-				if view is 'scheduler'
+				if view is 'home'
+					Shark.view = @view = new HomeView()
+				else if view is 'scheduler'
 					$viewContainer = $('<div id="view-container"></div>').appendTo @$el
 					Shark.view = @view = new SchedulerView el: $viewContainer
 				else if view is 'settings'
-					Shark.view = @view = new SettingsView
+					Shark.view = @view = new SettingsView()
 				@$el.append(@view.$el)
 
 		teardown: ->
