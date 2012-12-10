@@ -2,7 +2,7 @@ define(['jQuery'
         'Underscore'
         'Backbone'
         'views/shark-view'
-        'text!tmpl/modals/register.ejs'], ($,_, Backbone, SharkView, registerTemplate) ->
+        'text!tmpl/modals/register.ejs'], ($,_, Backbone, SharkView, templateText) ->
 
   class RegisterView extends SharkView
 
@@ -10,7 +10,7 @@ define(['jQuery'
 
     initialize: ->
       _.bindAll @
-      @registerTemplate = _.template registerTemplate
+      @template = _.template templateText
 
     show: ->
       @$el.html(@template()).appendTo $ 'body'
