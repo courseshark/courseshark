@@ -1,10 +1,11 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
+        'views/shark-view'
         'models/friend'
-        'text!tmpl/scheduler/friends/friends-from-facebook.ejs'], ($, _, Backbone, Friend, templateText) ->
+        'text!tmpl/scheduler/friends/friends-from-facebook.ejs'], ($, _, Backbone, SharkView, Friend, templateText) ->
 
-  class FriendsFromFacebookView extends Backbone.View
+  class FriendsFromFacebookView extends SharkView
 
     tagName: "div"
 
@@ -50,6 +51,8 @@ define(['jQuery'
 
     close: ->
       @$el.modal 'hide'
+      @$el.on 'hidden', () ->
+        @teardown()
 
   FriendsFromFacebookView
 )

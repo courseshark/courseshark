@@ -1,15 +1,25 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
-        'models/model'], ($, _, Backbone, SharkModel) ->
+        'models/model'
+        'models/school'], ($, _, Backbone, SharkModel, School) ->
 
   class User extends SharkModel
 
     idAttribute: "_id"
 
+    url: '/user'
+
     defaults:
       avatar: 'http://www.gravatar.com/avatar/00000000000000000000000000000000'
 
+    initialize: ->
+      if !@.get('school')?.get
+        if Shark.schools.get @.get('school')._id
+          @.set 'school', Shark.schools.get @.get('school')._id
+        else
+          Shark.schools.add new School @.get 'school'
+          @.set 'school', Shark.schools.get @.get('school')._id
 
     _crc32: (s="", polynomial=0x04C11DB7, initialValue=0xFFFFFFFF, finalXORValue=0xFFFFFFFF) ->
       s = String(s)

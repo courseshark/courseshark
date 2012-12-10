@@ -42,10 +42,15 @@ define(['jQuery'
         Shark.router.navigate fragment + '/' + toAdd, navigateOptions
 
     routes:
-      ''                  : 'landingPage'
+      ''                  : 'scheduler'
+
+      'home'              : 'home'
 
       'login'             : 'login'
       'view'              : 'view'
+
+      'settings'          : 'settings'
+
 
       'l/:link'           : 'showLink'
       'l/:link/view'      : 'showLink'
@@ -53,13 +58,18 @@ define(['jQuery'
       ':schedule'         : 'loadSchedule'
       ':schedule/view'    : 'view'
 
+    home: () ->
+      Shark.appView.show('home')
 
-    landingPage: () ->
+    scheduler: () ->
       Shark.appView.show('scheduler')
       if Shark.schedule.get('sections').length > 0
         Shark.view.panelsView.showMaxCal()
       else
         Shark.view.panelsView.hideMaxCal()
+
+    settings: () ->
+      Shark.appView.show('settings')
 
     view: (id) ->
       Shark.appView.show('scheduler')
@@ -97,7 +107,6 @@ define(['jQuery'
 
 
     defaultAction: (actions) ->
-      console.log 'No route', actions
       Shark.router.navigate '', trigger: true, replace: true
 
   SharkRouter

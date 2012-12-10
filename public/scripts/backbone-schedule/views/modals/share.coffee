@@ -1,10 +1,11 @@
-define(['jQuery',
-        'Underscore',
-        'Backbone',
+define(['jQuery'
+        'Underscore'
+        'Backbone'
+        'views/shark-view'
         'models/share-link'
-        'text!tmpl/modals/share.ejs'], ($,_, Backbone, ShareLink, shareTemplate) ->
+        'text!tmpl/modals/share.ejs'], ($,_, Backbone, SharkView, ShareLink, templateText) ->
 
-  class ShareView extends Backbone.View
+  class ShareView extends SharkView
 
     className: "modal hide fade"
 
@@ -12,10 +13,19 @@ define(['jQuery',
       window._ = _
       _.bindAll @
       @linkWorks = false
-      @template = _.template shareTemplate
+      @template = _.template templateText
       @render()
 
     show: ->
+      @$el.html(@template()).appendTo $ 'body'
+      @delegateEvents()
+      @$el.on 'hidden', =>
+        @teardown()
+      @$el.modal 'show'
+
+      @$link = @$el.find('#share-link-result')
+      @$linkText = @$link.find('.link-text')
+
       $.ajax
         url:'/links'
         type: 'post'
@@ -24,22 +34,14 @@ define(['jQuery',
         dataType: 'json'
         success: (link)=>
           if link.error
-            @$linkText.text 'Invalid Schedule. Cannot create link'
-            @link.attr '#'
+            @$linkText?.text 'Invalid Schedule. Cannot create link'
+            @link?.attr '#'
             return
-          @$link.attr 'href', '/s/l/'+link.hash
-          @$linkText.text window.location.origin+'/s/l/'+link.hash
-
-      @$el.modal 'show'
+          @$link?.attr 'href', '/s/l/'+link.hash
+          @$linkText?.text window.location.origin+'/s/l/'+link.hash
 
     hide: ->
       @$el.modal('hide')
-
-    render: ->
-      @$el.html @template()
-      @$link = @$el.find('#share-link-result')
-      @$linkText = @$link.find('.link-text')
-      ($ 'body').append @$el
 
 
   ShareView

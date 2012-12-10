@@ -1,16 +1,17 @@
-define(['jQuery',
-        'Underscore',
-        'Backbone',
+define(['jQuery'
+        'Underscore'
+        'Backbone'
+        'views/shark-view'
         'models/search-results'
         'views/scheduler/result-course'
-        'text!tmpl/scheduler/results/result-section-list.ejs'], ($,_, Backbone, SearchResults, ResultsCourseView, templateText) ->
+        'text!tmpl/scheduler/results/result-section-list.ejs'], ($,_, Backbone, SharkView, SearchResults, ResultsCourseView, templateText) ->
 
   # This is the main search-results View.
   #
   #  It handles the drawing of the results
   #  whenever the search object changes
   #
-  class ResultListView extends Backbone.View
+  class ResultListView extends SharkView
 
     initialize: ->
       _.bindAll @
@@ -23,6 +24,8 @@ define(['jQuery',
       @searchResults.bind 'search:complete',  () => @renderResults()
       @searchResults.bind 'filter:start',  () => @showLoading()
       @searchResults.bind 'filter:complete',  () => @removeLoading()
+
+      @subviews = []
 
       @render()
 
@@ -38,14 +41,20 @@ define(['jQuery',
     removeLoading: () ->
       @$courses.removeClass 'loading'
 
-
     renderResults: (eventName) ->
       @removeLoading()
       # Clear out the course result container
       @$courses.empty()
       # Draw the courses into the course result container
       @searchResults.get('courses').each (course) =>
-        @$courses.append new ResultsCourseView(model: course).render().el
+        view = new ResultsCourseView model: course
+        @subviews.push view
+        @$courses.append view.render().el
+
+    teardown: ->
+      for view in @subviews
+        view.teardown?()
+      super()
 
   ResultListView
 )

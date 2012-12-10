@@ -2,10 +2,11 @@
 define(['jQuery'
         'Underscore'
         'Backbone'
+        'views/shark-view'
         'views/dropdowns/friend-request'
-        'text!tmpl/app/nav/dropdowns/notifications.ejs'], ($, _, Backbone, FriendRequestView, templateText) ->
+        'text!tmpl/app/nav/dropdowns/notifications.ejs'], ($, _, Backbone, SharkView, FriendRequestView, templateText) ->
 
-  class NotificationsDropdownView extends Backbone.View
+  class NotificationsDropdownView extends SharkView
 
     initialize: ->
       _.bindAll @
@@ -18,13 +19,17 @@ define(['jQuery'
       Shark.friendInvites.on 'add', @render
       Shark.friendInvites.on 'remove', @render
 
+      @inviteViews = []
+
       @template = _.template templateText
       @render()
 
     render: ->
       @$el.hide().css(right: '160px').html @template()
       $list = @$el.find('.request-list')
-
+      for view in @inviteViews
+        view.teardown()
+      @inviteViews = []
       finishRender = =>
         @$el
         @show()
@@ -33,7 +38,9 @@ define(['jQuery'
         finishCallback = _.after(Shark.friendInvites.length, finishRender)
         $list.removeClass('empty').html('')
         Shark.friendInvites.each (user) =>
-          $list.append (new FriendRequestView(model: user)).el
+          view = new FriendRequestView(model: user)
+          @inviteViews.push(view)
+          $list.append view.el
           finishCallback()
       else
         finishRender()
@@ -48,8 +55,12 @@ define(['jQuery'
 
     hide: ->
       $('#app-container').off 'click', @hide
-      @$el.hide()
+      @teardown()
 
+    teardown: ->
+      for view in @inviteViews
+        view.teardown?()
+      super()
 
   # Whatever is returned here will be usable by other modules
   NotificationsDropdownView

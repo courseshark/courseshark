@@ -1,16 +1,16 @@
-define(['jQuery',
-        'Underscore',
-        'Backbone',
-        'text!tmpl/modals/save.ejs'], ($,_, Backbone, saveTemplate) ->
+define(['jQuery'
+        'Underscore'
+        'Backbone'
+        'views/shark-view'
+        'text!tmpl/modals/save.ejs'], ($,_, Backbone, SharkView, templateText) ->
 
-  class SaveView extends Backbone.View
+  class SaveView extends SharkView
 
     className: "modal hide fade"
 
     initialize: ->
       _.bindAll @
-      @saveTemplate = _.template saveTemplate
-      @render()
+      @template = _.template templateText
 
     events:
       'click #do-save' : 'save'
@@ -27,16 +27,16 @@ define(['jQuery',
       Shark.schedule.save()
 
     show: ->
-      @$name.val(Shark.schedule.get('name'))
+      @$el.html(@template()).appendTo $ 'body'
+      @delegateEvents()
+      @$el.on 'hidden', =>
+        @teardown()
+      @$name = @$el.find('#save-dialog-name-field').val(Shark.schedule.get('name'))
       @$el.modal 'show'
 
     hide: ->
       @$el.modal('hide')
 
-    render: ->
-      @$el.html @saveTemplate()
-      @$name = @$el.find('#save-dialog-name-field')
-      ($ 'body').append @$el
 
 
   SaveView

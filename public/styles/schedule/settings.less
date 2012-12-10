@@ -1,0 +1,150 @@
+.settings-page{
+  margin-top: 40px;
+}
+
+.username {
+  font-size: 11.844px;
+  font-weight: bold;
+  line-height: 14px;
+  color: @white;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-shadow: 0 -1px 0 fade(@black, 75%);
+  background-color: @tirtiary;
+  padding: 0 0 0 2px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.settings-nav{
+  background: none;
+  box-shadow: none;
+  margin-bottom:0;
+  margin-top: 10px;
+  li{
+    a{
+      cursor:pointer;
+      color: @black;
+      font-weight: bold;
+      line-height: 30px;
+      padding: 0 3px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      &:hover{
+        background: @tirtiary;
+        color: @white;
+      }
+      &.disabled{
+        opacity: 0.4;
+      }
+    }
+  }
+}
+
+.settings-list{
+  list-style: none;
+  margin: 20px 0;
+  border-top: 1px solid @black;
+  border-bottom: 1px solid @black;
+
+  .setting-item{
+    border-top: 1px solid lighten(@grey, 25%);
+    &:first-child{
+      border-top: none;
+    }
+    &.open:hover, &.open{
+      background: fade(@grey, 20%);
+    }
+    &.noedit{
+      &:hover{
+        background: none;
+      }
+      .setting-item-link{
+        cursor: default;
+        .editicon{
+          display: none;
+        }
+      }
+    }
+    &:hover{
+      background: fade(@secondary, 20%);
+      .setting-item-link .editicon{
+        text-decoration: underline;
+        color: @tirtiary;
+        .icon{
+          display: inline-block;
+        }
+      }
+    }
+    .setting-item-link{
+      color: @black;
+      cursor: pointer;
+      text-decoration: none;
+      padding: 10px 5px;
+      &:hover{
+        color: @black;
+        text-decoration: none;
+      }
+
+      .setting-name{
+        float: left;
+        padding: 10px 5px;
+        font-weight: bold;
+      }
+      .editicon{
+        float: right;
+        text-decoration: none;
+        color: @primary;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 14px;
+        padding: 10px 5px;
+        .icon{
+          display:none;
+          margin-right: 10px;
+        }
+      }
+      .setting-value{
+        padding: 10px 5px;
+        margin: 0 80px 0 150px;
+        .oauth-logo {
+          width: 16px;
+          height: 16px;
+          display: inline-block;
+        }
+      }
+    }
+    .setting-name{
+    }
+    .setting-value{
+      .icon{
+        float: right;
+      }
+    }
+    .setting-content{
+      display: none;
+      padding: 10px 5px;
+      .setting-name{
+        float: left;
+        font-weight: bold;
+      }
+      .setting-form{
+        margin-left: 130px;
+        .form-horizontal{
+          .control-label{
+            width: 90px;
+          }
+          .controls{
+            margin-left: 100px;
+          }
+          .error{
+            color: @red;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+

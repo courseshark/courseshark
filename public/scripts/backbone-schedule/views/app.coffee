@@ -2,10 +2,13 @@
 define(['jQuery'
 				'Underscore'
 				'Backbone'
+				'views/shark-view'
 				'views/main-nav'
-				'views/scheduler'], ($, _, Backbone, MainNavView, SchedulerView) ->
+				'views/home'
+				'views/scheduler'
+				'views/settings'], ($, _, Backbone, SharkView, MainNavView, HomeView, SchedulerView, SettingsView) ->
 
-	class AppView extends Backbone.View
+	class AppView extends SharkView
 		el: $ '#app-container'
 
 		initialize: ->
@@ -13,10 +16,6 @@ define(['jQuery'
 
 			@mainNav = new MainNavView()
 
-			@$viewContainer = $('<div id="view-container"></div>').appendTo @$el
-
-
-			## Render
 			@render()	# Render out the view
 
 		# Renders the actual view from the template
@@ -26,8 +25,20 @@ define(['jQuery'
 		show: (view) ->
 			if view != @showing
 				@showing = view
-				if view is 'scheduler'
-					Shark.view = @view = new SchedulerView( el: @$viewContainer )
+				@view?.teardown?() || @view?.remove()
+				if view is 'home'
+					Shark.view = @view = new HomeView()
+				else if view is 'scheduler'
+					$viewContainer = $('<div id="view-container"></div>').appendTo @$el
+					Shark.view = @view = new SchedulerView el: $viewContainer
+				else if view is 'settings'
+					Shark.view = @view = new SettingsView()
+				@$el.append(@view.$el)
+
+		teardown: ->
+			@view.teardown()
+			@mainNav.teardown()
+			super()
 
 	# Whatever is returned here will be usable by other modules
 	AppView

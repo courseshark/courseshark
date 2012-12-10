@@ -1,13 +1,14 @@
-define(['jQuery',
-				'Underscore',
-				'Backbone',
-				'text!tmpl/scheduler/filters/slider-filter.ejs'], ($,_, Backbone, sliderFilterTemplate) ->
+define(['jQuery'
+				'Underscore'
+				'Backbone'
+				'views/shark-view'
+				'text!tmpl/scheduler/filters/slider-filter.ejs'], ($,_, Backbone, SharkView, templateText) ->
 
-	class CheckboxFilterView extends Backbone.View
+	class CheckboxFilterView extends SharkView
 
 		initialize: ->
 			_.bindAll @
-			@sliderFilterTemplate = _.template(sliderFilterTemplate)
+			@template = _.template(templateText)
 			@model.bind 'change:valueText', (filter, text) =>
 				@$value.html(text) if @$value
 
@@ -15,7 +16,7 @@ define(['jQuery',
 			'slidechange .slider' : 'updateModel'
 
 		render: ->
-			@$el.html @sliderFilterTemplate(@model.attributes)
+			@$el.html @template(@model.attributes)
 			@$value = @$el.find('.value')
 			@$slider = @$el.find('.slider')
 

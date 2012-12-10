@@ -15,28 +15,32 @@ exports = module.exports = function(app){
     res.redirect('/s/');
   })
 
-  app.get('/s(/*)?', requireSchool, function(req, res){
+  app.get('/s(/*)?', function(req, res){
     var built = app.settings.env!="development" || req.query.b
     req.session.redirectTo='/s/';
-    School.findById(req.school.id, {
-        terms:0
-      , oldId:0
-      , city:0
-      , state:0
-      , zip:0
-      , waitlist:0
-      , enabled:0
-      , notificationCron:0
-      , notifications:0
-      , created:0
-      , modified:0
-      }, function(err, school){
-          Term.find({school: req.school}, {
-            school:0
-            }, function(err, terms){
-                res.render('schedule/schedule', {school: school, terms: terms, layout: 'app-layout.ejs', built: built});
-          })
-    })
+    if ( !req.school || !req.school.id ){
+      res.render('schedule/schedule', {school: false, terms: [], layout: 'app-layout.ejs', built: built});
+    }else{
+      School.findById(req.school.id, {
+          terms:0
+        , oldId:0
+        , city:0
+        , state:0
+        , zip:0
+        , waitlist:0
+        , enabled:0
+        , notificationCron:0
+        , notifications:0
+        , created:0
+        , modified:0
+        }, function(err, school){
+            Term.find({school: req.school}, {
+              school:0
+              }, function(err, terms){
+                  res.render('schedule/schedule', {school: school, terms: terms, layout: 'app-layout.ejs', built: built});
+            })
+      })
+    }
   })
 
   app.get('/launch-schedule', requireSchool, function(req, res){
@@ -61,7 +65,7 @@ exports = module.exports = function(app){
 
   // List of schedules for this user
   app.get('/schedules', requireLogin, function(req, res){
-    Schedule.find({user: req.user}).exec(function(err, schedules){
+    Schedule.find({user: req.user, school: req.user.school}).exec(function(err, schedules){
       res.json(schedules)
     })
   })

@@ -1,11 +1,12 @@
-define(['jQuery',
-        'Underscore',
-        'Backbone',
-        'models/course',
+define(['jQuery'
+        'Underscore'
+        'Backbone'
+        'views/shark-view'
+        'models/course'
         'views/scheduler/result-section'
-        'text!tmpl/scheduler/results/result-course.ejs'], ($,_, Backbone, Course, ResultSectionView, templateText) ->
+        'text!tmpl/scheduler/results/result-course.ejs'], ($,_, Backbone, SharkView, Course, ResultSectionView, templateText) ->
 
-  class ResultCourseView extends Backbone.View
+  class ResultCourseView extends SharkView
 
     model: Course
 
@@ -14,6 +15,8 @@ define(['jQuery',
       @template = _.template templateText
       @renderedSections = false
       @showingSections = false
+
+      @subviews= []
 
       @model.bind 'change:visible', (section, visible) =>
         if not visible
@@ -39,7 +42,9 @@ define(['jQuery',
       @$sections.empty()
       # Itterate over sections rendering their views
       @model.get('sections').each (section) =>
-        @$sections.append (new ResultSectionView (model: section)).render().el
+        view = new ResultSectionView (model: section)
+        @subviews.push view
+        @$sections.append view.render().el
 
     render: ->
       params =
@@ -57,6 +62,10 @@ define(['jQuery',
       @$sectionContainer = @$el.find('.sections-container')
       @$sections = @$el.find('.sections-list')
       @ # Return the section view to be added by the results view
+
+    teardown: ->
+      for view in @subviews
+        view.teardown?()
 
   ResultCourseView
 )

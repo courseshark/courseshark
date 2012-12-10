@@ -1,14 +1,15 @@
-define(['jQuery',
-	'Underscore',
-	'Backbone',
-	'collections/filters',
-	'models/filters/seats-filter',
-	'models/filters/days-filter',
-	'models/filters/time-filter',
-	'models/filters/friends-filter',
-	'text!tmpl/scheduler/filters/index.ejs'], ($, _, Backbone, FilterCollection, SeatsFilter, DaysFilter, TimeFilter, FriendsFilter, filterTemplate) ->
+define(['jQuery'
+	'Underscore'
+	'Backbone'
+	'views/shark-view'
+	'collections/filters'
+	'models/filters/seats-filter'
+	'models/filters/days-filter'
+	'models/filters/time-filter'
+	'models/filters/friends-filter'
+	'text!tmpl/scheduler/filters/index.ejs'], ($, _, Backbone, SharkView, FilterCollection, SeatsFilter, DaysFilter, TimeFilter, FriendsFilter, filterTemplate) ->
 
-	class filterView extends Backbone.View
+	class filterView extends SharkView
 
 		initialize: ->
 			_.bindAll @
@@ -23,6 +24,8 @@ define(['jQuery',
 
 			@filters.bind 'change', () =>
 				@filterResults()
+
+			@filterViews = []
 
 			@render()
 
@@ -70,10 +73,18 @@ define(['jQuery',
 			Shark.searchResults.search ($ '#search-field')
 
 		render: ->
+			Shark.showingResults = false
 			@$el.append @filterTemplate()
 			@$filtersContainer = @$filtersContainer or @$el.find '.advanced-search-filters'
 			@filters.each (filter) =>
-				@$filtersContainer.append (new filter.view model: filter).render().el
+				view = new filter.view model: filter
+				@filterViews.push(view)
+				@$filtersContainer.append view.render().el
+
+		teardown: ->
+			for view in @filterViews
+				view.teardown?()
+			super()
 
 	filterView
 )

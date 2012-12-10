@@ -2,15 +2,16 @@
 define(['jQuery'
  'Underscore'
  'Backbone'
+ 'views/shark-view'
  'views/scheduler/result-list'
  'views/scheduler/schedule-sections-list'
  'views/scheduler/filter'
  'views/scheduler/calendar-max'
  'views/scheduler/calendar-mini'
  'views/scheduler/friends-list'
- 'text!tmpl/scheduler/panels.ejs'], ($, _, Backbone, ResultListView, ScheduleSectionsListView, FilterView, CalendarMaxView, CalendarMiniView, FriendsListView, templateText) ->
+ 'text!tmpl/scheduler/panels.ejs'], ($, _, Backbone, SharkView, ResultListView, ScheduleSectionsListView, FilterView, CalendarMaxView, CalendarMiniView, FriendsListView, templateText) ->
 
-	class panelsView extends Backbone.View
+	class panelsView extends SharkView
 
 		initialize: ->
 			_.bindAll @
@@ -28,7 +29,7 @@ define(['jQuery'
 
 			# Resize window listener
 			#@resizeLayout = _.debounce(@resizeEvent, 10)
-			@$window.resize @resizeEvent
+			@$window.on 'resize', @resizeEvent
 
 			Shark.friendsList.on 'showFriendsSchedule', () =>
 				@showMaxCal() if not ($ '#slide-container').hasClass 'closed'
@@ -37,6 +38,10 @@ define(['jQuery'
 		# Renders the actual view from the template
 		render: ->
 			@$el.html $ @template()
+
+			if Shark.schedule.get('sections').length > 0
+				@$el.find('#tutorial-frame').hide()
+
 			@resultsView = new ResultListView( el: (@$el.find '#results-frame')[0] )
 			@coursesView = new ScheduleSectionsListView( el: (@$el.find '#courses-frame')[0])
 			@filterView = new FilterView( el: (@$el.find '#filter-frame')[0] )
@@ -44,6 +49,12 @@ define(['jQuery'
 			@maxiCal = new CalendarMaxView( model: Shark.schedule, el: (@$el.find '#max-cal-frame')[0] )
 			@miniCal = new CalendarMiniView( model: Shark.schedule, el: (@$el.find '#mini-cal-frame')[0] )
 
+		teardown: ->
+			@$window.off 'resize', @resizeEvent
+			views = [@resultsView, @coursesView, @filterView, @friendsView, @maxiCal, @miniCal]
+			for view in views
+				view.teardown?()
+			super()
 
 		events:
 			'click #slide-panel-button': 'toggleSlidePanel'
