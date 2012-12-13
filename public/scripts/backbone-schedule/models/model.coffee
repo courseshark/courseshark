@@ -11,7 +11,7 @@ define(['jQuery',
       # Calls toJSON recursively ( to remove circular references )
       for prop of @attributes
         if typeof @attributes[prop] is 'object'
-          if typeof @attributes[prop].toJSON is 'function'
+          if typeof @attributes[prop]?.toJSON is 'function'
             res[prop] = _.clone(@attributes[prop].toJSON())
           else
             res[prop] = _.clone(@attributes[prop])
