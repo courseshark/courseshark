@@ -11,13 +11,14 @@ define(['jQuery'
       visible: true
       seatsAvailable: '--'
       seatsTotal: '--'
+      instructor: "No Instructor Specified"
       number: 0
 
     __rnd: (seed = Date.now()) ->
       ((seed*9301+49297) % 263212) / (263212.0)
 
     description: ->
-      @.get('description') || @.get('course').get('description') || "No description available"
+      @.get('description') || @.get('courseDescription') || @.get('course')?.get('description') || "No description available"
 
     color: (opacity=1) ->
       number=(@.get 'number')
