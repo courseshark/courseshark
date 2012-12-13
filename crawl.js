@@ -39,6 +39,7 @@
       return;
     }
   }
+
   crawl = crawler[school].crawl(term)
   crawl.on('done', function(d){
     console.log('Finished Crawling:', school)
