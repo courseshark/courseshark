@@ -16,6 +16,9 @@ define(['jQuery'
     __rnd: (seed = Date.now()) ->
       ((seed*9301+49297) % 263212) / (263212.0)
 
+    description: ->
+      @.get('description') || @.get('course').get('description') || "No description available"
+
     color: (opacity=1) ->
       number=(@.get 'number')
       h = (@__rnd(number)*0x1000000<<0).toString(16)
