@@ -100,6 +100,6 @@ exports = module.exports = function(app){
   })
 
   app.get('/api/settings', function(req, res){
-    res.json(flipflop.evaluateAll())
+    res.json(flipflop.evaluateAll(req))
   })
 };
