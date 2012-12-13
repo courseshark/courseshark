@@ -11,6 +11,7 @@ FlipFlopSchema = new Schema({
     name: { type: String, index: { unique: true } }
   , rules: { type: {} }
   , description: { type: String }
+  , offsetPercent: { type: Number }
   , created_by: { type: Schema.ObjectId, ref: 'User' }
   , updated: [{type: Date}]
 });
