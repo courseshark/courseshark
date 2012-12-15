@@ -69,6 +69,7 @@ define(['jQuery'
         seats: @model.get('seatsAvailable') + '/' + @model.get('seatsTotal')
         section_id: @model.get('number') + ': Section ' + @model.get('info')
         hours: @model.get('credits')
+        description: @model.description?()
       @$el.hide() if not @model.get 'visible'
       @$addButton = @$el.find('.add')
 

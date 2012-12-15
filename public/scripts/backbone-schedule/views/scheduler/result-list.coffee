@@ -47,9 +47,10 @@ define(['jQuery'
       @$courses.empty()
       # Draw the courses into the course result container
       @searchResults.get('courses').each (course) =>
-        view = new ResultsCourseView model: course
-        @subviews.push view
-        @$courses.append view.render().el
+        if course.get('rank') >= 1
+          view = new ResultsCourseView model: course
+          @subviews.push view
+          @$courses.append view.render().el
 
     teardown: ->
       for view in @subviews
