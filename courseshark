@@ -126,7 +126,12 @@ then
 else
   echo "";
   echo "[warn] No node found.";
-  INSTALL;
+  if [ $NODE_ENV == "development" ]
+  then
+  	:
+  else
+  	INSTALL;
+  fi
 fi
 
 if [ "$1" == "seatwatcher" ]
@@ -181,12 +186,9 @@ else
 				echo "";
 				echo "Starting :: $(tput setaf 4)Dev Environment";
 				echo "$(tput setaf 2)  * nodemon watching scripts";
-				echo "  * no node version check (running $(tput sgr0)$(tput setaf 3)$(export PATH=$NEW_PATH; node -v;)$(tput setaf 2))";
+				echo "  * no node version check (running $(tput sgr0)$(tput setaf 3)$(node -v;)$(tput setaf 2))";
 				echo "$RESET";
-				(
-					export PATH=$NEW_PATH;
-					nodemon ./app.js;
-				)
+				nodemon ./app.js;
 				exit;
 			fi
 			SANITY_CHECK;

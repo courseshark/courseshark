@@ -1,3 +1,4 @@
+<script src="/socket.io/socket.io.js"></script>
 	<!-- Templates to be used in JS -->
 	<script type="text/plain" id="template-course-options">
 		<div id="<$=course.id$>" class="course-options-container" style="display: none">
@@ -34,7 +35,7 @@
 					<br />
 					<span class="timeslot-time"><$=startHourAdjusted$>:<$=slot.startTime.getUTCMinutes()$>-<$=endHourAdjusted$>:<$=slot.endTime.getUTCMinutes()$></span>
 				</dd>
-			</dl> 
+			</dl>
 		</div>
 	</script>
 	<script type="text/plain" id="template-event-listing-tbd">
@@ -160,7 +161,7 @@ END:VCALENDAR
 	      </ul>
 			</div>
 		</div>
-	</div>	
+	</div>
 	<% } %>
 	<div class="container">
 		<div class="row">
@@ -197,7 +198,7 @@ END:VCALENDAR
 				<!-- Containers for the Classes added to the Schedule -->
 				</div>
 			</div>
-			
+
 			<div id="schedule-container" class="span7">
 				<%- partial('calendars/week') %>
 			</div>
@@ -215,7 +216,7 @@ END:VCALENDAR
 				</div>
 			</div>
 
-			
+
 		</div>
 	</div>
 
@@ -271,7 +272,7 @@ $(document).ready(function() {
 													.append(selectOptions)
 													.select2()
 													.select2('open')
-													.bind('change', function(e){ 
+													.bind('change', function(e){
 														var $this = $(this)
 														$this.data('course', courses[$(this).val()])
 														addCourseToList($this.data('course'))
@@ -291,11 +292,11 @@ $(document).ready(function() {
 		if ( typeahead.shown ){
 			$thing.typeahead('hide')
 		}else{
-			$thing.typeahead('showOptions')	
+			$thing.typeahead('showOptions')
 		}
 	})
 	_gaq = _gaq || {};
-		
+
 	var saveToggle;
 	$('#save-button').click(function(){
 
@@ -316,7 +317,7 @@ $(document).ready(function() {
 			return false;
 		<% } %>
 	});
-	
+
 	$('#load-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Load']);
 		<% if ( loggedIn ){ %>
@@ -326,24 +327,24 @@ $(document).ready(function() {
 		<% } %>
 		show_load_dialog();
 	});
-	
+
 	$('#new-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'New']);
 		show_new_dialog();
 	});
-	
+
 	$('#print-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Print']);
 		mixpanel.track('Print Schedule', {from: 'Menu'});
 		window.print();
 	});
-	
+
 	$('#ical-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'iCal']);
 		mixpanel.track('Export Schedule', {from: 'Menu'});
 		$('#ical-button').attr('href', schedule.createCal()).attr('download', schedule.name);
 	});
-	
+
 	$('#link-button').click(function(){
 		_gaq.push(['_trackEvent', 'Schedule', 'Link']);
 		mixpanel.track('Generate Share Link', {from: 'Menu'});
@@ -373,7 +374,7 @@ $(document).ready(function() {
 					url:'/recruiter-share-invite'
 				,	dataType: 'text'
 				,	success: function(d){
-						$login.popover({animation: true, 
+						$login.popover({animation: true,
 												placement:'bottom'
 											, delay: 100
 											, trigger:'hover'
@@ -388,6 +389,6 @@ $(document).ready(function() {
 		mixpanel.track("Asked to Share with Recruiters");
 		openDialog('/share-with-recruiters');
 	<%}%>
-	
+
 });
 </script>

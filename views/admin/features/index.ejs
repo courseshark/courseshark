@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="span10">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Rules</th>
+          <th>Manager</th>
+          <th>Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+    <% if (flipflops.length) { %>
+      <% for ( var i=0,_len=flipflops.length; i<_len; i++) { flipflop = flipflops[i]; %>
+        <tr title="<%=flipflop.name%>" onClick="window.location='/features/<%=flipflop.name%>'">
+          <td><%=flipflop.name%></td>
+          <td><%=flipflop.description||"&mdash;"%></td>
+          <td><%=flipflop.rules_words%></td>
+          <td><%=flipflop.created_by?flipflop.created_by.name:'&mdash;'%></td>
+          <td><%=flipflop.last_updated%></td>
+        </tr>
+      <% } %>
+    <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>

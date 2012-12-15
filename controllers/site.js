@@ -4,14 +4,11 @@
 exports = module.exports = function(app){
   // Home
   app.get('/', function(req, res){
-    if ( req.loggedIn ){
-      require('../lib/social-track').getExistingLink('http://courseshark.com/', req.user, function(link){
-        res.render('index', {raffleLink: link});
-      })
+    if ( require('../lib/flipflop').test('canSeeNewScheduler', req) ){
+      res.redirect('/s/home');
+      return;
     }
-    else{
-      res.render('index', {});
-    }
+    res.render('index', {});
   })
 
   // About pages

@@ -48,26 +48,29 @@ mongoose.connection.on('open', function(){
   })
   require('./lib/social-track').boot(app);
   // Configuration
-  require('./lib/settings').boot(app, mongoose);
-  //Error Handler
-  require('./lib/error-handler').boot(app);
-  // Helpers
-  require('./lib/helpers').boot(app);
-  // make a global helper
-  requireLogin = auth.requireLogin;
-  requireAdmin = auth.requireAdmin;
-  requireSchool = utils.requireSchool;
-  // Bootstrap controllers
-  controller_loc = __dirname + '/controllers';
-  controller_files = fs.readdirSync(controller_loc);
-  controller_files.forEach( function (file) {
-    require(controller_loc + '/' + file)(app);
-  })
-  // Build
-  require('./build').build(app);
-  // Start the app by listening on <port>
-  app.listen(port);
-  console.log('CourseShark started on port ' + port);
+  require('./lib/flipflop').boot(app, mongoose, function(){
+    // Configuration
+    require('./lib/settings').boot(app, mongoose);
+    //Error Handler
+    require('./lib/error-handler').boot(app);
+    // Helpers
+    require('./lib/helpers').boot(app);
+    // make a global helper
+    requireLogin = auth.requireLogin;
+    requireAdmin = auth.requireAdmin;
+    requireSchool = utils.requireSchool;
+    // Bootstrap controllers
+    controller_loc = __dirname + '/controllers';
+    controller_files = fs.readdirSync(controller_loc);
+    controller_files.forEach( function (file) {
+      require(controller_loc + '/' + file)(app);
+    })
+    // Build
+    require('./build').build(app);
+    // Start the app by listening on <port>
+    app.listen(port);
+    console.log('CourseShark started on port ' + port);
+  });
 })
 
 // Connect to the Database
