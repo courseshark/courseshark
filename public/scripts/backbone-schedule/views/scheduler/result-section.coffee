@@ -82,6 +82,7 @@ define(['jQuery'
       # Adds friends heart/ images
       if friends = Shark.sectionFriends[@model.get('_id')]
         @$el.find('.friend-icon').show()
+        @$el.find('.friends-row').show()
 
         $section_friends = @$el.find('.section-friends')
         _.each friends, (friend_id) =>
