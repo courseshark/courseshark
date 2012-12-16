@@ -46,8 +46,33 @@ define(['jQuery'
 
 
     expand: ->
-      @$el.find('.details').slideToggle()
+      $el = @$el.find '.details'
+      height = @originalHeight
+      # height = $el.data "originalHeight"
+      visible = $el.is ":visible"
+
+      # if the bShow isn't present, get the current visibility and reverse it
+      bShow = not visible
+      # if the current visiblilty is the same as the requested state, cancel
+      return false  if bShow is visible
+
+      unless height
+        # get original height
+        height = $el.show().height()
+        # update the height
+        @originalHeight = height
+        # if the element was hidden, hide it again
+        $el.hide().css height: 0 unless visible
+
+      # expand the knowledge (instead of slideDown/Up, use custom animation which applies fix)
+      if bShow
+        $el.show().animate height: height, 150
+      else
+        $el.animate height: 0, 150, ->
+          $el.hide()
+
       @$el.find('i').toggleClass('icon-chevron-down').toggleClass('icon-chevron-up')
+
 
 
     reset_add_button: ->
