@@ -18,20 +18,23 @@ define(['jQuery'
     initialize: ->
       window.Shark = @
 
-      # Setup the session
-      @.session = new Session()
-      @.session.on 'authenticated', ()=>
-        @.schedulesList.fetch()
-        @.friendsList.fetch()
-        if @.school != @.session.get('user').get('school')
-          @setSchool @.session.get('user').get('school')
-      @.session.on 'unauthenticated', () =>
-        @.friendsList.reset()
-
       #Setup global Friends info
       @.friendsList = new Friends()
       @.friendInvites = new FriendInvites()
       @.sectionFriends = {}
+
+      # Setup the session
+      @.session = new Session()
+      @.session.on 'authenticated', ()=>
+        @.schedulesList.fetch()
+        @.friendsList.fetch
+          success: () =>
+            @.friendsList.trigger('fetched')
+        if @.school != @.session.get('user').get('school')
+          @setSchool @.session.get('user').get('school')
+      @.session.on 'unauthenticated', () =>
+        @.friendsList.reset()
+        @.friendsList.trigger('unfetched')
 
       @.schools = new Schools(CS.schools)
       @.school = new School

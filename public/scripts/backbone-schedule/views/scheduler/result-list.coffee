@@ -52,6 +52,7 @@ define(['jQuery'
           @subviews.push view
           @$courses.append view.render().el
 
+
     teardown: ->
       for view in @subviews
         view.teardown?()

@@ -21,6 +21,7 @@ define(['jQuery'
         @addFriend friend
       @.bind 'remove', (friend) ->
         @removeFriend friend
+      @.bind 'reset', -> Shark.sectionFriends = {}
 
     genFriendsHashes: ->
       sectionHash = {}
@@ -44,6 +45,7 @@ define(['jQuery'
             newFriend = new Friend(res)
             @remove(friend, {silent: true})
             @add(newFriend, {silent: true})
+            @genFriendsHashes()
             @trigger 'addComplete', newFriend
 
 
@@ -51,7 +53,8 @@ define(['jQuery'
       $.ajax
           url: '/sandbox/friends/'+friend.id
           type: 'delete'
-          success: (res)=> return
+          success: (res) =>
+            @genFriendsHashes()
 
 
     parse: (response) ->

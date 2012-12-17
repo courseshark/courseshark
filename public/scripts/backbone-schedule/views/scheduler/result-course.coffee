@@ -18,6 +18,9 @@ define(['jQuery'
 
       @subviews= []
 
+      Shark.friendsList.bind 'fetched', @updateFriendStatus
+      Shark.friendsList.bind 'unfetched', @updateFriendStatus
+
       @model.bind 'change:visible', (section, visible) =>
         if not visible
           @$el.hide()
@@ -64,9 +67,19 @@ define(['jQuery'
       @$sections = @$el.find('.sections-list')
       @ # Return the section view to be added by the results view
 
+
+    updateFriendStatus: ->
+      $friendIcon = @$el.find('.friend-icon').hide()
+      @model.get('sections').each (section) =>
+        if Shark.sectionFriends[section.get('_id')]
+          $friendIcon.show()
+
     teardown: ->
+      Shark.friendsList.bind 'fetched', @updateFriendStatus
+      Shark.friendsList.bind 'unfetched', @updateFriendStatus
       for view in @subviews
         view.teardown?()
+      super()
 
   ResultCourseView
 )

@@ -17,7 +17,7 @@
     text-align: center;
     border-bottom: 1px solid @primary;
     .header-title{
-      color: lighten(@tirtiary, 10%);
+      color: lighten(@tertiary, 10%);
       font-weight: bold;
       text-align: center;
       padding: 0 20px;
@@ -59,7 +59,7 @@
           text-overflow: ellipsis;
           white-space: nowrap;
           &:hover{
-            background: @tirtiary;
+            background: @tertiary;
             color: @white;
           }
           &.disabled{
@@ -75,6 +75,10 @@
         font-size: 15px;
         line-height: 15px;
         margin: 10px 0 5px;
+        display: inline-block;
+      }
+      .icon-container{
+        display: inline-block;
       }
     }
     .request-list{
