@@ -16,6 +16,9 @@ define(['jQuery'
       Shark.schedule.bind "load", =>
         @render()
 
+      Shark.friendsList.bind 'fetched', @updateFriendStatus
+      Shark.friendsList.bind 'unfetched', @updateFriendStatus
+
       if not @model.resultView
         @model.resultView = @
 
@@ -104,23 +107,34 @@ define(['jQuery'
         _.each timeslot.days, (day) =>
           @$el.find('#' + day).addClass('selected').css 'color', color
 
-      # Adds friends heart/ images
-      if friends = Shark.sectionFriends[@model.get('_id')]
-        @$el.find('.friend-icon').show()
-        @$el.find('.friends-row').show()
-
-        $section_friends = @$el.find('.section-friends')
-        _.each friends, (friend_id) =>
-          friend = Shark.friendsList.get friend_id
-          $section_friends.append($('<img class="friend-img" src="'+friend.get('avatar')+'"></img>')
-            .tooltip(title: friend.get('firstName') + " " + friend.get('lastName')))
+      # Setup the friends information
+      @updateFriendStatus()
 
       # Mark added if it is in the schedule?
       if Shark.schedule.contains(@model)
         @$addButton.addClass('added')
       @ # Return the section view to be added by the results view
 
+
+    updateFriendStatus: ->
+      # Reset the height info
+      @originalHeight = false
+      $friendIcon = @$el.find('.friend-icon').hide()
+      $friendRow  = @$el.find('.friends-row').hide()
+
+      # Adds friends heart/ images if we have friends in here
+      if friends = Shark.sectionFriends[@model.get('_id')]
+        $friendIcon.show()
+        $friendRow.show()
+        $section_friends = @$el.find('.section-friends').empty()
+        _.each friends, (friend_id) =>
+          friend = Shark.friendsList.get friend_id
+          $section_friends.append($('<img class="friend-img" src="'+friend.get('avatar')+'"></img>')
+            .tooltip(title: friend.get('firstName') + " " + friend.get('lastName')))
+
     teardown: ->
+      Shark.friendsList.unbind 'fetched', @updateFriendStatus
+      Shark.friendsList.unbind 'unfetched', @updateFriendStatus
       @model.miniCalView?.teardown?()
       super()
 
