@@ -98,10 +98,20 @@ a{
 
 		#slide-container{
 			&.span8.closed{
-				left: -400px;
+				left: -321px;
+				@media (min-width: 1200px){
+					&{
+						left: -396px;
+					}
+				}
 			}
 			&.span16.closed{
-				left: -800px;
+				left: -641px;
+				@media (min-width: 1200px){
+					&{
+						left: -796px;
+					}
+				}
 			}
 			position: relative;
 			// Animation
