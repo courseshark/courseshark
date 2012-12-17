@@ -8,6 +8,7 @@ define(['jQuery',
 
     toJSON: ->
       res = {}
+      # Calls toJSON recursively ( to remove circular references )
       for prop of @attributes
         if typeof @attributes[prop] is 'object'
           if typeof @attributes[prop].toJSON is 'function'
