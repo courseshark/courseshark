@@ -9,6 +9,11 @@ define(['jQuery',
     idAttribute: "_id"
     url: '/school'
 
+
+    initialize: ->
+      @.set 'currentTerm', new Term @get 'currentTerm'
+
+
 	  parse: (response) ->
 	    response.currentTerm = new Term(response.currentTerm)
 	    response
