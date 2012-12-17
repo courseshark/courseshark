@@ -4,6 +4,7 @@
 var MandrillAPI = require('mailchimp').MandrillAPI
   , social = require('../lib/social-track')
   , userLib = require('../lib/user')
+  , flipflop = require('../lib/flipflop')
 
 exports = module.exports = function(app){
 
@@ -88,10 +89,6 @@ exports = module.exports = function(app){
     }
   })
 
-
-
-
-
   app.get('/api/schools', function(req, res){
     School.find({enabled: true}, function(err, schools){
       if ( err ){
@@ -102,11 +99,14 @@ exports = module.exports = function(app){
     })
   })
 
-
   app.get('/api/terms/:id', function(req, res){
     var schoolId = req.params.id
     Term.find({school: schoolId}, function(err, terms){
       res.json(terms || {error: err});
     })
+  })
+
+  app.get('/api/settings', function(req, res){
+    res.json(flipflop.evaluateAll(req))
   })
 };

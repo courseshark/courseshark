@@ -1,8 +1,9 @@
 /*
  * Schedule pages, anything relating to the schedule interface should be in this file
  */
-exports = module.exports = function(app){
+var flipflop = require('../lib/flipflop');
 
+exports = module.exports = function(app){
   var seats = app.io.of('/seats')
     , crawler = require('../lib/crawler')
   /**
@@ -10,9 +11,14 @@ exports = module.exports = function(app){
   * Main Views
   *
   **/
-
   app.get('/schedule', requireSchool, function(req, res){
-    res.redirect('/s/');
+    if ( flipflop.test('canSeeNewScheduler', req) ){
+      res.redirect('/s/');
+      return;
+    }
+    Department.find({school:req.school._id}, {abbr:1, name:1}, {sort:{abbr:1}}, function(err, departments){
+      res.render('schedule/launch-schedule', {departments: departments, link: false, school: req.school._id, noJS: true});
+    })
   })
 
   app.get('/s(/*)?', wantSchool, function(req, res){

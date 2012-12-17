@@ -42,6 +42,7 @@ define(['jQuery'
       @$sections.empty()
       # Itterate over sections rendering their views
       @model.get('sections').each (section) =>
+        section.set 'courseDescription', @model.get('description')
         view = new ResultSectionView (model: section)
         @subviews.push view
         @$sections.append view.render().el
