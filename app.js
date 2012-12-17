@@ -59,6 +59,7 @@ mongoose.connection.on('open', function(){
     requireLogin = auth.requireLogin;
     requireAdmin = auth.requireAdmin;
     requireSchool = utils.requireSchool;
+    wantSchool = utils.wantSchool;
     // Bootstrap controllers
     controller_loc = __dirname + '/controllers';
     controller_files = fs.readdirSync(controller_loc);
