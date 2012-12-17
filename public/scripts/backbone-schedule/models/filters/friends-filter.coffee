@@ -22,13 +22,13 @@ define(['jQuery'
 			# Quickreference attributes
 			values = @.get 'values'
 
-			hasFriends = (section.get 'friends')?.length
+			hasFriends = !!(Shark.sectionFriends[section.id])
 			# Remove classes without friends
-			if hasFriends > 0 and not values[0]
+			if hasFriends and not values[0]
 				section.set 'visible', false
 				return
 			# Only classes with friends
-			if hasFriends < 0 and not values[1]
+			if not hasFriends and not values[1]
 				section.set 'visible', false
 				return
 
