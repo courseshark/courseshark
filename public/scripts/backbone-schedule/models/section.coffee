@@ -17,8 +17,8 @@ define(['jQuery'
     __rnd: (seed = Date.now()) ->
       ((seed*9301+49297) % 263212) / (263212.0)
 
-    description: ->
-      @.get('description') || @.get('courseDescription') || @.get('course')?.get('description') || "No description available"
+    description: =>
+      @.get('description') || @.get('courseDescription') || "No description available"
 
     color: (opacity=1) ->
       number=(@.get 'number')
