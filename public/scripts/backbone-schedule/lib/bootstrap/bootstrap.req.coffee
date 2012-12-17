@@ -1,0 +1,1 @@
+define( ['bootstrap_js'], () -> {} )

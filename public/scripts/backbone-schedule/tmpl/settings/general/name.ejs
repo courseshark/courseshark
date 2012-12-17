@@ -1,0 +1,23 @@
+<div class="setting-name">Name</div>
+<div class="setting-form">
+  <div class="form-horizontal">
+    <div class="control-group">
+      <label class="control-label" for="inputFirstName">First Name</label>
+      <div class="controls">
+        <input type="text" id="inputFirstName" placeholder="First Name" value="<%=user.get('firstName')%>" />
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="inputLastName">Last Name</label>
+      <div class="controls">
+        <input type="text" id="inputLastName" placeholder="Last Name" value="<%=user.get('lastName')%>" />
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <button class="btn btn-mini cancel">Cancel</button>
+        <button class="btn btn-mini btn-primary submit">Update</button>
+      </div>
+    </div>
+  </div>
+</div>

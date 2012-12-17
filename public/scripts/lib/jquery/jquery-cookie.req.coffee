@@ -1,0 +1,1 @@
+define( ['/scripts/lib/jquery/jquery.js', '/scripts/lib/jquery/jquery-cookie.js'], ($) -> $ )

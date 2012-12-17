@@ -17,6 +17,7 @@ SectionSchema = new Schema({
   , info: { type: String }
   , type: { type: String }
   , name: { type: String }
+  , description: { type: String }
   , course: { type: Schema.ObjectId, index: true, ref: 'Course' }
   , department: { type: Schema.ObjectId, index: true, ref: 'Department' }
   , term: { type: Schema.ObjectId, index: true, ref: 'Term' }
@@ -30,6 +31,7 @@ SectionSchema = new Schema({
   , timeslots: []
   , deleted: { type: Boolean, 'default': false }
   , updated: { type: Date, 'default': Date.now }
+  , _tokens: [{ type: String, index: true }]
 }, {shardkey: {course: 1}});
 
 

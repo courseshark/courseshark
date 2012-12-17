@@ -1,6 +1,8 @@
 var util = require('../lib/utils')
+  , cleanUserObject = require('../lib/user').cleanUserObject
   , crypto = require('ezcrypto').Crypto
   , mongoose = require('mongoose')
+  , ScheduleSchema = require('./timeslot').ScheduleSchema
   , Schema = mongoose.Schema
   , UserSchema
 
@@ -29,7 +31,23 @@ UserSchema = new Schema({
   , oauth: { type: String }
   , oauthInfo: {type: {}}
   , admin: { type: Boolean, 'default': false }
+  , _schedule: { type: {} }
 });
+
+UserSchema.set('toJSON', { virtuals: true })
+UserSchema.set('toObject', { virtuals: true })
+
+
+UserSchema.methods.toJSON = function(options) {
+  if (!(options && 'Object' == options.constructor.name)) {
+    options = this.schema.options.toJSON
+      ? (function(o){var t={},i;for(i in o){if(o.hasOwnProperty(i)){t[i]=o[i]}}return t})(this.schema.options.toJSON)
+      : {};
+  }
+  var objectified = this.toObject(options)
+  return cleanUserObject(objectified)
+}
+
 
 UserSchema.virtual('password')
   .get( function (){ return this._password } )
@@ -51,6 +69,12 @@ UserSchema.virtual('name')
 UserSchema.virtual('initials')
   .get( function() { return ((""+this.firstName).substring(0,1))+((""+(this.lastName?this.lastName:' ')).substring(0,1).trim())})
 
+UserSchema.virtual('schedule')
+  .get( function () { return this._schedule })
+  .set( function (schedule) {
+    this.markModified('_schedule');
+    this._schedule = schedule;
+  });
 UserSchema.method('encryptPassword', function (plainText) {
   return crypto.MD5(plainText || '')
 });
@@ -78,12 +102,31 @@ UserSchema.pre('save', function (next) {
   }
 });
 
-UserSchema.method('avatar', function(size){
-  size = size || 64
-  if ( this.email ) {
-    return 'https://secure.gravatar.com/avatar/'+crypto.MD5(this.email)+'?s='+size+'&d=http%3A%2F%2Fplacehold.it%2F'+size+'x'+size+'%26text%3D'+this.initials;
-  }else{
-    return "http://placehold.it/"+size+'x'+size+'?text='+this.initials;
+UserSchema.virtual('avatar').get(function(){
+  if ( this.oauthInfo ){
+    if ( this.oauthInfo.facebook ){
+      return 'https://graph.facebook.com/'+this.oauthInfo.facebook.id+'/picture'
+    } else if ( this.oauthInfo.twitter ){
+      return this.oauthInfo.twitter.profile_image_url_https;
+    } else if ( this.oauthInfo.linkedin ){
+      return this.oauthInfo.linkedin.pictureUrl;
+    }
+  } else {
+    return 'https://secure.gravatar.com/avatar/'+crypto.MD5(this.email||'')+'?s=75&d=identicon';
+  }
+})
+
+UserSchema.virtual('avatarFrom').get(function(){
+  if ( this.oauthInfo ){
+    if ( this.oauthInfo.facebook ){
+      return 'Facebook'
+    } else if ( this.oauthInfo.twitter ){
+      return 'Twitter'
+    } else if ( this.oauthInfo.linkedin ){
+      return 'LinkedIn'
+    }
+  } else {
+    return 'Gravatar';
   }
 })
 
@@ -91,12 +134,52 @@ UserSchema.method('getFriends', function(callback){
   User.find({_id: {$in: this.friends}, school: this.school, friends: this._id}, callback)
 })
 
-UserSchema.method('getInvites', function(callback){
+UserSchema.method('getUsersIRequestedToByMyFriend', function(callback){
   User.find({_id: {$in: this.friends}, school: this.school, friends: {$ne: this._id}}, callback)
 })
 
-UserSchema.method('getInvited', function(callback){
+UserSchema.method('getFriendRequests', function(callback){
   User.find({_id: {$nin: this.friends}, school: this.school, friends: this._id}, callback)
 })
+
+UserSchema.method('isDuplicate', function(userObj){
+
+  if( !this.oauthInfo && !userObj.oauthInfo ){
+    return this.email === userObj.email;
+  }
+  var thisInfo = this.oauthInfo
+    , otherInfo = userObj.oauthInfo
+
+  // Facebook checks
+  if ( thisInfo.facebook || otherInfo.facebook ){
+    // Facebook ID checks
+    if ( thisInfo.facebook && otherInfo.facebook ){
+      if ( thisInfo.facebook.id === otherInfo.facebook.id ){
+        return true;
+      }
+    }
+    // Facebook email check
+    if ( this.email === otherInfo.facebook.email || thisInfo.facebook.email === userObj.email ){
+      return true;
+    }
+  } // end Facebook checks
+
+
+  // LinkedIn checks
+  if ( thisInfo.linkedin || otherInfo.linkedin ){
+    // Facebook ID checks
+    if ( thisInfo.linkedin && otherInfo.linkedin ){
+      if ( thisInfo.linkedin.id === otherInfo.linkedin.id ){
+        return true;
+      }
+    }
+    // Facebook email check
+    if ( this.email === otherInfo.linkedin.email || thisInfo.linkedin.email === userObj.email ){
+      return true;
+    }
+  } // end LinkedIn checks
+  return false;
+})
+
 
 exports.UserSchema = module.exports.UserSchema = UserSchema;

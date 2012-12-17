@@ -1,0 +1,106 @@
+.friends-list{
+  #add-friend{
+    color: blue;
+  }
+  .friend{
+    border-bottom: 1px solid #BBB;
+    &.pending{
+      opacity: 0.5;
+      -webkit-filter: grayscale(100%);
+    }
+    .avatar{
+      text-align: center;
+
+      img{
+        height: 30px;
+        width: 30px;
+      }
+    }
+
+    .friend-name{
+      line-height: 30px;
+    }
+  }
+}
+
+.friend-option{
+  &.chosen{
+    background: @blue;
+    .remove-friend:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+
+#friends-list-content{
+  padding:10px;
+  &.remove-mode{
+    background: fadeout(@dark-red, 70%);
+
+    .friend-block{
+      -webkit-transition: none;
+      -moz-transition: none;
+      -ms-transition: none;
+      -o-transition: none;
+      transition: none;
+      &.chosen{
+        width: 14.285714285%;
+        border: 1px solid @red;
+        margin: -1px;
+        .options{
+          display: none;
+        }
+        .avatar{
+          -webkit-filter: blur(4px) invert(100%);
+          -moz-filter: blur(4px) invert(100%);
+          -ms-filter: blur(4px) invert(100%);
+          filter: blur(4px) invert(100%);
+          position: relative;
+        }
+      }
+    }
+  }
+}
+
+.tooltip-inner {
+  box-shadow: 0 0 10px #000;
+}
+
+
+
+.friend-block{
+  width: 51px;
+  height: 51px;
+  float: left;
+  position: relative;
+
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &.chosen{
+    border: 3px solid @grey;
+    .avatar{
+      width: 100%;
+      margin: 0;
+    }
+    .options{
+      display: block;
+    }
+  }
+
+  .options{
+    display: none;
+    position: absolute;
+  }
+  .avatar{
+    margin: 1px;
+    &.pending{
+      opacity: 0.2;
+    }
+  }
+  .img-block{
+    width: 100%;
+  }
+}
