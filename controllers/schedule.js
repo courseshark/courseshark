@@ -21,32 +21,24 @@ exports = module.exports = function(app){
     })
   })
 
-  app.get('/s(/*)?', requireSchool, function(req, res){
+  app.get('/s(/*)?', wantSchool, function(req, res){
     var built = app.settings.env!="development" || req.query.b
     req.session.redirectTo='/s/';
-    if ( !req.school || !req.school.id ){
-      res.render('schedule/schedule', {school: false, terms: [], layout: 'app-layout.ejs', built: built});
-    }else{
-      School.findById(req.school.id, {
-          terms:0
-        , oldId:0
-        , city:0
-        , state:0
-        , zip:0
-        , waitlist:0
-        , enabled:0
-        , notificationCron:0
-        , notifications:0
-        , created:0
-        , modified:0
-        }, function(err, school){
-            Term.find({school: req.school}, {
-              school:0
-              }, function(err, terms){
-                  res.render('schedule/schedule', {school: school, terms: terms, layout: 'app-layout.ejs', built: built});
-            })
-      })
-    }
+    School.find({}, {
+        terms:0
+      , oldId:0
+      , city:0
+      , state:0
+      , zip:0
+      , waitlist:0
+      , enabled:0
+      , notificationCron:0
+      , notifications:0
+      , created:0
+      , modified:0
+      }).populate('currentTerm').exec(function(err, schools){
+        res.render('schedule/schedule', {schools: schools, school: req.school||false, layout: 'app-layout.ejs', built: built});
+    })
   })
 
   app.get('/launch-schedule', requireSchool, function(req, res){

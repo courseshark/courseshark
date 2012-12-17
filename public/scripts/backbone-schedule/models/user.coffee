@@ -15,11 +15,14 @@ define(['jQuery'
 
     initialize: ->
       if !@.get('school')?.get
-        if Shark.schools.get @.get('school')._id
-          @.set 'school', Shark.schools.get @.get('school')._id
+        if Shark.schools.get @.get('school')
+          @.set 'school', Shark.schools.get @.get('school')
+          Shark.school = Shark.school || school
         else
-          Shark.schools.add new School @.get 'school'
-          @.set 'school', Shark.schools.get @.get('school')._id
+          school = new School @.get 'school'
+          @.set 'school', school
+          Shark.school = Shark.school || school
+
 
     # Implementation of CRC32 (to translate ObejceID to int )
     _crc32: (s="", polynomial=0x04C11DB7, initialValue=0xFFFFFFFF, finalXORValue=0xFFFFFFFF) ->

@@ -90,15 +90,18 @@ a{
 	}
 
 	#slide-panel{
-
+		width:0px;
 		z-index: 400;
 		position: absolute;
 		top: 0;
 		color: white;
 
 		#slide-container{
-			&.closed{
-				left: -100%;
+			&.span8.closed{
+				left: -400px;
+			}
+			&.span16.closed{
+				left: -800px;
 			}
 			position: relative;
 			// Animation
