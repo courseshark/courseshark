@@ -93,8 +93,8 @@ define(['jQuery'
 
     render: ->
       @$el.html @template
-        prof: @model.get('instructor')
-        seats: @model.get('seatsAvailable') + '/' + @model.get('seatsTotal')
+        prof: @model.get('instructor') || "No Professor Set"
+        seats: (@model.get('seatsAvailable')||0) + '/' + (@model.get('seatsTotal')||0)
         section_id: @model.get('number') + ': Section ' + @model.get('info')
         hours: @model.get('credits')
         description: @model.description?()
