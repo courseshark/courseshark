@@ -15,8 +15,8 @@
 	})();
 	window.CS = {
       loggedIn: <%=!!loggedIn%>
-		, school: <%-JSON.stringify(school)%>
-		, terms: <%-JSON.stringify(terms)%>
+    , schools: <%-JSON.stringify(schools)%>
+    , school: <%-JSON.stringify(school._id||false)%>
 		, baseDir: "/s/"
     , domain: "<%=domain%>"
 		, facebook: { appId: "<%= app.config.facebook.appId %>" }
