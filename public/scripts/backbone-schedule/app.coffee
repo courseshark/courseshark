@@ -32,9 +32,25 @@ define(['jQuery'
             @.friendsList.trigger('fetched')
         if @.school != @.session.get('user').get('school')
           @setSchool @.session.get('user').get('school')
+
+        # Mixpanel tracking id user
+        if mixpanel
+          user = @.session.get 'user'
+          mixpanel.identify user.id
+          mixpanel.register
+              "$email": user.get('email')
+            , "$first_name": user.get('firstName')
+            , "$last_name": user.get('lastName')
+            , "$last_login": new Date()
+            , "school": user.get('school')?.id or user.get('school') or @.school?.id
+            , "referrer": document.referrer
+
+          mixpanel.name_tag user.get('email') or user.get('name') or user.id
+          mixpanel.track 'authenticated'
       @.session.on 'unauthenticated', () =>
         @.friendsList.reset()
         @.friendsList.trigger('unfetched')
+        mixpanel.track 'unauthenticated'
 
       @.schools = new Schools(CS.schools)
       @.school = new School

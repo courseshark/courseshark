@@ -69,9 +69,11 @@ define(['jQuery'
         next()
 
     home: () ->
+      mixpanel.track_pageview Backbone.history.getFragment()
       Shark.appView.show('home')
 
     scheduler: () ->
+      mixpanel.track_pageview Backbone.history.getFragment()
       @requireSchool ()=>
         Shark.appView.show('scheduler')
         if Shark.schedule.get('sections').length > 0
@@ -81,9 +83,11 @@ define(['jQuery'
 
     settings: () ->
       Shark.appView.show('settings')
+      mixpanel.track_pageview Backbone.history.getFragment()
 
     view: (id) ->
       @requireSchool ()=>
+        mixpanel.track_pageview Backbone.history.getFragment()
         Shark.appView.show('scheduler')
         if id
           Shark.schedule.ensureScheduleLoaded id,
@@ -93,12 +97,14 @@ define(['jQuery'
               Shark.router.navigate '', trigger: true, replace: true
 
     login: ->
+      mixpanel.track 'login_dialog'
       if !Shark.session.authenticated()
         Shark.session.login()
       else
         @navigate '', trigger: false, replace: true
 
     loadSchedule: (id) ->
+      mixpanel.track 'load'
       Shark.appView.show('scheduler')
       Shark.schedule.ensureScheduleLoaded id,
       success: ()=>
@@ -108,6 +114,8 @@ define(['jQuery'
         @navigate '', trigger: true, replace: true
 
     showLink: (link) ->
+      mixpanel.track_pageview Backbone.history.getFragment()
+      mixpanel.track 'view_link', {link: link}
       Shark.appView.show('scheduler')
       Shark.shareLink = new ShareLink hash: link
       Shark.shareLink.fetch
