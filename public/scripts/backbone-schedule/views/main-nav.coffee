@@ -76,15 +76,18 @@ define(['jQuery'
     showUserMenu: (e) ->
       Shark.dropdown?.hide()
       Shark.dropdown = new AccountDropdownView()
+      mixpanel.track 'Show User Menu', Shark.config.tempAdd({from: 'Nav'})
       e.stopPropagation()
 
     showNotifications: (e) ->
       Shark.dropdown?.hide()
       Shark.dropdown = new NotificationsDropdownView()
+      mixpanel.track 'Check Notifications', Shark.config.tempAdd({from: 'Nav'})
       e.stopPropagation()
 
     showScheduler: (e) ->
       Shark.router.navigate '', trigger: true
+      mixpanel.track 'Show Scheduler', Shark.config.tempAdd({from: 'Nav'})
 
     updateFriendNotifications: ->
       return if not Shark.session.authenticated()

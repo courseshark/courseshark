@@ -56,5 +56,8 @@ define(['jQuery'
       @$el.on 'hidden', () ->
         @teardown()
 
+    teardown: ->
+      super()
+
   FriendsFromFacebookView
 )
