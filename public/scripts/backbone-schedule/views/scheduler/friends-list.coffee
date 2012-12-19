@@ -50,6 +50,7 @@ define(['jQuery'
 
     addFriends: ->
       console.log 'Adding friends. [NOT IMPLEMENTED]'
+      mixpanel.track 'Find Friends', Shark.config.tempAdd({through: "CourseShark"})
 
     findAndAddFriends: ->
       # Would actually open a dialog to find friends with
@@ -60,6 +61,7 @@ define(['jQuery'
         $.ajax url: '/friends/find-from-facebook', success: (d) =>
           if not d.error
             friends = d
+            mixpanel.track 'Find Friends', Shark.config.tempAdd({through: "Facebook"})
             @friendPicker = new FriendsFromFacebookView(model: new FacebookFriendsResults(friends))
             @friendPicker.show()
           else if d.error is "No Facebook token exists for user"
