@@ -17,6 +17,9 @@ define(['jQuery'
       @render()
 
     show: ->
+      # Tracing
+      mixpanel.track 'Schedule Link', Shark.config.tempAdd()
+
       @$el.html(@template()).appendTo $ 'body'
       @delegateEvents()
       @$el.on 'hidden', =>

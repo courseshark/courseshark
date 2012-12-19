@@ -17,16 +17,22 @@ define(['jQuery'
 
     save: ->
 
+
       # Instant feedback by hiding modal
       @hide()
 
       name = @$name.val()
+
+      # Tracking
+      mixpanel.track 'Save Schedule', Shark.config.tempAdd({name: name})
+
       Shark.schedule.unset '_id' if name != Shark.schedule.get 'name'
       Shark.schedule.set 'name', name
       Shark.schedule.set 'term', Shark.term
       Shark.schedule.save()
 
     show: ->
+      mixpanel.track 'Save Dialog Show', Shark.config.tempAdd()
       @$el.html(@template()).appendTo $ 'body'
       @delegateEvents()
       @$el.on 'hidden', =>

@@ -17,6 +17,7 @@ define(['jQuery'
       'click #do-new' : 'new'
 
     show: ->
+      mixpanel.track 'New Dialog Open', Shark.config.tempAdd()
       @$el.html(@template()).appendTo $ 'body'
       @delegateEvents()
       @$el.on 'hidden', =>
@@ -33,6 +34,9 @@ define(['jQuery'
       @$el.modal 'hide'
 
     new: ->
+      # Tracking
+      mixpanel.track 'New Schedule', Shark.config.tempAdd({term: @$options.val()})
+
       # Close the modal
       @hide()
 
