@@ -19,6 +19,7 @@
     , domain: "<%=domain%>"
 		, facebook: { appId: "<%= app.config.facebook.appId %>" }
     , distinctId: "<%= distinctId %>"
+    , settings: <%-JSON.stringify(settings)%>
     <%if (loggedIn){ %>
     , auth: {
           user: <%-JSON.stringify(user)%>

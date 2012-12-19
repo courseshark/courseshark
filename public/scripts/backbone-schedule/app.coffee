@@ -11,7 +11,8 @@ define(['jQuery'
         'models/school'
         'models/term'
         'models/schedule'
-        'models/session'], ($, _, Backbone, Router, Friends, FriendInvites, Schools, Terms, Schedules, School, Term, Schedule, Session) ->
+        'models/session'
+        'models/settings'], ($, _, Backbone, Router, Friends, FriendInvites, Schools, Terms, Schedules, School, Term, Schedule, Session, UserSettings) ->
 
   class Shark extends Backbone.Model
     #All the router's initialize function
@@ -23,34 +24,35 @@ define(['jQuery'
       @.friendInvites = new FriendInvites()
       @.sectionFriends = {}
 
+      @.config = new UserSettings(CS.settings)
+
       # Setup the session
       @.session = new Session()
       @.session.on 'authenticated', ()=>
-        @.schedulesList.fetch()
-        @.friendsList.fetch
-          success: () =>
-            @.friendsList.trigger('fetched')
-        if @.school != @.session.get('user').get('school')
-          @setSchool @.session.get('user').get('school')
-
-        # Mixpanel tracking id user
-        if mixpanel
-          user = @.session.get 'user'
-          mixpanel.identify user.id
-          mixpanel.register
-              "$email": user.get('email')
-            , "$first_name": user.get('firstName')
-            , "$last_name": user.get('lastName')
-            , "$last_login": new Date()
-            , "school": user.get('school')?.id or user.get('school') or @.school?.id
-            , "referrer": document.referrer
-
-          mixpanel.name_tag user.get('email') or user.get('name') or user.id
-          mixpanel.track 'authenticated'
+        @.config.fetch
+          success: =>
+            @.schedulesList.fetch()
+            @.friendsList.fetch
+              success: =>
+                @.friendsList.trigger('fetched')
+            if @.school != @.session.get('user').get('school')
+              @setSchool @.session.get('user').get('school')
+            # Mixpanel tracking id user
+            user = @.session.get 'user'
+            mixpanel.identify user.id
+            mixpanel.register
+                "$email": user.get('email')
+              , "$first_name": user.get('firstName')
+              , "$last_name": user.get('lastName')
+              , "$last_login": new Date()
+              , "school": user.get('school')?.id or user.get('school') or @.school?.id
+              , "referrer": document.referrer
+            mixpanel.name_tag user.get('email') or user.get('name') or user.id
+            mixpanel.track 'authenticated', @.config.tempAdd()
       @.session.on 'unauthenticated', () =>
         @.friendsList.reset()
         @.friendsList.trigger('unfetched')
-        mixpanel.track 'unauthenticated'
+        mixpanel.track 'unauthenticated', @.config.tempAdd()
 
       @.schools = new Schools(CS.schools)
       @.school = new School
