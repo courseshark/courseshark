@@ -64,7 +64,7 @@ define(['jQuery'
 
     requireSchool: (next=(()->return))->
       if !Shark.school.id
-        mixpanel.track 'Shown School Picker', Shark.config.tempAdd()
+        mixpanel.track 'Shown School Picker', Shark.config.asObject()
         @picker = new SchoolPickerView {next: next}
       else
         next()
@@ -126,7 +126,7 @@ define(['jQuery'
     showLink: (link) ->
       # Tracking
       mixpanel.track_pageview Backbone.history.getFragment()
-      mixpanel.track 'View Link', Shark.config.tempAdd link: link
+      mixpanel.track 'View Link', Shark.config.asObject link: link
 
       Shark.appView.show('scheduler')
       Shark.shareLink = new ShareLink hash: link

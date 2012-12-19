@@ -48,11 +48,11 @@ define(['jQuery'
               , "school": user.get('school')?.id or user.get('school') or @.school?.id
               , "referrer": document.referrer
             mixpanel.name_tag user.get('email') or user.get('name') or user.id
-            mixpanel.track 'authenticated', @.config.tempAdd()
+            mixpanel.track 'authenticated', @.config.asObject()
       @.session.on 'unauthenticated', () =>
         @.friendsList.reset()
         @.friendsList.trigger('unfetched')
-        mixpanel.track 'unauthenticated', @.config.tempAdd()
+        mixpanel.track 'unauthenticated', @.config.asObject()
 
       @.schools = new Schools(CS.schools)
       @.school = new School

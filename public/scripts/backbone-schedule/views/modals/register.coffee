@@ -13,7 +13,7 @@ define(['jQuery'
       @template = _.template templateText
 
     show: ->
-      mixpanel.track 'CRN Dialog Show', Shark.config.tempAdd({count: Shark.schedule.get('sections').length})
+      mixpanel.track 'CRN Dialog Show', Shark.config.asObject({count: Shark.schedule.get('sections').length})
       @$el.html(@template()).appendTo $ 'body'
       @delegateEvents()
       @$el.on 'hidden', =>

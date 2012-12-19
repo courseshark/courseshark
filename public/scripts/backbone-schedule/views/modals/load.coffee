@@ -22,7 +22,7 @@ define(['jQuery'
       @.hide()
 
     show: ->
-      mixpanel.track 'Load Dialog Open', Shark.config.tempAdd()
+      mixpanel.track 'Load Dialog Open', Shark.config.asObject()
       @$el.html(@loadTemplate()).appendTo $ 'body'
       @delegateEvents()
       @$el.on 'hidden', =>

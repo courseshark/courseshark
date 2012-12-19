@@ -23,7 +23,7 @@ define(['jQuery'
     choose: ->
 
       # Tracing
-      mixpanel.track 'Picked School', Shark.config.tempAdd({name: @model.get('name')})
+      mixpanel.track 'Picked School', Shark.config.asObject({name: @model.get('name')})
 
       Shark.setSchool @model, ()=>
         @next()

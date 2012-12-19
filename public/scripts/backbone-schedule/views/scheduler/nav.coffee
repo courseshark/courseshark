@@ -44,7 +44,7 @@ define(['jQuery'
       @newView.show()
 
     print: ->
-      mixpanel.track 'Print Schedule', Shark.config.tempAdd()
+      mixpanel.track 'Print Schedule', Shark.config.asObject()
       window.print()
 
     link: ->
@@ -52,7 +52,7 @@ define(['jQuery'
 
     ical: ->
       # Tracing
-      mixpanel.track 'Export Schedule', Shark.config.tempAdd()
+      mixpanel.track 'Export Schedule', Shark.config.asObject()
 
       $('#ical-button').attr('href', Shark.schedule.export()).attr('download', Shark.schedule.get('name'));
 

@@ -28,7 +28,7 @@ define(['jQuery'
     addFriends: ->
       @hide()
       $chosen = @$el.find('.friend-option.chosen')
-      mixpanel.track 'Add Friends', Shark.config.tempAdd({count: $chosen.length })
+      mixpanel.track 'Add Friends', Shark.config.asObject({count: $chosen.length })
       $chosen.each (index, friendChosen) ->
         Shark.friendsList.add(
           new Friend

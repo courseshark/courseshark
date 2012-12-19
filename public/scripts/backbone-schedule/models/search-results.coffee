@@ -30,7 +30,7 @@ define(['jQuery'
       @set 'query', $searchField.val()
       @fetch success: () =>
         # Tracking
-        mixpanel.track 'Search', Shark.config.tempAdd({
+        mixpanel.track 'Search', Shark.config.asObject({
             query: @.get('query')
           , courseResultsCount: @.get('courses').length
           , queryTime: @.get('time')
