@@ -29,6 +29,12 @@ define(['jQuery'
       @url = '/search?q='+$searchField.val()+'&t='+Shark.term.get('_id')
       @set 'query', $searchField.val()
       @fetch success: () =>
+        # Tracking
+        mixpanel.track 'Search', Shark.config.asObject({
+            query: @.get('query')
+          , courseResultsCount: @.get('courses').length
+          , queryTime: @.get('time')
+        })
         @cleanResultsWithSchedule()
 
         # Anouce that the searchis complete

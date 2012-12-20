@@ -27,7 +27,9 @@ define(['jQuery'
 
     addFriends: ->
       @hide()
-      @$el.find('.friend-option.chosen').each (index, friendChosen) ->
+      $chosen = @$el.find('.friend-option.chosen')
+      mixpanel.track 'Add Friends', Shark.config.asObject({count: $chosen.length })
+      $chosen.each (index, friendChosen) ->
         Shark.friendsList.add(
           new Friend
             _id: $(friendChosen).data('user-id')
@@ -53,6 +55,9 @@ define(['jQuery'
       @$el.modal 'hide'
       @$el.on 'hidden', () ->
         @teardown()
+
+    teardown: ->
+      super()
 
   FriendsFromFacebookView
 )

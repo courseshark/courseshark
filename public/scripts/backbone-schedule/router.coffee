@@ -64,14 +64,21 @@ define(['jQuery'
 
     requireSchool: (next=(()->return))->
       if !Shark.school.id
+        mixpanel.track 'Shown School Picker', Shark.config.asObject()
         @picker = new SchoolPickerView {next: next}
       else
         next()
 
     home: () ->
+      # Tracking
+      mixpanel.track_pageview Backbone.history.getFragment()
+
       Shark.appView.show('home')
 
     scheduler: () ->
+      # Trakcing
+      mixpanel.track_pageview Backbone.history.getFragment()
+
       @requireSchool ()=>
         Shark.appView.show('scheduler')
         if Shark.schedule.get('sections').length > 0
@@ -80,6 +87,9 @@ define(['jQuery'
           Shark.view.panelsView.hideMaxCal()
 
     settings: () ->
+      # Tracking
+      mixpanel.track_pageview Backbone.history.getFragment()
+
       Shark.appView.show('settings')
 
     view: (id) ->
@@ -93,12 +103,18 @@ define(['jQuery'
               Shark.router.navigate '', trigger: true, replace: true
 
     login: ->
+      # Tracking
+      mixpanel.track 'Login Dialog', Shark.config.attributes
+
       if !Shark.session.authenticated()
         Shark.session.login()
       else
         @navigate '', trigger: false, replace: true
 
     loadSchedule: (id) ->
+      # Tracking
+      mixpanel.track 'Load Schedule', Shark.config.attributes
+
       Shark.appView.show('scheduler')
       Shark.schedule.ensureScheduleLoaded id,
       success: ()=>
@@ -108,6 +124,10 @@ define(['jQuery'
         @navigate '', trigger: true, replace: true
 
     showLink: (link) ->
+      # Tracking
+      mixpanel.track_pageview Backbone.history.getFragment()
+      mixpanel.track 'View Link', Shark.config.asObject link: link
+
       Shark.appView.show('scheduler')
       Shark.shareLink = new ShareLink hash: link
       Shark.shareLink.fetch
