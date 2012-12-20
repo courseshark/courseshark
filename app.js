@@ -28,13 +28,8 @@ app.io.enable('browser client minification');  // send minified client
 app.io.enable('browser client etag');          // apply etag caching logic based on version number
 app.io.enable('browser client gzip');          // gzip the file
 app.io.set('log level', 1);                    // reduce logging
-app.io.set('transports', [                     // enable all transports (optional if you want flashsocket)
-    'websocket'
-  , 'flashsocket'
-  , 'xhr-polling'
-  , 'jsonp-polling'
-  , 'htmlfile'
-]);
+app.io.set('transports',['websocket']);        // enable all transports (optional if you want flashsocket)
+
 
 mongoose.connection.on('open', function(){
   console.log('Database Connected');
