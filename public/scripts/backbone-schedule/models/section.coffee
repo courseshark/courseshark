@@ -29,5 +29,4 @@ define(['jQuery'
       blue = parseInt(hex[4..5], 16)
       'rgba('+red+','+green+','+blue+','+opacity+')'
 
-  window.s =Section
 )

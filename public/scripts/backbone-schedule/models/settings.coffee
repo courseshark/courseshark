@@ -17,5 +17,8 @@ define(['jQuery'
         result[key] = val
       result
 
+    can: (thing) ->
+      return !!@.get(thing)
+
   UserSettings
 )
