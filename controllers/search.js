@@ -79,6 +79,16 @@ exports = module.exports = function(app){
 			emitter.emit('decrement', 'total');
 		})
 
+		// Make sure sections have schools associated
+		Term.find({}).exec(function(err, terms){
+			console.log("found ", terms.length, "term")
+			_.each(terms, function(term){
+				Section.update({term: term}, {$set: {school: term.school}}, {multi: true}, function(err, num){
+					console.log("Updated", num, "sections setting school to", term.school, "for term", term.name, err)
+				})
+			})
+		})
+
 	})
 
 
