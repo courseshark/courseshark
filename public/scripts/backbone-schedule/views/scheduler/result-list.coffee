@@ -4,7 +4,8 @@ define(['jQuery'
         'views/shark-view'
         'models/search-results'
         'views/scheduler/result-course'
-        'text!tmpl/scheduler/results/result-section-list.ejs'], ($,_, Backbone, SharkView, SearchResults, ResultsCourseView, templateText) ->
+        'views/scheduler/result-section'
+        'text!tmpl/scheduler/results/result-section-list.ejs'], ($,_, Backbone, SharkView, SearchResults, ResultsCourseView, ResultsSectionView, templateText) ->
 
   # This is the main search-results View.
   #
@@ -34,23 +35,35 @@ define(['jQuery'
       @$el.html @template()
       # Grab the course results container
       @$courses = @$el.find('#course-results')
+      @$sections = @$el.find('#section-results')
 
     showLoading: () ->
       @$courses.addClass 'loading'
+      @$sections.addClass 'loading'
 
     removeLoading: () ->
       @$courses.removeClass 'loading'
+      @$sections.removeClass 'loading'
 
     renderResults: (eventName) ->
       @removeLoading()
       # Clear out the course result container
       @$courses.empty()
+      @$sections.empty()
       # Draw the courses into the course result container
       @searchResults.get('courses').each (course) =>
-        if course.get('rank') >= 1
+        if course.get('rank') >= 0.3
           view = new ResultsCourseView model: course
           @subviews.push view
           @$courses.append view.render().el
+
+      @searchResults.get('sections').each (section) =>
+        if section.get('rank') >= 0.3
+          view = new ResultsSectionView model: section
+          console.log view, section
+          @subviews.push view
+          @$sections.append view.render().el
+          console.log view.render().el
 
 
     teardown: ->
