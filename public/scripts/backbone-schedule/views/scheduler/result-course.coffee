@@ -59,11 +59,11 @@ define(['jQuery'
         sectionIds = @model.get('sections').map((d) -> return d.id).join(',')
         $.ajax
           url: '/api/seats/'+sectionIds
-          success: (res) ->
+          success: (res) =>
             for info in res
               section = @model.get('sections').get(info.id)
               for prop, val of info
-                if prop not 'id'
+                if prop isnt 'id'
                   section.set prop, val
               section.trigger 'seatsUpdated'
 

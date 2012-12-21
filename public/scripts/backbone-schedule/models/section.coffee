@@ -15,7 +15,7 @@ define(['jQuery'
       number: 0
 
     initialize: ->
-      Shark.sockets.seats.on 'result', (res) =>
+      Shark.sockets?.seats?.on 'result', (res) =>
         return if res.id isnt @.id
         for prop, val of res
           @set(prop, val) if prop isnt 'id'
