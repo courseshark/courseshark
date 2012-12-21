@@ -24,6 +24,8 @@ define(['jQuery'
 
       # User settings setup and listeners
       @.config = new UserSettings(CS.settings)
+      @configBasedSetup()
+      @.config.on 'change', @configBasedSetup
 
 
       # Setup the session
@@ -93,6 +95,11 @@ define(['jQuery'
           @.term = @.terms.get school.get('currentTerm').id
           @.schedule.set 'term', @.term
           next()
+
+    configBasedSetup: ->
+      if @.config.can('useWebsockets') and not @.sockets
+        @.sockets =
+          seats: io.connect('/seats')
 
   Shark
 )

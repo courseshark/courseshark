@@ -14,6 +14,14 @@ define(['jQuery'
       instructor: "No Instructor Specified"
       number: 0
 
+    initialize: ->
+      Shark.sockets.seats.on 'result', (res) =>
+        return if res.id isnt @.id
+        for prop, val of res
+          @set(prop, val) if prop isnt 'id'
+        @trigger 'seatsUpdated'
+        console.log 'updated seats from socket'
+
     __rnd: (seed = Date.now()) ->
       ((seed*9301+49297) % 263212) / (263212.0)
 

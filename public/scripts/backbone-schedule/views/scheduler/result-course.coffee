@@ -42,6 +42,7 @@ define(['jQuery'
 
 
     renderSections: ->
+      @renderedSections = true
       @$sections.empty()
       # Itterate over sections rendering their views
       @model.get('sections').each (section) =>
@@ -49,6 +50,23 @@ define(['jQuery'
         view = new ResultSectionView (model: section)
         @subviews.push view
         @$sections.append view.render().el
+
+      #Update the sections seat information
+      if Shark.config.can('useWebsockets')
+        @model.get('sections').each (section) ->
+          Shark.sockets.seats.emit('update', section.id)
+      else
+        sectionIds = @model.get('sections').map((d) -> return d.id).join(',')
+        $.ajax
+          url: '/api/seats/'+sectionIds
+          success: (res) ->
+            for info in res
+              section = @model.get('sections').get(info.id)
+              for prop, val of info
+                if prop not 'id'
+                  section.set prop, val
+              section.trigger 'seatsUpdated'
+
 
     render: ->
       params =
