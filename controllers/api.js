@@ -4,7 +4,10 @@
 var MandrillAPI = require('mailchimp').MandrillAPI
   , social = require('../lib/social-track')
   , userLib = require('../lib/user')
+  , crawler = require('../lib/crawler')
   , flipflop = require('../lib/flipflop')
+  , EventEmitter = require("events").EventEmitter
+
 
 exports = module.exports = function(app){
 
@@ -109,4 +112,60 @@ exports = module.exports = function(app){
   app.get('/api/settings', function(req, res){
     res.json(flipflop.evaluateAll(req))
   })
+
+
+
+  // SEATS information non-live
+  app.get('/api/seats/:sections', function(req, res){
+    var sections = req.params.sections.split(',')
+      , _len = sections.length
+      , FIFTEEN_MINUTES = 1000 * 60 * 15
+      , emitter = new EventEmitter()
+    if ( !sections.length ){
+      res.json({})
+    }else{
+      // Setup the emitter
+      emitter.count   = _len;
+      emitter.results = [];
+      emitter.on('result', function(d){
+        emitter.results.push(d);
+        if (--emitter.count <= 0){
+          res.json(emitter.results);
+        }
+      });
+
+      // Loop thought the sections updating them.
+      for(var i=0;i<_len;i++){
+        Section.findById(sections[i]).exec(function(err, section){
+          Term.findById(section.term).populate('school').exec(function(err, term){
+            if ( term.active ){
+              crawler[term.school.abbr].safeUpdateSection(section, FIFTEEN_MINUTES, function(err, section){
+                emitter.emit('result', {
+                    id: section.id
+                  , seatsAvailable: section.seatsAvailable
+                  , seatsTotal: section.seatsTotal
+                  , waitSeatsAvailable: section.waitSeatsAvailable
+                  , waitSeatsTotal: section.waitSeatsTotal
+                })
+              })
+            }else{
+              var avail = section.seatsAvailable?section.seatsAvailable:'-'
+                , total = section.seatsTotal?section.seatsTotal:'?';
+              emitter.emit('result', {
+                    id: section.id
+                  , seatsAvailable: section.seatsAvailable
+                  , seatsTotal: section.seatsTotal
+                  , waitSeatsAvailable: section.waitSeatsAvailable
+                  , waitSeatsTotal: section.waitSeatsTotal
+              })
+            }
+          })
+        })
+      }
+    }
+  })
+
+
+
+
 };

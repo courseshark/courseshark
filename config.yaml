@@ -5,7 +5,7 @@ development:
     time: "5"
   db:
     uri: "mongodb://courseshark:espress0!@localhost/courseshark_dev"
-  rtc_redis: true
+  rtc_redis: false
   redis:
     port: 6379
     location: "166.78.3.112"
