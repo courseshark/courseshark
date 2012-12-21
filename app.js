@@ -29,7 +29,20 @@ app.io.enable('browser client etag');          // apply etag caching logic based
 app.io.enable('browser client gzip');          // gzip the file
 app.io.set('log level', 1);                    // reduce logging
 app.io.set('transports',['websocket']);        // enable all transports (optional if you want flashsocket)
-
+// Setup RedisStore for shared sockets
+if (app.config.rtc_redis){
+  var RedisStore = require('socket.io/lib/stores/redis')
+    , redis  = require('socket.io/node_modules/redis')
+    , pub    = redis.createClient(app.config.redis.port, app.config.redis.location)
+    , sub    = redis.createClient(app.config.redis.port, app.config.redis.location)
+    , client = redis.createClient(app.config.redis.port, app.config.redis.location)
+  console.log("Using Redis for socket.io store");
+  app.io.set('store', new RedisStore({
+    redisPub : pub
+  , redisSub : sub
+  , redisClient : client
+  }));
+}
 
 mongoose.connection.on('open', function(){
   console.log('Database Connected');

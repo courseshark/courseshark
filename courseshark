@@ -3,7 +3,7 @@
 # CourseShark run file
 #
 #
-NODE_VER="v0.6.19";
+NODE_VER="v0.8.15";
 
 
 CS_DIR=`pwd`;

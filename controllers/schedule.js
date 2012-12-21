@@ -379,23 +379,5 @@ exports = module.exports = function(app){
   })
 
 
-  seats.on('connection', function (socket) {
-    socket.on('update', function(sectionId){
-      var now = new Date()
-        , FIFTEEN_MINUTES = 1000 * 60 * 15
-      Section.findById(sectionId).exec(function(err, section){
-        Term.findById(section.term).populate('school').exec(function(err, term){
-          if ( term.active ){
-            crawler[term.school.abbr].safeUpdateSection(section, FIFTEEN_MINUTES, function(err, section){
-              socket.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal, section: section})
-            })
-          }else{
-            var avail = section.seatsAvailable?section.seatsAvailable:'-'
-              , tot = section.seatsTotal?section.seatsTotal:'?';
-            socket.emit('result', {id: section.id, avail: avail, total: tot, section: section})
-          }
-        })
-      })
-    })
-  })
+
 }
