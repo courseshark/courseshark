@@ -37,7 +37,7 @@ exports = module.exports = function(app){
       , created:0
       , modified:0
       }).populate('currentTerm').exec(function(err, schools){
-        res.render('schedule/schedule', {schools: schools, school: req.school||false, layout: 'app-layout.ejs', built: built});
+        res.render('schedule/schedule', {schools: schools, school: req.school||false, settings: flipflop.evaluateAll(req), layout: 'app-layout.ejs', built: built});
     })
   })
 

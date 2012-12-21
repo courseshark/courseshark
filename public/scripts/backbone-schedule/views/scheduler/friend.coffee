@@ -41,9 +41,11 @@ define(['jQuery'
       if @$el.hasClass 'chosen'
         @$el.css border: '3px solid '+@model.color()
         Shark.friendsList.trigger('showFriendsSchedule', @model)
+        mixpanel.track 'View Friend Schedule', Shark.config.asObject()
       else
         @$el.css border: 'none'
         Shark.friendsList.trigger('hideFriendsSchedule', @model)
+        mixpanel.track 'Hide Friend Schedule', Shark.config.asObject()
 
     teardown: ->
       super()

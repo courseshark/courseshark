@@ -30,7 +30,19 @@ exports = module.exports = function(app){
 
 
 	app.get('/search', requireSchool, function(req, res){
-		var school = req.school._id||req.school
+		process.hrtime = process.hrtime || function(d){
+			var _now = Date.now()
+				,	now = [Math.floor(_now/1000), Math.floor((_now/1000%1)*1e9)]
+			if ( !d ){
+				return _now
+			}else{
+				diff = _now-d;
+				return [Math.floor(diff/1000), Math.floor((diff/1000%1)*1e9)]
+			}
+		}
+		var _process = process
+			,	startTime = _process.hrtime()
+			,	school = req.school._id||req.school
 			,	query = {query:{school:school}, string: req.query.q}
 			,	EventEmitter = require("events").EventEmitter
 			,	emitter = new EventEmitter()
@@ -71,6 +83,8 @@ exports = module.exports = function(app){
 		// When done, send over the results
 		emitter.on('-', function(){
 			if ( --emitter.toDo === 0){
+				totalTime = _process.hrtime(startTime);
+				searchResults['time'] = totalTime[0]+(totalTime[1]/1e9)
 				res.json(searchResults);
 			}
 		});

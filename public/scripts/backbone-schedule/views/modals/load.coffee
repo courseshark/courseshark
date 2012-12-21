@@ -18,9 +18,11 @@ define(['jQuery'
     load: ->
       toLoad = Shark.schedulesList.get(@list.val())
       Shark.router.navigate toLoad.id, trigger: true, replace: false
+      # Tracked in router
       @.hide()
 
     show: ->
+      mixpanel.track 'Load Dialog Open', Shark.config.asObject()
       @$el.html(@loadTemplate()).appendTo $ 'body'
       @delegateEvents()
       @$el.on 'hidden', =>
