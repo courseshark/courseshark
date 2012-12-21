@@ -21,6 +21,10 @@ define(['jQuery'
       @$el.html @template school: @model
 
     choose: ->
+
+      # Tracing
+      mixpanel.track 'Picked School', Shark.config.asObject({name: @model.get('name')})
+
       Shark.setSchool @model, ()=>
         @next()
 
