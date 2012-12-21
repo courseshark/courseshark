@@ -118,7 +118,8 @@ exports = module.exports = function(app){
 
 		// Find Courses
 		emitter.toDo++;
-		termQuery = query;
+		termQuery = _.clone(query);
+		termQuery.query = _.clone(query.query);
 		if ( req.query.t ) { termQuery.query.terms = ObjectId(req.query.t) }
 		searcher.searchCollection(Course, termQuery, {returnObjects: true, pullSections:true}, function(err, results){
 			searchResults.courses = results;
@@ -127,7 +128,10 @@ exports = module.exports = function(app){
 
 		// Find Sections
 		emitter.toDo++;
-		searcher.searchCollection(Section, termQuery, {returnObjects: true}, function(err, results){
+		sectionQuery = _.clone(query);
+		sectionQuery.query = _.clone(query.query);
+		if ( req.query.t ) { sectionQuery.query.term = ObjectId(req.query.t) }
+		searcher.searchCollection(Section, sectionQuery, {returnObjects: true}, function(err, results){
 			searchResults.sections = results;
 			emitter.emit('-');
 		})
