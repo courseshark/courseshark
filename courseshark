@@ -3,160 +3,29 @@
 # CourseShark run file
 #
 #
-NODE_VER="v0.6.19";
 
+npm install
 
-CS_DIR=`pwd`;
-BIN_DIR=$CS_DIR/bin;
-NEW_PATH=$BIN_DIR/node/bin:$PATH;
-CUSTOM_NODE=$BIN_DIR/node/bin/node;
-
-OUT_LOG=$CS_DIR/logs/info.log;
-
-#make sure log directory exists
-mkdir -p $CS_DIR/logs;
-# Make the bin directiory
-mkdir -p $BIN_DIR;
-
-BLUE="$(tput setaf 4)";
-GREEN="$(tput setaf 2)";
-YELLOW="$(tput setaf 3)";
-RED="$(tput setaf 1)";
-RESET="$(tput sgr0)";
-
-
-function INSTALL {
-  echo "Installing nodejs $NODE_VER";
-  cd /tmp;
-  if [ -d "/tmp/node" ]
-  then
-    cd node;
-    git checkout $NODE_VER;
-  else
-    git clone http://github.com/joyent/node.git
-    cd node;
-    git checkout $NODE_VER;
-  fi
-  make clean;
-  ./configure --prefix=$BIN_DIR/node;
-  make;
-  make install;
-
-  ## Install Dependancies
-  cd $CS_DIR
-  (
-    export PATH=$NEW_PATH;
-    npm install forever nodemon -g;
-    npm install;
-  )
-}
-
-
-if [ "$1" == "install" ]
+if [ "development" == "$NODE_ENV" ]
 then
-  INSTALL;
-  exit;
-fi
-
-if [ "$1" == "deps" ]
-then 
- (
-    export PATH=$NEW_PATH;
-    npm install forever nodemon -g;
-    npm install;
- )
- exit;
-fi
-
-CURRENT_NODE_VERSION="$(export PATH=$NEW_PATH; node -v)";
-
-if [ $CURRENT_NODE_VERSION != $NODE_VER ]
-then
-  echo $RED;
-  echo "Wrong version of node installed!"
-  echo $RESET;
-  INSTALL;
-fi
-
-
-if [ -f $CUSTOM_NODE ]
-then
-  : # no-op
-else
   echo "";
-  echo "[warn] No node found.";
-  INSTALL;
-fi
-
-
-if [ "$1" == "seatwatcher" ]
-then
-  echo $GREEN;
-  echo "Starting seatwatcher with forever";
-  (
-    export PATH=$NEW_PATH;
-    forever stopall;
-    forever start -a -l $OUT_LOG ./seat-watcher.js;
-  )
+  echo "Starting :: $(tput setaf 4)Dev Environment";
+  echo "$(tput setaf 2)  * nodemon watching scripts";
+  echo "  * no node version check (running $(tput sgr0)$(tput setaf 3)$(node -v;)$(tput setaf 2))";
+  echo "";
+  nodemon ./app.js;
   exit;
-fi
-
-if [ "$1" == "nodemon" ]
-then
-  echo $BLUE
-  echo "startting with nodemon $RESET";
-  (
-    export PATH=$NEW_PATH;
-    nodemon ./app.js;
-  )
 else
-  if [ "$1" == "forever" ]
+  if [ "admin" == "$COURSESHARK_MODE" ]
   then
-    if [ "$2" == "install" ]
-    then
-      (
-        export PATH=$NEW_PATH;
-        echo $GREEN;
-        echo "startting with nodemon $RESET";
-        npm install forever -g
-      )
-    else
-      echo $BLUE;
-      echo "startting with forever $RESET";
-      (
-        export PATH=$NEW_PATH;
-        shift 1;
-        forever $@;
-      )
-    fi
+    # Start up the admin server
+    node ./admin.js
+  elif [ "seat-watcher" == "$COURSESHARK_MODE" ]
+  then
+    # Start in seatwatcher mode
+    node ./seat-watcher.js
   else
-    if [ "$1" == "start" ]
-    then
-      echo $BLUE;
-      echo "startting with forever $RESET";
-      (
-        export PATH=$NEW_PATH;
-        forever stopall;
-        forever start -a -l $OUT_LOG $CS_DIR/app.js;
-      )
-    else
-      if [ "$1" == "stop" ]
-      then 
-        echo $RED;
-        echo "stopping $RESET";
-        (
-          export PATH=$NEW_PATH;
-          forever stopall;
-        )
-      else
-        echo $YELLOW;
-        echo "restarting $RESET";
-        (
-          export PATH=$NEW_PATH;
-          forever stopall;
-          forever start -a -l $OUT_LOG $CS_DIR/app.js;
-        )
-      fi
-    fi
+    # Start the app in normal mode
+    node ./app.js
   fi
 fi
