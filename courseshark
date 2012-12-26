@@ -3,6 +3,7 @@
 # CourseShark run file
 #
 #
+. ~/.env_vars
 
 npm install
 
