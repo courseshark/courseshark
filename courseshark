@@ -3,8 +3,11 @@
 # CourseShark run file
 #
 #
+
+# Make sure the environment vars are loaded
 . ~/.env_vars
 
+# Install requirements
 npm install
 
 if [ "development" == "$NODE_ENV" ]
