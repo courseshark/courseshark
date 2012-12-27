@@ -200,7 +200,7 @@ END:VCALENDAR
 			</div>
 
 			<div id="schedule-container" class="span7">
-				<%- partial('calendars/week') %>
+				<%- partial('week') %>
 			</div>
 
 			<div id="right-bar" class="span2 hidden-phone">
@@ -220,7 +220,7 @@ END:VCALENDAR
 		</div>
 	</div>
 
-<%- partial('includes/js.ejs') %>
+<%- partial('js', {loggedIn: loggedIn}) %>
 <script src="/scripts/lib/select2/select2.min.js"></script>
 <script>
 $(document).ready(function() {

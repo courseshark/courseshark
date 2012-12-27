@@ -31,7 +31,7 @@
 <script type="text/javascript">
 	var _gaq = _gaq || [];
 	_gaq.push(['_setAccount', 'UA-20912280-1']);
-	<% if ( mode === 'development' ) { %>
+	<% if ( app.settings.env === 'development' ) { %>
 	_gaq.push(['_setDomainName', '.courseshark.dev']);
 	_gaq.push(['_addIgnoredRef', 'courseshark.dev']);
 	<% } else {%>

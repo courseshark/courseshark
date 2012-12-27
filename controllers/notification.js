@@ -84,29 +84,6 @@ exports = module.exports = function(app){
     })
   })
 
-/*
-  app.post('/notifications/purchase/post-back', function(req, res){
-    var jwt = req.body.jwt
-      , transaction = require('jwt-simple').decode(jwt, app.config.google.sellerSecret)
-      , time = Math.round((new Date()).getTime()/1000)
-      , credit = new Credit()
-    if ( transaction.request.exp < time ){
-      res.json()
-      return;
-    }
-    if ( transaction.request.price !== '1.99'){
-      res.json()
-      return;
-    }
-
-    credit.user = transaction.request.sellerData.replace('userId:', '').replace(';','')
-    credit.orderId = transaction.response.orderId
-    credit.save(function(err){
-      res.json(transaction.response.orderId)
-    })
-  })
-*/
-
 
   app.get('/notification/cancel/:userId/:notificationId/:sectionId.:format?', function(req, res){
     function fail(message){

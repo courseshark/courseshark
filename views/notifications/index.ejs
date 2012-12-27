@@ -48,7 +48,7 @@
 				<$ if ( notification.deleted ){ $>
 					<a href="#" rel="reactivate-notification" data-notification="<$=notification._id$>" title="Restore to Active status">Click to reactivate<a>
 				<$ }else{ $>
-					Last Update: <span rel="notification-updated" data-updated="<$=(new Date(notification.section.updated).getTime())$>"></span> 
+					Last Update: <span rel="notification-updated" data-updated="<$=(new Date(notification.section.updated).getTime())$>"></span>
 				<$ } $>
 				</h4>
 			</div>
@@ -113,14 +113,14 @@
 				      </div>
 							<!--
 							<div class="v-divide"><span>OR</span></div>
-							<div class="right-col">					
+							<div class="right-col">
 								<label for="manual_section_id">Course Registration Number</label>
 								<input type="text" name="manual_section_id" placeholder="CRN or Course ID" value=""/>
 							</div>
 							-->
 				    </div>
 					</fieldset>
-					
+
 					<fieldset class="span3">
 						<legend>Step 2 <small>Notification Methods</small></legend>
 						<div class="control-group">
@@ -136,7 +136,7 @@
 							</div>
 						</div>
 					</fieldset>
-					
+
 					<fieldset class="span2">
 						<legend>Step 3 <small>Settings</small></legend>
 						<div class="control-group">
@@ -174,7 +174,7 @@
 	</div>
 </div>
 
-<%- partial('includes/js.ejs') %>
+<%- partial('js', {loggedIn:loggedIn}) %>
 
 
 <script>
@@ -223,7 +223,7 @@ function purchase(){
 		,	school: '<%=school.id%>'
 		, waitlist: !!$('input[name="notification-on"][value="waitlist"]').attr('checked')
 	}
-	
+
 	if ( !info.section || info.section.length < 24  ){
 		errorDialog('Form errors found', 'Please specify a section to watch');
 		return;
