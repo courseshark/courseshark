@@ -8,7 +8,7 @@ var MandrillAPI = require('mailchimp').MandrillAPI
 exports = module.exports = function(app){
 
   try {
-    var mandrill = new MandrillAPI(app.config.email.mandrillKey, { version : '1.0', secure: false });
+    var mandrill = new MandrillAPI(app.config.COURSESHARK_MIXPANEL_ACCESS_TOKEN, { version : '1.0', secure: false });
   } catch (error) {
     console.log('Mandrill Error: ' + error);
   }
@@ -347,7 +347,7 @@ exports = module.exports = function(app){
       }
       app.mixpanel.track('Picked School', {school: school.abbr, distinct_id: req.session.distinctId});
       url = req.session.schoolNeeded===undefined?'/':req.session.schoolNeeded
-      newDomain = 'http://'+school.abbr+'.'+req.app.config.domain+url
+      newDomain = 'http://'+school.abbr+'.'+req.app.config.COURSESHARK_DOMAIN+url
       res.redirect(newDomain)
     });
   })

@@ -6,36 +6,37 @@ var   express = require('express')
     , fs = require('fs')
     , auth = require('./lib/authorization')
     , utils = require('./lib/utils')
-    , app = express.createServer()
+    , app = express()
     , port = (typeof process !== "undefined" && process !== null ? (_ref2 = process.env) !== null ? _ref2.PORT : undefined : undefined) || 80
     , sio = require('socket.io')
     , io
     , mongoose = require('mongoose')
-    , config_file = require('yaml-config')
-    , config = config_file.readConfig(__dirname + '/config.yaml', app.settings.env)
-    , mixpanel = new require('mixpanel').Client(config.mixpanel.accessToken)
+    , mixpanel = new require('mixpanel').init(process.env.COURSESHARK_MIXPANEL_ACCESS_TOKEN)
 
 
 console.log("\n\nStarting in mode:", app.settings.env);
 
-app.config = config;
+app.config = process.env;
 app.mixpanel = mixpanel;
-app.mixpanel.set_config({test: app.settings.env!="production", debug: app.settings.env=="development"});
+app.mixpanel.set_config({ test: (process.env.COURSESHARK_MIXPANEL_TEST||'').match(/true/i)
+                        , debug: (process.env.COURSESHARK_MIXPANEL_DEBUG||'').match(/true/i)});
 
 // Socket.io
-app.io = io = sio.listen(app);
+httpForSocket = require('http').createServer(app)
+app.io = io = sio.listen(httpForSocket);
 app.io.enable('browser client minification');  // send minified client
 app.io.enable('browser client etag');          // apply etag caching logic based on version number
 app.io.enable('browser client gzip');          // gzip the file
 app.io.set('log level', 1);                    // reduce logging
 app.io.set('transports',['websocket']);        // enable all transports (optional if you want flashsocket)
 // Setup RedisStore for shared sockets
-if (app.config.rtc_redis){
-  var RedisStore = require('socket.io/lib/stores/redis')
+if (process.env.COURSESHARK_REDIS_URI){
+  var info = require('url').parse(process.env.COURSESHARK_REDIS_URI)
+    , RedisStore = require('socket.io/lib/stores/redis')
     , redis  = require('socket.io/node_modules/redis')
-    , pub    = redis.createClient(app.config.redis.port, app.config.redis.location)
-    , sub    = redis.createClient(app.config.redis.port, app.config.redis.location)
-    , client = redis.createClient(app.config.redis.port, app.config.redis.location)
+    , pub    = redis.createClient(info.port, info.hostname)
+    , sub    = redis.createClient(info.port, info.hostname)
+    , client = redis.createClient(info.port, info.hostname)
   console.log("Using Redis for socket.io store");
   app.io.set('store', new RedisStore({
     redisPub : pub
@@ -61,8 +62,6 @@ mongoose.connection.on('open', function(){
     require('./lib/settings').boot(app, mongoose);
     //Error Handler
     require('./lib/error-handler').boot(app);
-    // Helpers
-    require('./lib/helpers').boot(app);
     // make a global helper
     requireLogin = auth.requireLogin;
     requireAdmin = auth.requireAdmin;
@@ -83,4 +82,4 @@ mongoose.connection.on('open', function(){
 })
 
 // Connect to the Database
-mongoose.connect(config.db.uri);
+mongoose.connect(process.env.COURSESHARK_MONGODB_URI);

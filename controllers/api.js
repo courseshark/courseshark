@@ -12,7 +12,7 @@ var MandrillAPI = require('mailchimp').MandrillAPI
 exports = module.exports = function(app){
 
   try {
-    var mandrill = new MandrillAPI(app.config.email.mandrillKey, { version : '1.0', secure: false });
+    var mandrill = new MandrillAPI(app.config.COURSESHARK_MIXPANEL_ACCESS_TOKEN, { version : '1.0', secure: false });
   } catch (error) {
     console.log('Mandrill Error: ' + error);
   }
