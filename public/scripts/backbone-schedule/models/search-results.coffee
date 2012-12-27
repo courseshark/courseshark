@@ -3,7 +3,8 @@ define(['jQuery'
         'Backbone'
         'models/model'
         'collections/result-courses'
-        'collections/result-sections'], ($,_, Backbone, SharkModel, ResultCourses, ResultSections) ->
+        'collections/result-course-sections'
+        'collections/result-sections'], ($,_, Backbone, SharkModel, ResultCourses, ResultCourseSections, ResultSections) ->
 
   class SearchResults extends SharkModel
 
@@ -33,6 +34,7 @@ define(['jQuery'
         mixpanel.track 'Search', Shark.config.asObject({
             query: @.get('query')
           , courseResultsCount: @.get('courses').length
+          , sectionResultsCount: @.get('sections').length
           , queryTime: @.get('time')
         })
         @cleanResultsWithSchedule()
@@ -53,7 +55,9 @@ define(['jQuery'
           # If it exists in the schedule object, replace it with the schedule's version
           if Shark.schedule.contains(section)
             course.attributes.sections.models[i] = Shark.schedule.get('sections').get(section.get('_id'))
-
+      @get('sections').each (section) ->
+        if Shark.schedule.contains(section)
+          section = Shark.schedule.get('sections').get(section.id)
 
     #Parse method is part of the fetch command
     parse: (response) ->
@@ -62,9 +66,15 @@ define(['jQuery'
     	response.courses = new ResultCourses response.courses.map (c) ->
         c.object.rank=c.rank
         # Turn the sections into a proper collection of sections
-        c.object.sections = new ResultSections c.object.sections
+        c.object.sections = new ResultCourseSections c.object.sections
         #Return the new object piece of the {object: [course], rank: [number]} object
         c.object
+
+      response.sections = new ResultSections response.sections.map (s) ->
+        # Set the rank
+        s.object.rank=s.rank
+        # Return the object
+        s.object
       response
 
 

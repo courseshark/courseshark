@@ -21,6 +21,7 @@ SectionSchema = new Schema({
   , course: { type: Schema.ObjectId, index: true, ref: 'Course' }
   , department: { type: Schema.ObjectId, index: true, ref: 'Department' }
   , term: { type: Schema.ObjectId, index: true, ref: 'Term' }
+  , school: { type: Schema.ObjectId, index: true, ref: 'School' }
   , instructor: { type: String }
   , parent: { type: Schema.ObjectId, ref: 'Section' }
   , credits: { type: String }
