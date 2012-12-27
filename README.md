@@ -8,9 +8,9 @@ Setup
 -------
 
 Configuration is now done via environment variables. In order to remain consistant between
-install types the courseshark executable loads in a file
+install types the courseshark executable loads in a file 
 [~/.env_vars](https://github.com/courseshark/courseshark/blob/master/courseshark#L8). This file is managed via
-the salt-master [cerebro](https://github.com/courseshark/courseshark/wiki/Cerebro-Server).
+the salt-master [cerebro](https://github.com/courseshark/courseshark/wiki/Cerebro-Server). 
 
 The variables looked for in the scripts are:
 
