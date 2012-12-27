@@ -17,14 +17,16 @@ define(['jQuery'
   class Shark extends Backbone.Model
     #All the router's initialize function
     initialize: ->
+
+      # Set app to the global Shark reference
       window.Shark = @
 
-      #Setup global Friends info
-      @.friendsList = new Friends()
-      @.friendInvites = new FriendInvites()
-      @.sectionFriends = {}
 
+      # User settings setup and listeners
       @.config = new UserSettings(CS.settings)
+      @configBasedSetup()
+      @.config.on 'change', @configBasedSetup
+
 
       # Setup the session
       @.session = new Session()
@@ -52,14 +54,25 @@ define(['jQuery'
       @.session.on 'unauthenticated', () =>
         @.friendsList.reset()
         @.friendsList.trigger('unfetched')
+        @.config.fetch()
         mixpanel.track 'unauthenticated', @.config.asObject()
 
+
+      #Setup global Friends info
+      @.friendsList = new Friends()
+      @.friendInvites = new FriendInvites()
+      @.sectionFriends = {}
+
+
+      # School and schedule information
       @.schools = new Schools(CS.schools)
       @.school = new School
       @.terms = new Terms
       @.schedulesList = new Schedules
       @.schedule = new Schedule
 
+
+      # Set the school if it has been passed down
       if CS.school
         @.school = @.schools.get CS.school
         term = new Term @.school.get 'currentTerm'
@@ -71,6 +84,7 @@ define(['jQuery'
       @.session.start()
       @.router = new Router()
 
+
       # Lastly load Facebook scripts (safely)
       window.FB or window.loadFacebook()
 
@@ -81,6 +95,11 @@ define(['jQuery'
           @.term = @.terms.get school.get('currentTerm').id
           @.schedule.set 'term', @.term
           next()
+
+    configBasedSetup: ->
+      if @.config.can('useWebsockets') and not @.sockets
+        @.sockets =
+          seats: io.connect('/seats')
 
   Shark
 )
