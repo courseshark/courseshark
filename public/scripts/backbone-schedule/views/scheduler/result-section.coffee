@@ -28,6 +28,8 @@ define(['jQuery'
         else
           @$el.show()
 
+      @model.bind 'seatsUpdated', () =>
+        @renderSeats()
 
     events:
       'click .expander' : 'expand'
@@ -94,12 +96,13 @@ define(['jQuery'
     render: ->
       @$el.html @template
         prof: @model.get('instructor') || "No Professor Set"
-        seats: (@model.get('seatsAvailable')||0) + '/' + (@model.get('seatsTotal')||0)
         section_id: @model.get('number') + ': Section ' + @model.get('info')
         hours: @model.get('credits')
         description: @model.description?()
       @$el.hide() if not @model.get 'visible'
       @$addButton = @$el.find('.add')
+
+      @renderSeats()
 
       # Color/bold the correct day letters
       color = @model.color()
@@ -131,6 +134,10 @@ define(['jQuery'
           friend = Shark.friendsList.get friend_id
           $section_friends.append($('<img class="friend-img" src="'+friend.get('avatar')+'"></img>')
             .tooltip(title: friend.get('firstName') + " " + friend.get('lastName')))
+
+    renderSeats: ->
+      seatString = @model.get('seatsAvailable') + '/' + @model.get('seatsTotal')
+      @$el.find('.seats').html seatString
 
     teardown: ->
       Shark.friendsList.unbind 'fetched', @updateFriendStatus

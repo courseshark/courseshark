@@ -26,6 +26,9 @@ require.config(
 
     dateFormat: 'lib/dateFormat/dateFormat'
 
+    SocketIO: 'lib/socket.io/socket.io.req'
+    socket_io: 'lib/socket.io/socket.io.min'
+
   shim:
     jQuery:
       deps: []
@@ -54,13 +57,15 @@ require(
   [
     'app'
     'jQuery'
+    'SocketIO'
     'Underscore'
     'Backbone'
     'jQueryUI'
     'jQueryCookie'
     'jQueryBase64'
     'Bootstrap'
-  ], (Shark, $) ->
+  ], (Shark, $, io) ->
+      window.io = io
       #The "app" dependency is passed in as "Shark"
       $(document).ready ()->
         new Shark()

@@ -5,6 +5,10 @@ development:
     time: "5"
   db:
     uri: "mongodb://courseshark:espress0!@localhost/courseshark_dev"
+  rtc_redis: false
+  redis:
+    port: 6379
+    location: "166.78.3.112"
   facebook:
     appId: "182622275092530"
     appSecret: "885311f00c458526586a17ede8b3e57b"
@@ -42,6 +46,10 @@ staging:
     time: "15"
   db:
     uri: "mongodb://courseshark:espress0!@localhost/courseshark_staging"
+  rtc_redis: true
+  redis:
+    port: 6379
+    location: "10.181.27.36"
   facebook:
     appId: "182622275092530"
     appSecret: "885311f00c458526586a17ede8b3e57b"
@@ -79,6 +87,10 @@ production:
     time: "15"
   db:
     uri: "mongodb://courseshark:espress0!@localhost/courseshark"
+  rtc_redis: true
+  redis:
+    port: 6379
+    location: "10.181.27.36"
   facebook:
     appId: "182622275092530"
     appSecret: "885311f00c458526586a17ede8b3e57b"
