@@ -7,7 +7,7 @@ define(['jQuery'
 
   class NewView extends SharkView
 
-    className: "modal hide fade"
+    className: "modal hide"
 
     initialize: ->
       _.bindAll @

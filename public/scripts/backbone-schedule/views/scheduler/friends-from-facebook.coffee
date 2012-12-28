@@ -9,7 +9,7 @@ define(['jQuery'
 
     tagName: "div"
 
-    className: "modal fade"
+    className: "modal"
 
     events:
       "click .close": "close"

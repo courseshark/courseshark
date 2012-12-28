@@ -6,7 +6,7 @@ define(['jQuery'
 
   class ResolveDuplicateView extends SharkView
 
-    className: "modal hide fade"
+    className: "modal hide"
 
     initialize: ->
       _.bindAll @
