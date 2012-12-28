@@ -8,7 +8,7 @@ define(['jQuery',
 
     tagName: "div"
 
-    className: "modal fade"
+    className: "modal"
 
     events:
       "keypress .forgot-form-input-email": "checkSubmit"

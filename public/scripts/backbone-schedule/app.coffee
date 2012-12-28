@@ -24,8 +24,8 @@ define(['jQuery'
 
       # User settings setup and listeners
       @.config = new UserSettings(CS.settings)
-      @configBasedSetup()
       @.config.on 'change', @configBasedSetup
+      @configBasedSetup()
 
 
       # Setup the session
@@ -53,6 +53,7 @@ define(['jQuery'
             mixpanel.track 'authenticated', @.config.asObject()
       @.session.on 'unauthenticated', () =>
         @.friendsList.reset()
+        @.friendInvites.reset()
         @.friendsList.trigger('unfetched')
         @.config.fetch()
         mixpanel.track 'unauthenticated', @.config.asObject()
@@ -70,6 +71,9 @@ define(['jQuery'
       @.terms = new Terms
       @.schedulesList = new Schedules
       @.schedule = new Schedule
+      @.schedule.on 'change:name', (schedule) ->
+        name = schedule.get('name') or Shark.term?.get('name') or 'New Schedule'
+        document.title = "#{name} | CourseShark"
 
 
       # Set the school if it has been passed down
@@ -96,7 +100,7 @@ define(['jQuery'
           @.schedule.set 'term', @.term
           next()
 
-    configBasedSetup: ->
+    configBasedSetup: =>
       if @.config.can('useWebsockets') and not @.sockets
         @.sockets =
           seats: io.connect('/seats')

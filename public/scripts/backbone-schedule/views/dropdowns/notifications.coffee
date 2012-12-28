@@ -17,6 +17,7 @@ define(['jQuery'
         @$el = $('#dropdown-view')
 
       Shark.friendInvites.on 'add', @render
+      Shark.friendInvites.on 'reset', @render
       Shark.friendInvites.on 'remove', @render
 
       @inviteViews = []
@@ -26,9 +27,9 @@ define(['jQuery'
 
     render: ->
       @$el.hide().css(right: '160px').html @template()
-      $list = @$el.find('.request-list')
+      $list = @$el.find('.request-list').empty()
       for view in @inviteViews
-        view.teardown()
+        view.teardown?()
       @inviteViews = []
       finishRender = =>
         @$el

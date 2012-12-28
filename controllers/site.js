@@ -6,9 +6,9 @@ exports = module.exports = function(app){
   app.get('/', function(req, res){
     if ( require('../lib/flipflop').test('canSeeNewScheduler', req) ){
       res.redirect('/s/home');
-      return;
+    }else{
+      res.render('index');
     }
-    res.render('index', {});
   })
 
   // About pages

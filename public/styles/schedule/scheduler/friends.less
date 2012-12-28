@@ -1,4 +1,5 @@
 .friends-list{
+  @media print {&{ display: none;}}
   #add-friend{
     color: blue;
   }
@@ -70,8 +71,15 @@
 
 
 .friend-block{
-  width: 51px;
-  height: 51px;
+
+  width: 48px;
+  height: 48px;
+  @media (min-width: 1200px){
+    &{
+      width: 51px;
+      height: 51px;
+    }
+  }
   float: left;
   position: relative;
 

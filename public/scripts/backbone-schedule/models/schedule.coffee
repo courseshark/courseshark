@@ -29,11 +29,12 @@ define(['jQuery'
           res[prop] = _.clone(@attributes[prop])
       return res;
 
-    new: ->
+    new: (term) ->
       @.unset '__v'
       @.unset '_id'
       @.set 'name', ''
       @.get('sections').reset()
+      @.set 'term', term or Shark.term
 
     load: (success) ->
       @.fetch

@@ -57,6 +57,7 @@ define(['jQuery'
           @subviews.push view
           @$courses.append view.render().el
 
+      return if not @searchResults.get 'sections'
       @searchResults.get('sections').each (section) =>
         if section.get('rank') >= 0.3
           view = new ResultsSectionView model: section

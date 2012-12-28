@@ -10,7 +10,7 @@ define(['jQuery'
   class SchoolPickerView extends SharkView
 
 
-    className: "modal hide fade"
+    className: "modal hide"
 
     initialize: (options)->
       _.bindAll @

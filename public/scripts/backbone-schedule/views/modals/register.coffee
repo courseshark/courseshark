@@ -6,7 +6,7 @@ define(['jQuery'
 
   class RegisterView extends SharkView
 
-    className: "modal hide fade"
+    className: "modal hide"
 
     initialize: ->
       _.bindAll @

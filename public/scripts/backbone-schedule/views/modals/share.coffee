@@ -7,7 +7,7 @@ define(['jQuery'
 
   class ShareView extends SharkView
 
-    className: "modal hide fade"
+    className: "modal hide"
 
     initialize: ->
       window._ = _
