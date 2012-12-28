@@ -42,11 +42,11 @@ define(['jQuery'
 
       Shark.router.navigate '', trigger: false, replace: true
 
-      # Tell the schedule object to essentially reset itself
-      Shark.schedule.new()
-
       # Select the term chosen, defaulting to the current Term if none checked
       Shark.term = Shark.terms.where( _id: @$options.val() )[0] or Shark.school.get 'currentTerm'
+
+      # Tell the schedule object to essentially reset itself
+      Shark.schedule.new Shark.term
 
 
   NewView

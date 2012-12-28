@@ -71,6 +71,9 @@ define(['jQuery'
       @.terms = new Terms
       @.schedulesList = new Schedules
       @.schedule = new Schedule
+      @.schedule.on 'change:name', (schedule) ->
+        name = schedule.get('name') or Shark.term?.get('name') or 'New Schedule'
+        document.title = "#{name} | CourseShark"
 
 
       # Set the school if it has been passed down
