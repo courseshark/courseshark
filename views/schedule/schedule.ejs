@@ -64,7 +64,7 @@
   'track_forms','register','register_once','unregister','identify','alias','name_tag',
   'set_config','people.set','people.increment'];for(e=0;e<h.length;e++)d(g,h[e]);
   a._i.push([b,c,f])};a.__SV=1.2;})(document,window.mixpanel||[]);
-  mixpanel.init("22566cab7f699ae4100bd3d23dfc1420", {track_pageview: false<%if (mode!="production"){%>, debug: false, test: true<%}%>});
+  mixpanel.init("<%=app.config.COURSESHARK_MIXPANEL_ACCESS_TOKEN%>", {track_pageview: false<%if (mode!="production"){%>, debug: false, test: true<%}%>});
   mixpanel.register({ distinct_id: CS.distinctId });
   // error logger
   window.onerror=function(m,f,l){mixpanel.track('js-err',{message:m,file:f,line:l})}
