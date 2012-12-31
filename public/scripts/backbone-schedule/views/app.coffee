@@ -6,7 +6,8 @@ define(['jQuery'
 				'views/main-nav'
 				'views/home'
 				'views/scheduler'
-				'views/settings'], ($, _, Backbone, SharkView, MainNavView, HomeView, SchedulerView, SettingsView) ->
+				'views/notifications'
+				'views/settings'], ($, _, Backbone, SharkView, MainNavView, HomeView, SchedulerView, NotificationsView, SettingsView) ->
 
 	class AppView extends SharkView
 		el: $ '#app-container'
@@ -33,6 +34,8 @@ define(['jQuery'
 					Shark.view = @view = new SchedulerView el: $viewContainer
 				else if view is 'settings'
 					Shark.view = @view = new SettingsView()
+				else if view is 'notifications'
+					Shark.view = @view = new NotificationsView()
 				@$el.append(@view.$el)
 
 		teardown: ->
