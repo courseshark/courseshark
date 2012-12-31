@@ -55,6 +55,7 @@ define(['jQuery'
           # If it exists in the schedule object, replace it with the schedule's version
           if Shark.schedule.contains(section)
             course.attributes.sections.models[i] = Shark.schedule.get('sections').get(section.get('_id'))
+      return if not @get('sections')
       @get('sections').each (section) ->
         if Shark.schedule.contains(section)
           section = Shark.schedule.get('sections').get(section.id)
