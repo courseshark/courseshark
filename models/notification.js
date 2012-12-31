@@ -9,13 +9,9 @@ exports.boot = module.exports.boot = function (app){
   app.Notification = Notification = mongoose.model('Notification');
 
   Notification.prototype.toJSON2 = function() {
-    var res = this.toJSON();
-    res.cancelLink = this.cancelLink;
-    res.reactivateLink = this.reactivateLink
-    res.deleteLink = this.deleteLink;
-    return res;
+    console.log("toJSON2 depreciated, just call toJSON()")
+    return this.toJSON();
   }
-
 }
 
 NotificationSchema = new Schema({
@@ -34,6 +30,11 @@ NotificationSchema = new Schema({
   , created: { type: Date, 'default': Date.now() }
   , mofidied: { type: Date }
 });
+
+
+NotificationSchema.set('toJSON', { virtuals: true })
+NotificationSchema.set('toObject', { virtuals: true })
+
 
 NotificationSchema.virtual('id')
   .get(function (){return this._id.toHexString()})

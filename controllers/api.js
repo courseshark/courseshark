@@ -114,6 +114,16 @@ exports = module.exports = function(app){
   })
 
 
+  app.get('/api/notifications', function(req, res){
+    if(!req.loggedIn){
+      return res.json([]);
+    }
+    Notification.find({user: req.user._id, hidden:false}).populate('section').exec(function(err, notifications){
+      return res.json(notifications);
+    });
+  })
+
+
 
   // SEATS information non-live
   app.get('/api/seats/:sections', function(req, res){
