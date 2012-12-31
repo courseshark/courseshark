@@ -138,6 +138,10 @@ define(['jQuery'
     renderSeats: ->
       seatString = @model.get('seatsAvailable') + '/' + @model.get('seatsTotal')
       @$el.find('.seats').html seatString
+      if @model.get('seatsAvailable') <= 0
+        @$el.find('.make-notification').show()
+      else
+        @$el.find('.make-notification').hide()
 
     teardown: ->
       Shark.friendsList.unbind 'fetched', @updateFriendStatus
