@@ -63,6 +63,16 @@ NotificationSchema.virtual('deleteLink')
     return '/notification/remove/'+u+'/'+this.id+'/'+s
   })
 
+NotificationSchema.virtual('lastUpdated')
+  .get(function (){
+    var modified = this.modified
+      , created  = this._id.getTimestamp()
+      , lastSent = this.lastSend
+      , lastUpdated = modified || lastSent || created
+      , _date = require('underscore.date')
+    return _date(lastUpdated.getTime()).fromNow()
+  })
+
 
 
 exports.NotificationSchema = module.exports.NotificationSchema = NotificationSchema

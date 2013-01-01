@@ -16,7 +16,11 @@ define(['jQuery'
       @render()
 
     render: ->
-      @$el.html @template notification: @model
+      section = @model.get 'section'
+      @$el.html @template
+        nameWithSection: "#{section.get('name')} (#{section.get('info')})"
+        lastUpdated: @model.get 'lastUpdated'
+        seats: "#{section.get('seatsAvailable')}/#{section.get('seatsTotal')}"
 
   # Whatever is returned here will be usable by other modules
   SeatWatcherNotificationView

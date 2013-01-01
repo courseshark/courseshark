@@ -102,16 +102,31 @@
         }
       }
       .seatwatcher-notification{
-        .name{
-          display: inline-block;
-          line-height: 50px;
-          margin: 0 15px 0 10px;
-          width: 150px;
+        .info{
+          float: left;
+          margin: 0 0 0 10px;
+          width: 220px;
+          padding-top: 10px;
+          .name{
+            line-height: 15px;
+            display: inline-block;
+          }
+          .updated{
+            font-size: 11px;
+            color: @grey;
+          }
+          .seats{
+            display: inline-block;
+            font-size: 20px;
+            text-align: left;
+            line-height: 10px;
+            margin-left: 20px;
+          }
         }
         .button-container{
-          display: inline-block;
+          float: right;
           text-align: right;
-          width: 100px;
+          margin: 15px 7px 0 0;
         }
       }
       .friend-request{
