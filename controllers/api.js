@@ -123,6 +123,38 @@ exports = module.exports = function(app){
     });
   })
 
+  app.post('/api/notifications', function(req, res){
+    if(!req.loggedIn){
+      return res.json({error: 'Must be logged in'});
+    }
+    note = new Notification();
+    note.user = req.user || req.body.user;
+    note.section = req.body.section;
+    note.email = req.body.email;
+    note.phone = req.body.phone;
+    note.school = req.body.school;
+    note.waitlist = !!req.body.waitlist;
+    note.save(function(err){
+      if (err){
+        res.json({error: err})
+      }else{
+        res.json(note);
+      }
+    })
+  })
+
+  app.delete('/api/notifications/:id', function(req, res){
+    if(!req.loggedIn){ return res.json({error: 'Must be logged in'}); }
+    Notification.findOne({_id: req.params.id, user: req.user.id}).exec(function(err, note){
+      if ( err ){ return res.json({error: err})}
+      if ( !note ){ return res.json(true); }
+      note.hidden = true;
+      note.deleted = true;
+      note.save(function(err){
+        res.json(true);
+      })
+    })
+  })
 
 
   // SEATS information non-live
