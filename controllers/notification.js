@@ -1,10 +1,15 @@
-var spanNumbers = function(n){
+var flipflop = require('../lib/flipflop')
+
+spanNumbers = function(n){
   return (''+n).split('').map(function(a){return '<span class="number">'+a+'</span>'}).join('');
 }
 
 exports = module.exports = function(app){
 
-  app.get('/watcher', function(req, res){
+  app.get('/watcher', wantSchool, function(req, res){
+    if ( flipflop.test('canSeeNewScheduler', req) ){
+      return res.redirect('/s/notifications')
+    }
     Notification.find().count().exec(function(err, total){
       Notification.find({deleted: false, hidden:false}).count().exec(function(err, active){
         NotificationFeedback.find({ignore:false}).count().exec(function(err, feedBackCount){
@@ -27,6 +32,9 @@ exports = module.exports = function(app){
         res.json(list);
       })
     }else{
+      if ( flipflop.test('canSeeNewScheduler', req) ){
+        return res.redirect('/s/notifications')
+      }
       Term.find({school: req.school, active: true}, function(err, terms){
         res.render('notifications/index', {user: req.user, school: req.school, terms:terms, noJS:true})
       })
