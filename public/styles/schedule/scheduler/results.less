@@ -94,7 +94,8 @@
     border-radius: 3px;
     text-align: center;
     display: inline-block;
-    line-height: 20px
+    line-height: 20px;
+    float: right;
   }
 
   .make-notification{
@@ -103,12 +104,11 @@
     &:hover{
       background: @tertiary;
     }
+    margin-right: 5px;
   }
 
   .add{
     background-color: white;
-    float: right;
-
     &.add:before{
       content: '+';
     }
