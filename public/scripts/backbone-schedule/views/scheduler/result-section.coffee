@@ -4,7 +4,8 @@ define(['jQuery'
         'views/shark-view'
         'collections/result-sections'
         'views/scheduler/calendar-mini-section'
-        'text!tmpl/scheduler/results/result-section.ejs'], ($,_, Backbone, SharkView, ResultsSections, CalendarMiniSectionView, templateText) ->
+        'views/notifications/create-notification'
+        'text!tmpl/scheduler/results/result-section.ejs'], ($,_, Backbone, SharkView, ResultsSections, CalendarMiniSectionView, CreateNotificationView, templateText) ->
 
   class ResultSectionView extends SharkView
 
@@ -32,10 +33,11 @@ define(['jQuery'
         @renderSeats()
 
     events:
-      'click .expander' : 'expand'
-      'click .add' : 'add'
+      'click .expander'               : 'expand'
+      'click .add'                    : 'add'
       'mouseenter .results-section'   : 'hoverOn'
       'mouseleave .results-section'   : 'hoverOff'
+      'click .make-notification'      : 'newNotification'
 
 
     hoverOn: ->
@@ -138,11 +140,26 @@ define(['jQuery'
     renderSeats: ->
       seatString = @model.get('seatsAvailable') + '/' + @model.get('seatsTotal')
       @$el.find('.seats').html seatString
+      if @model.get('seatsAvailable') <= 0
+        @$el.find('.make-notification').show()
+      else
+        @$el.find('.make-notification').hide()
+
+
+    newNotification: (e) ->
+      e.stopPropagation()
+      $target = $ e.target
+      position = $target.offset()
+      position.top += $target.height() + 10
+      position.left += $target.width() + 10
+      @newNotificationView = new CreateNotificationView model: @model, position: position
+
 
     teardown: ->
       Shark.friendsList.unbind 'fetched', @updateFriendStatus
       Shark.friendsList.unbind 'unfetched', @updateFriendStatus
       @model.miniCalView?.teardown?()
+      @newNotificationView?.teardown?()
       super()
 
   ResultSectionView

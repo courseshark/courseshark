@@ -85,18 +85,31 @@
     margin-bottom: -15px;
   }
 
-  .add{
-    width: 30px;
-    height: 30px;
-    border: solid 1px @text-grey;
+
+  .make-notification,.add{
+    margin-top: 5px;
+    width: 29px;
+    height: 29px;
+    border: solid 1px #8A949E;
     border-radius: 3px;
-    background-color: white;
-    .background-gradient-linear(@white, @light-grey);
-    line-height: 20px;
     text-align: center;
     display: inline-block;
+    line-height: 20px;
+    float: right;
+  }
 
-    &:before{
+  .make-notification{
+    background-color: lighten(@tertiary, 20);
+    .background-gradient-linear(lighten(@tertiary, 20), @tertiary );
+    &:hover{
+      background: @tertiary;
+    }
+    margin-right: 5px;
+  }
+
+  .add{
+    background-color: white;
+    &.add:before{
       content: '+';
     }
 

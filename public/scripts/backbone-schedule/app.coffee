@@ -8,11 +8,12 @@ define(['jQuery'
         'collections/schools'
         'collections/terms'
         'collections/schedules'
+        'collections/notifications'
         'models/school'
         'models/term'
         'models/schedule'
         'models/session'
-        'models/settings'], ($, _, Backbone, Router, Friends, FriendInvites, Schools, Terms, Schedules, School, Term, Schedule, Session, UserSettings) ->
+        'models/settings'], ($, _, Backbone, Router, Friends, FriendInvites, Schools, Terms, Schedules, Notifications, School, Term, Schedule, Session, UserSettings) ->
 
   class Shark extends Backbone.Model
     #All the router's initialize function
@@ -33,6 +34,8 @@ define(['jQuery'
       @.session.on 'authenticated', ()=>
         @.config.fetch
           success: =>
+            @.friendInvites.fetch()
+            @.notifications.fetch()
             @.schedulesList.fetch()
             @.friendsList.fetch
               success: =>
@@ -55,6 +58,7 @@ define(['jQuery'
         @.friendsList.reset()
         @.friendInvites.reset()
         @.friendsList.trigger('unfetched')
+        @.notifications.reset()
         @.config.fetch()
         mixpanel.track 'unauthenticated', @.config.asObject()
 
@@ -63,6 +67,10 @@ define(['jQuery'
       @.friendsList = new Friends()
       @.friendInvites = new FriendInvites()
       @.sectionFriends = {}
+
+
+      #SeatWatcher notifications
+      @.notifications = new Notifications()
 
 
       # School and schedule information

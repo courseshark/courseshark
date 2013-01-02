@@ -55,6 +55,7 @@ define(['jQuery'
 
       'settings'          : 'settings'
 
+      'notifications'     : 'notifications'
 
       'l/:link'           : 'showLink'
       'l/:link/view'      : 'showLink'
@@ -73,28 +74,35 @@ define(['jQuery'
       # Tracking
       mixpanel.track_pageview Backbone.history.getFragment()
 
-      Shark.appView.show('home')
+      Shark.appView.show 'home'
 
     scheduler: () ->
       # Trakcing
       mixpanel.track_pageview Backbone.history.getFragment()
 
       @requireSchool ()=>
-        Shark.appView.show('scheduler')
+        Shark.appView.show 'scheduler'
         if Shark.schedule.get('sections').length > 0
           Shark.view.panelsView.showMaxCal()
         else
           Shark.view.panelsView.hideMaxCal()
 
+    notifications: ->
+      # Trakcing
+      mixpanel.track_pageview Backbone.history.getFragment()
+
+      Shark.appView.show 'notifications'
+
+
     settings: () ->
       # Tracking
       mixpanel.track_pageview Backbone.history.getFragment()
 
-      Shark.appView.show('settings')
+      Shark.appView.show 'settings'
 
     view: (id) ->
       @requireSchool ()=>
-        Shark.appView.show('scheduler')
+        Shark.appView.show 'scheduler'
         if id
           Shark.schedule.ensureScheduleLoaded id,
             success: ()->

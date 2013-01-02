@@ -1,0 +1,59 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+  <h3>SeatWatcher</h3>
+</div>
+<div class="modal-body">
+
+  <p class="lead">Get a notification via Email or SMS when a seat opens in this section</p>
+
+
+  <div class="row-fluid">
+    <div class="span6 text-right">
+      <strong>Section:</strong>
+    </div>
+    <div class="span18">
+      <input type="text" value="<%=section.get('name')%> <%=section.get('info')%>" class="input-block-level" disabled/>
+    </div>
+  </div>
+
+  <div class="row-fluid">
+    <div class="span6 text-right">
+      <strong>Email:</strong>
+    </div>
+    <div class="span18">
+      <input type="email" id="email" value="<%=user.get('email')%>" placeholder="Email" class="input-block-level"/>
+    </div>
+  </div>
+
+  <div class="row-fluid">
+    <div class="span6 text-right">
+      <strong>Phone:</strong>
+    </div>
+    <div class="span18">
+      <input type="text" id="phone" value="<%=user.get('phone')||''%>" placeholder="Cell Phone Number" class="input-block-level"/>
+      <p>
+        <small>
+          Standard carrier rates apply. Only <strong>1</strong> SMS will be sent if seats become available.
+        </small>
+      </p>
+    </div>
+  </div>
+
+
+  <% if (waitlist) {%>
+  <div class="row-fluid">
+    <div class="span6 text-right">
+    </div>
+    <div class="span18">
+      <label class="checkbox">
+        <input type="checkbox" value="" id="waitlist" />
+        Alert me when the waitlist changes too.
+      </label>
+    </div>
+  </div>
+  <% } %>
+</div>
+<div class="modal-footer">
+  <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+  <a href="#" id="create" class="btn btn-success">Watch Section</a>
+</div>
