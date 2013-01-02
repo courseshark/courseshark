@@ -34,6 +34,7 @@ define(['jQuery'
       @.session.on 'authenticated', ()=>
         @.config.fetch
           success: =>
+            @.friendInvites.fetch()
             @.notifications.fetch()
             @.schedulesList.fetch()
             @.friendsList.fetch

@@ -19,7 +19,6 @@ define(['jQuery'
       @templateLoggedIn = _.template(templateTextLoggedIn)
       @templateLoggedOut = _.template(templateTextLoggedOut)
 
-      @friendInvitesCount = 0
       # Render call
       @render()
 
@@ -28,16 +27,24 @@ define(['jQuery'
           user: Shark.session.get 'user'
           domain: CS.domain
         @$notificationCount = @$el.find('#notification-count')
-        @updateFriendNotifications()
+        @updateNotificationCount()
 
       Shark.session.on 'unauthenticated', ()=>
         @$el.html @templateLoggedOut
           domain: CS.domain
 
+      Shark.friendInvites.on 'reset', ()=>
+        @updateNotificationCount()
       Shark.friendInvites.on 'remove', ()=>
-        @updateFriendInvitesMarker()
+        @updateNotificationCount()
       Shark.friendInvites.on 'add', ()=>
-        @updateFriendInvitesMarker()
+        @updateNotificationCount()
+
+      Shark.notifications.on 'add', () =>
+        @updateNotificationCount()
+      Shark.notifications.on 'remove', () =>
+        @updateNotificationCount()
+
 
     events:
       'click #nav-login': 'login'
@@ -46,6 +53,7 @@ define(['jQuery'
       'click #menu-notifications': 'showNotifications'
       'click #menu-schedules': 'showScheduler'
 
+
     # Renders the actual view from the template
     render: ->
       if Shark.session.authenticated()
@@ -53,19 +61,24 @@ define(['jQuery'
           user: Shark.session.get 'user'
           domain: CS.domain
         @$notificationCount = @$el.find('#notification-count')
-        @updateFriendNotifications()
+        @updateNotificationCount()
       else
         @$el.html @templateLoggedOut
           domain: CS.domain
 
 
     updateNotificationCount: ->
-      notifications = @friendInvitesCount
+      seatwatchersReady = Shark.notifications.filter (notification) ->
+        section = notification.get('section')
+        return true if section.get('seatsAvailable') > 0
+        if notification.get('waitlist')
+          return true if section.get('waitSeatsAvailable') > 0
+      notifications = Shark.friendInvites.length + seatwatchersReady.length
       return if not @$notificationCount
       if notifications == 0
         @$notificationCount.hide()
       else
-        @$notificationCount.html(@friendInvitesCount).show()
+        @$notificationCount.html(notifications).show()
 
     goHome: ->
       Shark.router.navigate '/home', {trigger: true}
@@ -89,15 +102,7 @@ define(['jQuery'
       Shark.router.navigate '', trigger: true
       mixpanel.track 'Show Scheduler', Shark.config.asObject({from: 'Nav'})
 
-    updateFriendNotifications: ->
-      return if not Shark.session.authenticated()
-      Shark.friendInvites.fetch
-        success: () =>
-          @updateFriendInvitesMarker()
 
-    updateFriendInvitesMarker: ->
-      @friendInvitesCount = Shark.friendInvites.length
-      @updateNotificationCount()
 
   # Whatever is returned here will be usable by other modules
   MainNavView
