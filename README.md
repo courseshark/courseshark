@@ -55,6 +55,8 @@ The variables looked for in the scripts are:
 * `COURSESHARK_MIXPANEL_ACCESS_TOKEN` - Mixpanel API Token
 * `COURSESHARK_MIXPANEL_DEBUG` - Mixpanel Debug property
 * `COURSESHARK_MIXPANEL_TEST` - Mixpanel Config Test property
+*
+* `COURSESHARK_SEARCH_CACHE_EXPIRE` - How long to cache search results in the Redis store
 
 For default development and production values for the above variables contact [james](mailto://james@courseshark.com)
 
