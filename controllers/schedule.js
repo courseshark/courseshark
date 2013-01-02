@@ -231,7 +231,7 @@ exports = module.exports = function(app){
         if ( err ){
           returnNew()
         }
-        res.json(schedule);
+        res.json(foundSchedule);
       })
     }else{
       returnNew()
