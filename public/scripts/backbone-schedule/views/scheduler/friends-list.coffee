@@ -5,8 +5,9 @@ define(['jQuery'
         'collections/facebook-friends-results'
         'models/friend'
         'views/scheduler/friends-from-facebook'
+        'views/scheduler/friends-from-site'
         'views/scheduler/friend'
-        'text!tmpl/scheduler/friends/friends-list.ejs'], ($,_, Backbone, SharkView, FacebookFriendsResults, Friend, FriendsFromFacebookView, FriendView, templateText) ->
+        'text!tmpl/scheduler/friends/friends-list.ejs'], ($,_, Backbone, SharkView, FacebookFriendsResults, Friend, FriendsFromFacebookView, FriendsFromSiteView, FriendView, templateText) ->
 
 
   class FriendsListView extends SharkView
@@ -48,13 +49,10 @@ define(['jQuery'
         @$list.append friend.listView.el if @$list
 
 
-    addFriends: ->
-      console.log 'Adding friends. [NOT IMPLEMENTED]'
-      mixpanel.track 'Find Friends', Shark.config.asObject({through: "CourseShark"})
-
-    findAndAddFriends: ->
-      # Would actually open a dialog to find friends with
-      Shark.friendsList.add new Friend {firstName: "Bob", lastName: "Smith"}
+    findAndAddFriends: (e) ->
+      e.stopPropagation()
+      @friendPicker?.teardown()
+      @friendPicker = new FriendsFromSiteView target: @$el.find '#find-and-add-friends'
 
     addFirendFromFacebook: ->
       if Shark.session.authenticated()
