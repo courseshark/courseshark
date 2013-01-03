@@ -26,6 +26,7 @@ define(['jQuery'
           friend.listView = new FriendView model: friend
           @$list.append friend.listView.el if @$list
       Shark.friendsList.bind 'addComplete', (friend) =>
+        console.log 'here'
         friend.listView = new FriendView model: friend
         @$list.append friend.listView.el if @$list
       Shark.friendsList.bind 'remove', (friend) =>

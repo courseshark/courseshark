@@ -64,8 +64,10 @@ define(['jQuery'
 
 
       #Setup global Friends info
-      @.friendsList = new Friends()
       @.friendInvites = new FriendInvites()
+      @.friendsList = new Friends()
+      @.friendsList.on 'addComplete', =>
+        @.friendInvites.fetch()
       @.sectionFriends = {}
 
 

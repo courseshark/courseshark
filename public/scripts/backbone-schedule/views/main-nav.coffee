@@ -37,7 +37,7 @@ define(['jQuery'
         @updateNotificationCount()
       Shark.friendInvites.on 'remove', ()=>
         @updateNotificationCount()
-      Shark.friendInvites.on 'add', ()=>
+      Shark.friendInvites.on 'addComplete', ()=>
         @updateNotificationCount()
 
       Shark.notifications.on 'add', () =>
