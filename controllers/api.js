@@ -106,9 +106,11 @@ exports = module.exports = function(app){
     School.findOne({_id: req.params.id}, function(err, school){
       if ( school ){
         req.session.school = school;
+        res.json(true)
+      }else{
+        res.json(false)
       }
     })
-    res.json(true)
   })
 
   app.get('/api/terms/:id', function(req, res){
