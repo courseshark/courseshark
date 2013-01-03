@@ -107,6 +107,10 @@ exports = module.exports = function(app){
       if ( school ){
         req.session.school = school;
         res.json(true)
+        if ( req.loggedIn && !req.user.school ){
+          req.user.school = school.id;
+          req.user.save();
+        }
       }else{
         res.json(false)
       }
