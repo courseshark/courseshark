@@ -47,7 +47,6 @@ define(['jQuery'
             @add(newFriend, {silent: true})
             @genFriendsHashes()
             @trigger 'addComplete', newFriend
-            @fetch()
 
 
     removeFriend: (friend) ->
