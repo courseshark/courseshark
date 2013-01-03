@@ -86,6 +86,7 @@ mongoose.connection.on('open', function(){
 
 
     // Build
+    console.error('! Depreciating ./build.js in favor of Makefile')
     require('./build').build(app);
 
 

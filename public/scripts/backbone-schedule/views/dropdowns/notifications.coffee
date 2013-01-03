@@ -13,9 +13,9 @@ define(['jQuery'
       _.bindAll @
 
       if not $('#dropdown-view').length
-        @$el = $('<div></div>').attr('id', 'dropdown-view').appendTo 'body'
+        @$el = $('<div></div>').attr('id', 'dropdown-view').css(top:50).appendTo 'body'
       else
-        @$el = $('#dropdown-view')
+        @$el = $('#dropdown-view').attr('style', '')
 
       Shark.friendInvites.on 'add', @render
       Shark.friendInvites.on 'reset', @render

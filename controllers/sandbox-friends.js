@@ -62,4 +62,50 @@ exports = module.exports = function(app){
     })
   })
 
+
+
+  // Search API
+
+  app.get('/sandbox/friends/search/:name', function(req, res){
+    var query, re;
+    if (!req.loggedIn){return res.json({query: query, error: 'not logged in'});}
+
+    // Turn the query into a regular expression
+    query = req.params.name.replace(/[^a-z0-9\s@]/gi, '').replace(/\\/, '\\').replace(/[^\\]\./,'\\.')
+    if ( query.length < 3 ){res.json({query: query, users:[]});}
+
+    req.user.getFriends(function(err, friends){
+      var alreadyFriends = friends.map(function(f){return f.id})
+      if (query.indexOf(' ') !== -1){
+        re = new RegExp(query.replace(/\s/, '|'), 'gi')
+        search = {  school: req.user.school
+                  , $and:[
+                        {firstName:re}
+                      , {lastName:re}
+                    ]
+                  , _id: {$nin: alreadyFriends}
+                }
+      }else{
+        re = new RegExp(query.replace(/\s/, '|'), 'gi')
+        search = {  school: req.user.school
+                  , $or:[
+                        {firstName:re}
+                      , {lastName:re}
+                      , {email:re}
+                    ]
+                  , _id: {$nin: alreadyFriends}
+                }
+      }
+      // Find the users who arnt friends, at the school, and match the regex
+      User.find(search, function(err, users){
+        if (users){
+          users = users.map(function(u){return {_id:u.id, name:u.name, email:((u.email&&u.email.replace(/@.+/gi,''))||''), avatar:u.avatar}})
+          return res.json({query: query, users: users})
+        }
+        res.json({query: query, users: [], error: err})
+      })
+    })
+  })
+
+
 }
