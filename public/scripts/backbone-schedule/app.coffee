@@ -90,6 +90,7 @@ define(['jQuery'
       # Set the school if it has been passed down
       if CS.school
         @.school = @.schools.get CS.school
+        @trigger 'setSchool'
         term = new Term @.school.get 'currentTerm'
         @.terms.add term
         @.term = term
@@ -113,6 +114,7 @@ define(['jQuery'
       $.ajax
         url: "/api/schools/#{school.id}"
         type: 'PUT'
+      @trigger 'setSchool'
 
     configBasedSetup: =>
       if @.config.can('useWebsockets') and not @.sockets
