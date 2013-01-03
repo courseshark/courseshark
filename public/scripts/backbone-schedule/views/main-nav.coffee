@@ -25,15 +25,10 @@ define(['jQuery'
       @render()
 
       Shark.session.on 'authenticated', ()=>
-        @$el.html @templateLoggedIn
-          user: Shark.session.get 'user'
-          domain: CS.domain
-        @$notificationCount = @$el.find('#notification-count')
-        @updateNotificationCount()
+        @render()
 
       Shark.session.on 'unauthenticated', ()=>
-        @$el.html @templateLoggedOut
-          domain: CS.domain
+        @render()
 
       Shark.friendInvites.on 'reset', ()=>
         @updateNotificationCount()
@@ -71,8 +66,7 @@ define(['jQuery'
       else
         @$el.html @templateLoggedOut
           domain: CS.domain
-      if Shark.school?.id
-        @updateSchool()
+      @updateSchool()
 
 
     updateSchool: ->
