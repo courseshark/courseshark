@@ -66,10 +66,11 @@ define(['jQuery'
       #Setup global Friends info
       @.friendInvites = new FriendInvites()
       @.friendsList = new Friends()
-      @.friendsList.on 'addComplete', =>
-        @.friendInvites.fetch()
       @.sectionFriends = {}
 
+      # Watch for adding friends and fetch invites
+      @.friendsList.on 'addComplete', =>
+        @.friendInvites.fetch()
 
       #SeatWatcher notifications
       @.notifications = new Notifications()
