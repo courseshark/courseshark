@@ -110,6 +110,9 @@ define(['jQuery'
           @.term = @.terms.get school.get('currentTerm').id
           @.schedule.set 'term', @.term
           next()
+      $.ajax
+        url: "/api/schools/#{school.id}"
+        type: 'PUT'
 
     configBasedSetup: =>
       if @.config.can('useWebsockets') and not @.sockets

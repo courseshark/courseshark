@@ -102,6 +102,17 @@ exports = module.exports = function(app){
     })
   })
 
+  app.put('/api/schools/:id', function(req, res){
+    School.findOne({_id: req.params.id}, function(err, school){
+      if ( school ){
+        req.session.school = school;
+        res.json(true)
+      }else{
+        res.json(false)
+      }
+    })
+  })
+
   app.get('/api/terms/:id', function(req, res){
     var schoolId = req.params.id
     Term.find({school: schoolId}, function(err, terms){
