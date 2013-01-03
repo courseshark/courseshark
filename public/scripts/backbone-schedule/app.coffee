@@ -40,7 +40,7 @@ define(['jQuery'
             @.friendsList.fetch
               success: =>
                 @.friendsList.trigger('fetched')
-            if @.school != @.session.get('user').get('school')
+            if not @.school
               @setSchool @.session.get('user').get('school')
             # Mixpanel tracking id user
             user = @.session.get 'user'
