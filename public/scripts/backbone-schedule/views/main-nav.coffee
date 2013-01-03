@@ -5,8 +5,10 @@ define(['jQuery'
   'views/shark-view'
   'views/dropdowns/account'
   'views/dropdowns/notifications'
+  'views/modals/school-picker'
+  'text!tmpl/app/nav/main-nav-school.ejs'
   'text!tmpl/app/nav/main-nav-loggedIn.ejs'
-  'text!tmpl/app/nav/main-nav-loggedOut.ejs'], ($, _, Backbone, SharkView, AccountDropdownView, NotificationsDropdownView, templateTextLoggedIn, templateTextLoggedOut) ->
+  'text!tmpl/app/nav/main-nav-loggedOut.ejs'], ($, _, Backbone, SharkView, AccountDropdownView, NotificationsDropdownView, SchoolPickerView, templateTextSchool, templateTextLoggedIn, templateTextLoggedOut) ->
 
 
   class MainNavView extends SharkView
@@ -16,22 +18,17 @@ define(['jQuery'
     initialize: ->
       _.bindAll @
       # Compile the template for future use
-      @templateLoggedIn = _.template(templateTextLoggedIn)
-      @templateLoggedOut = _.template(templateTextLoggedOut)
-
+      @templateLoggedIn = _.template templateTextLoggedIn
+      @templateLoggedOut = _.template templateTextLoggedOut
+      @schoolInfoTemplate = _.template templateTextSchool
       # Render call
       @render()
 
       Shark.session.on 'authenticated', ()=>
-        @$el.html @templateLoggedIn
-          user: Shark.session.get 'user'
-          domain: CS.domain
-        @$notificationCount = @$el.find('#notification-count')
-        @updateNotificationCount()
+        @render()
 
       Shark.session.on 'unauthenticated', ()=>
-        @$el.html @templateLoggedOut
-          domain: CS.domain
+        @render()
 
       Shark.friendInvites.on 'reset', ()=>
         @updateNotificationCount()
@@ -45,6 +42,9 @@ define(['jQuery'
       Shark.notifications.on 'remove', () =>
         @updateNotificationCount()
 
+      Shark.on 'setSchool', =>
+        @updateSchool()
+
 
     events:
       'click #nav-login': 'login'
@@ -52,6 +52,7 @@ define(['jQuery'
       'click .user-icon': 'showUserMenu'
       'click #menu-notifications': 'showNotifications'
       'click #menu-schedules': 'showScheduler'
+      'click .main-nav-school .logo': 'changeSchool'
 
 
     # Renders the actual view from the template
@@ -65,7 +66,13 @@ define(['jQuery'
       else
         @$el.html @templateLoggedOut
           domain: CS.domain
+      @updateSchool()
 
+
+    updateSchool: ->
+      $container = @$el.find('.main-nav-school')
+      return $container.empty() if not Shark.school.id
+      $container.html @schoolInfoTemplate school: Shark.school
 
     updateNotificationCount: ->
       seatwatchersReady = Shark.notifications.filter (notification) ->
@@ -102,7 +109,9 @@ define(['jQuery'
       Shark.router.navigate '', trigger: true
       mixpanel.track 'Show Scheduler', Shark.config.asObject({from: 'Nav'})
 
-
+    changeSchool: ->
+      mixpanel.track 'Shown School Picker', Shark.config.asObject manual: true
+      @picker = new SchoolPickerView next: ()->return
 
   # Whatever is returned here will be usable by other modules
   MainNavView
