@@ -1,0 +1,21 @@
+<div class="setting-name">Invite Emails</div>
+<div class="setting-form">
+  <div class="form-horizontal">
+    <div class="control-group">
+      <label for="friend_email_yes">
+        <input type="radio" name="canEmailFriendRequests" value="true" id="friend_email_yes" <%=emailOnInvite ? 'checked' : ''%>>
+        Yes, send me an email when users request me as a friend.
+      </label>
+      <label for="friend_email_no">
+        <input type="radio" name="canEmailFriendRequests" value="false" id="friend_email_no" <%=emailOnInvite ? '' : 'checked'%>>
+        No, I would not like to receive emails when users request me as a friend.
+      </label>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <button class="btn btn-mini cancel">Cancel</button>
+        <button class="btn btn-mini btn-primary submit">Update</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="setting-name">Recruiters</div>
+<div class="setting-form">
+  <div class="form-horizontal">
+    <div class="control-group">
+      <label for="shareWithRecruiters">
+        <input type="radio" name="shareWithRecruiters" value="true" id="shareWithRecruiters" <%=shareWithRecruiters ? 'checked' : ''%>>
+        Yes, allow recruiters to search for me.
+      </label>
+      <label for="shareWithRecruiters_no">
+        <input type="radio" name="shareWithRecruiters" value="false" id="shareWithRecruiters_no" <%=shareWithRecruiters ? '' : 'checked'%>>
+        No, I would prefer to not share my information with recruiters
+      </label>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <button class="btn btn-mini cancel">Cancel</button>
+        <button class="btn btn-mini btn-primary submit">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
