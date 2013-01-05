@@ -7,7 +7,7 @@
 
     <div class="span4 user-settings-overview">
       <div class="avatar">
-        <img src="<%=user.get('avatar')%>?type=large" style="width: 100%"/>
+        <img src="<%=user.get('avatar').replace(/_normal/, '')%>?type=large" style="width: 100%"/>
       </div>
       <div class="username">
         <%=user.get('name')%>
