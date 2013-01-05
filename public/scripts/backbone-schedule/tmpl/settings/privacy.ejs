@@ -1,1 +1,50 @@
-<h1>Privacy Settings</h1>
+<div class="row-fluid">
+  <div class="span24">
+    <h2>Privacy Settings</h2>
+  </div>
+</div>
+
+<div class="row-fluid">
+  <ul class="settings-list">
+    <li class="setting-item" id="edit-friends-email">
+      <a class="setting-item-link clearfix">
+        <div class="setting-name">Invite Emails</div>
+        <span class="editicon">
+          <i class="icon icon-pencil"></i>Edit
+        </span>
+        <div class="setting-value">
+          <%=user.get('canEmailFriendRequests') ? "Yes, send me an email when users request me as a friend." : "No, I would not like to receive emails when users request me as a friend."%>
+        </div>
+      </a>
+      <div class="setting-content"></div>
+    </li>
+  </ul>
+</div>
+
+
+
+
+<div class="row-fluid">
+  <div class="span24">
+    <h3>Recruiter Settings</h3>
+    <p>Employers are looking to find skilled students and recent grads. Information on your major, year, school, and the classes you have taken and are taking help them greatly in finding interns, co-ops, and employees.</p>
+  </div>
+</div>
+
+<div class="row-fluid">
+  <ul class="settings-list">
+    <li class="setting-item" id="edit-recruiter-search">
+      <a class="setting-item-link clearfix">
+        <div class="setting-name">Recruiters</div>
+        <span class="editicon">
+          <i class="icon icon-pencil"></i>Edit
+        </span>
+        <div class="setting-value">
+          <%=user.get('shareWithRecruiters') ? "Allow recruiters to search for me" : "Keep my information private"%>
+        </div>
+      </a>
+      <div class="setting-content"></div>
+    </li>
+  </ul>
+
+</div>

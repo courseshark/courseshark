@@ -26,7 +26,10 @@ define(['jQuery'
     render: ->
       @$el.html $ @template user: Shark.session.get('user')
       @$subViewContainer = @$el.find('#settings-container')
-      @renderSubview new GeneralSettingsView
+      if Backbone.history.getFragment().match /privacy/
+        @showPrivacySettings()
+      else
+        @showGeneralSettings()
       @ # Return self when done
 
     events:
@@ -42,9 +45,15 @@ define(['jQuery'
       Shark.router.navigate '', trigger: true
 
     showGeneralSettings: ->
+      @$el.find('.settings-nav li a').removeClass('chosen')
+      @$el.find('#general-settings').addClass('chosen')
+      Shark.router.navigate '/settings/general'
       @renderSubview new GeneralSettingsView
 
     showPrivacySettings: ->
+      @$el.find('.settings-nav li a').removeClass('chosen')
+      @$el.find('#privacy-settings').addClass('chosen')
+      Shark.router.navigate '/settings/privacy'
       @renderSubview new PrivacySettingsView
 
     teardown: ->

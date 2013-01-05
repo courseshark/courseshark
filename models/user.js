@@ -106,7 +106,7 @@ UserSchema.virtual('avatar').get(function(){
   if ( this.oauthInfo ){
     if ( this.oauthInfo.facebook ){
       return 'https://graph.facebook.com/'+this.oauthInfo.facebook.id+'/picture'
-    } else if ( this.oauthInfo.twitter ){
+    } else if ( this.oauthInfo.twitter && !this.oauthInfo.twitter.default_profile_image ){
       return this.oauthInfo.twitter.profile_image_url_https;
     } else if ( this.oauthInfo.linkedin ){
       return this.oauthInfo.linkedin.pictureUrl;
@@ -120,7 +120,7 @@ UserSchema.virtual('avatarFrom').get(function(){
   if ( this.oauthInfo ){
     if ( this.oauthInfo.facebook ){
       return 'Facebook'
-    } else if ( this.oauthInfo.twitter ){
+    } else if ( this.oauthInfo.twitter && !this.oauthInfo.twitter.default_profile_image ){
       return 'Twitter'
     } else if ( this.oauthInfo.linkedin ){
       return 'LinkedIn'

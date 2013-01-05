@@ -22,37 +22,37 @@ exports = module.exports = function(app){
       res.json({error: 'Not Authorized'});
       return
     }
-    if ( req.body.updateName ){
+    else if ( req.body.updateName ){
       var nameSettings = req.body.updateName;
       req.user.firstName = nameSettings.firstName;
       req.user.lastName = nameSettings.lastName;
       req.user.save(function(err){
         if (err){ res.json({success: false, error: err}); return; }
-        res.json({success: true})
+        res.json({success: 1})
       })
     }
-    if ( req.body.updateEmail ){
+    else if ( req.body.updateEmail ){
       req.user.email = req.body.updateEmail.email
       req.user.save(function(err){
         if (err){ res.json({success: false, error: err}); return; }
-        res.json({success: true})
+        res.json({success: 1})
       })
     }
-    if ( req.body.changePassword ){
+    else if ( req.body.changePassword ){
       var newPasswordSettings = req.body.changePassword
       if ((req.user.isPasswordless()||req.user.authenticate(newPasswordSettings.current)) && newPasswordSettings.password){
         req.user.setPassword(newPasswordSettings.password).save(function(err){
           if ( err ){
             res.json({success: false, error: err})
           }else{
-            res.json({success: true})
+            res.json({success: 1})
           }
         })
       }else{
         res.json({error: "Incorrect Current Password"})
       }
     }
-    if ( req.body.changeSchool ){
+    else if ( req.body.changeSchool ){
       School.findById(req.body.changeSchool.school, function(err, school){
         if ( err || !school ){
           res.json({error: err||'No School found'});
@@ -63,11 +63,35 @@ exports = module.exports = function(app){
             if(err){
               res.json({error: err});
             }else{
-              res.json({success: true})
+              res.json({success: 1})
             }
           })
         }
       })
+    }
+    else if ( req.body.updateEmailOnInvite ){
+      req.user.canEmailFriendRequests = (req.body.updateEmailOnInvite.email=='true')
+      req.user.save(function(err){
+        if(err){
+          res.json({error: err});
+        }else{
+          res.json({success: 1})
+        }
+      })
+    }
+    else if ( req.body.updateShareWithRecruiters ){
+      req.user.shareWithRecruiters = (req.body.updateShareWithRecruiters.value=='true')
+      console.log(req.body.updateShareWithRecruiters.value)
+      req.user.save(function(err){
+        if(err){
+          res.json({error: err});
+        }else{
+          res.json({success: 1})
+        }
+      })
+    }
+    else {
+      res.json(false);
     }
   })
 
@@ -75,7 +99,7 @@ exports = module.exports = function(app){
     if ( !req.loggedIn ){
       res.json(false)
     }else{
-      user = userLib.cleanUserObject(req.user.toObject());
+      user = userLib.cleanUserObject(req.user.toObject(), true);
       School.findById(user.school, function(err, school){
         user.school = school;
         if (req.user.hashPassword){
@@ -166,7 +190,7 @@ exports = module.exports = function(app){
       note.hidden = true;
       note.deleted = true;
       note.save(function(err){
-        res.json(true);
+        res.json(1);
       })
     })
   })
@@ -179,7 +203,7 @@ exports = module.exports = function(app){
       , FIFTEEN_MINUTES = 1000 * 60 * 15
       , emitter = new EventEmitter()
     if ( !sections.length ){
-      res.json({})
+      res.json(0)
     }else{
       // Setup the emitter
       emitter.count   = _len;
