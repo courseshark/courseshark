@@ -97,7 +97,7 @@ exports = module.exports = function(app){
                 }
       }
       // Find the users who arnt friends, at the school, and match the regex
-      User.find(search, function(err, users){
+      User.find(search).limit(7).exec(function(err, users){
         if (users){
           users = users.map(function(u){return {_id:u.id, name:u.name, email:((u.email&&u.email.replace(/@.+/gi,''))||''), avatar:u.avatar}})
           return res.json({query: query, users: users})
