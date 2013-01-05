@@ -45,7 +45,7 @@ define(['jQuery'
           @setLive(success)
 
     setLive: (success) ->
-      Shark.term = @.get 'term'
+      Shark.term = @.get('term') or Shark.term
       # Set the sections
       Shark.schedule.get('sections').reset()
       @.get('sections').each (section) ->

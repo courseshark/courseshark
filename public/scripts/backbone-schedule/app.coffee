@@ -94,6 +94,11 @@ define(['jQuery'
         term = new Term @.school.get 'currentTerm'
         @.terms.add term
         @.term = term
+        @.terms.fetch
+          success: ()=>
+            @.term = @.terms.get school.get('currentTerm').id
+            @.schedule.set 'term', @.term
+            next()
 
 
       #Start the Auth session and the router

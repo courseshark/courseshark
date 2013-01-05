@@ -20,6 +20,8 @@ define(['jQuery'
       # Compile the template for future use
       @template = _.template(templateText)
 
+      Shark.schedule.on 'change', @changeTerm
+
       # Render call
       @render();
 
@@ -59,9 +61,14 @@ define(['jQuery'
     register: ->
       @registerView.show()
 
+
+    changeTerm: ->
+      @$el.find('#schedule-term').html Shark.term.get 'name'
+
     # Renders the actual view from the template
     render: ->
       @$el.html @template()
+      @changeTerm()
       @loadView = new LoadView()
       @saveView = new SaveView()
       @newView  = new NewView()
