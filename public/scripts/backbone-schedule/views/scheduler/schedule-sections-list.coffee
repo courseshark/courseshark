@@ -21,7 +21,7 @@ define(['jQuery'
 
       # Delete a removed section from the list
       Shark.schedule.get('sections').bind 'remove', (section) =>
-        @subviews[section.id].teardown()
+        @subviews[section.id]?.teardown()
         delete @subviews[section.id]
         section.resultView?.reset_add_button()
 
