@@ -54,6 +54,7 @@ define(['jQuery'
       'view'              : 'view'
 
       'settings'          : 'settings'
+      'settings/:sub'     : 'settings'
 
       'notifications'     : 'notifications'
 
