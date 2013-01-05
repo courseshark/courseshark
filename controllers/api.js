@@ -28,14 +28,14 @@ exports = module.exports = function(app){
       req.user.lastName = nameSettings.lastName;
       req.user.save(function(err){
         if (err){ res.json({success: false, error: err}); return; }
-        res.json({success: true})
+        res.json({success: 1})
       })
     }
     else if ( req.body.updateEmail ){
       req.user.email = req.body.updateEmail.email
       req.user.save(function(err){
         if (err){ res.json({success: false, error: err}); return; }
-        res.json({success: true})
+        res.json({success: 1})
       })
     }
     else if ( req.body.changePassword ){
@@ -45,7 +45,7 @@ exports = module.exports = function(app){
           if ( err ){
             res.json({success: false, error: err})
           }else{
-            res.json({success: true})
+            res.json({success: 1})
           }
         })
       }else{
@@ -63,7 +63,7 @@ exports = module.exports = function(app){
             if(err){
               res.json({error: err});
             }else{
-              res.json({success: true})
+              res.json({success: 1})
             }
           })
         }
@@ -71,12 +71,22 @@ exports = module.exports = function(app){
     }
     else if ( req.body.updateEmailOnInvite ){
       req.user.canEmailFriendRequests = (req.body.updateEmailOnInvite.email=='true')
-      console.log(req.user.canEmailFriendRequests)
       req.user.save(function(err){
         if(err){
           res.json({error: err});
         }else{
-          res.json({success: true})
+          res.json({success: 1})
+        }
+      })
+    }
+    else if ( req.body.updateShareWithRecruiters ){
+      req.user.shareWithRecruiters = (req.body.updateShareWithRecruiters.value=='true')
+      console.log(req.body.updateShareWithRecruiters.value)
+      req.user.save(function(err){
+        if(err){
+          res.json({error: err});
+        }else{
+          res.json({success: 1})
         }
       })
     }
@@ -180,7 +190,7 @@ exports = module.exports = function(app){
       note.hidden = true;
       note.deleted = true;
       note.save(function(err){
-        res.json(true);
+        res.json(1);
       })
     })
   })
@@ -193,7 +203,7 @@ exports = module.exports = function(app){
       , FIFTEEN_MINUTES = 1000 * 60 * 15
       , emitter = new EventEmitter()
     if ( !sections.length ){
-      res.json({})
+      res.json(0)
     }else{
       // Setup the emitter
       emitter.count   = _len;

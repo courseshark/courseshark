@@ -3,8 +3,9 @@ define(['jQuery'
         'Backbone'
         'views/shark-view'
         'views/settings/privacy/friends-email'
+        'views/settings/privacy/recruiters'
         'models/user'
-        'text!tmpl/settings/privacy.ejs'], ($, _, Backbone, SharkView, FriendsEmailView, User, templateText) ->
+        'text!tmpl/settings/privacy.ejs'], ($, _, Backbone, SharkView, FriendsEmailView, RecruiterShareView, User, templateText) ->
 
 
   class PrivacySettingsView extends SharkView
@@ -16,6 +17,7 @@ define(['jQuery'
       @template = _.template(templateText)
       @render()
       Shark.session.get('user').on 'change:canEmailFriendRequests', @render
+      Shark.session.get('user').on 'change:shareWithRecruiters', @render
 
     render: ->
       @$el.html $ @template user: Shark.session.get('user')
@@ -23,6 +25,7 @@ define(['jQuery'
 
     events:
       'click #edit-friends-email' : 'showEditFriendsEmail'
+      'click #edit-recruiter-search': 'showEditRecruiters'
 
     closeSubview: ->
       @$link.show()
@@ -56,8 +59,14 @@ define(['jQuery'
       @showEditSubview $el, FriendsEmailView
 
 
+    showEditRecruiters: ->
+      $el = @$el.find('#edit-recruiter-search')
+      @showEditSubview $el, RecruiterShareView
+
     teardown: ->
       Shark.session.get('user')?.off 'change:canEmailFriendRequests', @render
+      Shark.session.get('user')?.on 'change:shareWithRecruiters', @render
+
       super()
 
   PrivacySettingsView
