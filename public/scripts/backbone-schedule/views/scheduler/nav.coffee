@@ -63,7 +63,8 @@ define(['jQuery'
 
 
     changeTerm: ->
-      @$el.find('#schedule-term').html Shark.term.get 'name'
+      term = Shark.term?.get('name').split(' ').map((s)->s.substr(0,1).toUpperCase()+s.substr(1)).join(' ')
+      @$el.find('#schedule-term').html term or '--'
 
     # Renders the actual view from the template
     render: ->
