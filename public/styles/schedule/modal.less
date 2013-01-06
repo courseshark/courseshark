@@ -1,9 +1,15 @@
+@modal-border-radius: 3px;
+
 .modal-backdrop{
   background: @backdrop;
   opacity: 0.5;
 }
 
 .modal{
+  -webkit-border-radius: @modal-border-radius;
+  -moz-border-radius: @modal-border-radius;
+  border-radius: @modal-border-radius;
+
   .btn-success {
     color: white;
     .background-gradient-linear(@primary, darken(@primary, 10%));
@@ -12,6 +18,9 @@
     }
   }
 
+  .btn{
+    border-radius: 2px;
+  }
   .modal-header{
     border-bottom: 1px solid @primary;
   }
@@ -22,6 +31,10 @@
       font-size: 1.25em;
       font-weight: bold;
     }
+  }
+
+  .modal-footer{
+    border-radius: 0 0 @modal-border-radius @modal-border-radius;
   }
 }
 
