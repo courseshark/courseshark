@@ -3,15 +3,9 @@
 (function(env){
   var school = ''
     , term = ''
-    , config_file = require('yaml-config')
-    , config = config_file.readConfig(__dirname + '/config.yaml')
     , mongoose = require('mongoose')
 
-  if ( config.db.uri.indexOf(',') == -1 ){
-    mongoose.connect(config.db.uri, function(err){if(err){console.log('mongoose-single:',err)}})
-  }else{
-    mongoose.connectSet(config.db.uri, function(err){if(err){console.log('mongoose-rs:',err)}})
-  }
+  mongoose.connect(process.env.COURSESHARK_MONGODB_URI, function(err){if(err){console.log('mongoose-single:',err)}})
 
   if ( process.argv.length < 4 ){
     console.log('Error: usage is `node crawl.js [school.abbr] [term.number] <cache>`')
