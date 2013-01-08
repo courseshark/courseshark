@@ -107,13 +107,16 @@ exports = module.exports = function(app){
 	app.get('/search', requireSchool, function(req, res){
 		var _process = process
 			,	startTime = _process.hrtime()
-			,	school = req.school._id||req.school
+			,	school = typeof (_a=(req.school._id||req.school))==='string'?ObjectId(_a):_a
 			,	emitter = new EventEmitter()
 			, searchResults = {departments: [], courses: [], sections: []}
 			, term = ObjectId(req.query.t) || req.school.currentTerm?req.school.currentTerm._id:null
 			,	query = {query:{school:school}, string: req.query.q, term: term}
 			, redisKey = 'search:'+school+':'+term+':'+req.query.q.replace(/s/g, '-')
 
+		if(typeof school === 'string'){
+			school = ObjectId(school)
+		}
 
 		// Done Function
 		function done(){
@@ -128,7 +131,7 @@ exports = module.exports = function(app){
 		}
 
 		redisConnection.get(redisKey, function(err, result) {
-			if (result){
+			if (result=='REMOVEME'){
 				searchResults = JSON.parse(result)
 				searchResults['fromCache'] = true
 				done()
