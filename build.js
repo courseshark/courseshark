@@ -57,7 +57,7 @@ function compileCSS(app){
   }
   parser.parse(rawCss, function (e, tree) {
       output = tree.toCSS({ compress: true }); // Minify CSS output
-      fs.writeFile(__dirname+'/public/styles/'+app.settings.revision+'-courseshark.css', output, function(err) {
+      fs.writeFile(__dirname+'/public/styles/built-courseshark.css', output, function(err) {
           if(err) { console.log(err) }
       });
   });
@@ -97,7 +97,7 @@ function compileJS(app){
   ast = pro.ast_mangle(ast); // get a new AST with mangled names
   ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
   var final_code = pro.gen_code(ast); // compressed code here
-  fs.writeFile(__dirname+'/public/scripts/'+app.settings.revision+'-courseshark.js', final_code, function(err) {
+  fs.writeFile(__dirname+'/public/scripts/built-courseshark.js', final_code, function(err) {
       if(err) { console.log(err) }
   });
 }

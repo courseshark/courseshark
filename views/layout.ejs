@@ -47,7 +47,8 @@
 	<%- body %>
 	<%- partial('foot.ejs') %>
 	<% if ( typeof noJS == 'undefined' || !noJS ){ %>
-	<%- partial('js.ejs', {loggedIn:loggedIn, user:user, revision:revision}) %>
+	<%- partial('js.ejs', {loggedIn:loggedIn, user:user}) %>
+	<script>$('#nav-login').on('click', function(){openDialog('/login')});</script>
 	<%}%>
 </body>
 </html>
