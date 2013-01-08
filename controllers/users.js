@@ -150,7 +150,7 @@ exports = module.exports = function(app){
 
   // Link or login from facebook accessToken
   app.get('/auth/facebook-from-token', function(req, res){
-    var FB = require('fb');
+    var FB = require('fb`');
     FB.options({accessToken: req.query.accessToken});
     FB.api('me', function(fbRes){
       if ( req.session.auth && req.user ){
