@@ -13,6 +13,6 @@
 	<%- partial('nav.ejs', {domain: domain, loggedIn:loggedIn, user:user}) %>
 	<%- body %>
 	<%- partial('includes/foot.ejs') %>
-	<%- partial('js.ejs', {loggedIn:loggedIn, user:user}) %>
+	<%- partial('js.ejs', {loggedIn:loggedIn, user:user, revision: revision}) %>
 </body>
 </html>
