@@ -47,7 +47,7 @@
 	<%- body %>
 	<%- partial('foot.ejs') %>
 	<% if ( typeof noJS == 'undefined' || !noJS ){ %>
-	<%- partial('js.ejs', {loggedIn:loggedIn, user:user}) %>
+	<%- partial('js.ejs', {loggedIn:loggedIn, user:user, revision:revision}) %>
 	<%}%>
 </body>
 </html>
