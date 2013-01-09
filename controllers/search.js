@@ -131,7 +131,7 @@ exports = module.exports = function(app){
 		}
 
 		redisConnection.get(redisKey, function(err, result) {
-			if (result=='REMOVEME'){
+			if (result){
 				searchResults = JSON.parse(result)
 				searchResults['fromCache'] = true
 				done()
