@@ -30,90 +30,23 @@ redisConnection.on("error", function (err) {
 
 exports = module.exports = function(app){
 
-	app.get('/build-search', function(req, res){
-		var startTime = process.hrtime()
-			,	emitter = new EventEmitter()
-		emitter.total = 3
-		emitter.on('decrement', function(d){
-			if(d === 'department'){
-				emitter.department_count--;
-			}else if(d === 'course'){
-				emitter.course_count--;
-			}else if(d === 'section'){
-				emitter.section_count--;
-			}else{
-				emitter.total--;
-			}
-			console.log('d', emitter.department_count, emitter.course_count, emitter.section_count);
-			if (emitter.department_count+emitter.course_count+emitter.section_count === 0 || emitter.total === 0){
-				var totalTime = process.hrtime(startTime)
-					,	time = totalTime[0]+(totalTime[1]/1e9)
-				res.json({done: true, time:time})
-			}
-		})
-
-		Department.find({_tokens:{$exists: false}}, function(err, allDepartments){
-			emitter.department_count = allDepartments.length;
-			_.each(allDepartments, function(department){
-				department._tokens = natural.PorterStemmer.tokenizeAndStem(department.abbr + " " + department.name)
-				department.save(function(err){
-					emitter.emit('decrement', 'department');
-				});
-			})
-			emitter.emit('decrement', 'total');
-		})
-
-		Course.find({_tokens:{$exists: false}}).populate('department').exec(function(err, allCourses){
-			emitter.course_count = allCourses.length;
-			_.each(allCourses, function(course){
-				course._tokens = natural.PorterStemmer.tokenizeAndStem([course.department.abbr,course.number,course.name,course.description].join(' ').trim())
-				course.departmentAbbr = course.department.abbr;
-				Term.find({_id: {$in: course.terms}}).exec(function(err, terms){
-					for(var i=0;i<terms.length;i++){
-						course.school = terms[i].school;
-					}
-					course.save(function(err){
-						emitter.emit('decrement', 'course');
-					});
-				})
-			})
-			emitter.emit('decrement', 'total');
-		})
-
-		Section.find({_tokens:{$exists: false}}).exec(function(err, allSections){
-			emitter.section_count = allSections.length;
-			_.each(allSections, function(section){
-				section._tokens = natural.PorterStemmer.tokenizeAndStem([section.instructor,section.description].join(' ').trim())
-				section.save(function(err){
-					emitter.emit('decrement', 'section');
-				});
-			})
-			emitter.emit('decrement', 'total');
-		})
-
-		// Make sure sections have schools associated
-		Term.find({}).exec(function(err, terms){
-			console.log("found ", terms.length, "term")
-			_.each(terms, function(term){
-				Section.update({term: term}, {$set: {school: term.school}}, {multi: true}, function(err, num){
-					console.log("Updated", num, "sections setting school to", term.school, "for term", term.name, err)
-				})
-			})
-		})
-
-	})
-
-
 	app.get('/search', requireSchool, function(req, res){
 		var _process = process
 			,	startTime = _process.hrtime()
 			,	school = typeof (_a=(req.school._id||req.school))==='string'?ObjectId(_a):_a
 			,	emitter = new EventEmitter()
 			, searchResults = {departments: [], courses: [], sections: []}
-			, term = ObjectId(req.query.t) || req.school.currentTerm?req.school.currentTerm._id:null
+			, term = new ObjectId(req.query.t)
 			,	query = {query:{school:school}, string: req.query.q, term: term}
 			, redisKey = 'search:'+school+':'+term+':'+req.query.q.replace(/s/g, '-')
 
+
+		// Fallback to school's current term, but should be sent in request
+		if (!term){
+			term = req.school.currentTerm
+		}
+
+		// Make sure school is ObjectId type
 		if(typeof school === 'string'){
 			school = ObjectId(school)
 		}
@@ -130,7 +63,7 @@ exports = module.exports = function(app){
 			return done();
 		}
 
-		redisConnection.get(redisKey, function(err, result) {
+		redisConnection.get(redisKey, (function(query, term, emitter, school){return function(err, result) {
 			if (result){
 				searchResults = JSON.parse(result)
 				searchResults['fromCache'] = true
@@ -177,7 +110,7 @@ exports = module.exports = function(app){
 					}
 				});
 			}
-		})// End Redis Cache Test
+		}})(query, term, emitter, school))// End Redis Cache Test
 
 	})
 
