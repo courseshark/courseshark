@@ -1,3 +1,30 @@
+#results-frame{
+  .loading-content{
+    color: @grey;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 300;
+    display: none;
+    margin: 100px 0 0 0;
+  }
+  &.loading{
+    .loading-content{
+      display:block;
+    }
+    .result-content{
+      display: none;
+    }
+  }
+}
+
+
+
+
+
+
+
+
 #course-results{
   margin-top: -15px;
   padding-top: 10px;
@@ -10,11 +37,6 @@
 
   -webkit-filter: blur(0px);
   filter: blur(5px);
-
-  &.loading{
-    -webkit-filter: blur(3px);
-    filter: blur(5px);
-  }
 }
 
 .results-course, .results-section{
@@ -76,6 +98,7 @@
   }
 
   .seats{
+    text-align: right;
   }
 
   .section-id{
