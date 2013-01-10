@@ -64,10 +64,8 @@ define(['jQuery'
       @searchResults.get('sections').each (section) =>
         if section.get('rank') >= 0.3
           view = new ResultsSectionView model: section
-          console.log view, section
           @subviews.push view
           @$sections.append view.render().el
-          console.log view.render().el
 
 
     teardown: ->
