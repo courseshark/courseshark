@@ -62,16 +62,17 @@ define(['jQuery'
 
 			# Helper function to convert time to just minutes
 			toMinutes = (time) ->
-				time.getHours()*60+time.getMinutes()+(time.getSeconds()/60.0)
+				time.getUTCHours()*60+time.getUTCMinutes()+(time.getUTCSeconds()/60.0)
 
 			return if not section.get 'timeslots'
 			# Loops though all timeslots -> day arrays -> days, adding them to the allDays array
 			for timeslot in section.get 'timeslots'
 				do (timeslot) =>
-					startTime = new Date timeslot.startTime
-					endTime = new Date timeslot.endTime
-					if toMinutes(startTime) < @startMinute or toMinutes(endTime) > @endMinute
-						section.set 'visible', false
+					startMinutes = toMinutes new Date timeslot.startTime
+					endMinutes = toMinutes new Date timeslot.endTime
+					return if (startMinutes | endMinutes) is 0
+					if startMinutes < @startMinute or endMinutes > @endMinute
+						section.set('visible', false)
 
 		viewChange: (values) ->
 			@updateText(values)
