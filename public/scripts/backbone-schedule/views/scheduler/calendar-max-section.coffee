@@ -32,8 +32,8 @@ define(['jQuery'
 						height_offset = -10.0
 						top_offset = (slot.startTime.getUTCHours() - 6 + (slot.startTime.getUTCMinutes()/60.0)) * scale + offset
 						height = Math.floor(Math.max(1, (Math.abs( slot.endTime.getUTCMinutes() - slot.startTime.getUTCMinutes() )/60.0 + slot.endTime.getUTCHours() - slot.startTime.getUTCHours()) * scale + offset)) + height_offset
-						startHourAdjusted = (slot.startTime.getUTCHours()%12 is 0) ? 12 : (slot.startTime.getUTCHours()%12)
-						endHourAdjusted = (slot.endTime.getUTCHours()%12 is 0) ? 12 : slot.endTime.getUTCHours()%12
+						startHourAdjusted = if (slot.startTime.getUTCHours()%12 is 0) then 12 else (slot.startTime.getUTCHours()%12)
+						endHourAdjusted = if (slot.endTime.getUTCHours()%12 is 0) then 12 else slot.endTime.getUTCHours()%12
 
 						$el = $ @template
 							section: @model.attributes
@@ -47,13 +47,17 @@ define(['jQuery'
 						@$els.push $el
 						($ '.wk-event-wrapper[data-day="'+day+'"]').append $el
 
+						startTime = "#{startHourAdjusted}:#{slot.startTime.getUTCMinutes()}"
+						endTime   = "#{endHourAdjusted}:#{slot.endTime.getUTCMinutes()}"
+						timespan  = "#{startTime} - #{endTime}"
+
 						popover_content = @popoverTemplate
 							credits: @model.get('credits')
 							section: @model.get('info')
 							instructor: @model.get('instructor')
 							crn: @model.get('number')
 							seats: (@model.get('steatsAvailable') || "0") + "/" + @model.get('seatsTotal')
-							time: slot.startTime.toLocaleTimeString() + " - " + slot.endTime.toLocaleTimeString()
+							time: timespan
 
 						$el.popover
 							title: @model.get('name')
