@@ -69,9 +69,10 @@ define(['jQuery'
 
 
     render: ->
+      departmentAbbr = @model.get('departmentAbbr') or @model.get('sections').at(0)?.get('name').match(/^([a-z]+)\s/i)?[1]
       params =
         name: @model.get 'name'
-        departmentAbbr: @model.get('departmentAbbr')
+        departmentAbbr: departmentAbbr.toUpperCase()
         number: @model.get 'number'
       @$el.html @template params
 
