@@ -1,20 +1,15 @@
 .navbar-fixed-top{
   .navbar-inner.navbar-main{
-    @from: @nav-bar;
-    @to: darken(@from, 5%);
-    background-color: @from;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@{from}', endColorstr='@{to}');
-    background-image: -webkit-gradient(linear, left top, left bottom, from(@from), to(@to));
-    background-image: -moz-linear-gradient(top, @from, @to);
-    background-image: -ms-linear-gradient(top, @from, @to);
-    background-image: -o-linear-gradient(top, @from, @to);
-    background-image: linear-gradient(top, @from, @to);
+    background-color: @nav-bar;
+    background-image: none;
+    filter: none;
 
     border-bottom: 3px solid @primary;
 
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
+
     .brand{
       cursor: pointer;
       color: @offWhite;
