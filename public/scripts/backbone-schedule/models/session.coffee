@@ -37,20 +37,19 @@ define(['jQuery'
             callback()
 
 
-    facebookAuth: (accessToken, next=(()->return;)) ->
+    facebookAuth: (accessToken, next=(()->return;)) =>
       $.ajax
         url: '/auth/facebook-from-token'
         data: accessToken: accessToken
         success: (res) =>
           if res.error
-            console.error res.error
-            return
+            return console.error res.error
           if !@authenticated()
-            @_authorizeFromRes res, next
+            return @_authorizeFromRes res, next
           if res.duplicate
-            @resolveDuplicate res.duplicate, next
+            return @resolveDuplicate res.duplicate, next
           else
-            next()
+            return next()
 
     logout: ->
       $.ajax

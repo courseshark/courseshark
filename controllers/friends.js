@@ -22,7 +22,7 @@ exports = module.exports = function(app){
     if (req.session.auth.facebook) {
       var buffer = (new (require('events').EventEmitter)())
         , sessionFB = req.session.auth.facebook
-        , FB = require('FB')
+        , FB = require('fb')
       FB.options({accessToken: sessionFB.accessToken});
       FB.api('me/friends', { fields: ['id', 'first_name', 'last_name', 'name', 'installed'] }, function (fbRes) {
         if(!fbRes || fbRes.error) {
