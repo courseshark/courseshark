@@ -30,26 +30,28 @@ redisConnection.on("error", function (err) {
 
 exports = module.exports = function(app){
 
-	app.get('/search', requireSchool, function(req, res){
+	app.get('/search', wantSchool, function(req, res){
 		var _process = process
 			,	startTime = _process.hrtime()
-			,	school = typeof (_a=(req.school._id||req.school))==='string'?ObjectId(_a):_a
+			,	school = typeof (_a=((req.school&&(req.school._id||req.school))||null))==='string'?ObjectId(_a):_a
 			,	emitter = new EventEmitter()
 			, searchResults = {departments: [], courses: [], sections: []}
 			, term = new ObjectId(req.query.t)
 			,	query = {query:{school:school}, string: req.query.q, term: term}
-			, redisKey = 'search:'+school+':'+term+':'+req.query.q.replace(/s/g, '-')
+			, redisKey = 'search:'+school+':'+term+':'+(req.query.q||'').replace(/s/g, '-')
 
+
+		// Make sure school is ObjectId type
+		if( !school ){
+			searchResults['error'] = "No School"
+			return done();
+		}
 
 		// Fallback to school's current term, but should be sent in request
-		if (!term){
+		if ( !term ){
 			term = req.school.currentTerm
 		}
 
-		// Make sure school is ObjectId type
-		if(typeof school === 'string'){
-			school = ObjectId(school)
-		}
 
 		// Done Function
 		function done(){
