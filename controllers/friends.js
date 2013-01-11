@@ -135,7 +135,7 @@ exports = module.exports = function(app){
         if ( !req.user.canEmailFriendRequests || !friend.email ){
           return;
         }
-        mandrill = require('mandrill');
+        var mandrill = require('mandrill');
         mandrill.messages_send_template({
             template_name:'friend_invite'
           , template_content:''
