@@ -111,8 +111,11 @@ UserSchema.virtual('avatar').get(function(){
     } else if ( this.oauthInfo.linkedin ){
       return this.oauthInfo.linkedin.pictureUrl;
     }
+  }
+  if ( this.email ){
+    return 'https://secure.gravatar.com/avatar/'+crypto.MD5(this.email)+'?s=75&d=identicon';
   } else {
-    return 'https://secure.gravatar.com/avatar/'+crypto.MD5(this.email||'')+'?s=75&d=identicon';
+    return 'http://www.gravatar.com/avatar/00000000000000000000000000000000';
   }
 })
 
