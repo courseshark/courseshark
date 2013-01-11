@@ -55,22 +55,27 @@ define(['jQuery'
       @friendPicker?.teardown()
       @friendPicker = new FriendsFromSiteView target: @$el.find '#find-and-add-friends'
 
-    addFirendFromFacebook: ->
-      if Shark.session.authenticated()
-        $.ajax url: '/friends/find-from-facebook', success: (d) =>
-          if not d.error
-            friends = d
-            mixpanel.track 'Find Friends', Shark.config.asObject({through: "Facebook"})
-            @friendPicker = new FriendsFromFacebookView(model: new FacebookFriendsResults(friends))
-            @friendPicker.show()
-          else if d.error is "No Facebook token exists for user"
-            @addFirendFromFacebookLogin()
-          else if d.error?.code is 190
-            @addFirendFromFacebookLogin()
-      else
-        @addFirendFromFacebookLogin()
+    addFirendFromFacebook: =>
 
-    addFirendFromFacebookLogin: ->
+      @friendPicker?.teardown()
+      @friendPicker = new FriendsFromFacebookView model: new FacebookFriendsResults
+      @friendPicker.show()
+
+      (_.debounce () =>
+        if Shark.session.authenticated()
+          $.ajax url: '/friends/find-from-facebook', success: (d) =>
+            if not d.error
+              @friendPicker.model.add d
+              mixpanel.track 'Find Friends', Shark.config.asObject({through: "Facebook"})
+            else if d.error is "No Facebook token exists for user"
+              @addFirendFromFacebookLogin()
+            else if d.error?.code is 190
+              @addFirendFromFacebookLogin()
+        else
+          @addFirendFromFacebookLogin()
+      , 200)()
+
+    addFirendFromFacebookLogin: =>
       FB.getLoginStatus (response) =>
         if response.status is 'connected'
           # We want to link the account so call facebookAuth()
@@ -78,9 +83,10 @@ define(['jQuery'
         else
           # Either not logged in or not authorized
           # both solvable with a call to login
-          FB.login (loginResponse) ->
+          FB.login (loginResponse) =>
             if loginResponse.authResponse
               Shark.session.facebookAuth loginResponse.authResponse.accessToken, @addFirendFromFacebook
+
     toggleRemoveMode: ->
       if not @removeMode
         @$list.addClass('remove-mode')
