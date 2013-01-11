@@ -38,7 +38,7 @@ exports = module.exports = function(app){
 			, searchResults = {departments: [], courses: [], sections: []}
 			, term = new ObjectId(req.query.t)
 			,	query = {query:{school:school}, string: req.query.q, term: term}
-			, redisKey = 'search:'+school+':'+term+':'+req.query.q.replace(/s/g, '-')
+			, redisKey = 'search:'+school+':'+term+':'+(req.query.q||'').replace(/s/g, '-')
 
 
 		// Make sure school is ObjectId type
