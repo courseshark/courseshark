@@ -159,7 +159,10 @@ UserSchema.method('isDuplicate', function(userObj){
       }
     }
     // Facebook email check
-    if ( this.email === otherInfo.facebook.email || thisInfo.facebook.email === userObj.email ){
+    if ( otherInfo.facebook && otherInfo.facebook.email == this.email){
+      return true
+    }
+    else if ( thisInfo.facebook && thisInfo.facebook.email == userObj.email){
       return true;
     }
   } // end Facebook checks
@@ -173,8 +176,12 @@ UserSchema.method('isDuplicate', function(userObj){
         return true;
       }
     }
+    // LinkedIn email check
     // Facebook email check
-    if ( this.email === otherInfo.linkedin.email || thisInfo.linkedin.email === userObj.email ){
+    if ( otherInfo.linkedin && otherInfo.linkedin.email == this.email){
+      return true
+    }
+    else if ( thisInfo.linkedin && thisInfo.linkedin.email == userObj.email){
       return true;
     }
   } // end LinkedIn checks

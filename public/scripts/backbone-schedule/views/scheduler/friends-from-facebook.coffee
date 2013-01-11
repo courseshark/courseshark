@@ -3,7 +3,8 @@ define(['jQuery'
         'Backbone'
         'views/shark-view'
         'models/friend'
-        'text!tmpl/scheduler/friends/friends-from-facebook.ejs'], ($, _, Backbone, SharkView, Friend, templateText) ->
+        'text!tmpl/scheduler/friends/facebook-friend.ejs'
+        'text!tmpl/scheduler/friends/friends-from-facebook.ejs'], ($, _, Backbone, SharkView, Friend, friendTemplateText, templateText) ->
 
   class FriendsFromFacebookView extends SharkView
 
@@ -19,11 +20,18 @@ define(['jQuery'
 
     initialize: ->
       _.bindAll @
-      @template = _.template(templateText)
+      @template = _.template templateText
+      @friendTemplate = _.template friendTemplateText
+      @model.on 'add', @addFriendToView
       @render()
 
+
     render: ->
-      @$el.html(@template(list: @model)).appendTo('body')
+      @$el.html(@template()).appendTo('body')
+
+    addFriendToView: (friend) ->
+      @$el.find('.media-list .loading').hide()
+      @$el.find('.media-list').append @friendTemplate user: friend
 
     addFriends: ->
       @hide()
@@ -57,7 +65,8 @@ define(['jQuery'
         @teardown()
 
     teardown: ->
-      super()
+      @hide()
+      super
 
   FriendsFromFacebookView
 )
