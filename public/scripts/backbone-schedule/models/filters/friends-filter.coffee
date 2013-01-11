@@ -9,7 +9,7 @@ define(['jQuery'
 		defaults:
 			name: "Friends"
 			horizontal: false
-			options: ['friends','no friends']
+			options: ['sections with friends','sections without friends']
 			values: [true, true]
 
 		initialize: ->
