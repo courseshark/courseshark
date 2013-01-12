@@ -50,8 +50,9 @@ define(['jQuery'
         @$list.append friend.listView.el if @$list
 
 
-    findAndAddFriends: (e) ->
-      e.stopPropagation()
+    findAndAddFriends: (e) =>
+      return Shark.session.login(@findAndAddFriends) if not Shark.session.authenticated()
+      e?.stopPropagation()
       @friendPicker?.teardown()
       @friendPicker = new FriendsFromSiteView target: @$el.find '#find-and-add-friends'
 
