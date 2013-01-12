@@ -4,10 +4,11 @@ define(['jQuery'
         'views/shark-view'
         'views/settings/general/name'
         'views/settings/general/email'
+        'views/settings/general/phone'
         'views/settings/general/password'
         'views/settings/general/school'
         'models/user'
-        'text!tmpl/settings/general.ejs'], ($, _, Backbone, SharkView, NameEditView, EmailEditView, PasswordEditView, SchoolEditView, User, templateText) ->
+        'text!tmpl/settings/general.ejs'], ($, _, Backbone, SharkView, NameEditView, EmailEditView, PhoneEditView, PasswordEditView, SchoolEditView, User, templateText) ->
 
 
   class GeneralSettingsView extends SharkView
@@ -20,6 +21,7 @@ define(['jQuery'
       @render()
       Shark.session.get('user').on 'change:name', @render
       Shark.session.get('user').on 'change:email', @render
+      Shark.session.get('user').on 'change:phone', @render
       Shark.session.get('user').on 'setPassword', @render
       Shark.session.get('user').on 'change:school', @render
 
@@ -30,6 +32,7 @@ define(['jQuery'
     events:
       'click #edit-name' : 'showEditName'
       'click #edit-email' : 'showEditEmail'
+      'click #edit-phone' : 'showEditPhone'
       'click #edit-password' : 'showEditPassword'
       'click #edit-school' : 'showEditSchool'
 
@@ -68,6 +71,10 @@ define(['jQuery'
       $el = @$el.find('#edit-email')
       @showEditSubview $el, EmailEditView
 
+    showEditPhone: ->
+      $el = @$el.find('#edit-phone')
+      @showEditSubview $el, PhoneEditView
+
     showEditPassword: ->
       $el = @$el.find('#edit-password')
       @showEditSubview $el, PasswordEditView
@@ -79,6 +86,7 @@ define(['jQuery'
     teardown: ->
       Shark.session.get('user')?.off 'change:name', @render
       Shark.session.get('user')?.off 'change:email', @render
+      Shark.session.get('user')?.off 'change:phone', @render
       Shark.session.get('user')?.off 'setPassword', @render
       Shark.session.get('user')?.off 'change:school', @render
       super()

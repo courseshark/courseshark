@@ -31,6 +31,7 @@ define(['jQuery'
 
     render: ->
       @$el.html @template()
+      @$el.find('input').focus()
       @show()
       @adjust()
 
