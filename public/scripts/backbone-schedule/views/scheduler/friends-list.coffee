@@ -31,6 +31,10 @@ define(['jQuery'
         @$list.append friend.listView.el if @$list
       Shark.friendsList.bind 'remove', (friend) =>
         friend.listView?.teardown?()
+      Shark.session.bind 'authenticated', ()=>
+        @$el.find('#remove-init-button').show()
+      Shark.session.bind 'unauthenticated', ()=>
+        @$el.find('#remove-init-button').hide()
 
       # Initial render call
       @render()
