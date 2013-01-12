@@ -17,6 +17,11 @@ define(['jQuery'
 
 			@$els = []
 
+			@model.on 'change', =>
+				_.each @$els, ($el) ->
+					$el.remove()
+				@render()
+
 			# Render call
 			@render()
 
@@ -47,8 +52,11 @@ define(['jQuery'
 						@$els.push $el
 						($ '.wk-event-wrapper[data-day="'+day+'"]').append $el
 
-						startTime = "#{startHourAdjusted}:#{slot.startTime.getUTCMinutes()}"
-						endTime   = "#{endHourAdjusted}:#{slot.endTime.getUTCMinutes()}"
+						startMinutes = if slot.startTime.getUTCMinutes() < 10 then '0'+slot.startTime.getUTCMinutes() else slot.startTime.getUTCMinutes()
+						endMinutes   = if slot.endTime.getUTCMinutes() < 10   then '0'+slot.endTime.getUTCMinutes()   else slot.endTime.getUTCMinutes()
+
+						startTime = "#{startHourAdjusted}:#{startMinutes}"
+						endTime   = "#{endHourAdjusted}:#{endMinutes}"
 						timespan  = "#{startTime} - #{endTime}"
 
 						popover_content = @popoverTemplate
@@ -56,14 +64,15 @@ define(['jQuery'
 							section: @model.get('info')
 							instructor: @model.get('instructor')
 							crn: @model.get('number')
-							seats: (@model.get('steatsAvailable') || "0") + "/" + @model.get('seatsTotal')
+							seats: (@model.get('seatsAvailable') || "0") + "/" + @model.get('seatsTotal')
 							time: timespan
+							location: slot.location
 
 						$el.popover
 							title: @model.get('name')
 							html: true
 							content: popover_content
-							placement: 'top'
+							placement: if slot.startTime.getUTCHours() < 10 then 'bottom' else 'top'
 							trigger: 'hover'
 							animation: false
 
