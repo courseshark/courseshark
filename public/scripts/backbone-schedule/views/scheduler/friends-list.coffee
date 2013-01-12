@@ -26,11 +26,14 @@ define(['jQuery'
           friend.listView = new FriendView model: friend
           @$list.append friend.listView.el if @$list
       Shark.friendsList.bind 'addComplete', (friend) =>
-        console.log 'here'
         friend.listView = new FriendView model: friend
         @$list.append friend.listView.el if @$list
       Shark.friendsList.bind 'remove', (friend) =>
         friend.listView?.teardown?()
+      Shark.session.bind 'authenticated', ()=>
+        @$el.find('#remove-init-button').show()
+      Shark.session.bind 'unauthenticated', ()=>
+        @$el.find('#remove-init-button').hide()
 
       # Initial render call
       @render()
@@ -50,8 +53,9 @@ define(['jQuery'
         @$list.append friend.listView.el if @$list
 
 
-    findAndAddFriends: (e) ->
-      e.stopPropagation()
+    findAndAddFriends: (e) =>
+      return Shark.session.login(@findAndAddFriends) if not Shark.session.authenticated()
+      e?.stopPropagation()
       @friendPicker?.teardown()
       @friendPicker = new FriendsFromSiteView target: @$el.find '#find-and-add-friends'
 

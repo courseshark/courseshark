@@ -27,14 +27,21 @@ exports = module.exports = function(app){
       req.user.firstName = nameSettings.firstName;
       req.user.lastName = nameSettings.lastName;
       req.user.save(function(err){
-        if (err){ res.json({success: false, error: err}); return; }
+        if (err){ res.json({success: 0, error: err}); return; }
         res.json({success: 1})
       })
     }
     else if ( req.body.updateEmail ){
       req.user.email = req.body.updateEmail.email
       req.user.save(function(err){
-        if (err){ res.json({success: false, error: err}); return; }
+        if (err){ res.json({success: 0, error: err}); return; }
+        res.json({success: 1})
+      })
+    }
+    else if ( req.body.updatePhone ){
+      req.user.phone = req.body.updatePhone.value
+      req.user.save(function(err){
+        if (err){ res.json({success: 0, error: err}); return; }
         res.json({success: 1})
       })
     }
@@ -43,7 +50,7 @@ exports = module.exports = function(app){
       if ((req.user.isPasswordless()||req.user.authenticate(newPasswordSettings.current)) && newPasswordSettings.password){
         req.user.setPassword(newPasswordSettings.password).save(function(err){
           if ( err ){
-            res.json({success: false, error: err})
+            res.json({success: 0, error: err})
           }else{
             res.json({success: 1})
           }

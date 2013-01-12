@@ -65,7 +65,6 @@
   padding:10px;
   &.remove-mode{
     background: fadeout(@dark-red, 70%);
-
     .friend-block{
       -webkit-transition: none;
       -moz-transition: none;
@@ -73,18 +72,13 @@
       -o-transition: none;
       transition: none;
       &.chosen{
-        width: 14.285714285%;
         border: 1px solid @red;
-        margin: -1px;
         .options{
           display: none;
         }
         .avatar{
-          -webkit-filter: blur(4px) invert(100%);
-          -moz-filter: blur(4px) invert(100%);
-          -ms-filter: blur(4px) invert(100%);
-          filter: blur(4px) invert(100%);
-          position: relative;
+          width: 100%;
+          margin: 0;
         }
       }
     }

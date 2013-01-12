@@ -14,23 +14,30 @@ exports.boot = module.exports.boot = function (app){
 UserSchema = new Schema({
     email: {type: String, index: true }
   , hashPassword: {type: String, index: true}
-  , firstName: {type: String, min: 1 }
+  , firstName: String
   , lastName: String
+  , phone: String
+
   , school : { type: Schema.ObjectId, ref: 'School' }
   , major:{ type: Schema.ObjectId, ref: 'Department' }
   , year:{ type: Number }
-  , shareWithRecruiters: { type: Boolean }
+
+  , shareWithRecruiters: { type: Boolean, 'default': true }
   , canEmailFriendRequests: { type: Boolean, 'default': true }
   , autoAcceptFriends: { type: Boolean, 'default': false }
+
   , friends: [{ type: Schema.ObjectId, ref: 'User' }]
+
   , loginCount: { type: Number, 'default': 0 }
   , lastLogin: { type: Date, 'default': Date.now }
   , referedFrom: { type: String }
   , created: { type: Date, 'default': Date.now }
   , modified: { type: Date, 'default': Date.now }
+
   , oauth: { type: String }
   , oauthInfo: {type: {}}
   , admin: { type: Boolean, 'default': false }
+
   , _schedule: { type: {} }
 });
 
