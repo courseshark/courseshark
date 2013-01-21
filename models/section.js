@@ -22,10 +22,13 @@ SectionSchema = new Schema({
   , course: { type: Schema.ObjectId, index: true, ref: 'Course' }
   , department: { type: Schema.ObjectId, index: true, ref: 'Department' }
   , term: { type: Schema.ObjectId, index: true, ref: 'Term' }
+  , session: {type: String}  // used to denote short / half semester sessions
   , school: { type: Schema.ObjectId, index: true, ref: 'School' }
+  , campusSet: [{type: String}]
   , instructor: { type: String }
   , parent: { type: Schema.ObjectId, ref: 'Section' }
   , credits: { type: String }
+  , categorySet: [{stype: String}]
   , seatsAvailable: { type: Schema.Types.Mixed }
   , seatsTotal: { type: Schema.Types.Mixed, 'default': 0 }
   , waitSeatsAvailable: { type: Number }
