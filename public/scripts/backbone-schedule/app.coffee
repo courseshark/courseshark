@@ -106,15 +106,16 @@ define(['jQuery'
 
     setSchool: (school, next=(()->return)) ->
       @.school = school
-      @.terms.fetch
-        success: ()=>
-          @.term = @.terms.get school.get('currentTerm').id
-          @.schedule.set 'term', @.term
-          next()
+      @trigger 'setSchool'
       $.ajax
         url: "/api/schools/#{school.id}"
         type: 'PUT'
-      @trigger 'setSchool'
+        success: () =>
+          @.terms.fetch
+            success: ()=>
+              @.term = @.terms.get school.get('currentTerm').id
+              @.schedule.set 'term', @.term
+              next()
 
     configBasedSetup: =>
       if @.config.can('useWebsockets') and not @.sockets

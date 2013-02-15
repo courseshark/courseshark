@@ -40,6 +40,14 @@ define(['jQuery'
 						startHourAdjusted = if (slot.startTime.getUTCHours()%12 is 0) then 12 else (slot.startTime.getUTCHours()%12)
 						endHourAdjusted = if (slot.endTime.getUTCHours()%12 is 0) then 12 else slot.endTime.getUTCHours()%12
 
+						startMinutes = if slot.startTime.getUTCMinutes() < 10 then '0'+slot.startTime.getUTCMinutes() else slot.startTime.getUTCMinutes()
+						endMinutes   = if slot.endTime.getUTCMinutes() < 10   then '0'+slot.endTime.getUTCMinutes()   else slot.endTime.getUTCMinutes()
+
+						startTime = "#{startHourAdjusted}:#{startMinutes}"
+						endTime   = "#{endHourAdjusted}:#{endMinutes}"
+						timespan  = "#{startTime} - #{endTime}"
+
+
 						$el = $ @template
 							section: @model.attributes
 							color: @model.color()
@@ -48,16 +56,10 @@ define(['jQuery'
 							top_offset: top_offset
 							startHourAdjusted: startHourAdjusted
 							endHourAdjusted: startHourAdjusted
+							time: timespan
 
 						@$els.push $el
 						($ '.wk-event-wrapper[data-day="'+day+'"]').append $el
-
-						startMinutes = if slot.startTime.getUTCMinutes() < 10 then '0'+slot.startTime.getUTCMinutes() else slot.startTime.getUTCMinutes()
-						endMinutes   = if slot.endTime.getUTCMinutes() < 10   then '0'+slot.endTime.getUTCMinutes()   else slot.endTime.getUTCMinutes()
-
-						startTime = "#{startHourAdjusted}:#{startMinutes}"
-						endTime   = "#{endHourAdjusted}:#{endMinutes}"
-						timespan  = "#{startTime} - #{endTime}"
 
 						popover_content = @popoverTemplate
 							credits: @model.get('credits')
