@@ -32,6 +32,14 @@ define(['jQuery'
 			# Reference the filter call function globally
 			Shark.filterResults = @filterResults
 
+			Shark.searchResults.on 'search:error', (msg) =>
+				if msg is "Must select a term"
+					if Shark.schedule.get('term')
+						Shark.term = Shark.schedule.get('term')
+					else if Shark.terms
+						Shark.term = Shark.terms.get Shark.school.get('currentTerm').id
+					@.preformSearch()
+
 		events:
 			'click #search-send': 'preformSearch'
 			'keyup #search-field': 'searchTypeing'
