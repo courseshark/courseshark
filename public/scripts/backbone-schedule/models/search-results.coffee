@@ -25,11 +25,22 @@ define(['jQuery'
     	#
     	# apply any search filters that must be sent to server
     	#
-      @trigger 'search:error', 'Must enter a query' if not $searchField.val()
+
+      if not $searchField.val()
+        return @trigger 'search:error', 'Must enter a query'
+      if not Shark.term
+        return @trigger 'search:error', 'Must select a term'
+
       @trigger 'search:start'
       @url = '/search?q='+$searchField.val()+'&t='+Shark.term.get('_id')
       @set 'query', $searchField.val()
       @fetch success: () =>
+        if @.error
+          if @.get('error') is "No School"
+            Shark.router.requireSchool () =>
+              # Call self again once we have the school
+              @.search($searchField)
+
         # Tracking
         mixpanel.track 'Search', Shark.config.asObject({
             query: @.get('query')
