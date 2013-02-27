@@ -68,7 +68,7 @@ production:
   update:
     time: "15"
   db:
-    uri: "mongodb://courseshark:espress0!@localhost/courseshark"
+    uri: "mongodb://courseshark:espress0!@linus.mongohq.com:10030/courseshark"
   facebook:
     appId: "182622275092530"
     appSecret: "885311f00c458526586a17ede8b3e57b"
