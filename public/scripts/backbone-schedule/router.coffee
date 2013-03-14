@@ -64,7 +64,7 @@ define(['jQuery'
       ':schedule'         : 'loadSchedule'
       ':schedule/view'    : 'view'
 
-    requireSchool: (next=(()->return))->
+    requireSchool: (next=(()->return)) =>
       if !Shark.school.id
         mixpanel.track 'Shown School Picker', Shark.config.asObject()
         @picker = new SchoolPickerView {next: next}

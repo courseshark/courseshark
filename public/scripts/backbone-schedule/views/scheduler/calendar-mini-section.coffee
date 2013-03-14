@@ -43,15 +43,17 @@ define(['jQuery'
 
           # Create some easy to reference adjusted time objects
           startTime =
-            minutes: Math.round(slot.startTime.getUTCMinutes()/15)*0.25
+            minutes: Math.round(slot.startTime.getUTCMinutes()/15) * 0.25
             hours: slot.startTime.getUTCHours() - 6
           endTime =
-            minutes: Math.round(slot.endTime.getUTCMinutes()/15)*0.25
+            minutes: Math.round(slot.endTime.getUTCMinutes()/15) * 0.25
             hours: slot.endTime.getUTCHours() - 6
 
+
           # Calculate the offset and height
-          topOffset =  startTime.minutes + startTime.hours * scale
-          height = ((endTime.hours+endTime.minutes) - (startTime.hours+startTime.minutes)) * scale
+          topOffset    =  (startTime.minutes + startTime.hours ) * scale
+          bottomOffset =  (endTime.minutes   + endTime.hours   ) * scale
+          height = bottomOffset - topOffset
 
           # For each day draw this timeslot
           _.each slot.days, (day) =>
