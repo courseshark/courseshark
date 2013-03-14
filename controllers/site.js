@@ -11,6 +11,10 @@ exports = module.exports = function(app){
     }
   })
 
+  app.get('/now', requireAdmin, function(req, res){
+    res.json(req.online)
+  })
+
   // About pages
   app.get('/about', function(req, res){
     if ( req.headers['x-requested-with'] === 'XMLHttpRequest' ){
