@@ -2,9 +2,10 @@ define(['jQuery'
         'Underscore'
         'Backbone'
         'models/model'
+        'models/course'
         'collections/result-courses'
         'collections/result-course-sections'
-        'collections/result-sections'], ($,_, Backbone, SharkModel, ResultCourses, ResultCourseSections, ResultSections) ->
+        'collections/result-sections'], ($,_, Backbone, SharkModel, Course, ResultCourses, ResultCourseSections, ResultSections) ->
 
   class SearchResults extends SharkModel
 
@@ -85,6 +86,8 @@ define(['jQuery'
       response.sections = new ResultSections response.sections.map (s) ->
         # Set the rank
         s.object.rank=s.rank
+        # Set the course property to a course object
+        s.object.course = new Course s.object.course
         # Return the object
         s.object
       response

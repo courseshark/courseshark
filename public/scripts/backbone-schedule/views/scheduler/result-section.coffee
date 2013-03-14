@@ -96,7 +96,11 @@ define(['jQuery'
 
 
     render: ->
+      departmentAbbr = @model.get('course').get('departmentAbbr') or @model.get('name').match(/^([a-z]+)\s/i)?[1]
       @$el.html @template
+        departmentAbbr: departmentAbbr.toUpperCase()
+        number: @model.get('course').get('number')
+        name: @model.get('course').get('name')
         prof: @model.get('instructor') || "No Professor Set"
         section_id: @model.get('number') + ': Section ' + @model.get('info')
         hours: @model.get('credits')
@@ -104,7 +108,20 @@ define(['jQuery'
       @$el.hide() if not @model.get 'visible'
       @$addButton = @$el.find('.add')
 
-      @renderSeats()
+      if Shark.config.can('useWebsockets')
+        Shark.sockets.seats.emit('update', @model.id)
+      else
+        sectionIds = @model.id
+        $.ajax
+          url: '/api/seats/'+sectionIds
+          success: (res) =>
+            for info in res
+              section = @.id
+              for prop, val of info
+                if prop isnt 'id'
+                  section.set prop, val
+              section.trigger 'seatsUpdated'
+
 
       # Color/bold the correct day letters
       color = @model.color()

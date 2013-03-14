@@ -96,7 +96,7 @@ exports = module.exports = function(app){
 				sectionQuery = _.clone(query);
 				sectionQuery.query = _.clone(query.query);
 				if ( req.query.t ) { sectionQuery.query.term = ObjectId(req.query.t) }
-				searcher.searchCollection(Section, sectionQuery, {returnObjects: true}, function(err, results){
+				searcher.searchCollection(Section, sectionQuery, {returnObjects: true, pullCourse:true}, function(err, results){
 					searchResults.sections = results;
 					emitter.emit('-');
 				})
