@@ -8,27 +8,35 @@
 . ~/.env_vars
 
 # Install requirements
-npm install
+npm install;
 
+# Build the deployment scripts
+echo "Running $(tput setaf 2)'make'$(tput sgr0) to build scripts";
+make > /dev/null
+
+# Run based on environment
 if [ "development" == "$NODE_ENV" ]
 then
   echo "";
-  echo "Starting :: $(tput setaf 4)Dev Environment";
+  echo "Starting :: $(tput setaf 4)Dev Environment$(tput sgr0)";
   echo "$(tput setaf 2)  * nodemon watching scripts";
-  echo "  * no node version check (running $(tput sgr0)$(tput setaf 3)$(node -v;)$(tput setaf 2))";
+  echo "  * no node version check (running $(tput sgr0)$(tput setaf 3)$(node -v;)$(tput setaf 2))$(tput sgr0)";
   echo "";
   nodemon ./app.js;
   exit;
 else
   if [ "admin" == "$COURSESHARK_MODE" ]
   then
+    echo "Starting :: $(tput setaf 4)Admin Environment$(tput sgr0)";
     # Start up the admin server
     node ./admin.js
   elif [ "seat-watcher" == "$COURSESHARK_MODE" ]
   then
+    echo "Starting :: $(tput setaf 4)SeatWatcher Environment$(tput sgr0)";
     # Start in seatwatcher mode
     node ./seat-watcher.js
   else
+    echo "Starting :: $(tput setaf 4)Production Server Environment$(tput sgr0)";
     # Start the app in normal mode
     node ./app.js
   fi

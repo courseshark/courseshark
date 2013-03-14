@@ -1,6 +1,8 @@
 /*
  * Schedule pages, anything relating to the schedule interface should be in this file
  */
+var flipflop = require('../lib/flipflop');
+
 exports = module.exports = function(app){
   var seats = app.io.of('/seats')
     , crawler = require('../lib/crawler')
@@ -10,39 +12,189 @@ exports = module.exports = function(app){
   *
   **/
   app.get('/schedule', requireSchool, function(req, res){
+    if ( flipflop.test('canSeeNewScheduler', req) ){
+      res.redirect('/s/');
+      return;
+    }
     Department.find({school:req.school._id}, {abbr:1, name:1}, {sort:{abbr:1}}, function(err, departments){
-      res.render('schedule/schedule', {departments: departments, link: false, school: req.school._id, noJS: true});
+      res.render('schedule/launch-schedule', {departments: departments, link: false, school: req.school._id, noJS: true});
+    })
+  })
+
+  app.get('/s(/*)?', wantSchool, function(req, res){
+    var built = app.settings.env!="development" || req.query.b
+    req.session.redirectTo='/s/';
+    School.find({}, {
+        terms:0
+      , oldId:0
+      , city:0
+      , state:0
+      , zip:0
+      , waitlist:0
+      , enabled:0
+      , notificationCron:0
+      , notifications:0
+      , created:0
+      , modified:0
+      }).populate('currentTerm').exec(function(err, schools){
+        res.render('schedule/schedule', {layout: false, schools: schools, school: req.school||false, settings: flipflop.evaluateAll(req), built: built});
+    })
+  })
+
+  app.get('/launch-schedule', requireSchool, function(req, res){
+    Department.find({school:req.school._id}, {abbr:1, name:1}, {sort:{abbr:1}}, function(err, departments){
+      res.render('schedule/launch-schedule', {departments: departments, link: false, school: req.school._id, noJS: true});
     })
   })
   app.get('/schedule/link/:hash', function(req, res){
     res.redirect('/sl/'+req.params.hash);
   });
   app.get('/sl/:hash', function(req, res){
-    ScheduleLink.findOne({hash: req.params.hash}, function(err, scheduleLink){
-      if ( !scheduleLink ){
-        res.send(404);
-      }else{
-        var schedule = scheduleLink.schedule
-        if ( !scheduleLink.schedule.term ){
-          scheduleLink.schedule.term = schedulLink.schedule.sections[0]?schedulLink.schedule.sections[0].term:'';
-        }
-        scheduleLink.schedule.term = scheduleLink.schedule.term['_id']?scheduleLink.schedule.term['_id']:scheduleLink.schedule.term
-        Term.findOne({_id: scheduleLink.schedule.term}, function(err, term){
-          scheduleLink.schedule.term = term;
+    res.redirect('/s/l/'+req.params.hash);
+  });
+
+  /**
+  *
+  * Backbone.js routes
+  *
+  **/
 
 
-          // Correct for timezone issue by re-finding the sections in the schedule
-          sectionIds = schedule.sections.map(function(s){return s._id});
 
-          Section.find({_id:{$in: sectionIds}}).populate('course').populate('department').exec(function(err, sections){
-            schedule.sections = sections;
-            sJson = JSON.stringify(schedule)
-            res.render('schedule/schedule', {link: true, school: schedule.school._id, schedule: sJson, noJS: true})
-          })
-        })
-      }
+  // List of schedules for this user
+  app.get('/schedules', requireLogin, function(req, res){
+    Schedule.find({user: req.user, school: req.user.school}).exec(function(err, schedules){
+      res.json(schedules)
     })
   })
+
+  //Load schedule
+  app.get('/schedules/:id', requireLogin, function(req, res){
+    Schedule.find({_id: req.params.id, user: req.user}).exec(function(err, schedule){
+      if (err){
+        res.send(500);
+        return;
+      }else if (!schedule){
+        res.send(400)
+        return;
+      }
+      res.json(schedule);
+    })
+  })
+
+  // Save new schedule
+  app.post('/schedules', requireLogin, requireSchool, function(req, res){
+    passedJSON = JSON.parse(JSON.stringify(req.body))
+    passedJSON.name = passedJSON.name || "";
+    delete passedJSON.__v;
+    delete passedJSON._id;
+    newSchedule = new Schedule(passedJSON)
+    newSchedule.user = req.user
+    newSchedule.school = req.school
+    newSchedule.term = passedJSON.term._id
+    newSchedule.save(function(err, schedule){
+      req.user.schedule = schedule;
+      req.user.save();
+      if (err){
+        res.send(500);
+      }else{
+        res.json({_id: newSchedule.id, term: schedule.term});
+      }
+    })
+
+  })
+
+  // Save updates to schedule schedule
+  app.put('/schedules/:id', requireLogin, requireSchool, function(req, res){
+    Schedule.findOne({_id: req.params.id, user: req.user}).exec(function(err, schedule){
+      if (err){
+        res.send(500);
+        return
+      }else if (!schedule){
+        res.send(403) // Forbidden status
+        return;
+      }
+      passedJSON = JSON.parse(JSON.stringify(req.body));
+      delete passedJSON.__v;
+      delete passedJSON._id;
+      delete passedJSON.term;
+      passedJSON.user = req.user;
+      passedJSON.school = req.school;
+      schedule.set(passedJSON);
+      schedule.save(function(err){
+        req.user.schedule = schedule;
+        req.user.save();
+        if ( err ){
+          res.send(500);
+        }else{
+          res.json({_id: schedule.id, term: schedule.term});
+        }
+      })
+    })
+  })
+
+
+
+
+
+  // Link Schedules
+  app.post('/links', function(req, res){
+    makeLink(req, res);
+  })
+  app.put('/links/:hash?', function(req, res){
+    makeLink(req,res);
+  })
+  app.get('/links/:hash', function(req, res){
+    ScheduleLink.findOne({hash:req.params.hash}, function(err,link){
+      if ( err || !link ){ res.send(404); return; }
+      res.json(link);
+    })
+  })
+
+
+  var makeLink = function(req, res){
+    function randomHash(){
+      return (((1+Math.random())*0x10000000)|0).toString(34).substr(1)
+    }
+    var fromClientSide = req.body;
+    link = new ScheduleLink()
+    link.schedule = fromClientSide.schedule
+    link.schedule._id = undefined;
+    if ( req.user ){
+      link.user = req.user._id
+    }
+    // If no or blank schedule passed. Fail out
+    if ( !link.schedule.term || !link.schedule.sections || !link.schedule.sections.length ){
+      res.json({error: 'Invalid schedule'});
+      return;
+    }
+    ScheduleLink.findOne({
+          '_schedule.term._id': link.schedule.term?(link.schedule.term.id||link.schedule.term._id):''
+        , '_schedule.name' : link.schedule.name
+        , '_schedule.school' : link.schedule.school
+        , '_schedule.sections._id': {$all : link.schedule.sections.map(function(e){return e._id}) }
+        }, function(err, existingLink){
+      if ( err ){ console.error(err); }
+      if ( !existingLink ){
+        link.hash = randomHash()
+        link.save(function(err){
+          if ( err ){ console.log(err); }
+          shareLink = app.createLink('http://'+req.headers.host+'/s/l/'+link.hash, req.user)
+          res.json(link)
+        })
+      }else{
+        app.getExistingLink('http://'+req.headers.host+'/s/l/'+existingLink.hash, req.user, function(shareLink){
+          res.json(existingLink)
+        })
+      }
+    });
+  }
+
+
+
+
+
+
 
   /**
   *
@@ -79,7 +231,7 @@ exports = module.exports = function(app){
         if ( err ){
           returnNew()
         }
-        res.json(schedule);
+        res.json(foundSchedule);
       })
     }else{
       returnNew()
@@ -186,12 +338,16 @@ exports = module.exports = function(app){
   * Components
   *
   **/
+  app.get('/school', requireSchool, function(req, res){
+    res.json(req.school);
+  })
+
   app.get('/schedule/terms', requireSchool, function(req, res){
     Term.find({school: req.school}, function(err, terms){
       res.json(terms)
     })
   })
-    app.get('/school/departments', requireSchool, function(req, res){
+  app.get('/school/departments', requireSchool, function(req, res){
     Department.find({school: req.school}, {}, {sort:{abbr:1}}, function(err, departments){
       res.json(departments)
     })
@@ -223,24 +379,5 @@ exports = module.exports = function(app){
   })
 
 
-  seats.on('connection', function (socket) {
-    socket.on('update', function(sectionId){
-      var now = new Date()
-        , FIFTEEN_MINUTES = 1000 * 60 * 15
-      Section.findById(sectionId).exec(function(err, section){
-        Term.findById(section.term).populate('school').exec(function(err, term){
-          if ( term.active ){
-            crawler[term.school.abbr].safeUpdateSection(section, FIFTEEN_MINUTES, function(err, section){
-              socket.emit('result', {id: section.id, avail: section.seatsAvailable, total: section.seatsTotal, section: section})
-            })
-          }else{
-            var avail = section.seatsAvailable?section.seatsAvailable:'-'
-              , tot = section.seatsTotal?section.seatsTotal:'?';
-            socket.emit('result', {id: section.id, avail: avail, total: tot, section: section})
-          }
-        })
-      })
-    })
-  })
 
 }

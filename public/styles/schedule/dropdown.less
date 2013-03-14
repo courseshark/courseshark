@@ -1,0 +1,152 @@
+#dropdown-view{
+  position: absolute;
+  z-index: 2000;
+  box-shadow: 2px 2px 15px fade(@black, 80%);
+  overflow: hidden;
+  padding: 10px;
+  background: @white;
+  border-radius: 2px;
+
+
+  // HEADER
+  .dropdown-header{
+    position: relative;
+    padding: 0px 0 5px 0;
+    text-align: center;
+    border-bottom: 1px solid @primary;
+    .header-title{
+      color: lighten(@tertiary, 10%);
+      font-weight: bold;
+      text-align: center;
+      padding: 0 20px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-width: 200px;
+    }
+    .close{
+      position: absolute;
+      top: -5px;
+      right: 0;
+      padding: 0;
+    }
+  }
+
+  // CONTENT
+  .dropdown-content{
+    margin-top: 4px;
+
+    .split{
+      height: 1px;
+      width: 100%;
+      background: @primary;
+      margin: 4px 0;
+    }
+
+    .nav{
+      background: none;
+      box-shadow: none;
+      margin-bottom:0;
+      li{
+        a{
+          cursor:pointer;
+          color: @black;
+          font-weight: bold;
+          margin: 0 -10px;
+          padding: 0 10px;
+          line-height: 30px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          &:hover{
+            background: @tertiary;
+            color: @white;
+          }
+          &.disabled{
+            opacity: 0.4;
+          }
+        }
+      }
+    }
+
+    .subcontent{
+      width: 340px;
+      h1 {
+        font-size: 15px;
+        line-height: 15px;
+        margin: 10px 0 5px;
+        display: inline-block;
+      }
+      .icon-container{
+        display: inline-block;
+      }
+    }
+
+
+    .sublist{
+      &.empty {
+        background: rgb(238, 238, 238);
+        text-align: center;
+        padding: 10px;
+        margin: 0 -10px;
+        color: rgb(136, 136, 136);
+      }
+      .seatwatcher-notification, .friend-request{
+        min-height: 50px;
+        padding: 3px 10px;
+        margin: 0 -10px;
+        border-top: 1px solid @light-grey;
+        vertical-align: middle;
+        &:hover{
+          background: fadeout(@primary, 95%);
+        }
+      }
+      .seatwatcher-notification{
+        .info{
+          float: left;
+          margin: 0 0 0 10px;
+          width: 270px;
+          padding-top: 10px;
+          .name{
+            line-height: 15px;
+            display: inline-block;
+            min-width: 200px;
+          }
+          .updated{
+            font-size: 11px;
+            color: @grey;
+          }
+          .seats{
+            display: inline-block;
+            font-size: 16px;
+            text-align: left;
+            line-height: 10px;
+            margin-left: 20px;
+          }
+        }
+        .button-container{
+          float: right;
+          text-align: right;
+          margin: 15px 7px 0 0;
+        }
+      }
+      .friend-request{
+        img.avatar{
+          width: 50px;
+          height: 50px;
+        }
+        .name{
+          display: inline-block;
+          margin: 0 15px 0 10px;
+          width: 150px;
+          vertical-align: middle;
+        }
+        .button-container{
+          display: inline-block;
+          text-align: right;
+          width: 100px;
+        }
+      }
+    }
+
+
+  }
+}

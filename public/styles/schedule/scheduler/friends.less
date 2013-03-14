@@ -1,0 +1,135 @@
+.friends-list{
+  @media print {&{ display: none;}}
+  #add-friend{
+    color: blue;
+  }
+  .friend{
+    border-bottom: 1px solid #BBB;
+    &.pending{
+      opacity: 0.5;
+      -webkit-filter: grayscale(100%);
+    }
+    .avatar{
+      text-align: center;
+
+      img{
+        height: 30px;
+        width: 30px;
+      }
+    }
+
+    .friend-name{
+      line-height: 30px;
+    }
+  }
+}
+
+.friend-result-avatar{
+  width: 30px;
+  height: 30px;
+  margin: 2px 0;
+}
+
+
+// Facebook friends dialog loading
+.media-list .loading{
+  color: @grey;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 300;
+  margin: 20px 0 0 0;
+}
+
+.friend-option{
+  margin: 5px -15px;
+  padding: 5px 15px;
+  &:hover{
+    background: lighten(@secondary, 45);
+  }
+  &.chosen{
+    background: @primary;
+    .remove-friend:hover {
+      text-decoration: none;
+    }
+  }
+  .profile-picture{
+    margin:5px 5px 5px 0;
+    width: 50px;
+    height: 50px;
+  }
+}
+
+
+#friends-list-content{
+  padding:10px;
+  &.remove-mode{
+    background: fadeout(@dark-red, 70%);
+    .friend-block{
+      -webkit-transition: none;
+      -moz-transition: none;
+      -ms-transition: none;
+      -o-transition: none;
+      transition: none;
+      &.chosen{
+        border: 1px solid @red;
+        .options{
+          display: none;
+        }
+        .avatar{
+          width: 100%;
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+.tooltip-inner {
+  box-shadow: 0 0 10px #000;
+}
+
+
+
+.friend-block{
+
+  width: 48px;
+  height: 48px;
+  @media (min-width: 1200px){
+    &{
+      width: 51px;
+      height: 51px;
+    }
+  }
+  float: left;
+  position: relative;
+
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &.chosen{
+    border: 3px solid @grey;
+    .avatar{
+      width: 100%;
+      margin: 0;
+    }
+    .options{
+      display: block;
+    }
+  }
+
+  .options{
+    display: none;
+    position: absolute;
+  }
+  .avatar{
+    margin: 1px;
+    &.pending{
+      opacity: 0.2;
+    }
+  }
+  .img-block{
+    width: 100%;
+  }
+}

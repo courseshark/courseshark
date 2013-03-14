@@ -1,0 +1,23 @@
+<div class="setting-name">School</div>
+<div class="setting-form">
+  <div class="form-horizontal">
+    <div class="control-group" id="school-picker">
+      <label class="control-label" for="inputSchool">Your School</label>
+      <div class="controls">
+        <select id="inputSchool">
+          <% for(i in schools){%>
+          <option value="<%=schools[i].id%>"<%=user.get('school').id==schools[i].id?" selected":""%>><%=schools[i].get('name')%></option>
+          <%}%>
+        </select>
+      </div>
+    </div>
+    <div class="warning-message"></div>
+    <div class="control-group">
+      <div class="controls">
+        <!-- Flipped to prevent accidental changes -->
+        <button class="btn btn-mini btn-primary submit">Change School</button>
+        <button class="btn btn-mini cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

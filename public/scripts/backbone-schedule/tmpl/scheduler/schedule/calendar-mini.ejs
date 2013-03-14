@@ -1,0 +1,38 @@
+<div class="minical">
+  <!-- Day row -->
+  <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span4 day-header">M</div>
+    <div class="span4 day-header">T</div>
+    <div class="span4 day-header">W</div>
+    <div class="span4 day-header">Th</div>
+    <div class="span4 day-header">F</div>
+    <div class="span2"></div>
+  </div>
+
+<% for(var _i=startHour; _i<endHour; _i++ ){%>
+  <div class="row-fluid hour-row">
+    <div class="hour-line <%=((_i==12) ? 'noon-hour' : '')%>"></div>
+  </div>
+<%}%>
+
+  <div class="sections-overlay">
+    <div class="sections-container">
+
+      <div class="row-fluid">
+        <div class="span24"></div>
+      </div>
+
+      <div class="row-fluid full-height">
+        <div class="span2"></div>
+        <div class="span4 calendar-day" id="mini-cal-monday"></div>
+        <div class="span4 calendar-day" id="mini-cal-tuesday"></div>
+        <div class="span4 calendar-day" id="mini-cal-wednesday"></div>
+        <div class="span4 calendar-day" id="mini-cal-thursday"></div>
+        <div class="span4 calendar-day" id="mini-cal-friday"></div>
+        <div class="span2"></div>
+      </div>
+    </div>
+  </div>
+
+</div>

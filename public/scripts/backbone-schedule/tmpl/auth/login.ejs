@@ -1,0 +1,44 @@
+<div class="modal-header">
+  <a href="#" class="close">&times;</a>
+  <h3>Login <small>to Course<strong>Shark</strong><small></h3>
+</div>
+
+<div class="modal-body">
+  <div id="login" class="form-horizontal">
+    <!-- Email -->
+    <div class="control-group" id="login-email-control">
+      <label class="control-label" for="email">Email</label>
+      <div class="controls">
+          <input type="email" class="input-xlarge login-form-input-email" placeholder="Email Address"/>
+          <p class="help-inline" for="email"></p>
+      </div>
+    </div>
+    <!-- Password -->
+    <div class="control-group" id="login-password-control">
+      <label class="control-label" for="password">Password</label>
+      <div class="controls">
+        <input type="password" class="input-xlarge login-form-input-password" placeholder="Password"/>
+        <div class="help-inline">
+          <div class="btn btn-mini btn-link login-forgot-password">Forgot?</div>
+          <div class="btn btn-mini btn-link login-needs-account">Need an account?</div>
+        </div>
+        <p class="text-error login-error"></p>
+      </div>
+    </div>
+    <!-- Alt login -->
+    <div class="control-group" id="login-oauth-control">
+      <label class="control-label" for="alt">or Login with </label>
+      <div class="controls">
+        <a class="btn login-via-facebook"><img class="icon-img" src="/images/login/facebook.png" /></a>
+        <a href="/auth/google"   class="btn login-via-google"  ><img class="icon-img" src="/images/login/google.png" /></a>
+        <a href="/auth/twitter"  class="btn login-via-twitter" ><img class="icon-img" src="/images/login/twitter.png" /></a>
+        <a href="/auth/linkedin" class="btn login-via-linkedin"><img class="icon-img" src="/images/login/linkedin.png" /></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <div class="btn btn-primary login-form-submit">Login</div>
+  <div class="btn" data-dismiss="modal">Close</div>
+</div>

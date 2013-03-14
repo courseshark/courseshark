@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="row-fluid">
+    <div class="span12">
+      <h1><%=flipflop.name%> <small><%=flipflop.created_by?flipflop.created_by.name:'&mdash;'%></small></h1>
+      <blockquote><%=flipflop.description||'No description'%></blockquote>
+      <p><i><%=flipflop.last_updated.toDateString()%> <%=flipflop.last_updated.toLocaleTimeString()%></i></p>
+    </div>
+  </div>
+</div>

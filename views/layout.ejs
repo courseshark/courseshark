@@ -1,11 +1,11 @@
-<!DOCTYPE html> 
-<html lang="en"> 
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset=utf-8 /> 
+	<meta charset=utf-8 />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale = 1, maximum-scale = 5"/>
-	<meta name="apple-mobile-web-app-capable" content="yes" />  
-	<meta name="apple-mobile-web-app-status-bar-style" content="black" />  
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
 	<meta property="og:title" content="<%if(typeof(title)=="undefined"){%>CourseShark<%}else{%><%=title%><%}%>"/>
 	<meta property="og:url" content="http://<%= (domain.replace('dev','com')+path) %>"/>
@@ -13,25 +13,42 @@
 	<meta property="og:type" content="<%if(typeof(type)=="undefined"){%>Website<%}else{%><%=type%><%}%>"/>
 	<meta property="og:image" content="http://<%= domain.replace('dev','com')%>/images/avatar.png"/>
 
-	<link rel="apple-touch-startup-image" href="/images/splash_screen.png" /> 
+	<link rel="apple-touch-startup-image" href="/images/splash_screen.png" />
 	<meta name="description" content="College schedule creator. CourseShark makes registration simple, even allowing you to share your college schedule with potential recruiters and find the perfect job!">
 	<meta name="keywords" content="CourseShark, course shark, gatech, spsu, wvu, tamu, uscc, brown, course shark, courseshark, georgia tech, shark, college, schedule, creator, course, catalog, sections, easy registration, register">
-	<title>CourseShark</title> 
-	
-	<link rel="stylesheet" href="/styles/master.css" type="text/css" media="all" /> 
-	<%- partial('includes/mixpanel.ejs') %>
+	<title>CourseShark</title>
 
+	<link rel="stylesheet" href="/styles/master.css" type="text/css" media="all" />
+	<!-- start Mixpanel -->
+	<script type="text/javascript">
+	(function(c,a){window.mixpanel=a;var b,d,h,e;b=c.createElement("script");
+	    b.type="text/javascript";b.async=!0;b.src=("https:"===c.location.protocol?"https:":"http:")+
+	    '//cdn.mxpnl.com/libs/mixpanel-2.0.min.js';d=c.getElementsByTagName("script")[0];
+	    d.parentNode.insertBefore(b,d);a._i=[];a.init=function(b,c,f){function d(a,b){
+	    var c=b.split(".");2==c.length&&(a=a[c[0]],b=c[1]);a[b]=function(){a.push([b].concat(
+	    Array.prototype.slice.call(arguments,0)))}}var g=a;"undefined"!==typeof f?g=a[f]=[]:
+	    f="mixpanel";g.people=g.people||[];h=['disable','track','track_pageview','track_links',
+	    'track_forms','register','register_once','unregister','identify','name_tag',
+	    'set_config','people.set','people.increment'];for(e=0;e<h.length;e++)d(g,h[e]);
+	    a._i.push([b,c,f])};a.__SV=1.1;})(document,window.mixpanel||[]);
+	mixpanel.init("22566cab7f699ae4100bd3d23dfc1420"<%if (mode!="production"){%>, {debug: true, test: true}<%}%>);
+	mixpanel.register({ distinct_id: "<%= distinctId %>" });
+	<% if (loggedIn && user){ %>mixpanel.identify("<%=user.id%>");mixpanel.people.set({"$email": "<%=user.email%>","$first_name": "<%=user.firstName%>","$last_name": "<%=user.lastName%>","created": new Date("<%=user.created%>"),"login_count": "<%=user.loginCount%>","$last_login": new Date("<%=user.lastLogin%>"),"school": "<%=user.school&&user.school._id||user.school||'none'%>","referrer": document.referrer});mixpanel.name_tag('<%=user.email||user.firstName||user.id%>');<%}%>
+	window.onerror=function(m,f,l){var p={};p.message=m;p.file=f;p.line=l;mixpanel.track('js-err',p);}
+	</script>
+	<!-- end Mixpanel -->
 
 </head>
 <body>
-	<%- partial('includes/nav.ejs') %>
+	<%- partial('nav.ejs', {domain: domain, loggedIn:loggedIn, user:user}) %>
 	<div class="container">
 		<%- messages() %>
 	</div>
 	<%- body %>
-	<%- partial('includes/foot.ejs') %>
+	<%- partial('foot.ejs') %>
 	<% if ( typeof noJS == 'undefined' || !noJS ){ %>
-	<%- partial('includes/js.ejs') %>
+	<%- partial('js.ejs', {loggedIn:loggedIn, user:user}) %>
+	<script>$('#nav-login').on('click', function(){openDialog('/login')});</script>
 	<%}%>
 </body>
 </html>

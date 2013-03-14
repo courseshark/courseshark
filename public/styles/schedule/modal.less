@@ -1,0 +1,50 @@
+.modal-backdrop{
+  background: @backdrop;
+  opacity: 0.5;
+}
+
+.modal{
+  .btn-success {
+    color: white;
+    .background-gradient-linear(@primary, darken(@primary, 10%));
+    &:hover{
+      background-color: darken(@primary, 10%);
+    }
+  }
+
+  .modal-header{
+    border-bottom: 1px solid @primary;
+  }
+
+  .modal-body {
+    .header {
+      color: @tertiary;
+      font-size: 1.25em;
+      font-weight: bold;
+    }
+  }
+}
+
+.modal.fade{
+  top: 50%;
+
+  @time: 210ms;
+
+  -webkit-transition: opacity @time linear,-webkit-transform @time ease-out;
+  -moz-transition: opacity @time linear,-moz-transform @time ease-out;
+  -ms-transition: opacity @time linear,-ms-transform @time ease-out;
+  -o-transition: opacity @time linear,-o-transform @time ease-out;
+  transition: opacity @time linear,transform @time ease-out;
+}
+
+.modal.fade.in{
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
+  transform: none;
+}
+
+.login-via-twitter{
+  display:none;
+}

@@ -1,0 +1,402 @@
+<div class="container">
+	<div class="messages">
+		<div class="alert alert-message">
+				We are working on a new scheduling interface with more features! <a href="/s/">Check it Out!</a>
+		</div>
+	</div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+	<!-- Templates to be used in JS -->
+	<script type="text/plain" id="template-course-options">
+		<div id="<$=course.id$>" class="course-options-container" style="display: none">
+			<div class="course-title"><$=course.department.abbr$> <$=course.number$>
+				<div class="remove-course-options" rel="remove" data-course="<$=course.id$>">X</div>
+				<div class="toggle-course-options collapse" rel="toggle" data-course="<$=course.id$>">-</div>
+			</div>
+			<div class="courses-options-wrapper"></div>
+		</div>
+	</script>
+	<script type="text/plain" id="template-section-selector">
+		<div rel="section-option" id="<$=section.id$>" class="section-option <$= ( (section.has_children)?' parent':'') + ( section.tbd_class?' TBA':'' ) +((section.friends||[]).length?'friends':'')$>" credits="<$=(section.credits)$>"  <$=(section.friends||[]).length>0?'title="You have '+(section.friends||[]).length+' friends in this section"':''$> >
+			<div class="section-number"><$=section.number$></div>
+			<div class="section-instructor"><$=section.instructor$></div>
+			<div class="section-seats loading">
+				<span class="remaining"><$=section.remaining_seats$></span><span class="seat-divider">/</span><span class="total"><$=section.total_seats$></span>
+			</div>
+		</div>
+	</script>
+	<script type="text/plain" id="template-caffeine-bar">
+		<div id="caffeine_<$=id$>" class="seat-notification">Create an open seat <a href="#" onClick="caffeine_clicked=true;show_caffeine_dialog(<$=id$>);return false;">Notification</a></div>
+	</script>
+	<script type="text/plain" id="template-event-listing">
+		<div rel="section-timeslot" class="wk-event-listing option <$=section.id$> <$=(section.friends||[]).length>0?'friends':''$>" id="<$=section.id$>-<$=t$>" data-friends="<$=(section.friends||[]).length$>" style="top:<$=top_offset$>px;width:95%;height:<$=height$>px;" data-original-title="<$=section.department.abbr$> <$=section.course.number$> <$=(slot.type!='None'?slot.type+' ':'')$> [<$=section.number$>]"> \
+			<div class="friends-dots"></div>
+			<dl class="wk-event-listing-dl">
+				<dt data-color="<$=section.color$>">
+					<$=section.department.abbr$> <$=section.course.number$> <$=((slot.type!='None'&&slot.type!='Lecture')?slot.type+' ':'')$> <small>[<$=section.number$>]</small>
+				</dt>
+				<dd>
+					<$=slot.instructor$>
+					<br />
+					<$=slot.location$>
+					<br />
+					<span class="timeslot-time"><$=startHourAdjusted$>:<$=slot.startTime.getUTCMinutes()$>-<$=endHourAdjusted$>:<$=slot.endTime.getUTCMinutes()$></span>
+				</dd>
+			</dl>
+		</div>
+	</script>
+	<script type="text/plain" id="template-event-listing-tbd">
+		<div rel="section-timeslot" class="tbd-listing option <$=section.id$>" id="<$=section.id$>-<$=t$>" style="border-color:<$=section.color_dark$>; background-color:<$=section.color$>;" data-original-title="<$=section.department.abbr$> <$=section.course.number$>  [<$=section.number$>]">
+			<div class="tbd-listing-head" style="background-color:<$=section.color_dark$>">
+				<$=section.department.abbr$> <$=section.course.number$> <$=(section.type!='None'?section.type+' ':'')$> <small>[<$=section.number$>]</small>
+			</div>
+			<div>
+				<$=(section.instructor?((section.instructor.last_name=='None')?'Staff':section.instructor.last_name):'None')$>
+				<h3><$=location$></h3>
+			</div>
+		</div>
+	</script>
+	<script type="text/plain" id="template-section-info">
+		<h3>
+			<$=section.course.name$> <$=section.timeslots[0].type$>
+		</h3>
+		<dl>
+			<dt>Section Number</dt>
+			<dd><$=section.number$></dd>
+		</dl>
+		<dl>
+			<dt>Instructor</dt>
+			<dd>
+				<$=section.instructor$>
+			</dd>
+		</dl>
+		<dl>
+			<dt>Location</dt>
+			<dd>
+				<$=section.timeslots[0].location$>
+			</dd>
+		</dl>
+		<dl>
+			<dt>Seats</dt>
+			<dd>
+				<$ if ( !section['seatsAvailable'] && section['seatsTotal'] ){ $>
+					All <$=section.seatsTotal$> seats are taken
+				<$ } else if ( section['seatsTotal'] ) { $>
+					<$=section.seatsAvailable$> available of <$=section.seatsTotal$>
+				<$ } else { $>
+					Unavailable
+				<$ } $>
+			</dd>
+		</dl>
+		<$ if(section['gpa']){$>
+		<dl>
+			<dt>Average GPA</dt>
+			<dd>
+				<$=section.gpa$>
+			</dd>
+		</dl>
+		<$ } $>
+		<$ function pad(i){return ''+(i<10?'0'+i:i)} $>
+		<$ function toTime(dS){d=new Date(dS);sh=d.getUTCHours()>12?d.getUTCHours()-12:d.getUTCHours();return ''+sh+':'+pad(d.getUTCMinutes())} $>
+		<dl>
+			<dt>Times</dt>
+			<$for(var s=0,leng=section.timeslots.length; s<leng; s++ ){ $>
+			<dd>
+				<$if ( !section.timeslots[s] ){$>TBD<$ continue; }$>
+				<$= section.timeslots[s].days.join(', ') $>: <$=toTime(section.timeslots[s].startTime)$> - <$=toTime(section.timeslots[s].endTime)$>
+
+			</dd>
+			<$}$>
+		</dl>
+
+	</script>
+	<script type="text/plain" id="template-ical">
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CourseShark//CourseShark Calendar 1.0//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH<$=name$>
+X-WR-TIMEZONE:<$=timezone$>
+X-WR-CALDESC:Term Schedule by CourseShark.com
+BEGIN:VTIMEZONE
+TZID:"<$=timezone$>"
+LAST-MODIFIED:20050809T050000Z
+BEGIN:DAYLIGHT
+DTSTART:19670430T020000
+RRULE:FREQ=YEARLY;BYMONTH=4;BYDAY=-1SU;UNTIL=19730429T070000Z
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+TZNAME:EDT
+END:DAYLIGHT
+END:VTIMEZONE<$ for (var i=0, evnt; (evnt=events[i])!==undefined; i++){ for (var id=0, dayset; (dayset=evnt['daysets'][id])!==undefined; id++ ){ if (!dayset['days']||dayset['days']===""){continue;} $>
+BEGIN:VEVENT
+DTSTART;TZID=<$=timezone$>:<$=dayset['start']$>
+DTEND;TZID=<$=timezone$>:<$=dayset['end']$>
+RRULE:FREQ=WEEKLY;UNTIL=<$=dayset['endDate']$>;BYDAY=<$=dayset['days']$>
+DTSTAMP:<$=now$>
+UID:<$=''+Math.random()+user$>
+CREATED:<$=now$>
+DESCRIPTION:
+LAST-MODIFIED:<$=now$>
+LOCATION:<$=dayset['location']$>
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:<$=evnt['name']$>
+TRANSP:OPAQUE
+END:VEVENT<$ } } $>
+END:VCALENDAR
+	</script>
+	<!-- End Templates -->
+
+
+
+
+<!-- PreLoad images -->
+<div style="display:none"><img src="/images/seat_loading.gif" /><img src="/images/seat_loading_child.gif" /></div>
+<!-- End Preload -->
+	<% if ( !link ){ %>
+	<div class="container">
+		<div class="subnav">
+      <div class="nav-commands">
+				<ul class="nav nav-pills">
+					<li><a href="#" id="save-button"><i class="icon-tag"></i> Save</a></li>
+					<li><a href="#" id="load-button"><i class="icon-folder-open"></i> Load</a></li>
+					<li><a href="#" id="new-button" ><i class="icon-file"></i> New</a><li>
+					<li><a href="#"	id="print-button"/><i class="icon-print"></i> Print</a></li>
+		      <li><a href="#" id="link-button"/><i class="icon-share"></i> Share Link</a></li>
+					<li><a href="#" id="ical-button"/><i class="icon-download-alt"></i> Export .ics</a></li>
+	      </ul>
+			</div>
+		</div>
+	</div>
+	<% } %>
+	<div class="container">
+		<div class="row">
+			<div id="side-bar-wrapper" class="span3 hidden-phone">
+				<div id="schedule-summary">
+					<h2 id="name">-Untitled-</h2>
+					<div id="term">Term: <strong id="term-name"></strong></div>
+					<div id="hours">Hours: <strong id="number">0</strong></div>
+				</div>
+				<% if ( !link ){ %>
+				<div id="class-adding-form">
+					<div id="add-course-content">
+						<article>
+							<div id="major">
+
+								<div class="controls">
+								<div class="input">
+									<select id="major-id" tabindex="1" placeholder="subject" rel="tooltip" data-placement="top" data-original-title="Choose a department">
+										<option></option>
+									</select>
+									<select id="course-id" tabindex="2" placeholder="course"/>
+										<option></option>
+									</select>
+								</div>
+							</div>
+						</article>
+						<div id="add-course">
+ 						</div>
+					</div>
+				</div>
+				<% } %>
+				<div id="class-list-loader"></div>
+				<div id="class-list" class="">
+				<!-- Containers for the Classes added to the Schedule -->
+				</div>
+			</div>
+
+			<div id="schedule-container" class="span7">
+				<%- partial('week') %>
+			</div>
+
+			<div id="right-bar" class="span2 hidden-phone">
+				<div id="quick-share" class="row-fluid">
+					<div class="span12">
+						<button id="big-share" class="btn-success btn-large"><i class="icon-share icon-white"></i>&nbsp;Share</button>
+					</div>
+				</div>
+				<h2>CRN List</h2>
+				<div class="row-fluid">
+						<div id="crn-list" class="well"></div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+
+<%- partial('js', {loggedIn: loggedIn}) %>
+<script src="/scripts/lib/select2/select2.min.js"></script>
+<script>
+$(document).ready(function() {
+  	$("[rel='tooltop']").tooltip()
+  	$majorSelect = $('#major-id')
+  	$courseSelect = $('#course-id')
+  	if ( $majorSelect.length && $courseSelect.length ){
+  		$majorSelect.select2()
+  		$courseSelect.select2()
+	  	$.ajax({url:'/school/departments'
+				,	type:'get'
+				, dataType:'json'
+				,	success: function(d){
+						var departments = []
+							,	source = []
+							,	selectOptions = [new Option('', '')]
+							for(var i=0,len=d.length; i<len; i++){
+								var dep = d[i]
+									,	val = ''+dep.abbr+' - '+dep.name
+								departments[val] = dep
+								source.push(val)
+								selectOptions.push(new Option(val, dep._id))
+							}
+							$('option', $majorSelect).remove()
+							window.so=selectOptions
+							$majorSelect
+								.append(selectOptions)
+								.select2()
+								.bind("change", function(){
+									department = $(this).val()
+									$('option', $courseSelect).remove()
+									if ( $courseSelect.data("select2") ){
+										$courseSelect.select2("destroy")
+									}
+							   	$.ajax({
+							   			url:'/term/'+term.id+'/courses/'+department
+							   		,	type:'get'
+							   		,	dataType:'json'
+							   		,	success: function(c){
+												courses = {};
+												selectOptions = [new Option('', '')]
+												for(var i=0,len=c.length; i<len; i++){
+													var course = c[i]
+														,	val = ''+course.number+' - '+course.name
+													courses[course._id] = course
+													selectOptions.push(new Option(val, course._id))
+												}
+												$courseSelect
+													.append(selectOptions)
+													.select2()
+													.select2('open')
+													.bind('change', function(e){
+														var $this = $(this)
+														$this.data('course', courses[$(this).val()])
+														addCourseToList($this.data('course'))
+													})
+												.select2("container")
+							   			} // end success
+							   	}) // end ajax
+								}) // end bmajor change bind
+					} // end success
+			}) // end ajax
+		} // end check to make sure elements exist
+
+	$('[rel="expander"]').click(function(){
+		var what = $(this).data('expand')
+			,	$thing = $('#'+what)
+			,	typeahead = $thing.data('typeahead')
+		if ( typeahead.shown ){
+			$thing.typeahead('hide')
+		}else{
+			$thing.typeahead('showOptions')
+		}
+	})
+	_gaq = _gaq || {};
+
+	var saveToggle;
+	$('#save-button').click(function(){
+
+		<% if ( loggedIn ){ %>
+			$('#save-button i').removeClass('icon-tag').addClass('icon-ok')
+			mixpanel.track('Saved Schedule');
+			_gaq.push(['_trackEvent', 'Schedule', 'Save']);
+			schedule.pushSave(function(){
+				saveToggle = setTimeout(function(){
+							$('#save-button i').addClass('icon-tag').removeClass('icon-ok')
+						}, 750);
+			});
+			return false;
+		<% } else { %>
+			mixpanel.track('Save Scheudle but !Logged In');
+			_gaq.push(['_trackEvent', 'Schedule', 'Login']);
+			openDialog('/login');
+			return false;
+		<% } %>
+	});
+
+	$('#load-button').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'Load']);
+		<% if ( loggedIn ){ %>
+			mixpanel.track('Load Schedule', {from: 'Menu'});
+		<% } else { %>
+			mixpanel.track('Load Scheudle but !Logged In', {from: 'Menu'});
+		<% } %>
+		show_load_dialog();
+	});
+
+	$('#new-button').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'New']);
+		show_new_dialog();
+	});
+
+	$('#print-button').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'Print']);
+		mixpanel.track('Print Schedule', {from: 'Menu'});
+		window.print();
+	});
+
+	$('#ical-button').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'iCal']);
+		mixpanel.track('Export Schedule', {from: 'Menu'});
+		$('#ical-button').attr('href', schedule.createCal()).attr('download', schedule.name);
+	});
+
+	$('#link-button').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'Link']);
+		mixpanel.track('Generate Share Link', {from: 'Menu'});
+		openDialog('/schedule/dialog/link');
+	});
+
+	$('#big-share').click(function(){
+		_gaq.push(['_trackEvent', 'Schedule', 'Link', 'Big']);
+		mixpanel.track('Generate Share Link', {from: 'Big Button'});
+		openDialog('/schedule/dialog/link');
+	})
+
+
+	window.school = '<%= school %>';
+	window.serverScheduleVersion = '<%= revision %>';
+	init(<%if(link){%><%- schedule %><%}%>);
+
+	<%if(link){%>
+		mixpanel.track('Viewed Link', {url: window.location.href})
+	<%}else{%>
+		mixpanel.track('Viewed Scheduler');
+	<%}%>
+
+	<%if (!loggedIn){%>
+		var $login = $('.nav.pull-right > li > button.btn-large');
+		$.ajax({
+					url:'/recruiter-share-invite'
+				,	dataType: 'text'
+				,	success: function(d){
+						$login.popover({animation: true,
+												placement:'bottom'
+											, delay: 100
+											, trigger:'hover'
+											, title:'Sign In for more'
+											, content:d
+								})
+							.popover('show')
+							.data('popover').tip().css({position:'fixed', 'z-index':'1039'})
+				}
+			})
+	<%}else if ( typeof user.shareWithRecruiters == "undefined" ) {%>
+		mixpanel.track("Asked to Share with Recruiters");
+		openDialog('/share-with-recruiters');
+	<%}%>
+
+});
+</script>

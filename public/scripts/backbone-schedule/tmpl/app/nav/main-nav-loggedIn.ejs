@@ -1,0 +1,23 @@
+<div class="navbar-inner navbar-main">
+  <div class="container-fluid">
+    <a class="brand">Course<strong>Shark</strong></a>
+    <div class="pull-left main-nav-school"></div>
+    <div class="pull-right main-nav-right">
+
+      <% if(user.get('admin')){ %>
+      <a href="//admin.<%=domain%>" class="btn btn-nav">
+        <i class="icon-cog icon-white"></i> Admin
+      </a>
+      <%}%>
+
+      <button id="menu-notifications" class="btn btn-nav">
+        <i class="icon-bullhorn icon-white"></i> Notifications
+        <div class="notification" id="notification-count"></div>
+      </button>
+      <button id="menu-schedules" class="btn btn-nav">
+        <i class="icon-calendar icon-white"></i> Schedules
+      </button>
+      <img src="<%=user.get('avatar')%>" class="user-icon"/>
+    </div>
+  </div>
+</div>

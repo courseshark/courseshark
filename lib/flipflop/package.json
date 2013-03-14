@@ -1,0 +1,11 @@
+{
+    "name": "FlipFlop"
+  , "description": "Gatekeeper for CourseShark, used to slow-release and split-testing"
+  , "version": "0.0.1"
+  , "private": true
+  , "main": "./index.js"
+  , "author": "James Rundquist (http://github.com/jrundquist)"
+  , "engines": {
+      "node": ">= 0.8.11"
+    }
+}

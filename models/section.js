@@ -13,16 +13,22 @@ exports.boot = module.exports.boot = function (app){
 exports.SectionSchema = module.exports.SectionSchema = SectionSchema
 
 SectionSchema = new Schema({
-    number: { type: Number, index: true }
+    cid: { type: String, index: true }
+  , number: { type: Number, index: true }
   , info: { type: String }
   , type: { type: String }
   , name: { type: String }
+  , description: { type: String }
   , course: { type: Schema.ObjectId, index: true, ref: 'Course' }
   , department: { type: Schema.ObjectId, index: true, ref: 'Department' }
   , term: { type: Schema.ObjectId, index: true, ref: 'Term' }
+  , session: {type: String}  // used to denote short / half semester sessions
+  , school: { type: Schema.ObjectId, index: true, ref: 'School' }
+  , campusSet: [{type: String}]
   , instructor: { type: String }
   , parent: { type: Schema.ObjectId, ref: 'Section' }
   , credits: { type: String }
+  , categorySet: [{stype: String}]
   , seatsAvailable: { type: Schema.Types.Mixed }
   , seatsTotal: { type: Schema.Types.Mixed, 'default': 0 }
   , waitSeatsAvailable: { type: Number }
@@ -30,6 +36,7 @@ SectionSchema = new Schema({
   , timeslots: []
   , deleted: { type: Boolean, 'default': false }
   , updated: { type: Date, 'default': Date.now }
+  , _tokens: [{ type: String, index: true }]
 }, {shardkey: {course: 1}});
 
 
