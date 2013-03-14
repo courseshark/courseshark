@@ -57,7 +57,7 @@ function compileCSS(app){
   }
   parser.parse(rawCss, function (e, tree) {
       output = tree.toCSS({ compress: true }); // Minify CSS output
-      fs.writeFile(__dirname+'/public/styles/'+app.settings.revision+'-courseshark.css', output, function(err) {
+      fs.writeFile(__dirname+'/public/styles/built-courseshark.css', output, function(err) {
           if(err) { console.log(err) }
       });
   });
@@ -68,27 +68,19 @@ function compileJS(app){
   var jsp = require("uglify-js").parser,
       pro = require("uglify-js").uglify,
       jsDir = __dirname+'/public/scripts/',
-      jsFiles = [ "lib/jquery.min.js",
-                  "lib/jquery-ui.min.js",
-                  "modernizr.js",
-                  "master.js",
-                  "dialog.js",
-                  "micro-template.js",
-                  "schedule.js",
-                  "notification.js",
-                  "friendsSearch.js",
-                  "social.js",
-                  "jquery.base64.min.js",
-                  "dateFormat.js",
-                  "lib/bootstrap-alert.js",
-                  "lib/bootstrap-transition.js",
-                  "lib/bootstrap-modal.js",
-                  "lib/bootstrap-dropdown.js",
-                  "lib/bootstrap-collapse.js",
-                  "lib/bootstrap-tooltip.js",
-                  "lib/bootstrap-popover.js",
-                  "lib/select2.min.js",
-                  "lib/bootstrap-tab.js"
+      jsFiles = [ "lib/jquery/jquery.js",
+                  "lib/jquery/jquery-ui.min.js",
+                  "launch-schedule/modernizr.js",
+                  "launch-schedule/master.js",
+                  "launch-schedule/dialog.js",
+                  "launch-schedule/micro-template.js",
+                  "launch-schedule/schedule.js",
+                  "launch-schedule/notification.js",
+                  "launch-schedule/friendsSearch.js",
+                  "launch-schedule/social.js",
+                  "launch-schedule/jquery.base64.min.js",
+                  "launch-schedule/dateFormat.js",
+                  "lib/bootstrap/bootstrap.js"
                 ],
       origJS = "";
 
@@ -105,7 +97,7 @@ function compileJS(app){
   ast = pro.ast_mangle(ast); // get a new AST with mangled names
   ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
   var final_code = pro.gen_code(ast); // compressed code here
-  fs.writeFile(__dirname+'/public/scripts/'+app.settings.revision+'-courseshark.js', final_code, function(err) {
+  fs.writeFile(__dirname+'/public/scripts/built-courseshark.js', final_code, function(err) {
       if(err) { console.log(err) }
   });
 }

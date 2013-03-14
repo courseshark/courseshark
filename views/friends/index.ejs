@@ -19,7 +19,7 @@
 							<% friends.forEach(function(friend){ %>
 							<div class="friend" data-friend-id="<%=friend._id%>">
 								<div class="friend-image">
-									<img src="<%= friend.avatar(45) %>" alt="<%=friend.name%> Avatar">
+									<img src="<%= friend.avatar %>" alt="<%=friend.name%> Avatar">
 								</div>
 								<div class="remove-friend">
 									<div class="close" data-friend-id="<%=friend._id%>">&times;</div>

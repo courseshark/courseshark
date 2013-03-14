@@ -1,0 +1,178 @@
+body{
+	overflow-y: hidden;
+	overflow-x: auto;
+	padding-top: 53px;
+	background: @background;
+	//background: #f4f4f4 url('/images/backbone/bg-shard.png') repeat center center;
+}
+
+a{
+	color: @primary;
+	&:hover{
+		color: @tertiary;
+	}
+}
+
+.text-right{
+	line-height: 30px;
+	text-align: right;
+}
+
+.outline-border{
+	border: 1px solid @border;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.full-height{
+	height: 100%;
+}
+.hide-overflow{
+}
+.panel{
+	background: @white;
+	.outline-border;
+
+	h1{
+		margin: 0;
+		font-size: 14px;
+		font-weight: bold;
+		line-height: 150%;
+		color: @tertiary;
+	}
+	h2{
+		margin: 0;
+		font-size: 14px;
+		font-weight: bold;
+		line-height: 150%;
+		color: #3FA9F5;
+		color: @text-grey;
+	}
+}
+
+.workspace-nav{
+	@media print{&{display: none;}}
+	.nav{
+		margin-bottom: 5px;
+	}
+}
+
+.workspace-container{
+	padding: 0 0 13px;
+}
+
+//// Panel styling
+#schedule-frame{
+	overflow-y: auto;
+	.panel;
+	border:none;
+	background: none;
+	#mini-cal-frame, #courses-frame{
+		margin-bottom: 10px;
+	}
+	#mini-cal-frame, #courses-frame, #friends-frame{
+		padding: 0;
+		overflow: hidden;
+		.outline-border;
+	}
+}
+
+
+
+#right-two-panels{
+	position: relative;
+	overflow-x: hidden;
+	#max-cal-container{
+		z-index: 300;
+		position: absolute;
+		top: 0;
+		#max-cal-frame{
+		}
+	}
+
+	#slide-panel{
+		width:0px;
+		z-index: 400;
+		position: absolute;
+		top: 0;
+		color: white;
+
+		#slide-container{
+			&.span8.closed{
+				left: -321px;
+				@media (min-width: 1200px){
+					&{
+						left: -396px;
+					}
+				}
+			}
+			&.span16.closed{
+				left: -641px;
+				@media (min-width: 1200px){
+					&{
+						left: -796px;
+					}
+				}
+			}
+			position: relative;
+			// Animation
+			@time: 500ms;
+			-webkit-transition: left @time;
+			-moz-transition: left @time;
+			-o-transition: left @time;
+			transition: left @time;
+		}
+
+		#filter-frame{
+			overflow-y: auto;
+		}
+
+		#results-frame{
+			border-left: 1px solid @border;
+			margin-left: -1px;
+			overflow-y: auto;
+
+			// Full width adjustments
+			width: 318px;
+			@media (min-width: 1200px){
+				&{
+					width: 398px;
+				}
+			}
+
+			h2{
+				padding: 23px 0 0 15px;
+				margin-bottom: -6px;
+			}
+		}
+	}
+}
+
+// Slider Button
+#slide-panel-button{
+	&:before{
+		content: "»";
+	}
+	&.open:before{
+		content: "«";
+	}
+	background: lighten(@secondary, 20%);
+	color: @white;
+	cursor: pointer;
+	padding: 0 0 0 2px;
+	position: absolute;
+	top: 0;
+	right: -45px;
+	width: 30px;
+	height: 30px;
+	font-size: 30px;
+	line-height: 23px;
+	font-weight: 300;
+	text-align: center;
+	&.open{
+		right: 0px;
+	}
+}
+
+

@@ -1,0 +1,9 @@
+<li class="media friend-option" data-user="<%=user.get('name')%>" data-user-id="<%=user.get('id')%>" data-user-fbid="<%=user.get('fbId')%>">
+  <div class="pull-left profile-picture">
+    <img class="media-object" src="https://graph.facebook.com/<%=user.get('fbId')%>/picture" alt="<%=user.get('name')%>" />
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading"><%=user.get('name')%></h4>
+    <p><button class="btn btn-mini select-friend">Add</button></p>
+  </div>
+</li>

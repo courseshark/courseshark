@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<a href="#" class="close" data-dismiss="modal">&times;</a>
+	<a href="#" class="close">&times;</a>
 	<h3>Login <small>to Course<strong>Shark</strong><small></h3>
 </div>
 
@@ -18,21 +18,20 @@
 			<div class="control-group" id="login-password-control">
 				<label class="control-label" for="password">Password</label>
 	      <div class="controls">
-					<input type="password" name="password" tabindex="2" id="password"  onKeyUp="if(event.keyCode===13){login_submit();}" placeholder="Password" class="span4">
-					<p class="help-inline"><a id="login-forgot-password" onClick="openDialog('/forgot-password');" data-dismiss="modal">Forgot?</a></p>
+					<input type="password" name="password" tabindex="2" id="password" onKeyUp="if(event.keyCode===13){login_submit();}" placeholder="Password" class="span4">
+					<p class="help-inline"><a id="login-forgot-password" data-dismiss="modal" onClick="openDialog('/forgot-password');">Forgot?</a></p>
 					<p class="help-inline" for="password"></p>
 				</div>
-				<div class="controls">
-					<label class="checkbox"><input type="checkbox" name="remember" id="remember" checked="checked" tabindex="3"> Keep me logged in</label>
-				</div>
 			</div>
-			<!-- Alt login --> 
+			<!-- Alt login -->
 			<div class="control-group" id="login-oauth-control">
 				<label class="control-label" for="alt">or Login with </label>
 	      <div class="controls">
-					<a href="/auth/facebook" class="btn"><img class="icon-img" src="/images/login/facebook.png" /> Facebook</a>
-					<a href="/auth/google"   class="btn"><img class="icon-img" src="/images/login/google.png" /> Google</a>
-					<a href="/auth/twitter"  class="btn"><img class="icon-img" src="/images/login/twitter.ico" /> Twitter</a>
+					<a href="/auth/facebook" class="btn"><img class="icon-img" src="/images/login/facebook.png" /></a>
+					<a href="/auth/google"   class="btn"><img class="icon-img" src="/images/login/google.png" /></a>
+					<a href="/auth/twitter"  class="btn"><img class="icon-img" src="/images/login/twitter.png" /></a>
+					<a href="/auth/linkedin"  class="btn"><img class="icon-img" src="/images/login/linkedin.png" /></a>
+
 				</div>
 			</div>
 		</fieldset>
@@ -96,5 +95,5 @@
 		}
 		$('button#login-button').removeAttr('disabled');
 	}
-	
+
 </script>

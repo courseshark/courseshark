@@ -1,0 +1,59 @@
+@mini-cal-hour: @light-grey;
+@mini-cal-noon: @black;
+
+
+.minical{
+  background: @white;
+  padding: 10px;
+  position: relative;
+}
+
+.day-header{
+  color: @text-grey;
+  font-weight: bold;
+  text-align: center;
+}
+.hour-row{
+  height: 10px;
+  .hour-line{
+    width: 100%;
+    height: 9px;
+    border-top: 1px solid @mini-cal-hour;
+    &.noon-hour{
+      border-top-color: @mini-cal-noon;
+    }
+    &:last-child{
+      border-bottom: 1px solid @mini-cal-hour;
+    }
+  }
+}
+
+.sections-overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  .sections-container{
+    padding: 10px;
+    height: 100%;
+    overflow: hidden;
+    .calendar-day{
+      position:relative;
+      .section{
+        position: absolute;
+        width: 100%;
+        z-index: 900;
+        &.temp{
+          width: 80%;
+          opacity: 0.8;
+          z-index: 1000;
+        }
+        .section-block{
+          width: 50%;
+          margin: 0 auto;
+        }
+      }
+    }
+  }
+}
