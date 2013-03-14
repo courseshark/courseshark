@@ -4,9 +4,9 @@ define(['jQuery'
         'views/shark-view'
         'models/search-results'
         'views/scheduler/result-course'
-        'views/scheduler/result-section'
+        'views/scheduler/result-section-single'
         'text!tmpl/scheduler/results/no-results.ejs'
-        'text!tmpl/scheduler/results/result-section-list.ejs'], ($,_, Backbone, SharkView, SearchResults, ResultsCourseView, ResultsSectionView, noResultsTemplateText, templateText) ->
+        'text!tmpl/scheduler/results/result-section-list.ejs'], ($,_, Backbone, SharkView, SearchResults, ResultsCourseView, ResultsSectionSingleView, noResultsTemplateText, templateText) ->
 
   # This is the main search-results View.
   #
@@ -63,7 +63,7 @@ define(['jQuery'
       @$sections.empty() if @searchResults.get('sections').length
       @searchResults.get('sections').each (section) =>
         if section.get('rank') >= 0.3
-          view = new ResultsSectionView model: section
+          view = new ResultsSectionSingleView model: section
           @subviews.push view
           @$sections.append view.render().el
 

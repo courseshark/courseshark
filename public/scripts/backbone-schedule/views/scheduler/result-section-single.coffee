@@ -5,7 +5,7 @@ define(['jQuery'
         'collections/result-sections'
         'views/scheduler/calendar-mini-section'
         'views/notifications/create-notification'
-        'text!tmpl/scheduler/results/result-section.ejs'], ($,_, Backbone, SharkView, ResultsSections, CalendarMiniSectionView, CreateNotificationView, templateText) ->
+        'text!tmpl/scheduler/results/result-section-single.ejs'], ($,_, Backbone, SharkView, ResultsSections, CalendarMiniSectionView, CreateNotificationView, templateText) ->
 
   class ResultSectionView extends SharkView
 
@@ -96,7 +96,11 @@ define(['jQuery'
 
 
     render: ->
+      departmentAbbr = @model.get('course')?.get?('departmentAbbr') or @model.get('name').match(/^([a-z]+)\s/i)?[1]
       @$el.html @template
+        departmentAbbr: departmentAbbr.toUpperCase()
+        number: @model.get('course').get('number')
+        name: @model.get('course').get('name')
         prof: @model.get('instructor') || "No Professor Set"
         section_id: @model.get('number') + ': Section ' + @model.get('info')
         hours: @model.get('credits')
