@@ -69,7 +69,7 @@ define(['jQuery'
         mixpanel.track 'Shown School Picker', Shark.config.asObject()
         @picker = new SchoolPickerView {next: next}
       else
-        next()
+        Shark.setSchool Shark.school, next
 
     home: () ->
       # Tracking

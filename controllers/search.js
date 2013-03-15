@@ -33,7 +33,7 @@ exports = module.exports = function(app){
 	app.get('/search', wantSchool, function(req, res){
 		var _process = process
 			,	startTime = _process.hrtime()
-			,	school = typeof (_a=((req.school&&(req.school._id||req.school))||null))==='string'?ObjectId(_a):_a
+			,	school = typeof (_a=((req.school&&(req.school._id||req.school))||req.query.s||null))==='string'?ObjectId(_a):_a
 			,	emitter = new EventEmitter()
 			, searchResults = {departments: [], courses: [], sections: []}
 			, term = new ObjectId(req.query.t)

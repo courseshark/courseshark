@@ -33,14 +33,13 @@ define(['jQuery'
         return @trigger 'search:error', 'Must select a term'
 
       @trigger 'search:start'
-      @url = '/search?q='+$searchField.val()+'&t='+Shark.term.get('_id')
+      @url = '/search?q='+$searchField.val()+'&t='+Shark.term.get('_id')+'&s='+Shark.school.id
       @set 'query', $searchField.val()
       @fetch success: () =>
-        if @.error
-          if @.get('error') is "No School"
-            Shark.router.requireSchool () =>
-              # Call self again once we have the school
-              @.search($searchField)
+        if @.get('error') is "No School"
+          Shark.router.requireSchool () =>
+            # Call self again once we have the school
+            @.search($searchField)
 
         # Tracking
         mixpanel.track 'Search', Shark.config.asObject({
