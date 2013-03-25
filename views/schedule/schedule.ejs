@@ -74,11 +74,22 @@
 <script type="text/javascript">var _gaq=_gaq||[];_gaq.push(['_setAccount','UA-20912280-1']);_gaq.push(['_setDomainName','courseshark.com']);_gaq.push(['_trackPageview']);(function(){var ga=document.createElement('script');ga.type='text/javascript';ga.async=true;ga.src=('https:'==document.location.protocol?'https://ssl':'http://www')+'.google-analytics.com/ga.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga, s);})();</script>
 <!-- End google Analytics -->
 
+
   <%if ( built ){ %>
   <script src="/scripts/backbone-schedule/build.main.js" defer="defer"></script>
   <%}else{%>
   <script data-main="/scripts/backbone-schedule/main" src="/scripts/backbone-schedule/lib/require/require.js"></script>
   <%}%>
+
+
+<!-- UserVoice JavaScript SDK (only needed once on a page) -->
+<script>(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/lRDDSofPPH2MBaUfbhfQ.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})()</script>
+<!-- A tab to launch the Classic Widget -->
+<script>UserVoice=window.UserVoice||[];UserVoice.push(['showTab','classic_widget',{mode:'full',primary_color:'#266e97',link_color:'#3fa9f5',default_mode:'support',forum_id: 165209,tab_label:'Feedback / Help',tab_color:'#266e97',tab_position:'bottom-right',tab_inverted:false}]);</script>
+
+
+
+
   <!-- Facebook -->
   <script>
     window.fbAsyncInit = function() {
