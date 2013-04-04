@@ -26,9 +26,9 @@ exports = module.exports = function(app){
     if ( ! req.user ){
       if ( !req.headers['x-requested-with'] || req.headers['x-requested-with'] != "XMLHttpRequest" ){
         req.session.redirectTo=req.headers.referer||'/';
-        res.redirect('/login');
+        return res.redirect('/login');
       }else{
-        res.send(401);
+        return res.send(401);
       }
     }
     if ( req.params.format === 'json' ){
