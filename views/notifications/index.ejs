@@ -91,7 +91,7 @@
 					    <div class="control-group">
 				      <label class="control-label" for="term_id">Term</label>
 				      <div class="controls">
-								<select name="term_id" id="term_id" autocomplete="on" onchange="$('#major_id').change()" required/>
+								<select name="term_id" id="term_id" autocomplete="on" required/>
 									<% for(t in terms){ term = terms[t] %>
 										<option value="<%= term._id %>"><%=: term.season | capitalize%> <%=term.year%></option>
 									<%}%>

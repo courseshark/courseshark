@@ -58,6 +58,14 @@ SectionPicker = function(opts){
 
 	term = $term?$term.val():window.term?window.term.id?window.term.id:window.term:'';
 
+	if ( $term ){
+		$term.change(function(){
+			console.log('change');
+			term = $term.val();
+			$department.change();
+		})
+	}
+
 	$.ajax({
 			url: '/school/departments'
 		, dataType: 'json'
@@ -76,6 +84,7 @@ SectionPicker = function(opts){
 		if ( $department.children('option').first().val() === '' ){
 			$department.children('option').first().remove();
 		}
+		console.log(term);
 		if (!id){return;}
 		$course.attr('disabled','true').html("<option>Loading...</option>");
 		$section.attr('disabled','true').html("<option value=''>Loading...</option>");
@@ -120,10 +129,8 @@ SectionPicker = function(opts){
 
 
 					if ( config['empty'] ){
-						console.log(sections);
 						seats.on('result', (function(sections){return function(section){
 							s = sections.filter(function(sec){return sec._id == section.id})[0];
-							console.log('ah ha!', section, sections, s);
 							if (!s){ return; }
 							if ( section.avail <= 0 || section.seatsAvailable <= 0){
 								$section.append('<option value="'+s._id+'">'+s.number+' &mdash; '+s.timeslots[0].instructor+'</option>')
