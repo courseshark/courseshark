@@ -12,6 +12,7 @@ var   express = require('express')
     , io
     , mongoose = require('mongoose')
     , mixpanel = new require('mixpanel').init(process.env.COURSESHARK_MIXPANEL_ACCESS_TOKEN)
+    , seatwatcher = require('./seat-watcher');
 
 
 console.log("\n\nStarting in mode:", app.settings.env);
@@ -91,8 +92,16 @@ mongoose.connection.on('open', function(){
 
 
     console.log('CourseShark started on port ' + port);
+
   });
 })
+
+
+
+console.log('Seatwatcher starting');
+if ( process.env.NODE_ENV === 'production' ){
+  seatwatcher.start();
+}
 
 // Connect to the Database
 mongoose.connect(process.env.COURSESHARK_MONGODB_URI);
