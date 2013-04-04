@@ -35,7 +35,7 @@ exports = module.exports = function(app){
       Notification.find({user: req.user, hidden:false}).populate('section').populate('section.course').populate('section.department').exec(function(err, notifications){
         list = []
         for(var i=0,len=notifications.length; i<len; i++){
-          list.push(notifications[i].toJSON2())
+          list.push(notifications[i].toJSON())
         }
         res.json(list);
       })

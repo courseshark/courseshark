@@ -7,11 +7,6 @@ var util = require('../lib/utils')
 exports.boot = module.exports.boot = function (app){
   mongoose.model('Notification', NotificationSchema);
   app.Notification = Notification = mongoose.model('Notification');
-
-  Notification.prototype.toJSON2 = function() {
-    console.log("toJSON2 depreciated, just call toJSON()")
-    return this.toJSON();
-  }
 }
 
 NotificationSchema = new Schema({
