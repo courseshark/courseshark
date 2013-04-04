@@ -23,6 +23,14 @@ exports = module.exports = function(app){
   })
 
   app.get('/notifications.:format?', requireLogin, requireSchool, function(req, res){
+    if ( ! req.user ){
+      if ( !req.headers['x-requested-with'] || req.headers['x-requested-with'] != "XMLHttpRequest" ){
+        req.session.redirectTo=req.headers.referer||'/';
+        res.redirect('/login');
+      }else{
+        res.send(401);
+      }
+    }
     if ( req.params.format === 'json' ){
       Notification.find({user: req.user, hidden:false}).populate('section').populate('section.course').populate('section.department').exec(function(err, notifications){
         list = []

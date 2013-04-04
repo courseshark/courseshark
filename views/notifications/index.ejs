@@ -130,7 +130,7 @@
 						<div class="control-group">
 				      <label class="control-label" for="email">Email <span class="label">optional</span></label>
 				      <div class="controls">
-								<input type="email" name="email" placeholder="you@domain.com" value="<%=user.email?user.email:''%>"/>
+								<input type="email" name="email" placeholder="you@domain.com" value="<%=(user)?(user.email?user.email:''):''%>"/>
 							</div>
 						</div>
 						<div class="control-group">
