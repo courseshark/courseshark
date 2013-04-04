@@ -12,7 +12,7 @@ npm install;
 
 # Build the deployment scripts
 echo "Running $(tput setaf 2)'make'$(tput sgr0) to build scripts";
-#make > /dev/null
+make > /dev/null
 
 # Run based on environment
 if [ "development" == "$NODE_ENV" ]
