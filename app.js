@@ -98,8 +98,8 @@ mongoose.connection.on('open', function(){
 
 
 
-console.log('Seatwatcher starting');
 if ( process.env.NODE_ENV === 'production' ){
+  console.log('Seatwatcher starting');
   seatwatcher.start();
 }
 

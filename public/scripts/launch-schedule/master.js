@@ -95,8 +95,12 @@ SectionPicker = function(opts){
 
 	$course.bind('change',function(){
 		var id = $course.val()
+		var sections = [];
 		$section.attr('disabled','true').html("<option value=''>Loading....</option>");
 		if (!id){return;}
+
+
+
 		$.ajax({
 				url:"/term/"+term+"/sections/"+id
 			, dataType:'json'
@@ -105,6 +109,7 @@ SectionPicker = function(opts){
 					var options = '', s = {}
 					for ( var i=0,len=secs.length; i<len; i++ ){
 						s = secs[i]
+						sections.push(s);
 						if ( !config['empty'] ){
 							options += '<option value="'+s._id+'">'+s.number+' &mdash; '+s.timeslots[0].instructor+'</option>'
 						}else{
@@ -112,30 +117,34 @@ SectionPicker = function(opts){
 							seats.emit('update', s._id)
 						}
 					}
-					if ( !config['empty'] ){
+
+
+					if ( config['empty'] ){
+						console.log(sections);
+						seats.on('result', (function(sections){return function(section){
+							s = sections.filter(function(sec){return sec._id == section.id})[0];
+							console.log('ah ha!', section, sections, s);
+							if (!s){ return; }
+							if ( section.avail <= 0 || section.seatsAvailable <= 0){
+								$section.append('<option value="'+s._id+'">'+s.number+' &mdash; '+s.timeslots[0].instructor+'</option>')
+							}
+							if ( --updating[s.course] === 0 ){
+								$section.children("option[value='']").remove();
+								if ( $section.children('option').length === 0 ){
+									$section.html('<option value="">No Full Sections</option>')
+								}else{
+									$section.removeAttr('disabled')
+								}
+							}
+						}})(sections));
+					}else{
 						$section.html(options).removeAttr('disabled')
 					}
 				}
 			, error: function(jqXHR, textStatus, errorThrown){errorHandler(jqXHR,textStatus,errorThrown);}
 		});
 	})
-	if ( config['empty'] ){
-		seats.on('result', function(section){
-			s = section.section
-			if ( section.avail <= 0 || section.seatsAvailable){
-				$section.append('<option value="'+s._id+'">'+s.number+' &mdash; '+s.timeslots[0].instructor+'</option>')
-			}
-			if ( --updating[s.course] === 0 ){
-				$section.children("option[value='']").remove();
-				if ( $section.children('option').length === 0 ){
-					$section.html('<option value="">No Full Sections</option>')
-				}else{
-					$section.removeAttr('disabled')
-				}
-			}
-			
-		});
-	}
+
 	return this
 }
 
